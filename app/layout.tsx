@@ -1,3 +1,4 @@
+"use client"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import { Playfair_Display, Caveat } from "next/font/google"
