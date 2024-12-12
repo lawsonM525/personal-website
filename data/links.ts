@@ -1,0 +1,22 @@
+export const links = {
+    "social_media": {
+        "LinkedIn": "https://www.linkedin.com/in/michelle-o-lawson/",
+        "Twitter": "https://twitter.com/michellextech",
+        "Instagram": "https://www.instagram.com/michellexcomputer/",
+        "TikTok": "https://www.tiktok.com/@michellexcomputer"
+    },
+    "professional": {
+        "Portfolio": "https://www.yourportfolio.com",
+        "GitHub": "https://github.com/lawsonm525"
+    },
+    "personal": {
+        "Blog": "https://www.yourblog.com",
+        "YouTube": "https://www.youtube.com/channel/yourchannelid"
+    }
+}
+
+export type LinkCategories = keyof typeof links;
+export type LinkNames = {
+    [K in LinkCategories]: keyof typeof links[K];
+}[LinkCategories];
+
