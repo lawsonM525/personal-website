@@ -16,7 +16,5 @@ export const links = {
 }
 
 export type LinkCategories = keyof typeof links;
-export type LinkNames = {
-    [K in LinkCategories]: keyof typeof links[K];
-}[LinkCategories];
+export type LinkNames = "GitHub" | "LinkedIn" | "Instagram" | "TikTok" | "Email";
 

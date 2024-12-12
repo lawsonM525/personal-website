@@ -16,30 +16,33 @@ import { DialogContent, DialogTitle } from "@/components/ui/dialog"
 import { EmailPopup } from "./email-popup"
 import { Nav } from "./nav"
 
-export function CommandMenu() {
-  const [open, setOpen] = React.useState(false)
+interface CommandMenuProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}
+
+export function CommandMenu({ open, onOpenChange }: CommandMenuProps) {
   const router = useRouter()
 
   React.useEffect(() => {
     const down = (e: KeyboardEvent) => {
       if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault()
-        setOpen((open) => !open)
+        onOpenChange(!open)
       }
     }
     document.addEventListener("keydown", down)
     return () => document.removeEventListener("keydown", down)
-  }, [])
+  }, [onOpenChange, open])
 
   const runCommand = React.useCallback((command: () => unknown) => {
-    setOpen(false)
+    onOpenChange(false)
     command()
   }, [])
 
   return (
     <>
-      <Nav onCommandOpen={() => setOpen(true)} />
-      <CommandDialog open={open} onOpenChange={setOpen}>
+      <CommandDialog open={open} onOpenChange={onOpenChange}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogTitle>Command Menu</DialogTitle>
           <CommandInput placeholder="Type a command or search..." />

@@ -24,7 +24,7 @@ export default function RAGInPractice() {
 
   return (
     <main className="min-h-screen bg-black text-white">
-      <Nav />
+      <Nav onCommandOpen={() => {}} />
       <div className="pt-20 pb-16">
         <h1 className="text-4xl font-bold text-center mb-8">RAG in Practice</h1>
         <div className="flex justify-center space-x-4 mb-8">
@@ -45,7 +45,11 @@ export default function RAGInPractice() {
   )
 }
 
-function NavButton({ children, active, onClick }) {
+function NavButton({ children, active, onClick }: { 
+  children: React.ReactNode;
+  active: boolean;
+  onClick: () => void;
+}) {
   return (
     <button
       className={`px-4 py-2 rounded-md transition-colors ${

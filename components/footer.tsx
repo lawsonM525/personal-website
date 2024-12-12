@@ -4,9 +4,11 @@ import Link from "next/link"
 import { Mail, Github, Linkedin, Instagram } from 'lucide-react'
 import { useState } from "react"
 import { links, LinkNames } from "@/data/links"
+import { EmailPopup } from "@/components/email-popup"
 
 export function Footer() {
   const [hoveredLink, setHoveredLink] = useState<string | null>(null)
+  const [emailOpen, setEmailOpen] = useState(false)
   
   const socialLinks: Array<{
     href: string;
@@ -20,7 +22,7 @@ export function Footer() {
       icon: Mail,
       onClick: (e: React.MouseEvent) => {
         e.preventDefault()
-        document.dispatchEvent(new KeyboardEvent('keydown', {'key': 'k', 'metaKey': true}))
+        setEmailOpen(true)
       }
     },
     { href: links.social_media.LinkedIn, label: "LinkedIn", icon: Linkedin },
@@ -43,6 +45,7 @@ export function Footer() {
 
   return (
     <>
+      <EmailPopup open={emailOpen} onOpenChange={setEmailOpen} />
       <footer className="fixed bottom-0 left-0 right-0 p-4 flex justify-center space-x-6">
         {socialLinks.map((link) => (
           <Link
@@ -55,7 +58,9 @@ export function Footer() {
           >
             {link.label}
             {hoveredLink === link.label && (
-              <link.icon className="w-4 h-4 transition-opacity duration-200" />
+              <div className="w-4 h-4 transition-opacity duration-200">
+                <link.icon />
+              </div>
             )}
           </Link>
         ))}

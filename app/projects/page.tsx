@@ -72,7 +72,7 @@ export default function Projects() {
 
   return (
     <main className="min-h-screen bg-black">
-      <Nav />
+      <Nav onCommandOpen={() => {}} />
       <div className="pt-20 pb-16">
         <div className="max-w-7xl mx-auto px-4">
           <div className="mb-12">
