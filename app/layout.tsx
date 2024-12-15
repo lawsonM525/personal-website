@@ -1,22 +1,6 @@
-"use client"
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
-import { Playfair_Display, Caveat } from "next/font/google"
 import "./globals.css"
-import { CommandMenu } from "@/components/command-menu"
-import { EmailPopup } from "@/components/email-popup"
-import { Toaster } from "@/components/ui/toaster"
-import { useState } from "react"
-
-const inter = Inter({ subsets: ["latin"] })
-const playfair = Playfair_Display({ 
-  subsets: ["latin"],
-  variable: "--font-serif" 
-})
-const caveat = Caveat({ 
-  subsets: ["latin"],
-  variable: "--font-handwriting" 
-})
+import { LayoutClient } from "./layout-client"
 
 export const metadata: Metadata = {
   title: "Michelle Lawson",
@@ -28,24 +12,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const [commandMenuOpen, setCommandMenuOpen] = useState(false)
-  const [emailPopupOpen, setEmailPopupOpen] = useState(false)
-
-  return (
-    <html lang="en" className={`dark ${playfair.variable} ${caveat.variable}`}>
-      <body className={`${inter.className} bg-black text-white min-h-screen`}>
-        <CommandMenu 
-          open={commandMenuOpen} 
-          onOpenChange={setCommandMenuOpen}
-        />
-        {children}
-        <EmailPopup 
-          open={emailPopupOpen} 
-          onOpenChange={setEmailPopupOpen} 
-        />
-        <Toaster />
-      </body>
-    </html>
-  )
+  return <LayoutClient>{children}</LayoutClient>
 }
 
