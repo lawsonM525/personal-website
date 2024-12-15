@@ -4,6 +4,7 @@ import { Playfair_Display, Caveat } from "next/font/google"
 import { CommandMenu } from "@/components/command-menu"
 import { EmailPopup } from "@/components/email-popup"
 import { Toaster } from "@/components/ui/toaster"
+import { Nav } from "@/components/nav"
 import { useState } from "react"
 
 const inter = Inter({ subsets: ["latin"] })
@@ -27,6 +28,7 @@ export function LayoutClient({
   return (
     <html lang="en" className={`dark ${playfair.variable} ${caveat.variable}`}>
       <body className={`${inter.className} bg-black text-white min-h-screen`}>
+        <Nav />
         <CommandMenu 
           open={commandMenuOpen} 
           onOpenChange={setCommandMenuOpen}

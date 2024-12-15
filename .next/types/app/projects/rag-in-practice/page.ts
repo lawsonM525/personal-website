@@ -1,8 +1,8 @@
-// File: /Users/michelle/Documents/personal-website/app/about/page.tsx
-import * as entry from '../../../../app/about/page.js'
+// File: /Users/michelle/Documents/personal-website/app/projects/rag-in-practice/page.tsx
+import * as entry from '../../../../../app/projects/rag-in-practice/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
-type TEntry = typeof import('../../../../app/about/page.js')
+type TEntry = typeof import('../../../../../app/projects/rag-in-practice/page.js')
 
 type SegmentParams<T extends Object = any> = T extends Record<string, any>
   ? { [K in keyof T]: T[K] extends string ? string | string[] | undefined : never }

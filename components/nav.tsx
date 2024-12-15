@@ -9,7 +9,7 @@ interface NavProps {
   onCommandOpen: () => void
 }
 
-export function Nav({ onCommandOpen }: NavProps) {
+export function Nav() {
   const pathname = usePathname()
   const [hoverTarget, setHoverTarget] = useState<HTMLElement | null>(null)
   const [hoverStyle, setHoverStyle] = useState({ left: 0, width: 0, height: 0 })
@@ -69,11 +69,10 @@ export function Nav({ onCommandOpen }: NavProps) {
           }}
         />
       </div>
-      <Button /* circles square button */
+      <Button
         variant="ghost"
         size="icon"
         className="h-9 w-9"
-        onClick={onCommandOpen}
       >
         <svg
           width="24"

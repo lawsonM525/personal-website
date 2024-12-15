@@ -24,7 +24,7 @@ export default function RAGInPractice() {
 
   return (
     <main className="min-h-screen bg-black text-white">
-      <Nav onCommandOpen={() => {}} />
+      <Nav />
       <div className="pt-20 pb-16">
         <h1 className="text-4xl font-bold text-center mb-8">RAG in Practice</h1>
         <div className="flex justify-center space-x-4 mb-8">
@@ -76,7 +76,7 @@ function AllAboutRAG() {
       >
         <h2 className="text-2xl font-bold mb-4">What is Retrieval-Augmented Generation (RAG)?</h2>
         <p className="text-gray-400">
-          Retrieval-Augmented Generation (RAG) helps Large Language Models (LLMs) like ChatGPT become smarter by connecting them to external knowledge sources. LLMs are good at generating text, but they can make mistakes or provide outdated information. RAG fixes this by letting LLMs access accurate and up-to-date data from external databases. This makes the results more reliable and useful.
+          Retrieval-Augmented Generation (RAG) helps Large Language Models (LLMs) like ChatGPT become smarter by connecting them to external knowledge sources. LLMs excel at generating text, but they can sometimes make mistakes or provide outdated information. RAG fixes this by using mathematical techniques like embeddings and similarity metrics to connect LLMs to accurate and up-to-date data from external databases. This makes the results more reliable and useful.
         </p>
         <p className="text-gray-400 mt-2">
           Think of RAG as combining the LLM's built-in knowledge with extra information from outside sources. This combination allows the model to handle tasks better, especially when it needs specific or current data.
@@ -99,9 +99,9 @@ function AllAboutRAG() {
           RAG systems follow three main steps:
         </p>
         <ol className="list-decimal list-inside text-gray-400 mt-2">
-          <li><strong>Retrieval:</strong> The system searches for the most relevant information in a database or document collection. For example, if you ask about "the tallest building," RAG finds the latest details from sources like Wikipedia or a news website.</li>
-          <li><strong>Augmentation:</strong> The retrieved information is added to your question, creating a detailed query for the model. For instance, "What is the tallest building?" becomes "What is the tallest building according to the latest data on skyscrapers?"</li>
-          <li><strong>Generation:</strong> The model uses this detailed query to create a response that combines its own knowledge with the new information. For example: "The tallest building is the Burj Khalifa, standing at 828 meters."</li>
+          <li><strong>Retrieval:</strong> The system searches for relevant information by converting both the query and potential answers into mathematical vectors. Using cosine similarity, it calculates which vectors are closest in multi-dimensional space. For example, "What is the tallest building?" becomes a vector that's compared against vectors of all available documents.</li>
+          <li><strong>Augmentation:</strong> The retrieved information is added to your question using ranking algorithms to prioritize the most relevant content. The system might combine multiple sources, weighing them by their relevance scores.</li>
+          <li><strong>Generation:</strong> The model uses probability distributions to predict the best response, considering both its training and the retrieved context. This mathematical approach ensures the most relevant information is used in the final answer.</li>
         </ol>
         <p className="text-gray-400 mt-2">
           RAG systems can work with different types of data, like plain text, PDFs, or even databases. For example, when working with a PDF, the system might extract tables or use code to query the data.
@@ -145,21 +145,40 @@ function AllAboutRAG() {
         }
       >
         <h2 className="text-2xl font-bold mb-4">Key Math Concepts Behind RAG</h2>
-        <p className="text-gray-400">
-          RAG relies on math to find and rank the best information. Here are the main concepts:
-        </p>
-        <h3 className="text-xl font-semibold mt-4 mb-2 text-white">1. Cosine Similarity</h3>
-        <p className="text-gray-400">
-          Cosine similarity measures how similar two pieces of information are. It compares their "angles" in a multi-dimensional space. The result is a score between -1 and 1. Higher scores mean the information is more similar.
-        </p>
-        <h3 className="text-xl font-semibold mt-4 mb-2 text-white">2. Distance Metrics</h3>
-        <p className="text-gray-400">
-          Distance metrics measure how far apart two data points are. Smaller distances mean the data points are more similar. Types include Euclidean Distance and Cosine Distance.
-        </p>
-        <h3 className="text-xl font-semibold mt-4 mb-2 text-white">3. Ranking Algorithms</h3>
-        <p className="text-gray-400">
-          Ranking algorithms organize results by relevance. They make sure the most useful information comes first. Types include Rule-based Ranking and Model-based Ranking.
-        </p>
+        <div className="space-y-6">
+          <div>
+            <h3 className="text-xl font-semibold mb-2 text-white">1. Embedding Spaces</h3>
+            <p className="text-gray-400">
+              RAG converts text into vectors (embeddings) in a multi-dimensional space. For example, "tall building" might become [0.8, 0.3, 0.9], while "skyscraper" becomes [0.9, 0.2, 0.8]. These numerical representations allow mathematical comparison of text similarity.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-semibold mb-2 text-white">2. Cosine Similarity</h3>
+            <p className="text-gray-400">
+              Cosine similarity measures how similar two vectors are by calculating the cosine of the angle between them. The formula is:
+            </p>
+            <div className="bg-gray-800 p-4 rounded-md my-2 font-mono text-sm">
+              similarity = (v·u) / (||v|| ||u||)
+            </div>
+            <p className="text-gray-400">
+              This produces a score between -1 and 1, where 1 means identical and -1 means opposite. RAG uses this to find the most relevant documents.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-semibold mb-2 text-white">3. Ranking Algorithms</h3>
+            <p className="text-gray-400">
+              After calculating similarities, RAG uses the softmax function to convert scores into probabilities:
+            </p>
+            <div className="bg-gray-800 p-4 rounded-md my-2 font-mono text-sm">
+              P(document) = exp(score) / sum(exp(scores))
+            </div>
+            <p className="text-gray-400">
+              This helps prioritize the most relevant information for the final response.
+            </p>
+          </div>
+        </div>
       </ScrollySection>
 
       <ScrollySection
@@ -174,12 +193,24 @@ function AllAboutRAG() {
         }
       >
         <h2 className="text-2xl font-bold mb-4">Examples of RAG in Action</h2>
-        <ul className="list-disc list-inside text-gray-400">
-          <li><strong>Searching for Facts:</strong> RAG fetches the latest information to ensure accuracy when answering questions like "What is the capital of Ghana?"</li>
-          <li><strong>Handling PDFs:</strong> RAG can extract data from PDF tables to answer queries like "Show me revenue growth from last year's report."</li>
-          <li><strong>Answering Technical Questions:</strong> RAG retrieves relevant articles and combines them with the model's knowledge to explain complex topics like how neural networks work.</li>
-          <li><strong>Customer Support Chatbots:</strong> RAG retrieves exact steps from a company's help center to provide accurate instructions for tasks like password resets.</li>
-          <li><strong>Academic Research:</strong> RAG pulls papers or articles from trusted sources to provide detailed answers on topics like the latest advancements in AI.</li>
+        <ul className="list-disc list-inside text-gray-400 space-y-4">
+          <li>
+            <strong>Searching for Facts:</strong> When you ask "What is the capital of Ghana?", RAG:
+            <ol className="list-decimal list-inside ml-6 mt-2">
+              <li>Converts your question into a vector</li>
+              <li>Uses cosine similarity to find matching documents</li>
+              <li>Ranks results using the softmax function</li>
+              <li>Generates the answer: "The capital of Ghana is Accra."</li>
+            </ol>
+          </li>
+          <li>
+            <strong>Technical Documentation:</strong> When searching through code documentation:
+            <ol className="list-decimal list-inside ml-6 mt-2">
+              <li>Embeddings capture both natural language and code syntax</li>
+              <li>Distance metrics find similar code examples</li>
+              <li>Ranking ensures the most relevant examples appear first</li>
+            </ol>
+          </li>
         </ul>
       </ScrollySection>
 
