@@ -32,7 +32,7 @@ export default function RAGInPractice() {
       case "all-about-rag":
         return <AllAboutRAG setActivePage={setActivePage} />
       case "future-u-bts":
-        return <FutureUBTS />
+        return <FutureUBTS setActivePage={setActivePage} />
       case "future-u":
         return <FutureU />
       default:
@@ -341,7 +341,9 @@ function AllAboutRAG({ setActivePage }: { setActivePage: (page: string) => void 
                 <button 
                   onClick={() => {
                     window.scrollTo({ top: 0, behavior: 'smooth' });
-                    setActivePage("future-u-bts");
+                    setTimeout(() => {
+                      setActivePage("future-u-bts");
+                    }, 100);
                   }}
                   className="text-blue-400 hover:text-blue-300 underline"
                 >
@@ -358,7 +360,7 @@ function AllAboutRAG({ setActivePage }: { setActivePage: (page: string) => void 
   )
 }
 
-function FutureUBTS() {
+function FutureUBTS({ setActivePage }: { setActivePage: (page: string) => void }) {
   return (
     <div className="max-w-4xl mx-auto px-4">
       <h2 className="text-4xl font-bold mb-8 text-center">Behind the Scenes: How I Built Future U</h2>
@@ -544,6 +546,19 @@ function FutureUBTS() {
           title="...and that's the story of Future U!!"
           content={`You can play around with Future U on the next page.`}
         />
+
+        <button 
+                  onClick={() => {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    setTimeout(() => {
+                      setActivePage("future-u");
+                    }, 100);
+                  }}
+                  className="text-blue-400 hover:text-blue-300 underline"
+                >
+                  Next Page: Future U
+                </button>
+        
       </div>
     </div>
   )
@@ -570,7 +585,7 @@ function FutureU() {
     <div className="max-w-4xl mx-auto px-4">
       <h2 className="text-2xl font-bold mb-4">Future U</h2>
       <p className="text-gray-400 mb-6">
-        Now you can take a look and play around with Future U. Future U uses RAG and LLMs to help you create your personalized and relevantcareer development roadmap.
+        Now you can take a look and  play around with Future U. Future U uses RAG and LLMs to help you create your personalized and relevantcareer development roadmap.
       </p>
       <div className="flex justify-center">
         <Link 
