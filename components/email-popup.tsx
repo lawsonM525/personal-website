@@ -8,7 +8,7 @@ import { toast } from "@/components/ui/use-toast"
 
 export function EmailPopup({ open, onOpenChange }: { open: boolean; onOpenChange: (open: boolean) => void }) {
   const [message, setMessage] = React.useState("")
-  const email = "michellelawsonmedia@gmail.com"
+  const email = "michelle@michellelawson.me"
 
   const handleSend = () => {
     window.location.href = `mailto:${email}?body=${encodeURIComponent(message)}`

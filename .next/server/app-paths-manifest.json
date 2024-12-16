@@ -1,5 +1,4 @@
 {
-  "/projects/page": "app/projects/page.js",
-  "/about/page": "app/about/page.js",
-  "/projects/rag-in-practice/page": "app/projects/rag-in-practice/page.js"
+  "/projects/rag-in-practice/page": "app/projects/rag-in-practice/page.js",
+  "/projects/page": "app/projects/page.js"
 }
