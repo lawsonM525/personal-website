@@ -148,13 +148,30 @@ function AllAboutRAG({ setActivePage }: { setActivePage: (page: string) => void 
         </p>
       </ScrollySection>
       <h1 className="text-2xl font-bold mb-4">The Math Behind RAG</h1>
+
       <ScrollySection
         illustration={
-          <Image 
-            src={embedding}
+          <div>
+            <Image 
+              src="https://media.geeksforgeeks.org/wp-content/uploads/20230416175601/Screenshot-(27)-660.png"
+              alt="CBOW architecture diagram"
+              width={500}
+              height={300}
+              className="my-4 mx-auto"
+            />
+            <Image 
+                src="https://miro.medium.com/v2/resize:fit:1400/0*yxs3JKs5bKc4c_i8.png"
+                alt="Skip-gram architecture diagram"
+                width={500}
+                height={300}
+                className="my-4 mx-auto"
+              />
+            <Image 
+              src={embedding}
               alt="Embedding spaces"
               className="rounded-lg"
-          />
+            />
+          </div>
         }
       >
         
@@ -165,11 +182,41 @@ function AllAboutRAG({ setActivePage }: { setActivePage: (page: string) => void 
             RAG works by converting text into vectors (embeddings) in a multi-dimensional space using algorithms like <strong>Word2Vec</strong>. </p>
             <p className="text-gray-400">Word2Vec, for example, is a two-layer neural network that processes text by taking in batches of raw textual data, analyzing the relationships between words, and producing a vector space with several hundred dimensions. In this space, similar words or phrases are represented as vectors that are close together.</p>
             <br />
+            <p className="text-gray-400">Word2Vec operates using two main architectures:</p>
+            <ul className="list-disc list-inside text-gray-400 mt-2 ml-4 space-y-2">
+              <li><strong>CBOW (Continuous Bag of Words):</strong> Predicts a target word from its context words. For example, given the sentence "The cat sits on the mat", CBOW might try to predict "sits" from ["The", "cat", "on", "the", "mat"].</li>
+              <li><strong>Skip-gram:</strong> The reverse of CBOW - predicts context words from a target word. Using the same example, Skip-gram would try to predict ["The", "cat", "on", "the", "mat"] from the word "sits".</li>
+              
+            </ul>
+            <br />
+            <p className="text-gray-400">Both architectures learn word relationships by analyzing how words appear together in text. The key principle is that words appearing in similar contexts should have similar vector representations. For instance, "king" and "queen" might have similar vectors because they often appear in similar contexts about royalty.</p>
+            <br />
             <p className="text-gray-400">For instance, the phrase <i> "tall building"</i> might be represented as [0.8, 0.3, 0.9], while the word <i>"skyscraper"</i> could become [0.9, 0.2, 0.8]. The closeness of these vectors in the multi-dimensional space shows their semantic similarity. This numerical representation enables mathematical comparison of 
             text similarity using metrics like <strong><i>cosine similarity</i></strong>. By leveraging such embeddings, RAG can efficiently retrieve and compare relevant data.</p>
           </div>
         </div>
       </ScrollySection>
+
+      <ScrollyFullText>
+        <div className="min-h-screen flex items-center">
+          <div className="w-full">
+          <h2 className="text-xl font-semibold mb-2 text-white">2. Similarity Measures in RAG</h2>
+            <p className="text-gray-400 mb-4">
+              While RAG commonly uses cosine similarity, there are several ways to measure vector similarity:
+            </p>
+            
+            <ul className="list-disc list-inside text-gray-400 mb-6 space-y-2">
+              <li><strong>Euclidean Distance:</strong> Measures straight-line distance between vectors</li>
+              <li><strong>Manhattan Distance:</strong> Measures distance along axes (like city blocks)</li>
+              <li><strong>Jaccard Similarity:</strong> Compares set intersection to union</li>
+              <li><strong>Minkowski Distance:</strong> Generalization of Euclidean and Manhattan</li>
+              <li><strong>Cosine Similarity:</strong> Measures angle between vectors</li>
+            </ul>
+
+    
+          </div>
+        </div>
+      </ScrollyFullText>
 
       <ScrollySection
         illustration={
@@ -181,24 +228,43 @@ function AllAboutRAG({ setActivePage }: { setActivePage: (page: string) => void 
         }
       >
         <div className="space-y-6">
-
           <div>
-            <h3 className="text-xl font-semibold mb-2 text-white">2. Cosine Similarity</h3>
-            <br />  
-            <p className="text-gray-400">
-              Cosine similarity measures how similar two vectors are by calculating the cosine of the angle between them.
+          <h3 className="text-xl font-semibold mb-3 text-white">Cosine Similarity</h3>
+            <p className="text-gray-400 mb-4">
+              Cosine similarity is particularly useful for text similarity because it's independent of vector magnitude, focusing on direction.
             </p>
-            <br />
-            <p className="text-gray-400">
-              The formula is:
-            </p>
-            <div className="bg-gray-800 p-4 rounded-md my-2 font-mono text-sm">
-              similarity = (v·u) / (||v|| ||u||)
+            <div className="bg-gray-800 p-4 rounded-md my-4 space-y-2">
+              <p className="text-gray-300 font-mono">Formula:</p>
+              <p className="text-gray-300 font-mono">cos(θ) = (v·u) / (||v|| ||u||)</p>
+              <p className="text-gray-300 font-mono">where:</p>
+              <ul className="text-gray-300 font-mono ml-4">
+                <li>• v·u = dot product of vectors</li>
+                <li>• ||v|| = magnitude of vector v</li>
+                <li>• ||u|| = magnitude of vector u</li>
+              </ul>
             </div>
-            <br />
-            <p className="text-gray-400">
-              This produces a score between -1 and 1, where 1 means identical and -1 means opposite. RAG uses this to find the most similar documents to the query.
-            </p>
+
+            <h4 className="text-lg font-semibold mb-2 mt-4 text-white">Example Calculation</h4>
+            <div className="bg-gray-800 p-4 rounded-md my-2 space-y-2">
+              <p className="text-gray-300">For vectors:</p>
+              <p className="text-gray-300 font-mono">x = [3, 2, 0, 5]</p>
+              <p className="text-gray-300 font-mono">y = [1, 0, 0, 0]</p>
+              <br />
+              <p className="text-gray-300">Steps:</p>
+              <ol className="text-gray-300 space-y-1 ml-4">
+                <li>1. Dot product: (3×1 + 2×0 + 0×0 + 5×0) = 3</li>
+                <li>2. ||x|| = √(3² + 2² + 0² + 5²) = 6.16</li>
+                <li>3. ||y|| = √(1² + 0² + 0² + 0²) = 1</li>
+                <li>4. Similarity = 3 / (6.16 × 1) = 0.49</li>
+              </ol>
+            </div>
+
+            <h4 className="text-lg font-semibold mb-2 mt-4 text-white">Interpretation</h4>
+            <ul className="text-gray-400 space-y-2">
+              <li>• Score of 1: Vectors point in same direction (identical)</li>
+              <li>• Score of 0: Vectors are perpendicular (unrelated)</li>
+              <li>• Score of -1: Vectors point in opposite directions</li>
+            </ul>
           </div>
         </div>
       </ScrollySection>
