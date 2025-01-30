@@ -83,80 +83,68 @@ export default function About() {
           </section>
 
           <section className="space-y-8">
-            <h2 className="text-2xl font-bold">Career</h2>
+  <h2 className="text-2xl font-bold">My Journey</h2>
 
-            <div className="space-y-12">
-              <div className="space-y-3">
-                <h3 className="text-xl font-bold">Founder & CEO</h3>
-                <div>
-                  <Link href="#" className="text-white hover:underline">Resend</Link>
-                  <span className="text-neutral-500"> • San Francisco, California</span>
-                </div>
-                <div className="text-neutral-500">
-                  Jan 2023 — Present • 2 yrs 0 mos
-                </div>
-                <p className="text-neutral-400 leading-relaxed">
-                  Building the email API platform for developers. Leading product strategy, engineering, and company vision to help developers send transactional emails with better deliverability and developer experience.
-                </p>
-              </div>
+  <div className="space-y-12">
+    <div className="space-y-3">
+      <h3 className="text-xl font-bold">The Beginning: Smith College & Research</h3>
+      <div className="text-neutral-500">
+        2022 — Present
+      </div>
+      <p className="text-neutral-400 leading-relaxed">
+        In 2022, I was awarded over <span className="text-white">$300,000</span> in scholarships to attend <span className="text-white">Smith College</span> and study <span className="text-white">Computer Science</span>. From the moment I arrived, I was eager to do more than just attend classes—I wanted to explore how technology could shape the world.  
+        By 2023, I joined a research team in <span className="text-white">computer science education</span>, working with <span className="text-white">Pablo Frank Bolton and Liberty</span> as the team’s statistician. We investigated a more effective way to assess STEM students, developing the <span className="text-white">Justified Multiple Choice Question (JMCQ) Effect</span>. Our research was recognized by the <span className="text-white">American Society of Engineering Education</span>, where we presented our findings.
+      </p>
+    </div>
 
-              <div className="space-y-3">
-                <h3 className="text-xl font-bold">VP of Developer Experience</h3>
-                <div>
-                  <Link href="#" className="text-white hover:underline">WorkOS</Link>
-                  <span className="text-neutral-500"> • Los Angeles, California</span>
-                </div>
-                <div className="text-neutral-500">
-                  Jul 2021 — Dec 2022 • 1 yr 5 mos
-                </div>
-                <p className="text-neutral-400 leading-relaxed">
-                  Led developer relations and documentation teams to improve the developer experience of enterprise features like SSO and Directory Sync. Established developer advocacy programs and enhanced API documentation.
-                </p>
-              </div>
+    <div className="space-y-3">
+      <h3 className="text-xl font-bold">Diving Into Finance & Equity Research</h3>
+      <div className="text-neutral-500">
+        Spring 2023 — 2024
+      </div>
+      <p className="text-neutral-400 leading-relaxed">
+        While I was deep into research, I couldn’t shake my long-standing interest in <span className="text-white">finance</span>. So in <span className="text-white">Spring 2023</span>, I took my first step into the field through <span className="text-white">stock pitch competitions</span>. Researching different companies and analyzing equities became a thrilling challenge—I wasn’t just learning finance, I was applying it in real time.  
+        Through these competitions, I won several awards and eventually pitched at the prestigious <span className="text-white">Cornell Conference in 2024</span>, where I won <span className="text-white">Best Pitch</span>. Along the way, I worked under the mentorship of a former <span className="text-white">Morgan Stanley VP</span>, gaining insights into unconventional approaches to <span className="text-white">equity research</span>. This experience sharpened my ability to blend <span className="text-white">quantitative and qualitative analysis</span>, a skillset that would later prove valuable across all my pursuits.
+      </p>
+    </div>
 
-              <div className="space-y-3">
-                <h3 className="text-xl font-bold">Chief Product Officer</h3>
-                <div>
-                  <Link href="#" className="text-white hover:underline">Liferay Cloud, Inc</Link>
-                  <span className="text-neutral-500"> • Los Angeles, California</span>
-                </div>
-                <div className="text-neutral-500">
-                  Jun 2018 — Jul 2021 • 3 yrs 1 mos
-                </div>
-                <p className="text-neutral-400 leading-relaxed">
-                  Oversaw product strategy and development of cloud infrastructure solutions. Managed multiple product teams, introduced new cloud services, and transformed the traditional enterprise software into a modern SaaS platform.
-                </p>
-              </div>
+    <div className="space-y-3">
+      <h3 className="text-xl font-bold">Building a Global Tech Community</h3>
+      <div className="text-neutral-500">
+        Summer 2023 — Present
+      </div>
+      <p className="text-neutral-400 leading-relaxed">
+        In the summer of 2023, I started doing something that changed my life: <span className="text-white">creating content</span>. What started as a simple way to share my love for <span className="text-white">computer science</span> on TikTok quickly turned into a movement, reaching <span className="text-white">millions of people</span> around the world.  
+        Soon after, I founded <span className="text-white">Computer Science Girlies</span>, a vibrant community dedicated to helping women break into tech. Through engaging content, mentorship, and career support, the platform grew into a powerful force in the industry.  
+        This experience allowed me to refine an entirely different skill set—understanding how <span className="text-white">behavioral psychology, business strategy, and technology</span> intersect to drive engagement and impact.
+      </p>
+    </div>
 
-              <div className="space-y-3">
-                <h3 className="text-xl font-bold">Principal Developer Advocate</h3>
-                <div>
-                  <Link href="#" className="text-white hover:underline">Liferay, Inc</Link>
-                  <span className="text-neutral-500"> • Los Angeles, California</span>
-                </div>
-                <div className="text-neutral-500">
-                  Mar 2015 — Jun 2018 • 3 yrs 3 mos
-                </div>
-                <p className="text-neutral-400 leading-relaxed">
-                  Drove developer adoption through technical content, conference talks, and community engagement. Created developer tools and frameworks to improve the development experience with Liferay's platform.
-                </p>
-              </div>
+    <div className="space-y-3">
+      <h3 className="text-xl font-bold">Startups, AI, and the Future</h3>
+      <div className="text-neutral-500">
+        Summer 2024 — Present
+      </div>
+      <p className="text-neutral-400 leading-relaxed">
+        In Summer 2024, I immersed myself in the world of <span className="text-white">startups</span> and <span className="text-white">AI</span>. I joined <span className="text-white">The Residency</span>, a startup incubator, while living at <span className="text-white">Harvard Street Commons</span>. At the same time, I started studying <span className="text-white">Machine Learning</span> at <span className="text-white">MIT’s Breakthrough Tech</span>, a program that continues to push my technical expertise forward.  
+        As I deepened my understanding of AI and data-driven decision-making, I also worked at <span className="text-white">Comp Sci Link</span> as a <span className="text-white">Business Data Analyst</span>, blending data insights with social media strategy.
+      </p>
+    </div>
 
-              <div className="space-y-3">
-                <h3 className="text-xl font-bold">Front-end Engineer</h3>
-                <div>
-                  <Link href="#" className="text-white hover:underline">Liferay Latin America</Link>
-                  <span className="text-neutral-500"> • Recife, Brazil</span>
-                </div>
-                <div className="text-neutral-500">
-                  Jul 2012 — Mar 2015 • 2 yrs 8 mos
-                </div>
-                <p className="text-neutral-400 leading-relaxed">
-                  Developed front-end solutions and UI components for enterprise applications. Contributed to core product development and helped establish front-end best practices across the organization.
-                </p>
-              </div>
-            </div>
-          </section>
+    <div className="space-y-3">
+      <h3 className="text-xl font-bold">Where I'm Headed Next</h3>
+      <div className="text-neutral-500">
+        Summer 2025 — Future
+      </div>
+      <p className="text-neutral-400 leading-relaxed">
+        This journey—spanning <span className="text-white">research, finance, startups, AI, and content creation</span>—has given me a unique skill set that allows me to analyze things <span className="text-white">technologically</span>, but still understand them from a <span className="text-white">business and psychological</span> point of view.  
+        In Summer 2025, I’ll be bringing all of these perspectives together as a <span className="text-white">Product Management Intern at MongoDB</span>. I’m especially excited about their advancements in <span className="text-white">AI and vector search</span>, and I can’t wait to contribute to the next wave of AI-powered innovation.  
+        Whatever comes next, one thing is certain—I’ll keep building, learning, and finding new ways to make an impact.
+      </p>
+    </div>
+  </div>
+</section>
+
         </div>
       </main>
   )

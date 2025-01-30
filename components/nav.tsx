@@ -47,7 +47,7 @@ export function Nav() {
           alt="Logo"
           width={32}
           height={32}
-          className="w-8 h-8"
+          className="w-8 h-8 border border-white/50 rounded-full"
         />
       </Link>
       <div className="flex items-center justify-center flex-1 space-x-2 relative" ref={navRef}>
