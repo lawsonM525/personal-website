@@ -103,7 +103,7 @@ export default function About() {
         Spring 2023 — 2024
       </div>
       <p className="text-neutral-400 leading-relaxed">
-        While I was deep into research, I couldn’t shake my long-standing interest in <span className="text-white">finance</span>. So in <span className="text-white">Spring 2023</span>, I took my first step into the field through <span className="text-white">stock pitch competitions</span>. Researching different companies and analyzing equities became a thrilling challenge—I wasn’t just learning finance, I was applying it in real time.  
+        While I was deep into computer science, I couldn’t shake my long-standing interest in <span className="text-white">finance</span>. So in <span className="text-white">Spring 2023</span>, I took my first step into the field through <span className="text-white">stock pitch competitions</span>. Researching different companies and analyzing equities became a thrilling challenge—I wasn’t just learning finance, I was applying it in real time.  
         Through these competitions, I won several awards and eventually pitched at the prestigious <span className="text-white">Cornell Conference in 2024</span>, where I won <span className="text-white">Best Pitch</span>. Along the way, I worked under the mentorship of a former <span className="text-white">Morgan Stanley VP</span>, gaining insights into unconventional approaches to <span className="text-white">equity research</span>. This experience sharpened my ability to blend <span className="text-white">quantitative and qualitative analysis</span>, a skillset that would later prove valuable across all my pursuits.
       </p>
     </div>
