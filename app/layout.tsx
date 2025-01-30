@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import "./globals.css"
 import { LayoutClient } from "./layout-client"
-import favicon from "@/assets/mia-bobblehead-big.png"
+import favicon from "@/assets/mia-icon-big.png"
 
 export const metadata: Metadata = {
   title: "Michelle Lawson",
