@@ -22,7 +22,7 @@ export default function About() {
               src={profilePhoto}
               alt="Profile photo"
               width={300}
-              height={300}
+              height={250}
               className="rounded-lg"
             />
             <div className="space-y-4">
