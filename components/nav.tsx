@@ -4,6 +4,8 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { usePathname } from "next/navigation"
 import { useState, useRef, useEffect } from "react"
+import favicon  from "@/assets/mia-icon-big.png"
+import Image from "next/image"
 
 interface NavProps {
   onCommandOpen: () => void
@@ -40,7 +42,13 @@ export function Nav() {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between p-4 bg-black/50 backdrop-blur-sm">
       <Link href="/" className="text-2xl font-bold text-white">
-        ML
+        <Image
+          src={favicon}
+          alt="Logo"
+          width={32}
+          height={32}
+          className="w-8 h-8"
+        />
       </Link>
       <div className="flex items-center justify-center flex-1 space-x-2 relative" ref={navRef}>
         {links.map((link) => (
