@@ -92,8 +92,8 @@ export default function About() {
         2022 — Present
       </div>
       <p className="text-neutral-400 leading-relaxed">
-        In 2022, I was awarded over <span className="text-white">$300,000</span> in scholarships to attend <span className="text-white">Smith College</span> and study <span className="text-white">Computer Science</span>. From the moment I arrived, I was eager to do more than just attend classes—I wanted to explore how technology could shape the world.  
-        By 2023, I joined a research team in <span className="text-white">computer science education</span>, working with <span className="text-white">Pablo Frank Bolton and Liberty</span> as the team’s statistician. We investigated a more effective way to assess STEM students, developing the <span className="text-white">Justified Multiple Choice Question (JMCQ) Effect</span>. Our research was recognized by the <span className="text-white">American Society of Engineering Education</span>, where we presented our findings.
+        In 2022, I was awarded over <span className="text-white">$300,000</span> in scholarships to attend <span className="text-white">Smith College</span> and study <span className="text-white">Computer Science</span>. 
+        By 2023, I had joined a research team in <span className="text-white">computer science education</span>, working with <span className="text-white">Pablo Frank Bolton and Liberty</span> as the team’s statistician. We investigated a more effective way to assess STEM students, developing the <span className="text-white">Justified Multiple Choice Question (JMCQ) Effect</span>. Our research was recognized by the <span className="text-white">American Society of Engineering Education</span>, where we presented our findings.
       </p>
     </div>
 
