@@ -40,39 +40,45 @@ export default function Projects() {
     {
       title: "AST Space Mobile Award-Winning Stock Pitch",
       subtitle: "Investing in the stars.",
-      description: "This award-winning pitch analyzed AST Space Mobile, a company revolutionizing global connectivity through satellite networks. The presentation went beyond numbers, crafting a compelling narrative about the company's potential to democratize internet access worldwide. It stood out at the Cornell competition, winning \"best pitch\" for its strategic depth and visionary storytelling."
+      description: "This award-winning pitch analyzed AST Space Mobile, a company revolutionizing global connectivity through satellite networks. The presentation went beyond numbers, crafting a compelling narrative about the company's potential to democratize internet access worldwide. It stood out at the Cornell competition, winning \"best pitch\" for its strategic depth and visionary storytelling.",
+      link: "https://www.youtube.com/watch?v=19LNTtJmsbE"
     },
     {
-      title: "JMCQ Assessment Style",
-      subtitle: "Rethinking how we measure learning.",
+      title: "The Justification Effect",
+      subtitle: "Rethinking how we measure understanding.",
       description: "This published research introduces a novel approach to assessment—JMCQ (Justified Multiple-Choice Questions)—that goes beyond surface-level answers. By incorporating justifications, it captures a deeper understanding of student knowledge and problem-solving. The research paves the way for fairer, more effective evaluations in STEM education.",
-      status: "published"
-    },
-    {
-      title: "MBTI x Birthday Data Analysis",
-      subtitle: "Data meets personality.",
-      description: "This unique project explored the intersection of personality traits (MBTI types) and astrological birthdays. Through data analysis, it uncovered fascinating patterns and correlations, sparking conversations about how our personalities might align with the stars—or the science behind them."
-    },
-    {
-      title: "Delta Airlines Award-Winning Stock Pitch",
-      subtitle: "Taking flight with bold investments.",
-      description: "This winning pitch highlighted Delta Airlines' resilience and strategic foresight during challenging market conditions. Blending financial acumen with storytelling, the analysis demonstrated Delta's potential to soar higher in a post-pandemic world, earning accolades and standing out among top competitors."
+      status: "published",
+      link: "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=yatiHe0AAAAJ&citation_for_view=yatiHe0AAAAJ:u-x6o8ySG0sC"
     },
     {
       title: "Computer Science Girlies (CSG)",
       subtitle: "Empowering a generation of tech girlies.",
-      description: "From a small idea to a thriving community of 100,000+ women, Computer Science Girlies is redefining what it means to be a woman in tech. Through viral educational content, mentorship, and job placement initiatives, CSG is more than a community—it's a movement to close the gender gap in technology, one connection at a time."
+      description: "From a small idea to a thriving community of 100,000+ women, Computer Science Girlies is redefining what it means to be a woman in tech. Through viral educational content, mentorship, and job placement initiatives, CSG is more than a community—it's a movement to close the gender gap in technology, one connection at a time.",
+      link: "https://www.csgirlies.com"
+    },
+    {
+      title: "MBTI x Birthday Data Analysis",
+      subtitle: "Statistical Programming with Jupyter notebooks",
+      description: "A data science project analyzing correlations between MBTI personality types and birth dates using Python and statistical analysis. Leveraging Reddit for data collection and Jupyter notebooks for interactive storytelling, this analysis garnered 7,000+ views on Kaggle. The project showcases practical applications of statistical programming, data visualization, and community-driven research methodologies.",
+      link: "https://www.kaggle.com/code/michellelawson/mbti-x-birthday-analysis"
+    },
+    {
+      title: "Delta Airlines Award-Winning Stock Pitch",
+      subtitle: "Taking flight with bold investments.",
+      description: "This winning pitch highlighted Delta Airlines' resilience and strategic foresight during challenging market conditions. Blending financial acumen with storytelling, the analysis demonstrated Delta's potential to soar higher in a post-pandemic world, earning accolades and standing out among top competitors.",
+      link: "https://drive.google.com/file/d/1OW6sDup_4zfj5I3gpOxsL7V2M3F3iuuG/view?usp=sharing"
     },
     {
       title: "Cryptographic Algorithms Research",
-      subtitle: "Securing the digital future.",
-      description: "This high school research project delved into the performance of cryptographic algorithms like SHA-1, SHA-2, and SHA-3. By analyzing their efficiency and security, it contributed valuable insights to the field of cybersecurity, laying the foundation for further exploration into how we protect digital information."
+      description: "This high school research project explored the performance of cryptographic algorithms like SHA-1, SHA-2, and SHA-3. By analyzing their efficiency and security, it contributed valuable insights to the field of cybersecurity, laying the foundation for further exploration into how we protect digital information.",
+      link: "https://www.researchgate.net/publication/370208990_Exploring_the_extent_to_which_SHA_3_is_a_better_alternative_cryptographic_hash_algorithm_to_SHA_2_on_the_basis_of_speed_and_security"
     }
   ]
 
   return (
     <main className="min-h-screen bg-black">
       <Nav />
+      <div className="h-16" />  {/* spacer */ }
       <div className="pt-20 pb-16">
         <div className="max-w-7xl mx-auto px-4">
           <div className="mb-12">
@@ -119,6 +125,8 @@ export default function Projects() {
           </div>
         </div>
       </div>
+      <div className="h-16" />  {/* spacer */ }
+      <div className="h-16" />  {/* spacer */ }
       <Footer />
     </main>
   )

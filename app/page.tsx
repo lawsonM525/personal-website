@@ -12,7 +12,7 @@ export default function Home() {
       <CommandMenu open={commandOpen} onOpenChange={setCommandOpen} />
       <div className="space-y-4 max-w-2xl mx-auto">
         <h1 className="text-4xl font-bold">Michelle Lawson</h1>
-        <p className="text-gray-400">Obsessed with turning ideas into reality</p>
+        <p className="text-gray-400">Turning my ideas, and yours, into reality.</p>
         <button
           onClick={() => setCommandOpen(true)}
           className="text-sm text-gray-400 mt-8 px-2 py-1 rounded-md transition-all duration-200 ease-in-out hover:bg-gray-800"
