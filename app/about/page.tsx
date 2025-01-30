@@ -5,6 +5,7 @@ import { Footer } from "@/components/footer"
 import { UnderConstruction } from "@/components/under-construction"
 import { CommandButton } from '@/components/CommandButton'
 import profilePhoto from '@/assets/michelle pink scarf icon.png'
+import headshot from '@/assets/Michelle.Lawson.png'
 import Image from 'next/image' 
 import { Button } from '@/components/ui/button'
 import { ClipboardCopy, Download } from 'lucide-react'
@@ -15,7 +16,7 @@ export default function About() {
   return (
     <main className="container mx-auto px-4 py-16 max-w-3xl">
         <h1 className="text-5xl font-bold text-center mb-16 bg-gradient-to-r from-pink-500 to-purple-500 text-transparent bg-clip-text">
-          Create. Share. Repeat.
+          Inspire. Educate. Create.
         </h1>
 
         <div className="space-y-12">
@@ -59,7 +60,20 @@ export default function About() {
                 <ClipboardCopy className="w-4 h-4 mr-2" />
                 Copy Bio
               </Button>
-              <Button variant="outline" size="sm">
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => {
+                  console.log('Headshot source:', headshot.src);
+                  // Create a link element
+                  const link = document.createElement('a');
+                  link.href = headshot.src;
+                  link.download = 'Michelle-Lawson-Headshot.png';
+                  document.body.appendChild(link);
+                  link.click();
+                  document.body.removeChild(link);
+                }}
+              >
                 <Download className="w-4 h-4 mr-2" />
                 Download Headshot
               </Button>

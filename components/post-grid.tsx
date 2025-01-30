@@ -33,7 +33,9 @@ function PostItem({ post, onPostClick }: {
   onPostClick: (postId: string) => void 
 }) {
   const [isHovered, setIsHovered] = useState(false)
-  const mainImage = post.media[0].url
+  const mainImage = typeof post.media[0].url === 'string' 
+    ? post.media[0].url 
+    : post.media[0].url.src
 
   return (
     <div 
