@@ -26,20 +26,15 @@ export default function About() {
               className="rounded-lg"
             />
             <div className="space-y-4">
-              <p className="text-lg">
-                Hi! I'm Michelle Lawson <span className="inline-block">👋</span> I started as a software engineer back in
-                2009, working with Flash.
-              </p>
-              <p className="text-neutral-400">
-                I'm the <span className="text-white">Founder & CEO</span> at Resend. Before that, I was a VP of
-                Developer Experience at WorkOS and CPO at Liferay Cloud. I'm originally from Brazil and now living in{" "}
-                <span className="text-white">San Francisco, California</span> with my amazing wife and beautiful
-                daughter.
-              </p>
-              <p className="text-neutral-400">
-                I love <span className="text-white">dark mode</span>, open source, and side projects. When I'm not
-                working, I like running, watching movies, and <span className="text-white">eating cheese</span>.
-              </p>
+            <p className="text-lg">
+              Hi! I'm Michelle Lawson <span className="inline-block">👋</span> I’m a Computer Science student, building a community of 150,000+ women in CS.
+            </p>
+            <p className="text-neutral-400">
+              I'm the <span className="text-white">Founder</span> of <span className="text-white">Computer Science Girlies</span>, a global movement empowering Gen Z women in CS through content, connections, and career opportunities. I've worked on <span className="text-white">machine learning, product management, and quantitative research</span>, and I’ve spoken at major tech conferences like TechCrunch Disrupt and Columbia Devfest.
+            </p>
+            <p className="text-neutral-400">
+              I love <span className="text-white">building things that inspire and educate</span>, from viral Comp Sci content to AI-driven projects. When I’m not working, I’m probably <span className="text-white">reading about behavioral psychology, art journaling, or writing poetry by a pond</span>.
+            </p>
             </div>
           </div>
 
@@ -49,11 +44,10 @@ export default function About() {
               This is made for journalists, podcast hosts, and event organizers to copy-and-paste.
             </p>
             <div className="bg-neutral-900 p-6 rounded-lg text-neutral-400 italic">
-              Zeno Rocha is a Brazilian creator and programmer. He currently lives in San Francisco, California, where
-              he's the Founder & CEO at Resend. His lifelong appreciation for building software and sharing knowledge
-              led him to speak in over 110 conferences worldwide. His passion for open source put him on the top 20 most
-              active users on GitHub at age 22. Before moving to the US, Zeno developed multiple applications, mentored
-              startups, and worked at major companies in Latin America, such as Globo and Petrobras.
+                Michelle Lawson is a Top Voice in Educational Technology recognized by LinkedIn. With over 150,000 followers across various social media platforms, 
+                she has established herself as a leading figure in the field. An accomplished author, Michelle has written multiple books that use fashion and makeup-themed 
+                metaphors to make complex computer science concepts more engaging. As an undergraduate researcher, she has published papers with the American Society of Engineering Education, 
+                focusing on Computer Science education. Michelle also curates a strong collection of educational resources designed to help students succeed in their STEM degrees.
             </div>
             <div className="flex gap-4">
               <Button variant="outline" size="sm">
