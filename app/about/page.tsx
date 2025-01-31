@@ -93,7 +93,7 @@ export default function About() {
       </div>
       <p className="text-neutral-400 leading-relaxed">
         In 2022, I was awarded over <span className="text-white">$300,000</span> in scholarships to attend <span className="text-white">Smith College</span> and study <span className="text-white">Computer Science</span>. 
-        By 2023, I had joined a research team in <span className="text-white">computer science education</span>, working with <span className="text-white">Pablo Frank Bolton and Liberty</span> as the team’s statistician. We investigated a more effective way to assess STEM students, developing the <span className="text-white">Justified Multiple Choice Question (JMCQ) Effect</span>. Our research was recognized by the <span className="text-white">American Society of Engineering Education</span>, where we presented our findings.
+        By 2023, I had joined a research team in <span className="text-white">computer science education</span>, working with <span className="text-white">Pablo Frank Bolton and Liberty Lehr</span> as the team’s <span className="text-white">statistician</span>. We investigated a more effective way to assess STEM students, developing the <span className="text-white">Justified Multiple Choice Question (JMCQ) Effect</span>. Our research was recognized by the <span className="text-white">American Society of Engineering Education</span>, where we presented our findings.
       </p>
     </div>
 
@@ -103,8 +103,8 @@ export default function About() {
         Spring 2023 — 2024
       </div>
       <p className="text-neutral-400 leading-relaxed">
-        While I was deep into computer science, I couldn’t shake my long-standing interest in <span className="text-white">finance</span>. So in <span className="text-white">Spring 2023</span>, I took my first step into the field through <span className="text-white">stock pitch competitions</span>. Researching different companies and analyzing equities became a thrilling challenge—I wasn’t just learning finance, I was applying it in real time.  
-        Through these competitions, I won several awards and eventually pitched with a Smith team at the prestigious <span className="text-white">Cornell Undergraduate Women in Investment Conference in 2024</span>, where we won <span className="text-white">Best Pitch</span>. Along the way, I worked under the mentorship of a former <span className="text-white">Morgan Stanley VP</span>, gaining insights into unconventional approaches to <span className="text-white">equity research</span>. This experience sharpened my ability to blend <span className="text-white">quantitative and qualitative analysis</span>, a skillset that would later prove valuable across all my pursuits.
+        While I was deep into computer science, I couldn’t shake my long-standing interest in <span className="text-white">finance</span>. So in <span className="text-white">Spring 2023</span>, I took my first step into the field through <span className="text-white">stock pitch competitions</span>. 
+        Along the way, I worked under the mentorship of a former <span className="text-white">Morgan Stanley VP</span>, gaining insights into unconventional approaches to <span className="text-white">equity research</span>. This experience sharpened my ability to blend <span className="text-white">quantitative and qualitative analysis</span>.
       </p>
     </div>
 
@@ -115,8 +115,7 @@ export default function About() {
       </div>
       <p className="text-neutral-400 leading-relaxed">
         In the summer of 2023, I started doing something that changed my life: <span className="text-white">creating content</span>. What started as a simple way to share my love for <span className="text-white">computer science</span> on TikTok quickly turned into a movement, reaching <span className="text-white">millions of people</span> around the world.  
-        Soon after, I founded <span className="text-white">Computer Science Girlies</span>, a vibrant community dedicated to helping women break into tech. Through engaging content, mentorship, and career support, the platform grew into a powerful force in the industry.  
-        This experience allowed me to refine an entirely different skill set—understanding how <span className="text-white">behavioral psychology, business strategy, and technology</span> intersect to drive engagement and impact.
+        Soon after, I founded <span className="text-white">Computer Science Girlies</span>, a vibrant community dedicated to supporting young women in tech. 
       </p>
     </div>
 
@@ -126,9 +125,10 @@ export default function About() {
         Summer 2024 — Present
       </div>
       <p className="text-neutral-400 leading-relaxed">
-        In Summer 2024, I immersed myself in the world of <span className="text-white">startups</span> and <span className="text-white">AI</span>. I joined <span className="text-white">The Residency</span>, a startup incubator, while living at <span className="text-white">Harvard Street Commons</span>. At the same time, I started studying <span className="text-white">Machine Learning</span> at <span className="text-white">MIT’s Breakthrough Tech</span>, a program that continues to push my technical expertise forward.  
-        As I deepened my understanding of AI and data-driven decision-making, I also worked at <span className="text-white">Comp Sci Link</span> as a <span className="text-white">Business Data Analyst</span>, blending data insights with social media strategy.
-      </p>
+        In Summer 2024, I immersed myself in the world of <span className="text-white">startups</span> and <span className="text-white">AI</span>. I joined <span className="text-white">The Residency</span>, a startup incubator, while living at <span className="text-white">Harvard St. Commons</span>. At the same time, I started studying <span className="text-white">Machine Learning</span> at <span className="text-white">MIT’s Breakthrough Tech</span>, a program that continues to push my technical expertise forward.  
+
+        As economists, we like [[models]] ✅
+Not all models are right... in fact most models are wrong... but they can be useful. We can get useful insights from the models we make to represent the world.      </p>
     </div>
 
     <div className="space-y-3">
