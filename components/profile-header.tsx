@@ -30,7 +30,7 @@ export function ProfileHeader() {
             <span className="text-gray-400">posts</span>
           </div>
           <div className="flex gap-1">
-            <span className="font-semibold">159k</span>
+            <span className="font-semibold">185k</span>
             <span className="text-gray-400">followers</span>
           </div>
           <div className="flex gap-1">
@@ -42,7 +42,7 @@ export function ProfileHeader() {
           <p className="font-semibold">Michelle Lawson</p>
           <p className="text-gray-400">Turning my ideas, and yours, into reality.</p>
           <p>
-            <a href="https://instagram.com/michellexcomputer" className="text-blue-400 hover:underline">instagram.com/michellexcomputer</a>
+            <a href="https://instagram.com/michellescomputer" className="text-blue-400 hover:underline">instagram.com/michellescomputer</a>
           </p>
           <p>
             <a href="https://www.linkedin.com/in/michelle-o-lawson/" className="text-blue-400 hover:underline">linkedin.com/in/michelle-o-lawson</a>

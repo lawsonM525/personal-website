@@ -23,7 +23,7 @@ export default function Projects() {
       subtitle: "Your future, mapped out.",
       description: "Future U is a career-path navigator designed to help people visualize their dream life and uncover the resources needed to achieve it. With features like personalized \"future you\" simulations and real-world data integration, the app gives users a clear, actionable roadmap. Think of it as your personal career GPS, pointing you toward the most fulfilling version of yourself.",
       status: "current",
-      link: "/projects/rag-in-practice"
+      link: "https://v0-future-u-pidzngoahqa.vercel.app/"
     },
     {
       title: "RAG In Practice",
