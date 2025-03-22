@@ -126,9 +126,7 @@ export default function About() {
       </div>
       <p className="text-neutral-400 leading-relaxed">
         In Summer 2024, I immersed myself in the world of <span className="text-white">startups</span> and <span className="text-white">AI</span>. I joined <span className="text-white">The Residency</span>, a startup incubator, while living at <span className="text-white">Harvard St. Commons</span>. At the same time, I started studying <span className="text-white">Machine Learning</span> at <span className="text-white">MIT’s Breakthrough Tech</span>, a program that continues to push my technical expertise forward.  
-
-        As economists, we like [[models]] ✅
-Not all models are right... in fact most models are wrong... but they can be useful. We can get useful insights from the models we make to represent the world.      </p>
+    </p>
     </div>
 
     <div className="space-y-3">
