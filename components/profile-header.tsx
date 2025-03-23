@@ -1,7 +1,15 @@
+'use client'
+
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Settings } from 'lucide-react'
 import profileImage from "@/assets/michelle-pink.jpeg"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 
 export function ProfileHeader() {
   return (
@@ -16,10 +24,19 @@ export function ProfileHeader() {
       </div>
       <div className="flex-1">
         <div className="flex items-center gap-4 mb-4">
-          <h1 className="text-xl font-semibold">michellexcomputer</h1>
-          <Button variant="outline" size="sm">
-            Let's connect!
-          </Button>
+          <h1 className="text-xl font-semibold">michellescomputer</h1>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button variant="outline" size="sm" onClick={() => window.location.href = 'mailto:mlawson@smith.edu'}>
+                  Let's connect!
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Send me an email</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
           <Button variant="ghost" size="icon">
             <Settings className="h-4 w-4" />
           </Button>
@@ -52,4 +69,3 @@ export function ProfileHeader() {
     </div>
   )
 }
-
