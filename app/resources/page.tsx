@@ -235,6 +235,12 @@ export default function Resources() {
                 link="https://leetcode.com"
               />
               <ResourceCard 
+                title="Neetcode"
+                description="a very helpful DSA roadmap and lots of explainer videos for Leetcode"
+                link="https://neetcode.io"
+                isHot={true}
+              />
+              <ResourceCard 
                 title="GitHub Student Pack"
                 description="free developer tools and services for students"
                 link="https://education.github.com/pack"
