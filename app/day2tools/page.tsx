@@ -127,7 +127,7 @@ export default function Day2Tools() {
           <div className="overflow-hidden mb-8">
             <div className="marquee whitespace-nowrap">
               <h1 className="text-5xl font-bold bg-gradient-to-r from-pink-500 to-purple-500 text-transparent bg-clip-text inline-block">
-                ★彡 my fave tools 彡★ ⋆｡°✩ day 2 tools ✩°｡⋆ ★彡 my fave tools 彡★ ⋆｡°✩ day 2 tools ✩°｡⋆
+                ★彡 vibe coding 彡★ ⋆｡°✩ day 2 tools ✩°｡⋆ ★彡 vibe coding 彡★ ⋆｡°✩ have a fun day! ✩°｡⋆
               </h1>
             </div>
           </div>
@@ -138,7 +138,7 @@ export default function Day2Tools() {
           <div className="bg-black/80 backdrop-blur-sm p-8 rounded-lg">
             <div className="mb-6 text-lg text-gray-300 leading-relaxed">
               <p className="mb-4 text-center text-xl text-pink-400 font-bold">hey love,</p>
-              <p className="mb-6">you asked for the tools i used — here's the full list with raw links and how i used each one to build my lil app:</p>
+              <p className="mb-6">you asked for the tools i used — here's the full list with links and how i used each one to build my lil app:</p>
               <hr className="border-pink-500/30 my-6" />
 
               <div className="space-y-8">
@@ -164,7 +164,7 @@ export default function Day2Tools() {
                 <Tool 
                   name="huggingface"
                   url="https://huggingface.co"
-                  description="this is where i grab my models. i got mistral here, but you can also find Meta models and a bunch of other open-source options. great for experimenting with different AI brains till you find *your guy*."
+                  description="this is where i grab my models. i got mistral here, but you can also find models like Deepseek, LLama, and a bunch of other open-source options. great for experimenting with different AI brains till you find *your guy*."
                 />
                 
                 <Tool 
