@@ -171,7 +171,7 @@ export default function Resources() {
           <div>
             {/* Textbooks Y2K Section */}
             <ResourceSection 
-              title="My Textbooks" 
+              title="My Textbooks (FREE!)" 
               emoji="📘" 
               textColor="text-blue-300"
               borderColor="pink"
