@@ -140,6 +140,31 @@ export default function Resources() {
           </div>
         </div>
         
+        {/* Featured Section */}
+        <div className="mb-12">
+          <ResourceSection 
+            title="Featured" 
+            emoji="⭐" 
+            textColor="text-yellow-300"
+            borderColor="pink"
+          >
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <ResourceCard 
+                title="JobRight AI Agent"
+                description="first ever auto-applying AI job agent that applies to jobs for you"
+                link="https://jobright.ai/ai-agent?utm_id=agent&utm_source=1021&utm_campaign=michelle"
+                isNew={true}
+              />
+              <ResourceCard 
+                title="CS Girlies Discord"
+                description="a super warm, hyper-friendly community of Gen Z women in tech"
+                link="https://csgirlies.com"
+                isHot={true}
+              />
+            </div>
+          </ResourceSection>
+        </div>
+        
         {/* Resources in Y2K style grid layout */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Left Column */}
@@ -194,25 +219,7 @@ export default function Resources() {
               />
             </ResourceSection>
             
-            {/* Girly Resources */}
-            <ResourceSection 
-              title="For the Girlies" 
-              emoji="👯‍♀️"
-              textColor="text-pink-300" 
-              borderColor="purple"
-            >
-              <ResourceCard 
-                title="CS Girlies Discord"
-                description="a super warm, hyper-friendly community of Gen Z women in tech"
-                link="https://csgirlies.com"
-                isNew={true}
-              />
-              <ResourceCard 
-                title="Women Who Code"
-                description="global nonprofit dedicated to inspiring women to excel in tech careers"
-                link="https://www.womenwhocode.com"
-              />
-            </ResourceSection>
+      
           </div>
           
           {/* Right Column */}
@@ -295,13 +302,6 @@ export default function Resources() {
                 title="Tech Interview Handbook"
                 description="prepare for coding interviews with free guides and resources"
                 link="https://www.techinterviewhandbook.org"
-              />
-              <ResourceCard 
-                title="JobRight AI Agent"
-                description="first ever auto-applying AI job agent that applies to jobs for you"
-                link="https://jobright.ai/ai-agent?utm_id=agent&utm_source=1021&utm_campaign=michelle"
-                isNew={true}
-                isHot={true}
               />
             </ResourceSection>
           </div>
