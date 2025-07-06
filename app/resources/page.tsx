@@ -157,7 +157,7 @@ export default function Resources() {
               />
               <ResourceCard 
                 title="CS Girlies Discord"
-                description="a super warm, hyper-friendly community of Gen Z women in tech"
+                description="join our community of 13,000+ Gen Z women in tech"
                 link="https://csgirlies.com"
                 isHot={true}
               />
