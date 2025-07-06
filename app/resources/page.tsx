@@ -296,6 +296,13 @@ export default function Resources() {
                 description="prepare for coding interviews with free guides and resources"
                 link="https://www.techinterviewhandbook.org"
               />
+              <ResourceCard 
+                title="JobRight AI Agent"
+                description="first ever auto-applying AI job agent that applies to jobs for you"
+                link="https://jobright.ai/ai-agent?utm_id=agent&utm_source=1021&utm_campaign=michelle"
+                isNew={true}
+                isHot={true}
+              />
             </ResourceSection>
           </div>
         </div>

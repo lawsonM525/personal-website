@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import "./globals.css"
 import { LayoutClient } from "./layout-client"
 import favicon from "@/assets/mia-icon-big.png"
+import Script from 'next/script';
 
 export const metadata: Metadata = {
   title: "Michelle Lawson",
@@ -16,6 +17,26 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  return <LayoutClient>{children}</LayoutClient>
-}
+  return (
+    <html lang="en">
+      <head>
+        <Script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-JDSM0Q7X0G"
+        />
+        <Script id="google-analytics">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
 
+            gtag('config', 'G-JDSM0Q7X0G');
+          `}
+        </Script>
+      </head>
+      <body>
+        <LayoutClient>{children}</LayoutClient>
+      </body>
+    </html>
+  );
+}
