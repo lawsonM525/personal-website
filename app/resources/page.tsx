@@ -148,7 +148,13 @@ export default function Resources() {
             textColor="text-yellow-300"
             borderColor="pink"
           >
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <ResourceCard 
+                title="NVIDIA AI Webinar"
+                description="free AI webinar from NVIDIA"
+                link="https://nvda.ws/44drMiL"
+                isNew={true}
+              />
               <ResourceCard 
                 title="JobRight AI Agent"
                 description="first ever auto-applying AI job agent that applies to jobs for you"
