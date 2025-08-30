@@ -225,6 +225,20 @@ export default function Resources() {
               />
             </ResourceSection>
             
+            {/* Developer Resources */}
+            <ResourceSection 
+              title="Developer Resources" 
+              emoji="🛠️" 
+              textColor="text-cyan-300"
+              borderColor="blue"
+            >
+              <ResourceCard 
+                title="Sprite Sheet Generator"
+                description="create sprite sheets for animations in websites or games - super useful for web dev projects!"
+                link="https://sprite-sheet-generator.com"
+                isNew={true}
+              />
+            </ResourceSection>
       
           </div>
           
