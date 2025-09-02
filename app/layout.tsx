@@ -33,6 +33,12 @@ export default function RootLayout({
             gtag('config', 'G-JDSM0Q7X0G');
           `}
         </Script>
+        <Script
+          src="https://datafa.st/js/script.js"
+          strategy="afterInteractive"
+          data-website-id="68b655f869db4035eb9dde6a"
+          data-domain="michellelawson.me"
+        />
       </head>
       <body>
         <LayoutClient>{children}</LayoutClient>
