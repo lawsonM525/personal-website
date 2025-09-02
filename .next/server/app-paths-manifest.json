@@ -4,14 +4,14 @@
   "/api/post-details/route": "app/api/post-details/route.js",
   "/api/thumbnail/route": "app/api/thumbnail/route.js",
   "/10apps/page": "app/10apps/page.js",
-  "/page": "app/page.js",
   "/about/page": "app/about/page.js",
+  "/day2tools/page": "app/day2tools/page.js",
+  "/page": "app/page.js",
   "/posts/page": "app/posts/page.js",
-  "/projects/rag-in-practice/page": "app/projects/rag-in-practice/page.js",
   "/projects/page": "app/projects/page.js",
+  "/projects/rag-in-practice/page": "app/projects/rag-in-practice/page.js",
   "/reminder/page": "app/reminder/page.js",
   "/research/page": "app/research/page.js",
-  "/resources/page": "app/resources/page.js",
-  "/day2tools/page": "app/day2tools/page.js",
-  "/talks/page": "app/talks/page.js"
+  "/talks/page": "app/talks/page.js",
+  "/resources/page": "app/resources/page.js"
 }

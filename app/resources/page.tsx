@@ -135,7 +135,7 @@ export default function Resources() {
           
           <div className="pixel-border mb-8 p-4 bg-gradient-to-r from-pink-900/30 to-purple-900/30">
             <p className="text-center text-lg">
-              for learning faster, coding smarter, and living your best life 🙂‍↕️
+              for learning more, building faster, and living your best life 🙂‍↕️
             </p>
           </div>
         </div>
@@ -150,15 +150,15 @@ export default function Resources() {
           >
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               <ResourceCard 
-                title="NVIDIA AI Webinar"
-                description="free AI webinar from NVIDIA"
-                link="https://nvda.ws/44drMiL"
-                isNew={true}
+                title="Windsurf"
+                description="vibe coding with an AI tool that actively helps you brainstorm + build"
+                link="https://codeium.com/windsurf"
+                isHot={true}
               />
               <ResourceCard 
-                title="JobRight AI Agent"
-                description="first ever auto-applying AI job agent that applies to jobs for you"
-                link="https://jobright.ai/ai-agent?utm_id=agent&utm_source=1021&utm_campaign=michelle"
+                title="Google Notebook LM"
+                description="my new fave tool for learning anything faster w/ generative AI"
+                link="https://notebooklm.google.com"
                 isNew={true}
               />
               <ResourceCard 
@@ -171,6 +171,49 @@ export default function Resources() {
           </ResourceSection>
         </div>
         
+        {/* AI tools (moved from Day 2 Tools) */}
+        <ResourceSection 
+          title="AI tools" 
+          emoji="🤖" 
+          textColor="text-pink-300"
+          borderColor="purple"
+        >
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <ResourceCard 
+              title="Lovable"
+              description="frontend builder that helps you spin up cute, working MVPs fast — with live previews"
+              link="https://lovable.dev"
+            />
+            <ResourceCard 
+              title="Windsurf"
+              description="clean, AI-powered code editor that makes vibe coding and shipping faster"
+              link="https://codeium.com/windsurf"
+              isHot={true}
+            />
+            <ResourceCard 
+              title="Mistral 7B"
+              description="lightweight open-source LLM that’s fast and great for bots and chat features"
+              link="https://mistral.ai"
+            />
+            <ResourceCard 
+              title="Hugging Face"
+              description="the model hub — find and experiment with open-source AI models"
+              link="https://huggingface.co"
+            />
+            <ResourceCard 
+              title="Claude (via Anthropic)"
+              description="I use Claude a lot — and Claude Code as a great CLI. Lately, GPT-5 has been outperforming Claude, so I pair GPT-5 with Windsurf."
+              link="https://www.anthropic.com"
+              isNew={true}
+            />
+            <ResourceCard 
+              title="MongoDB"
+              description="my go-to NoSQL database (ex-MongoDB PM intern) — flexible docs and scales well"
+              link="https://www.mongodb.com"
+            />
+          </div>
+        </ResourceSection>
+
         {/* Resources in Y2K style grid layout */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Left Column */}
@@ -237,6 +280,16 @@ export default function Resources() {
                 description="create sprite sheets for animations in websites or games - super useful for web dev projects!"
                 link="https://sprite-sheet-generator.com"
                 isNew={true}
+              />
+              <ResourceCard 
+                title="cron-job.org"
+                description="simple free cron scheduler for pings, reminders, and recurring tasks"
+                link="https://cron-job.org"
+              />
+              <ResourceCard 
+                title="GIPHY API"
+                description="add delightful gifs and motion to your app with a simple API"
+                link="https://developers.giphy.com"
               />
             </ResourceSection>
       
