@@ -162,9 +162,10 @@ export default function TenApps() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <ResourceCard 
                 title="Future U"
-                description="A very personalized quiz to help you go from your current self to… your future self — with exact steps to get there."
+                description="A very personalized quiz to help you go from your current self to… your future self — with exact steps to get there. Currently building — BETA. Try at your own risk haha"
                 link="https://www.future-u.app" 
                 isNew={true}
+                isBeta={true}
               />
               <ResourceCard 
                 title="Sprite Sheet Generator (mini app)"
@@ -187,9 +188,10 @@ export default function TenApps() {
             >
               <ResourceCard 
                 title="Week 1 — Future U"
-                description="A personalized quiz that maps your path from current self to future self."
+                description="A personalized quiz that maps your path from current self to future self. Currently building — BETA. Try at your own risk haha"
                 link="https://www.future-u.app"
                 isNew={true}
+                isBeta={true}
               />
             </ResourceSection>
             
@@ -323,13 +325,15 @@ function ResourceCard({
   description, 
   link, 
   isNew, 
-  isHot 
+  isHot,
+  isBeta
 }: { 
   title: string, 
   description: string, 
   link: string,
   isNew?: boolean,
-  isHot?: boolean
+  isHot?: boolean,
+  isBeta?: boolean
 }) {
   return (
     <div className="group">
@@ -337,18 +341,23 @@ function ResourceCard({
         <div className="bg-black rounded-md p-4 hover:bg-black/80 transition-all duration-200">
           <div className="flex justify-between items-start mb-2">
             <h3 className="text-xl font-bold">{title}</h3>
-            
-            {isNew && (
-              <span className="blink px-2 py-0.5 text-xs rounded bg-gradient-to-r from-pink-500 to-purple-500 text-white font-bold">
-                NEW!
-              </span>
-            )}
-            
-            {isHot && (
-              <span className="blink px-2 py-0.5 text-xs rounded bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold">
-                HOT!
-              </span>
-            )}
+            <div className="flex items-center gap-2">
+              {isBeta && (
+                <span className="blink px-2 py-0.5 text-xs rounded bg-gradient-to-r from-yellow-500 to-amber-500 text-black font-bold">
+                  BETA
+                </span>
+              )}
+              {isNew && (
+                <span className="blink px-2 py-0.5 text-xs rounded bg-gradient-to-r from-pink-500 to-purple-500 text-white font-bold">
+                  NEW!
+                </span>
+              )}
+              {isHot && (
+                <span className="blink px-2 py-0.5 text-xs rounded bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold">
+                  HOT!
+                </span>
+              )}
+            </div>
           </div>
           
           <p className="text-gray-300 text-sm mb-4">{description}</p>
