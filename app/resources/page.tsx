@@ -151,7 +151,7 @@ export default function Resources() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               <ResourceCard 
                 title="Windsurf"
-                description="vibe coding with an AI tool that actively helps you brainstorm + build"
+                description="my editor — I use Windsurf every day and I LOVE it; vibe coding that helps me brainstorm + build"
                 link="https://codeium.com/windsurf"
                 isHot={true}
               />
@@ -186,7 +186,7 @@ export default function Resources() {
             />
             <ResourceCard 
               title="Windsurf"
-              description="clean, AI-powered code editor that makes vibe coding and shipping faster"
+              description="my editor — I use Windsurf a lot and I LOVE it; clean, AI-powered editor that makes vibe coding and shipping faster"
               link="https://codeium.com/windsurf"
               isHot={true}
             />
