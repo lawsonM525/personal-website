@@ -14,6 +14,13 @@ interface Project {
 export default function Projects() {
   const projects: Project[] = [
     {
+      title: "10 Apps in 10 Weeks",
+      subtitle: "Shipping one app every week.",
+      description: "Follow along as I build and ship 10 apps in 10 weeks — see what's live and suggest ideas.",
+      status: "current",
+      link: "/10apps"
+    },
+    {
       title: "CS Space",
       description: "Look out for this. I'm thrilled about the possibilities this could bring for learners around the world",
       status: "upcoming"
