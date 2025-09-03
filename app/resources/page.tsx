@@ -152,7 +152,7 @@ export default function Resources() {
               <ResourceCard 
                 title="Windsurf"
                 description="my editor — I use Windsurf every day and I LOVE it; vibe coding that helps me brainstorm + build"
-                link="https://codeium.com/windsurf"
+                link="https://windsurf.com/refer?referral_code=cdbb51b0b0"
                 isHot={true}
               />
               <ResourceCard 
