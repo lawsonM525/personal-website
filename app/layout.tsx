@@ -3,13 +3,48 @@ import "./globals.css"
 import { LayoutClient } from "./layout-client"
 import favicon from "@/assets/mia-icon-big.png"
 import Script from 'next/script';
+import { siteConfig } from "@/lib/seo"
 
 export const metadata: Metadata = {
-  title: "Michelle Lawson",
-  description: "Michelle Lawson is a top voice in technology education. With over 150,000 followers across various social media platforms, she has established herself as a leading figure in the field. An accomplished author, Michelle has written multiple books that use fashion and makeup-themed metaphors to make complex computer science concepts more engaging. As an undergraduate researcher, she has published papers with the American Society of Engineering Education, focusing on Computer Science education. Michelle also curates a strong collection of educational resources designed to help students succeed in their STEM degrees.",
+  metadataBase: new URL(siteConfig.url),
+  title: {
+    default: "Michelle Lawson — AI Educator & Computer Science",
+    template: "%s | Michelle Lawson",
+  },
+  description: siteConfig.description,
+  keywords: siteConfig.keywords,
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    url: siteConfig.url,
+    title: "Michelle Lawson — AI Educator & Computer Science",
+    description: siteConfig.description,
+    siteName: siteConfig.name,
+    images: [siteConfig.ogImage],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Michelle Lawson — AI Educator & Computer Science",
+    description: siteConfig.description,
+    images: [siteConfig.ogImage],
+    creator: "@michellextech",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
   icons: {
-    icon: favicon.src
-  }
+    icon: favicon.src,
+  },
 }
 
 export default function RootLayout({
@@ -27,7 +62,7 @@ export default function RootLayout({
         <Script id="google-analytics">
           {`
             window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
+            function gtag(){dataLayer.push(arguments);} 
             gtag('js', new Date());
 
             gtag('config', 'G-JDSM0Q7X0G');
@@ -38,6 +73,54 @@ export default function RootLayout({
           strategy="afterInteractive"
           data-website-id="68b655f869db4035eb9dde6a"
           data-domain="michellelawson.me"
+        />
+        {/* JSON-LD: Person */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Person",
+              name: "Michelle Lawson",
+              alternateName: [
+                "michellescomputer",
+                "@michellescomputer",
+                "@michellexcomputer"
+              ],
+              jobTitle: ["AI Educator", "Computer Science Student"],
+              alumniOf: {
+                "@type": "CollegeOrUniversity",
+                name: "Smith College"
+              },
+              url: siteConfig.url,
+              sameAs: [
+                "https://www.linkedin.com/in/michelle-o-lawson/",
+                "https://twitter.com/michellextech",
+                "https://www.instagram.com/michellexcomputer/",
+                "https://www.tiktok.com/@michellexcomputer",
+                "https://github.com/lawsonm525",
+                siteConfig.url
+              ]
+            })
+          }}
+        />
+        {/* JSON-LD: Website */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Website",
+              name: siteConfig.name,
+              url: siteConfig.url,
+              description: siteConfig.description,
+              inLanguage: "en-US",
+              publisher: {
+                "@type": "Person",
+                name: "Michelle Lawson"
+              }
+            })
+          }}
         />
       </head>
       <body>

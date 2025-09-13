@@ -47,7 +47,7 @@ export function ProfileHeader() {
             <span className="text-gray-400">posts</span>
           </div>
           <div className="flex gap-1">
-            <span className="font-semibold">185k</span>
+            <span className="font-semibold">201k</span>
             <span className="text-gray-400">followers</span>
           </div>
           <div className="flex gap-1">
