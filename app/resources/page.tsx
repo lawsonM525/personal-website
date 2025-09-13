@@ -162,9 +162,9 @@ export default function Resources() {
                 isNew={true}
               />
               <ResourceCard 
-                title="CS Girlies Discord"
-                description="join our community of 13,000+ Gen Z women in tech"
-                link="https://csgirlies.com"
+                title="Datafast (datafa.st)"
+                description="website analytics that lets you track who visits your website or project — very fun and very informative 🙂‍↕️"
+                link="https://datafa.st/?via=michelle"
                 isHot={true}
               />
             </div>
@@ -266,6 +266,12 @@ export default function Resources() {
                 description="my new fave tool for learning anything faster w/ generative AI"
                 link="https://notebooklm.google.com"
               />
+              <ResourceCard 
+                title="CS Girlies Discord"
+                description="join our community of 13,000+ Gen Z women in tech"
+                link="https://csgirlies.com"
+                isHot={true}
+              />
             </ResourceSection>
             
             {/* Developer Resources */}
@@ -290,6 +296,11 @@ export default function Resources() {
                 title="GIPHY API"
                 description="add delightful gifs and motion to your app with a simple API"
                 link="https://developers.giphy.com"
+              />
+              <ResourceCard 
+                title="Datafast (datafa.st)"
+                description="website analytics that lets you track who visits your website or project — very fun and very informative 🙂‍↕️"
+                link="https://datafa.st/?via=michelle"
               />
             </ResourceSection>
       
