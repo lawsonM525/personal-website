@@ -185,6 +185,11 @@ export default function Resources() {
               link="https://lovable.dev"
             />
             <ResourceCard 
+              title="Gamma"
+              description="use AI to make presentations and pitch decks super quick"
+              link="https://gamma.app?utm_content=michelle&utm_source=instagram&utm_campaign=evergreen"
+            />
+            <ResourceCard 
               title="Windsurf"
               description="my editor — I use Windsurf a lot and I LOVE it; clean, AI-powered editor that makes vibe coding and shipping faster"
               link="https://codeium.com/windsurf"
