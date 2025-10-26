@@ -4,6 +4,17 @@ import { LayoutClient } from "./layout-client"
 import favicon from "@/assets/mia-icon-big.png"
 import Script from 'next/script';
 import { siteConfig } from "@/lib/seo"
+import { Inter, Playfair_Display, Caveat } from "next/font/google"
+
+const inter = Inter({ subsets: ["latin"] })
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-serif",
+})
+const caveat = Caveat({
+  subsets: ["latin"],
+  variable: "--font-handwriting",
+})
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -53,7 +64,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`dark ${playfair.variable} ${caveat.variable}`}>
       <head>
         <Script
           async
@@ -123,7 +134,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body>
+      <body className={`${inter.className} bg-black text-white min-h-screen`}>
         <LayoutClient>{children}</LayoutClient>
       </body>
     </html>

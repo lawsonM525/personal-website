@@ -11,7 +11,7 @@ export default function TenApps() {
   const [showTrail, setShowTrail] = useState(false);
   const [currentTime, setCurrentTime] = useState('');
 
-  const completed = 1;
+  const completed = 6;
   const total = 10;
 
   useEffect(() => {
@@ -181,30 +181,41 @@ export default function TenApps() {
           {/* Left column */}
           <div>
             <ResourceSection 
-              title="Weeks 1–5" 
+              title="Weeks 1–6" 
               emoji="📆" 
               textColor="text-blue-300"
               borderColor="pink"
             >
               <ResourceCard 
-                title="Week 1 — Future U"
-                description="A personalized quiz that maps your path from current self to future self. Currently building — BETA. Try at your own risk haha"
-                link="https://www.future-u.app"
-                isNew={true}
-                isBeta={true}
-              />
-            </ResourceSection>
-            
-            <ResourceSection 
-              title="Bonus" 
-              emoji="✨" 
-              textColor="text-pink-300"
-              borderColor="purple"
-            >
-              <ResourceCard 
-                title="Sprite Sheet Generator (bonus mini app)"
+                title="Week 1 — Sprite Sheet Generator"
                 description="Make sprite sheets for simple web app animations. Also useful for game development (not fully optimized for games yet)."
                 link="https://www.sprite-sheet-generator.com"
+              />
+              <ResourceCard 
+                title="Week 2 — Future U"
+                description="A personalized quiz that maps your path from current self to future self. Currently building — BETA. Try at your own risk haha"
+                link="https://www.future-u.app"
+                isBeta={true}
+              />
+              <ResourceCard 
+                title="Week 3 — Pagez (mobile app)"
+                description="Pagez — a mobile app."
+                link="#"
+              />
+              <ResourceCard 
+                title="Week 4 — Dreamz (mobile app)"
+                description="Dreamz — a mobile app."
+                link="#"
+              />
+              <ResourceCard 
+                title="Week 5 — Video editing agent"
+                description="An AI video editing agent."
+                link="#"
+              />
+              <ResourceCard 
+                title="Week 6 — Daily (journaling app)"
+                description="Daily — a journaling app built on ChatGPT's Apps SDK."
+                link="#"
               />
             </ResourceSection>
           </div>
@@ -222,6 +233,19 @@ export default function TenApps() {
                 description="Suggest what I should build next for this challenge."
                 link="https://lwsnlabs.featurebase.app/?b=68b520696af10edb0d45857c"
                 isHot={true}
+              />
+            </ResourceSection>
+
+            <ResourceSection 
+              title="Coming Soon" 
+              emoji="🛠️" 
+              textColor="text-yellow-300"
+              borderColor="blue"
+            >
+              <ResourceCard 
+                title="Week 7 — Coder"
+                description="Coder — a web app AND mobile app where you can learn to code. Coming soon."
+                link="#"
               />
             </ResourceSection>
           </div>

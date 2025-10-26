@@ -2,8 +2,8 @@ export const links = {
     "social_media": {
         "LinkedIn": "https://www.linkedin.com/in/michelle-o-lawson/",
         "Twitter": "https://twitter.com/michellextech",
-        "Instagram": "https://www.instagram.com/michellexcomputer/",
-        "TikTok": "https://www.tiktok.com/@michellexcomputer"
+        "Instagram": "https://www.instagram.com/michellescomputer/",
+        "TikTok": "https://www.tiktok.com/@michellescomputer"
     },
     "professional": {
         "Portfolio": "https://www.yourportfolio.com",
