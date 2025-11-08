@@ -199,8 +199,9 @@ export default function TenApps() {
               />
               <ResourceCard 
                 title="Week 3 — Pagez (mobile app)"
-                description="Pagez — a mobile app."
-                link="#"
+                description="Journal your relationships and habits with AI insights and a knowledge graph."
+                link="/10apps/pagez/updates"
+                cta="updates"
               />
               <ResourceCard 
                 title="Week 4 — Dreamz (mobile app)"
@@ -350,15 +351,18 @@ function ResourceCard({
   link, 
   isNew, 
   isHot,
-  isBeta
+  isBeta,
+  cta = "enter site"
 }: { 
   title: string, 
   description: string, 
   link: string,
   isNew?: boolean,
   isHot?: boolean,
-  isBeta?: boolean
+  isBeta?: boolean,
+  cta?: string
 }) {
+  const isExternal = link.startsWith('http')
   return (
     <div className="group">
       <div className="bg-gradient-to-r from-pink-800/30 to-purple-800/30 p-[2px] rounded-md">
@@ -388,11 +392,12 @@ function ResourceCard({
           
           <Link 
             href={link} 
-            target="_blank" 
+            target={isExternal ? "_blank" : undefined}
+            rel={isExternal ? "noopener noreferrer" : undefined}
             className="inline-flex items-center text-pink-400 hover:text-pink-300 text-sm group-hover:underline"
           >
             <span className="mr-1">→</span>
-            <span>enter site</span>
+            <span>{cta}</span>
           </Link>
         </div>
       </div>

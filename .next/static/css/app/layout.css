@@ -1582,6 +1582,9 @@ video {
   --tw-bg-opacity: 1;
   background-color: rgb(234 179 8 / var(--tw-bg-opacity, 1));
 }
+.bg-gray-900\/60 {
+  background-color: rgb(17 24 39 / 0.6);
+}
 .bg-gradient-to-r {
   background-image: linear-gradient(to right, var(--tw-gradient-stops));
 }
@@ -3409,6 +3412,10 @@ video {
 
   .md\:grid-cols-\[300px\2c 1fr\] {
     grid-template-columns: 300px 1fr;
+  }
+
+  .md\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .md\:flex-row {
