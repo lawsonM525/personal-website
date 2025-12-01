@@ -11,7 +11,7 @@ interface NavProps {
   onCommandOpen: () => void
 }
 
-export function Nav() {
+export function Nav({ onCommandOpen }: NavProps) {
   const pathname = usePathname()
   const [hoverTarget, setHoverTarget] = useState<HTMLElement | null>(null)
   const [hoverStyle, setHoverStyle] = useState({ left: 0, width: 0, height: 0 })
@@ -174,6 +174,7 @@ export function Nav() {
           variant="ghost"
           size="icon"
           className="h-9 w-9 hidden md:flex"
+          onClick={onCommandOpen}
         >
           <svg
             width="24"

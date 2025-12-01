@@ -15,7 +15,7 @@ export function LayoutClient({
 
   return (
     <>
-      <Nav />
+      <Nav onCommandOpen={() => setCommandMenuOpen(true)} />
       <CommandMenu 
         open={commandMenuOpen} 
         onOpenChange={setCommandMenuOpen}
