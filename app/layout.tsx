@@ -4,16 +4,34 @@ import { LayoutClient } from "./layout-client"
 import favicon from "@/assets/mia-icon-big.png"
 import Script from 'next/script';
 import { siteConfig } from "@/lib/seo"
-import { Inter, Playfair_Display, Caveat } from "next/font/google"
+import {
+  Inspiration,
+  Instrument_Serif,
+  Instrument_Sans,
+  Caveat,
+  IBM_Plex_Sans_Condensed,
+} from "next/font/google"
 
-const inter = Inter({ subsets: ["latin"] })
-const playfair = Playfair_Display({
+const bodyFont = Instrument_Sans({ subsets: ["latin"], variable: "--font-body" })
+const displayFont = Instrument_Serif({
   subsets: ["latin"],
+  weight: ["400"],
+  style: ["normal", "italic"],
   variable: "--font-serif",
+})
+const mastheadFont = Inspiration({
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-masthead",
 })
 const caveat = Caveat({
   subsets: ["latin"],
   variable: "--font-handwriting",
+})
+const metaFont = IBM_Plex_Sans_Condensed({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-mono",
 })
 
 export const metadata: Metadata = {
@@ -64,7 +82,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`dark ${playfair.variable} ${caveat.variable}`}>
+    <html lang="en" className={`${displayFont.variable} ${mastheadFont.variable} ${caveat.variable} ${metaFont.variable} ${bodyFont.variable}`}>
       <head>
         <Script
           async
@@ -134,7 +152,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${inter.className} bg-black text-white min-h-screen`}>
+      <body className={`${bodyFont.className} min-h-screen`}>
         <LayoutClient>{children}</LayoutClient>
       </body>
     </html>

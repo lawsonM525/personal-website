@@ -1,6 +1,5 @@
 "use client"
 
-import { Nav } from "@/components/nav"
 import { Footer } from "@/components/footer"
 import { ScrollySection } from "@/components/scrolly-section"
 import { ScrollyFullText } from "@/components/scrolly-full-text"
@@ -42,10 +41,12 @@ export default function RAGInPractice() {
 
   return (
     <main className="min-h-screen bg-black text-white">
-      <Nav />
-      <div className="pt-20 pb-16">
-        <h1 className="text-4xl font-bold text-center mb-8">RAG in Practice</h1>
-        <div className="flex justify-center space-x-4 mb-8">
+      <div className="container mx-auto px-4 pt-12 pb-16">
+        <div className="border-b border-white/20 pb-6 mb-8">
+          <p className="font-mono text-[0.72rem] tracking-[0.16em] uppercase text-white/50">Case study</p>
+          <h1 className="font-serif text-5xl mt-3 text-white">RAG in Practice</h1>
+        </div>
+        <div className="flex flex-wrap gap-3 mb-10">
           <NavButton active={activePage === "all-about-rag"} onClick={() => setActivePage("all-about-rag")}>
             All About RAG
           </NavButton>
@@ -63,15 +64,15 @@ export default function RAGInPractice() {
   )
 }
 
-function NavButton({ children, active, onClick }: { 
+function NavButton({ children, active, onClick }: {
   children: React.ReactNode;
   active: boolean;
   onClick: () => void;
 }) {
   return (
     <button
-      className={`px-4 py-2 rounded-md transition-colors ${
-        active ? "bg-gray-800 text-white" : "text-gray-400 hover:text-white"
+      className={`archive-chip transition-colors ${
+        active ? "border-foreground bg-foreground text-background" : "hover:border-[rgba(41,47,54,0.5)]"
       }`}
       onClick={onClick}
     >

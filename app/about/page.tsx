@@ -1,150 +1,158 @@
 'use client'
 
-import { Nav } from "@/components/nav"
+import Image from "next/image"
+import { Button } from "@/components/ui/button"
+import { ClipboardCopy, Download } from "lucide-react"
 import { Footer } from "@/components/footer"
-import { UnderConstruction } from "@/components/under-construction"
-import { CommandButton } from '@/components/CommandButton'
-import profilePhoto from '@/assets/michelle pink scarf icon.png'
-import headshot from '@/assets/Michelle.Lawson.png'
-import Image from 'next/image' 
-import { Button } from '@/components/ui/button'
-import { ClipboardCopy, Download } from 'lucide-react'
-import Link from 'next/link'
-
+import { EditorialArt } from "@/components/editorial-art"
+import { aboutHighlights } from "@/data/editorial-content"
+import headshot from "@/assets/Michelle.Lawson.png"
+import portrait from "@/assets/michelle pink scarf icon.png"
 
 export default function About() {
-  const bioText = `Michelle Lawson is a Top Voice in Educational Technology recognized by LinkedIn. With over 150,000 followers across various social media platforms, she has established herself as a leading figure in the field. An accomplished author, Michelle has written multiple books that use "girly" metaphors and analogies to make complex computer science concepts more engaging. As an undergraduate researcher, she has published papers with the American Society of Engineering Education, focusing on Computer Science education. Michelle also curates a strong collection of educational resources designed to help students succeed in their STEM degrees.`;
+  const bioText = `Michelle Lawson is a software engineer, AI product builder, and educator from Accra, Ghana. She studies computer science at Smith College, served as a Forward Deployed AI Product Management Intern at MongoDB, and is the CTO and co-founder of Scholarly. Her work sits at the intersection of AI engineering, product strategy, and education: building full-stack systems, translating user pain into product direction, and making technical ideas feel useful, human, and reachable.`
+
+  const timeline = [
+    {
+      title: "Smith College, ML, and Research",
+      date: "2022 — Present",
+      body: "Studying computer science at Smith College with work spanning machine learning, math for deep learning, and research on better ways to assess student understanding in STEM.",
+    },
+    {
+      title: "MongoDB",
+      date: "Summer 2025",
+      body: "Worked as a Forward Deployed AI Product Management Intern, driving strategy for an AI-assisted refactoring agent and building a full-stack demo that connected the Gemini API with a Model Context Protocol server and client.",
+    },
+    {
+      title: "Breakthrough Tech x Salesforce",
+      date: "2024 — 2025",
+      body: "Built and fine-tuned machine learning models for sentiment analysis and time-series prediction, then shipped a web-based SaaS customer sentiment analysis platform with cloud-hosted ML models.",
+    },
+    {
+      title: "Startups, AI, and Community",
+      date: "Summer 2024 — Present",
+      body: "Building Scholarly, Future You, and other AI products while growing technical communities through Computer Science Girlies and AI education content that reaches a large public audience.",
+    },
+  ]
 
   return (
-    <main className="container mx-auto px-4 py-16 max-w-3xl">
-        <h1 className="text-5xl font-bold text-center mb-16 bg-gradient-to-r from-pink-500 to-purple-500 text-transparent bg-clip-text">
-          Inspire. Educate. Create.
-        </h1>
-
-        <div className="space-y-12">
-          <div className="grid md:grid-cols-[300px,1fr] gap-8 items-start">
+    <main className="editorial-shell">
+      {/* Hero */}
+      <section className="page-frame">
+        <div className="grid gap-0 border-b border-[rgba(41,47,54,0.72)] lg:grid-cols-[1fr_1fr]">
+          <div className="border-r border-[rgba(41,47,54,0.72)] p-10 sm:p-12 lg:p-16">
+            <p className="section-kicker">About</p>
+            <h1 className="section-heading mt-3 text-[4rem] leading-[0.93] text-foreground sm:text-[5rem] lg:text-[5.5rem]">
+              builder, researcher, founder... and the girl who's probably opening one more tab.
+            </h1>
+            <p className="mt-6 max-w-[34rem] text-[1.06rem] leading-9 text-[rgba(41,47,54,0.74)]">
+              i build projects, explain things properly, and leave behind resources that make ambitious futures feel a little more reachable. i want this site to feel like talking to someone who will actually put you on.
+            </p>
+            <div className="mt-10 space-y-0">
+              {aboutHighlights.map((item) => (
+                <div
+                  key={item}
+                  className="border-t border-[rgba(41,47,54,0.72)] bg-white/75 px-6 py-5 text-[rgba(41,47,54,0.8)] leading-8"
+                >
+                  {item}
+                </div>
+              ))}
+              <div className="border-t border-[rgba(41,47,54,0.72)]" />
+            </div>
+          </div>
+          <div className="relative min-h-[32rem] overflow-hidden border-t border-[rgba(41,47,54,0.72)] lg:border-l lg:border-t-0">
             <Image
-              src={profilePhoto}
-              alt="Profile photo"
-              width={300}
-              height={250}
-              className="rounded-lg"
+              src={portrait}
+              alt="Michelle Lawson"
+              fill
+              className="object-cover object-top"
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              priority
             />
-            <div className="space-y-4">
-            <p className="text-lg">
-              Hi! I'm Michelle Lawson <span className="inline-block">👋</span> I'm a Computer Science student, building a community of 150,000+ women in CS.
-            </p>
-            <p className="text-neutral-400">
-              I'm the <span className="text-white">Founder</span> of <span className="text-white">Computer Science Girlies</span>, a global movement empowering Gen Z women in CS through content, connections, and career opportunities. I've worked on <span className="text-white">machine learning, product management, and quantitative research</span>, and I've spoken at major tech conferences like TechCrunch Disrupt and Columbia Devfest.
-            </p>
-            <p className="text-neutral-400">
-              I love <span className="text-white">building things that inspire and educate</span>, from viral Comp Sci content to AI-driven projects. When I'm not working, I'm probably <span className="text-white">reading about behavioral psychology, art journaling, or writing poetry by a pond</span>.
-            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Official bio + headshot */}
+      <section className="page-frame">
+        <div className="grid gap-0 border-b border-[rgba(41,47,54,0.72)] lg:grid-cols-[1.1fr_0.9fr]">
+          <div className="border-r border-[rgba(41,47,54,0.72)] p-10 sm:p-12 lg:p-16">
+            <p className="section-kicker">The official version</p>
+            <h2 className="section-heading mt-3 text-5xl text-foreground">
+              for journalists, hosts, organizers.
+            </h2>
+            <div className="mt-8 border-l-4 border-[rgba(41,47,54,0.72)] bg-white/75 px-8 py-6 font-serif text-[1.06rem] italic leading-9 text-[rgba(41,47,54,0.8)]">
+              {bioText}
+            </div>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => navigator.clipboard.writeText(bioText)}
+              >
+                <ClipboardCopy className="mr-2 h-4 w-4" />
+                copy bio
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  const link = document.createElement("a")
+                  link.href = headshot.src
+                  link.download = "Michelle-Lawson-Headshot.png"
+                  document.body.appendChild(link)
+                  link.click()
+                  document.body.removeChild(link)
+                }}
+              >
+                <Download className="mr-2 h-4 w-4" />
+                download headshot
+              </Button>
             </div>
           </div>
 
-          <section className="space-y-4">
-            <h2 className="text-2xl font-bold">Bio</h2>
-            <p className="text-sm text-neutral-400">
-              This is made for journalists, podcast hosts, and event organizers to copy-and-paste.
-            </p>
-            <div className="bg-neutral-900 p-6 rounded-lg text-neutral-400 italic">
-                {bioText}
+          <div className="p-10 sm:p-12 lg:p-16">
+            <p className="section-kicker">Headshot</p>
+            <h2 className="section-heading mt-3 text-5xl text-foreground">the face.</h2>
+            <div className="mt-8 overflow-hidden border border-[rgba(41,47,54,0.72)]">
+              <Image
+                src={headshot}
+                alt="Michelle Lawson"
+                width={600}
+                height={600}
+                className="w-full object-cover"
+              />
             </div>
-            <div className="flex gap-4">
-              <Button 
-                variant="outline" 
-                size="sm"
-                onClick={() => {
-                  navigator.clipboard.writeText(bioText);
-                }}
-              >
-                <ClipboardCopy className="w-4 h-4 mr-2" />
-                Copy Bio
-              </Button>
-              <Button 
-                variant="outline" 
-                size="sm"
-                onClick={() => {
-                  console.log('Headshot source:', headshot.src);
-                  // Create a link element
-                  const link = document.createElement('a');
-                  link.href = headshot.src;
-                  link.download = 'Michelle-Lawson-Headshot.png';
-                  document.body.appendChild(link);
-                  link.click();
-                  document.body.removeChild(link);
-                }}
-              >
-                <Download className="w-4 h-4 mr-2" />
-                Download Headshot
-              </Button>
-            </div>
-          </section>
-
-          <section className="space-y-8">
-  <h2 className="text-2xl font-bold">My Journey</h2>
-
-  <div className="space-y-12">
-    <div className="space-y-3">
-      <h3 className="text-xl font-bold">The Beginning: Smith College & Research</h3>
-      <div className="text-neutral-500">
-        2022 — Present
-      </div>
-      <p className="text-neutral-400 leading-relaxed">
-        In 2022, I was awarded over <span className="text-white">$300,000</span> in scholarships to attend <span className="text-white">Smith College</span> and study <span className="text-white">Computer Science</span>. 
-        By 2023, I had joined a research team in <span className="text-white">computer science education</span>, working with <span className="text-white">Pablo Frank Bolton and Liberty Lehr</span> as the team’s <span className="text-white">statistician</span>. We investigated a more effective way to assess STEM students, developing the <span className="text-white">Justified Multiple Choice Question (JMCQ) Effect</span>. Our research was recognized by the <span className="text-white">American Society of Engineering Education</span>, where we presented our findings.
-      </p>
-    </div>
-
-    <div className="space-y-3">
-      <h3 className="text-xl font-bold">Diving Into Finance & Equity Research</h3>
-      <div className="text-neutral-500">
-        Spring 2023 — 2024
-      </div>
-      <p className="text-neutral-400 leading-relaxed">
-        While I was deep into computer science, I couldn’t shake my long-standing interest in <span className="text-white">finance</span>. So in <span className="text-white">Spring 2023</span>, I took my first step into the field through <span className="text-white">stock pitch competitions</span>. 
-        Along the way, I worked under the mentorship of a former <span className="text-white">Morgan Stanley VP</span>, gaining insights into unconventional approaches to <span className="text-white">equity research</span>. This experience sharpened my ability to blend <span className="text-white">quantitative and qualitative analysis</span>.
-      </p>
-    </div>
-
-    <div className="space-y-3">
-      <h3 className="text-xl font-bold">Building a Global Tech Community</h3>
-      <div className="text-neutral-500">
-        Summer 2023 — Present
-      </div>
-      <p className="text-neutral-400 leading-relaxed">
-        In the summer of 2023, I started doing something that changed my life: <span className="text-white">creating content</span>. What started as a simple way to share my love for <span className="text-white">computer science</span> on TikTok quickly turned into a movement, reaching <span className="text-white">millions of people</span> around the world.  
-        Soon after, I founded <span className="text-white">Computer Science Girlies</span>, a vibrant community dedicated to supporting young women in tech. 
-      </p>
-    </div>
-
-    <div className="space-y-3">
-      <h3 className="text-xl font-bold">Startups, AI, and the Future</h3>
-      <div className="text-neutral-500">
-        Summer 2024 — Present
-      </div>
-      <p className="text-neutral-400 leading-relaxed">
-        In Summer 2024, I immersed myself in the world of <span className="text-white">startups</span> and <span className="text-white">AI</span>. I joined <span className="text-white">The Residency</span>, a startup incubator, while living at <span className="text-white">Harvard St. Commons</span>. At the same time, I started studying <span className="text-white">Machine Learning</span> at <span className="text-white">MIT’s Breakthrough Tech</span>, a program that continues to push my technical expertise forward.  
-    </p>
-    </div>
-
-    <div className="space-y-3">
-      <h3 className="text-xl font-bold">Where I'm Headed Next</h3>
-      <div className="text-neutral-500">
-        Summer 2025 — Future
-      </div>
-      <p className="text-neutral-400 leading-relaxed">
-        This journey—spanning <span className="text-white">research, finance, startups, AI, and content creation</span>—has given me a unique skill set that allows me to analyze things <span className="text-white">technologically</span>, but still understand them from a <span className="text-white">business and psychological</span> point of view.  
-        In Summer 2025, I’ll be bringing all of these perspectives together as a <span className="text-white">Product Management Intern at MongoDB</span>. I’m especially excited about their advancements in <span className="text-white">AI and vector search</span>, and I can’t wait to contribute to the next wave of AI-powered innovation.  
-        Whatever comes next, one thing is certain—I’ll keep building, learning, and finding new ways to make an impact.
-      </p>
-    </div>
-  </div>
-</section>
-
+          </div>
         </div>
-      </main>
+      </section>
+
+      {/* Timeline */}
+      <section className="page-frame">
+        <div className="border-b border-[rgba(41,47,54,0.72)] p-10 sm:p-12 lg:p-16">
+          <p className="section-kicker">Journey</p>
+          <h2 className="section-heading mt-3 text-5xl text-foreground">the longer story.</h2>
+          <div className="mt-10 space-y-0">
+            {timeline.map((entry, i) => (
+              <div
+                key={entry.title}
+                className="grid gap-0 border-t border-[rgba(41,47,54,0.72)] bg-white/75 lg:grid-cols-[16rem_1fr]"
+              >
+                <div className="border-b border-[rgba(41,47,54,0.72)] p-8 lg:border-b-0 lg:border-r">
+                  <p className="meta-text text-[rgba(41,47,54,0.52)]">{entry.date}</p>
+                  <h3 className="mt-3 font-serif text-2xl text-foreground">{entry.title}</h3>
+                </div>
+                <div className="p-8">
+                  <p className="leading-9 text-[rgba(41,47,54,0.76)]">{entry.body}</p>
+                </div>
+              </div>
+            ))}
+            <div className="border-t border-[rgba(41,47,54,0.72)]" />
+          </div>
+        </div>
+      </section>
+
+      <Footer />
+    </main>
   )
 }
-

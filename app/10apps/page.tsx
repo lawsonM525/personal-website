@@ -1,6 +1,5 @@
 'use client'
 
-import { Nav } from "@/components/nav"
 import { Footer } from "@/components/footer"
 import Link from 'next/link'
 import { links } from "@/data/links"
@@ -113,9 +112,7 @@ export default function TenApps() {
         }}
       />
 
-      <Nav />
-
-      <main className="container mx-auto px-4 pt-24 pb-16">
+      <main className="container mx-auto px-4 pt-12 pb-16">
         {/* Y2K browser-style header */}
         <div className="bg-gradient-to-r from-purple-800 to-blue-900 mb-8 rounded-t-lg border-b-2 border-white/20 p-2 flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -130,8 +127,8 @@ export default function TenApps() {
           {/* Y2K Window-style Title */}
           <div className="overflow-hidden mb-8">
             <div className="marquee whitespace-nowrap">
-              <h1 className="text-5xl font-bold bg-gradient-to-r from-pink-500 to-purple-500 text-transparent bg-clip-text inline-block">
-                ★彡 mia's 10 apps challenge 彡★ ⋆｡°✩ 10 apps in 10 weeks ✩°｡⋆ ★彡 mia's 10 apps challenge 彡★ ⋆｡°✩ 10 apps in 10 weeks ✩°｡⋆
+              <h1 className="masthead-script text-[4rem] bg-gradient-to-r from-pink-400 to-purple-400 text-transparent bg-clip-text inline-block sm:text-[5rem]">
+                ★彡 mia's 10 apps challenge 彡★ &nbsp;&nbsp; 10 apps in 10 weeks ✩ &nbsp;&nbsp; ★彡 mia's 10 apps challenge 彡★ &nbsp;&nbsp; 10 apps in 10 weeks ✩
               </h1>
             </div>
           </div>

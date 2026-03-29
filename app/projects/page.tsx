@@ -1,141 +1,290 @@
-import { Nav } from "@/components/nav"
-import { Footer } from "@/components/footer"
 import Link from "next/link"
-import { ArrowUpRight } from 'lucide-react'
+import Image from "next/image"
+import { ArrowUpRight } from "lucide-react"
+import { Footer } from "@/components/footer"
+import { EditorialArt } from "@/components/editorial-art"
+import { featureWork } from "@/data/editorial-content"
 
-interface Project {
-  title: string
-  subtitle?: string
-  description: string
-  status?: "upcoming" | "current" | "published"
-  link?: string
-}
+const publicBuilds = [
+  {
+    title: "Scholarly Mobile",
+    subtitle: "Companion build",
+    description:
+      "A mobile extension of Scholarly that brings the product onto phones while the main platform keeps evolving across applications, learning flows, and student support.",
+    link: "https://github.com/The-Scholarly-Company/scholarly-mobile",
+  },
+  {
+    title: "Future You Mobile",
+    subtitle: "Companion build",
+    description:
+      "An Expo app for Future You with the strategy dashboard, goals, daily quests, and account flows designed for mobile use.",
+    link: "https://github.com/lawsonM525/future-u-mobile",
+  },
+  {
+    title: "10,000 Hours Mobile",
+    subtitle: "Companion build",
+    description:
+      "The mobile companion for 10,000 Hours, scoped around timers, timelines, categories, mastery tracking, and sync with the broader web product.",
+    link: "https://github.com/lawsonM525/tenthousand-mobile",
+  },
+  {
+    title: "Computer Science Girlies",
+    subtitle: "Community + media",
+    description:
+      "A community and media platform built to support women in computer science through education, visibility, and real opportunities.",
+    link: "https://www.csgirlies.com",
+  },
+]
+
+const relevantExperience = [
+  {
+    title: "MongoDB",
+    role: "Forward Deployed AI Product Management Intern",
+    date: "May 2025 — August 2025",
+    description:
+      "Worked on Facto Agent, an AI-assisted deterministic refactoring agent. What mattered to me here was learning how to move from ambiguous internal pain to something concrete: write the proposal, define the principles, interview 20+ stakeholders across functions, make the build-vs-buy call, then prove the idea with a full-stack demo where Gemini acted as an AI planner over a deterministic tool through a Model Context Protocol server and client.",
+    },
+  {
+    title: "MIT Breakthrough Tech x Salesforce",
+    role: "Machine Learning Fellow",
+    date: "May 2024 — May 2025",
+    description:
+      "Built and fine-tuned three ML models, including sentiment analysis and predictive time-series systems, with 98% and 93% accuracy using Python, TF-IDF, Random Forest, Jupyter, and scikit-learn. Then turned that work into a Dockerized SaaS customer sentiment analysis product because I cared less about training models for their own sake and more about how a model becomes something a team can actually use.",
+    },
+  {
+    title: "Future You",
+    role: "Founder + AI product builder",
+    date: "2024 — Present",
+    description:
+      "Built a full-stack AI career guidance product with RAG, TypeScript, Pinecone, Supabase, and MongoDB, then onboarded 1,000+ early users and kept iterating from feedback. The bigger lesson here was that good AI product work is not just model orchestration. it is understanding the emotional and informational gap a user is stuck in, then designing retrieval, UI, feedback loops, onboarding, and trust from the start.",
+  },
+  {
+    title: "CompSciLib",
+    role: "Business Data Analyst",
+    date: "Jan 2024 — May 2024",
+    description:
+      "Used DataDog usage data to identify engagement patterns, push a content and UI strategy overhaul, and help increase daily active users by 30%. I keep this close because it reinforced a product truth i use everywhere now: if you cannot read behavior clearly, you will build on vibes.",
+  },
+  {
+    title: "@michellescomputer + Computer Science Girlies",
+    role: "Content creator, AI educator, community builder",
+    date: "2023 — Present",
+    description:
+      "Built a large technical audience and community through analytics-led education, partnerships with AI companies, and product-minded content. This work shaped how I think as much as any internship did: if I cannot explain a system clearly, understand what confuses people, and redesign the framing until it lands, I probably do not understand it well enough yet.",
+  },
+]
+
+const experiments = [
+  {
+    title: "Code Nav",
+    status: "recent experiment",
+    description:
+      "A codebase visualization tool I started to make large repos easier to understand, map, and explain.",
+    link: "https://github.com/lawsonM525/code-nav",
+  },
+  {
+    title: "Pagez",
+    status: "recent experiment",
+    description:
+      "An exploratory build around extracting structure from documents and turning it into something more navigable and visual.",
+  },
+  {
+    title: "Video Learning",
+    status: "recent collaborative build",
+    description:
+      "A collaborative AI learning product centered on video summarization, Q&A, transcripts, and notes. the kind of project i like because it forces both product clarity and contributor coordination.",
+  },
+  {
+    title: "SaaS Customer Sentiment Analysis",
+    status: "earlier build",
+    description:
+      "A machine learning and product analysis project focused on extracting signal from customer feedback and making it useful for product decisions.",
+    link: "https://customer-sentiment-analysis-3w5v.vercel.app",
+  },
+]
 
 export default function Projects() {
-  const projects: Project[] = [
-    {
-      title: "10 Apps in 10 Weeks",
-      subtitle: "Shipping one app every week.",
-      description: "Follow along as I build and ship 10 apps in 10 weeks — see what's live and suggest ideas.",
-      status: "current",
-      link: "/10apps"
-    },
-    {
-      title: "CS Space",
-      description: "Look out for this. I'm thrilled about the possibilities this could bring for learners around the world",
-      status: "upcoming"
-    },
-    {
-      title: "Future U",
-      subtitle: "Your future, mapped out.",
-      description: "Future U is a career-path navigator designed to help people visualize their dream life and uncover the resources needed to achieve it. With features like personalized \"future you\" simulations and real-world data integration, the app gives users a clear, actionable roadmap. Think of it as your personal career GPS, pointing you toward the most fulfilling version of yourself.",
-      status: "current",
-      link: "https://future-u.app/"
-    },
-    {
-      title: "RAG In Practice",
-      subtitle: "Explaining and Applying RAG",
-      description: "As a final project for MTH 354 (Math for Deep Learning), I explain the concept of Retrieval Augmented Generation, the math behind it, and how I apply it to Future U - a career path navigator with personalized and relevant advice.",
-      link: "/projects/rag-in-practice"
-    },
-    {
-      title: "SaaS Customer Sentiment Analysis",
-      subtitle: "Turning feedback into innovation.",
-      description: "As part of a year-long program between MIT and Cornell with the supervision of a Salesforce advisor, this project focuses on developing a cutting-edge sentiment analysis model for a SaaS tool. Through meticulous data cleaning, and strategic Machine learning model building, the analysis uncovers deep customer insights to refine outreach strategies. From small LLMs to advanced time-series techniques, this project exemplifies the power of machine learning to shape the future of customer experience.",
-      link: "https://customer-sentiment-analysis-3w5v.vercel.app"
-    },
-    {
-      title: "AST Space Mobile Award-Winning Stock Pitch",
-      subtitle: "Investing in the stars.",
-      description: "This award-winning pitch analyzed AST Space Mobile, a company revolutionizing global connectivity through satellite networks. The presentation went beyond numbers, crafting a compelling narrative about the company's potential to democratize internet access worldwide. It stood out at the Cornell competition, winning \"best pitch\" for its strategic depth and visionary storytelling.",
-      link: "https://www.youtube.com/watch?v=19LNTtJmsbE"
-    },
-    {
-      title: "The Justification Effect",
-      subtitle: "Rethinking how we measure understanding.",
-      description: "This published research introduces a novel approach to assessment—JMCQ (Justified Multiple-Choice Questions)—that goes beyond surface-level answers. By incorporating justifications, it captures a deeper understanding of student knowledge and problem-solving. The research paves the way for fairer, more effective evaluations in STEM education.",
-      status: "published",
-      link: "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=yatiHe0AAAAJ&citation_for_view=yatiHe0AAAAJ:u-x6o8ySG0sC"
-    },
-    {
-      title: "Computer Science Girlies (CSG)",
-      subtitle: "Empowering a generation of tech girlies.",
-      description: "From a small idea to a thriving community of 100,000+ women, Computer Science Girlies is redefining what it means to be a woman in tech. Through viral educational content, mentorship, and job placement initiatives, CSG is more than a community—it's a movement to close the gender gap in technology, one connection at a time.",
-      link: "https://www.csgirlies.com"
-    },
-    {
-      title: "MBTI x Birthday Data Analysis",
-      subtitle: "Statistical Programming with Jupyter notebooks",
-      description: "A data science project analyzing correlations between MBTI personality types and birth dates using Python and statistical analysis. Leveraging Reddit for data collection and Jupyter notebooks for interactive storytelling, this analysis garnered 7,000+ views on Kaggle. The project showcases practical applications of statistical programming, data visualization, and community-driven research methodologies.",
-      link: "https://www.kaggle.com/code/michellelawson/mbti-x-birthday-analysis"
-    },
-    {
-      title: "Delta Airlines Award-Winning Stock Pitch",
-      subtitle: "Taking flight with bold investments.",
-      description: "This winning pitch highlighted Delta Airlines' resilience and strategic foresight during challenging market conditions. Blending financial acumen with storytelling, the analysis demonstrated Delta's potential to soar higher in a post-pandemic world, earning accolades and standing out among top competitors.",
-      link: "https://drive.google.com/file/d/1OW6sDup_4zfj5I3gpOxsL7V2M3F3iuuG/view?usp=sharing"
-    },
-    {
-      title: "Cryptographic Algorithms Research",
-      description: "This high school research project explored the performance of cryptographic algorithms like SHA-1, SHA-2, and SHA-3. By analyzing their efficiency and security, it contributed valuable insights to the field of cybersecurity, laying the foundation for further exploration into how we protect digital information.",
-      link: "https://www.researchgate.net/publication/370208990_Exploring_the_extent_to_which_SHA_3_is_a_better_alternative_cryptographic_hash_algorithm_to_SHA_2_on_the_basis_of_speed_and_security"
-    }
-  ]
-
   return (
-    <main className="min-h-screen bg-black">
-      <Nav />
-      <div className="h-16" />  {/* spacer */ }
-      <div className="pt-20 pb-16">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="mb-12">
-            <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">
-              What can we build today?
+    <main className="editorial-shell">
+      {/* Page header */}
+      <section className="page-frame">
+        <div className="grid gap-0 border-b border-[rgba(41,47,54,0.72)] lg:grid-cols-[1.05fr_0.95fr]">
+          <div className="border-r border-[rgba(41,47,54,0.72)] p-10 sm:p-12 lg:p-16">
+            <p className="section-kicker" style={{ color: "rgb(78,205,196)" }}>Work</p>
+            <h1 className="section-heading mt-3 text-[4rem] leading-[0.93] text-foreground sm:text-[5rem] lg:text-[5.5rem]">
+              things i've built, shipped, and let out into the world.
             </h1>
-            <p className="text-gray-400 max-w-2xl">
-              A collection of my various projects spanning technology, research, and community building.
+            <p className="mt-6 max-w-[34rem] text-[1.06rem] leading-9 text-[rgba(41,47,54,0.74)]">
+              right now the center of gravity is Scholarly, Future You, and 10,000 Hours. around that, the work that best explains me for AI engineering and forward deployed roles is product strategy, applied ML, full-stack prototyping, and turning ambiguous user pain into working systems. but i also want this page to show how i think: what problem i thought was worth solving, why i solved it that way, and what each build taught me.
             </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <span className="archive-chip">Products</span>
+              <span className="archive-chip">Case studies</span>
+              <span className="archive-chip">Experiments</span>
+              <span className="archive-chip">Research</span>
+            </div>
+          </div>
+          <div className="relative min-h-[28rem] overflow-hidden border-t border-[rgba(41,47,54,0.72)] lg:border-l lg:border-t-0">
+            <Image
+              src="/praying hands journal.jpeg"
+              alt="Hands drawing on journal postcards"
+              fill
+              className="object-cover object-center"
+              sizes="(min-width: 1024px) 50vw, 100vw"
+            />
+            <div className="absolute inset-0 bg-[rgba(255,248,241,0.08)]" />
+          </div>
+        </div>
+      </section>
+
+      {/* Featured work */}
+      <section className="page-frame">
+        <div className="border-b border-[rgba(41,47,54,0.72)] p-10 sm:p-12 lg:p-16">
+          <div className="flex items-end justify-between gap-4">
+            <div>
+              <p className="section-kicker" style={{ color: "rgb(78,205,196)" }}>Start here</p>
+              <h2 className="section-heading mt-3 text-5xl text-foreground">
+                the ones i'd open first.
+              </h2>
+            </div>
           </div>
 
-          <div className="grid gap-16">
-            {projects.map((project, index) => (
-              <div key={index} className="border-t border-gray-800 pt-8">
-                <div className="grid md:grid-cols-[1fr_2fr] gap-8">
-                  <div>
-                    <h2 className="text-xl font-bold text-white mb-2">
-                      {project.title}
-                      {project.status && (
-                        <span className="ml-2 text-sm font-normal text-gray-400">
-                          ({project.status})
-                        </span>
-                      )}
-                    </h2>
-                    {project.subtitle && (
-                      <p className="text-gray-400 font-medium mb-4">{project.subtitle}</p>
-                    )}
-                  </div>
-                  <div className="space-y-4">
-                    <p className="text-gray-400">{project.description}</p>
-                    {project.link && (
-                      <Link 
-                        href={project.link}
-                        className="inline-flex items-center text-white hover:text-gray-300 transition-colors"
-                      >
-                        View Project
-                        <ArrowUpRight className="ml-1 h-4 w-4" />
-                      </Link>
-                    )}
-                  </div>
+          <div className="mt-10 space-y-0">
+            {featureWork.map((item) => (
+              <Link
+                key={item.title}
+                href={item.href}
+                className="grid gap-0 border-t border-[rgba(41,47,54,0.72)] bg-white/75 hover:bg-white lg:grid-cols-[0.9fr_1.1fr]"
+              >
+                <div className="relative min-h-[18rem] border-r border-[rgba(41,47,54,0.72)]">
+                  {item.imageSrc ? (
+                    <Image
+                      src={item.imageSrc}
+                      alt={item.artTitle || item.title}
+                      fill
+                      className="object-cover object-center"
+                      sizes="(min-width: 1024px) 40vw, 100vw"
+                    />
+                  ) : (
+                    <EditorialArt
+                      title={item.artTitle || item.title}
+                      credit="Art coming soon"
+                      variant="blueprint"
+                      className="absolute inset-0 border-0"
+                    />
+                  )}
                 </div>
-              </div>
+                <div className="space-y-5 p-8 lg:p-10">
+                  <p className="meta-text text-[rgba(41,47,54,0.52)]">{item.label}</p>
+                  <h3 className="font-serif text-4xl leading-tight text-foreground">{item.title}</h3>
+                  <p className="max-w-[30rem] leading-8 text-[rgba(41,47,54,0.76)]">{item.summary}</p>
+                  <span className="archive-chip inline-block">view →</span>
+                </div>
+              </Link>
             ))}
           </div>
         </div>
-      </div>
-      <div className="h-16" />  {/* spacer */ }
-      <div className="h-16" />  {/* spacer */ }
+      </section>
+
+      <section className="page-frame">
+        <div className="border-b border-[rgba(41,47,54,0.72)] p-10 sm:p-12 lg:p-16">
+          <div className="flex items-end justify-between gap-4">
+            <div>
+              <p className="section-kicker" style={{ color: "rgb(78,205,196)" }}>Relevant experience</p>
+              <h2 className="section-heading mt-3 text-5xl text-foreground">
+                the experience behind the products.
+              </h2>
+              <p className="mt-5 max-w-[40rem] leading-9 text-[rgba(41,47,54,0.74)]">
+                this is the recruiter-readable version, but also the real one. i do not think of experience as a list of logos or tools. i think of it as a trail of questions: what was the actual problem, what did users need, what constraints were real, what system would help, and what changed in my thinking once i built it.
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-10 space-y-0">
+            {relevantExperience.map((item) => (
+              <div
+                key={`${item.title}-${item.role}`}
+                className="grid gap-0 border-t border-[rgba(41,47,54,0.72)] bg-white/75 lg:grid-cols-[17rem_1fr]"
+              >
+                <div className="border-b border-[rgba(41,47,54,0.72)] p-8 lg:border-b-0 lg:border-r">
+                  <p className="meta-text text-[rgba(41,47,54,0.52)]">{item.date}</p>
+                  <h3 className="mt-3 font-serif text-2xl text-foreground">{item.title}</h3>
+                  <p className="mt-2 text-sm leading-7 text-[rgba(41,47,54,0.62)]">{item.role}</p>
+                </div>
+                <div className="p-8">
+                  <p className="leading-9 text-[rgba(41,47,54,0.76)]">{item.description}</p>
+                </div>
+              </div>
+            ))}
+            <div className="border-t border-[rgba(41,47,54,0.72)]" />
+          </div>
+        </div>
+      </section>
+
+      {/* Selected + experiments */}
+      <section className="page-frame">
+        <div className="grid gap-0 border-b border-[rgba(41,47,54,0.72)] lg:grid-cols-[1fr_1fr]">
+          <div className="border-r border-[rgba(41,47,54,0.72)] p-10 sm:p-12 lg:p-16">
+            <p className="section-kicker" style={{ color: "rgb(78,205,196)" }}>Public builds</p>
+            <h2 className="section-heading mt-3 text-5xl text-foreground">the adjacent work.</h2>
+            <p className="mt-5 max-w-[34rem] leading-9 text-[rgba(41,47,54,0.74)]">
+              these are the projects around the core products that show range: companion apps, technical writeups, community infrastructure, and the kinds of side builds that usually teach me something i bring back into the main work.
+            </p>
+            <div className="mt-8 space-y-0">
+              {publicBuilds.map((project) => (
+                <div
+                  key={project.title}
+                  className="border-t border-[rgba(41,47,54,0.72)] bg-white/75 px-6 py-8"
+                >
+                  <p className="meta-text text-[rgba(41,47,54,0.52)]">{project.subtitle}</p>
+                  <h3 className="mt-3 font-serif text-3xl text-foreground">{project.title}</h3>
+                  <p className="mt-3 leading-8 text-[rgba(41,47,54,0.76)]">{project.description}</p>
+                  {project.link ? (
+                    <Link
+                      href={project.link}
+                      className="mt-5 inline-flex items-center gap-1 text-sm text-foreground underline-offset-4 hover:underline"
+                    >
+                      View project <ArrowUpRight className="h-4 w-4" />
+                    </Link>
+                  ) : null}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="p-10 sm:p-12 lg:p-16">
+            <p className="section-kicker" style={{ color: "rgb(255,107,107)" }}>Archive + experiments</p>
+            <h2 className="section-heading mt-3 text-5xl text-foreground">experiments and earlier work.</h2>
+            <p className="mt-5 max-w-[34rem] leading-9 text-[rgba(41,47,54,0.74)]">
+              i keep these visible on purpose. some are rougher, earlier, or narrower, but they make the thinking legible. you can usually see the pattern before the polished version arrives.
+            </p>
+            <div className="mt-8 space-y-0">
+              {experiments.map((project) => (
+                <div
+                  key={project.title}
+                  className="border-t border-[rgba(41,47,54,0.72)] bg-white/75 px-6 py-8"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <h3 className="font-serif text-3xl text-foreground">{project.title}</h3>
+                    <span className="archive-chip shrink-0">{project.status}</span>
+                  </div>
+                  <p className="mt-3 leading-8 text-[rgba(41,47,54,0.76)]">{project.description}</p>
+                  {"link" in project && project.link ? (
+                    <Link
+                      href={project.link}
+                      className="mt-5 inline-flex items-center gap-1 text-sm text-foreground underline-offset-4 hover:underline"
+                    >
+                      Open <ArrowUpRight className="h-4 w-4" />
+                    </Link>
+                  ) : null}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       <Footer />
     </main>
   )
 }
-
