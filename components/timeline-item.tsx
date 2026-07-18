@@ -2,7 +2,8 @@
 
 import Image from "next/image"
 import { HandwrittenText } from "./handwritten-text"
-import { PostPopup } from "./post-popup"
+import { InstagramEmbed } from "./instagram-embed"
+import { Dialog, DialogContent } from "@/components/ui/dialog"
 import { useState } from "react"
 
 interface TimelineItemProps {
@@ -81,12 +82,11 @@ export function TimelineItem({
                   </div>
                 </div>
                 {showPost && (
-                  <PostPopup
-                    id="1"
-                    link={media.url}
-                    type="instagram"
-                    onClose={() => setShowPost(false)}
-                  />
+                  <Dialog open={showPost} onOpenChange={setShowPost}>
+                    <DialogContent className="max-w-[560px] border-gray-800 bg-black p-3">
+                      <InstagramEmbed url={media.url} caption={media.alt} />
+                    </DialogContent>
+                  </Dialog>
                 )}
               </>
             )}
@@ -96,4 +96,3 @@ export function TimelineItem({
     </div>
   )
 }
-
