@@ -6,7 +6,11 @@ import { useState } from "react"
 import { links, LinkNames } from "@/data/links"
 import { EmailPopup } from "@/components/email-popup"
 
-export function Footer() {
+interface FooterProps {
+  fixed?: boolean
+}
+
+export function Footer({ fixed = true }: FooterProps) {
   const [hoveredLink, setHoveredLink] = useState<string | null>(null)
   const [emailOpen, setEmailOpen] = useState(false)
   
@@ -46,7 +50,7 @@ export function Footer() {
   return (
     <>
       <EmailPopup open={emailOpen} onOpenChange={setEmailOpen} />
-      <footer className="fixed bottom-0 left-0 right-0 p-4 flex justify-center space-x-6">
+      <footer className={`${fixed ? "fixed bottom-0 left-0 right-0" : "relative"} p-4 flex justify-center space-x-6`}>
         {socialLinks.map((link) => (
           <Link
             key={link.href}
@@ -68,4 +72,3 @@ export function Footer() {
     </>
   )
 }
-

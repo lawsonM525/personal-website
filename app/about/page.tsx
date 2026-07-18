@@ -45,9 +45,7 @@ export default function About() {
 
           <section className="space-y-4">
             <h2 className="text-2xl font-bold">Bio</h2>
-            <p className="text-sm text-neutral-400">
-              This is made for journalists, podcast hosts, and event organizers to copy-and-paste.
-            </p>
+
             <div className="bg-neutral-900 p-6 rounded-lg text-neutral-400 italic">
                 {bioText}
             </div>
@@ -63,7 +61,7 @@ export default function About() {
                 Copy Bio
               </Button>
               <Button 
-                variant="outline" 
+                variant="outline"
                 size="sm"
                 onClick={() => {
                   console.log('Headshot source:', headshot.src);
@@ -147,4 +145,3 @@ export default function About() {
       </main>
   )
 }
-
