@@ -1,6 +1,6 @@
 "use client"
 
-import Image from "next/image"
+import Image, { StaticImageData } from "next/image"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Eye, Heart, MessageCircle, ExternalLink, ChevronLeft, ChevronRight } from 'lucide-react'
@@ -12,7 +12,7 @@ interface PostPopupProps {
     id: string
     platform: "LinkedIn" | "Instagram" | "TikTok"
     description: string
-    media: Array<{ url: string; type: "image" | "video" }>
+    media: Array<{ url: string | StaticImageData; type: "image" | "video" }>
     stats: {
       likes: number
       views?: number
@@ -59,7 +59,7 @@ export function PostPopup({ post, onClose, onNext, onPrevious }: PostPopupProps)
             {/* Media Display */}
             {currentMedia.type === 'video' ? (
               <iframe
-                src={currentMedia.url}
+                src={typeof currentMedia.url === "string" ? currentMedia.url : currentMedia.url.src}
                 className="absolute top-0 left-0 w-full h-full"
                 allowFullScreen
               />
@@ -139,4 +139,3 @@ export function PostPopup({ post, onClose, onNext, onPrevious }: PostPopupProps)
     </Dialog>
   )
 }
-
