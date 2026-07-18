@@ -1,23 +1,27 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { usePathname } from "next/navigation"
-import { useState, useRef, useEffect } from "react"
-import favicon  from "@/assets/mia-icon-big.png"
-import Image from "next/image"
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { usePathname } from "next/navigation";
+import { useState, useRef, useEffect } from "react";
+import favicon from "@/assets/mia-icon-big.png";
+import Image from "next/image";
 
 interface NavProps {
-  onCommandOpen: () => void
+  onCommandOpen?: () => void;
 }
 
 export function Nav({ onCommandOpen }: NavProps) {
-  const pathname = usePathname()
-  const [hoverTarget, setHoverTarget] = useState<HTMLElement | null>(null)
-  const [hoverStyle, setHoverStyle] = useState({ left: 0, width: 0, height: 0 })
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const navRef = useRef<HTMLDivElement>(null)
-  const menuRef = useRef<HTMLDivElement>(null)
+  const pathname = usePathname();
+  const [hoverTarget, setHoverTarget] = useState<HTMLElement | null>(null);
+  const [hoverStyle, setHoverStyle] = useState({
+    left: 0,
+    width: 0,
+    height: 0,
+  });
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navRef = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   const links = [
     { href: "/about", label: "MY STORY" },
@@ -27,50 +31,54 @@ export function Nav({ onCommandOpen }: NavProps) {
     { href: "/posts", label: "POSTS" },
     { href: "/resources", label: "RESOURCES" },
     { href: "/reminder", label: "REMINDER" },
-  ]
+  ];
 
   useEffect(() => {
     if (hoverTarget && navRef.current) {
-      const navRect = navRef.current.getBoundingClientRect()
-      const targetRect = hoverTarget.getBoundingClientRect()
+      const navRect = navRef.current.getBoundingClientRect();
+      const targetRect = hoverTarget.getBoundingClientRect();
       setHoverStyle({
         left: targetRect.left - navRect.left,
         width: targetRect.width,
         height: targetRect.height,
-      })
+      });
     }
-  }, [hoverTarget])
+  }, [hoverTarget]);
 
   // Close mobile menu when navigating to a new page
   useEffect(() => {
-    setIsMenuOpen(false)
-  }, [pathname])
+    setIsMenuOpen(false);
+  }, [pathname]);
 
   // Prevent scrolling when mobile menu is open
   useEffect(() => {
     console.log("Menu state changed:", isMenuOpen);
     if (isMenuOpen) {
-      document.body.style.overflow = 'hidden'
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = 'auto'
+      document.body.style.overflow = "auto";
     }
-    
+
     return () => {
-      document.body.style.overflow = 'auto'
-    }
-  }, [isMenuOpen])
+      document.body.style.overflow = "auto";
+    };
+  }, [isMenuOpen]);
 
   // Close menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node) && isMenuOpen) {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(event.target as Node) &&
+        isMenuOpen
+      ) {
         setIsMenuOpen(false);
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isMenuOpen]);
 
@@ -79,6 +87,30 @@ export function Nav({ onCommandOpen }: NavProps) {
     console.log("Toggling menu from", isMenuOpen, "to", !isMenuOpen);
     setIsMenuOpen(!isMenuOpen);
   };
+
+  if (
+    pathname === "/begin/openai" ||
+    pathname === "/begin/OpenAIBeta" ||
+    pathname === "/openaibeta"
+  ) {
+    return (
+      <nav className="fixed left-0 right-0 top-0 z-30 flex items-center justify-start p-4">
+        <Link href="/" className="text-2xl font-bold text-white">
+          <Image
+            src={favicon}
+            alt="Logo"
+            width={32}
+            height={32}
+            className="h-8 w-8 rounded-full border border-white/50"
+          />
+        </Link>
+      </nav>
+    );
+  }
+
+  if (pathname === "/begin") {
+    return null;
+  }
 
   return (
     <>
@@ -94,17 +126,21 @@ export function Nav({ onCommandOpen }: NavProps) {
             className="w-8 h-8 border border-white/50 rounded-full"
           />
         </Link>
-        
+
         {/* Desktop Navigation Links */}
-        <div className="hidden md:flex items-center justify-center flex-1 space-x-2 relative" ref={navRef}>
+        <div
+          className="hidden md:flex items-center justify-center flex-1 space-x-2 relative"
+          ref={navRef}
+        >
           {links.map((link) => (
             <Link
               key={link.href}
               href={link.href}
               className={`text-sm transition-colors relative py-2 px-3 rounded-md
-                ${pathname === link.href 
-                  ? 'text-white after:absolute after:bottom-0 after:left-0 after:right-0 after:mx-auto after:w-12 after:h-0.5 after:bg-white' 
-                  : 'text-gray-400 hover:text-white'
+                ${
+                  pathname === link.href
+                    ? "text-white after:absolute after:bottom-0 after:left-0 after:right-0 after:mx-auto after:w-12 after:h-0.5 after:bg-white"
+                    : "text-gray-400 hover:text-white"
                 }`}
               onMouseEnter={(e) => setHoverTarget(e.currentTarget)}
               onMouseLeave={() => setHoverTarget(null)}
@@ -124,7 +160,7 @@ export function Nav({ onCommandOpen }: NavProps) {
             }}
           />
         </div>
-        
+
         {/* Mobile Hamburger Button */}
         <button
           type="button"
@@ -135,35 +171,35 @@ export function Nav({ onCommandOpen }: NavProps) {
         >
           <span className="sr-only">Open main menu</span>
           {isMenuOpen ? (
-            <svg 
-              className="h-6 w-6" 
-              xmlns="http://www.w3.org/2000/svg" 
-              fill="none" 
-              viewBox="0 0 24 24" 
-              stroke="currentColor" 
+            <svg
+              className="h-6 w-6"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
               aria-hidden="true"
             >
-              <path 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                strokeWidth="2" 
-                d="M6 18L18 6M6 6l12 12" 
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M6 18L18 6M6 6l12 12"
               />
             </svg>
           ) : (
-            <svg 
-              className="h-6 w-6" 
-              xmlns="http://www.w3.org/2000/svg" 
-              fill="none" 
-              viewBox="0 0 24 24" 
-              stroke="currentColor" 
+            <svg
+              className="h-6 w-6"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
               aria-hidden="true"
             >
-              <path 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                strokeWidth="2" 
-                d="M4 6h16M4 12h16M4 18h16" 
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M4 6h16M4 12h16M4 18h16"
               />
             </svg>
           )}
@@ -193,16 +229,16 @@ export function Nav({ onCommandOpen }: NavProps) {
       </nav>
 
       {/* Mobile Menu Overlay */}
-      <div 
+      <div
         className={`fixed inset-0 bg-black/70 backdrop-blur-sm transition-opacity duration-300 z-40 md:hidden ${
-          isMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+          isMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
       >
         {/* Mobile Menu Panel */}
-        <div 
+        <div
           ref={menuRef}
           className={`fixed top-0 right-0 w-3/4 max-w-xs h-full bg-gray-900 shadow-xl transform transition-transform duration-300 ease-in-out z-50 ${
-            isMenuOpen ? 'translate-x-0' : 'translate-x-full'
+            isMenuOpen ? "translate-x-0" : "translate-x-full"
           }`}
         >
           {/* Mobile Menu Content */}
@@ -214,24 +250,24 @@ export function Nav({ onCommandOpen }: NavProps) {
                 onClick={() => setIsMenuOpen(false)}
               >
                 <span className="sr-only">Close menu</span>
-                <svg 
-                  className="h-6 w-6" 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  fill="none" 
-                  viewBox="0 0 24 24" 
-                  stroke="currentColor" 
+                <svg
+                  className="h-6 w-6"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
                   aria-hidden="true"
                 >
-                  <path 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round" 
-                    strokeWidth="2" 
-                    d="M6 18L18 6M6 6l12 12" 
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M6 18L18 6M6 6l12 12"
                   />
                 </svg>
               </button>
             </div>
-            
+
             {/* Mobile Menu Links */}
             <div className="mt-6 flex flex-col space-y-4">
               {links.map((link) => (
@@ -239,7 +275,9 @@ export function Nav({ onCommandOpen }: NavProps) {
                   key={link.href}
                   href={link.href}
                   className={`text-lg font-medium py-3 px-1 border-b border-gray-800 ${
-                    pathname === link.href ? 'text-white' : 'text-gray-400 hover:text-white'
+                    pathname === link.href
+                      ? "text-white"
+                      : "text-gray-400 hover:text-white"
                   }`}
                   onClick={() => setIsMenuOpen(false)}
                 >
@@ -251,5 +289,5 @@ export function Nav({ onCommandOpen }: NavProps) {
         </div>
       </div>
     </>
-  )
+  );
 }
