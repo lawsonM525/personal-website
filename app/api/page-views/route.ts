@@ -4,6 +4,7 @@ import path from 'path';
 
 // Simple file-based storage for the visitor count
 const counterFilePath = path.join(process.cwd(), 'data', 'page-views.json');
+type PageViews = Record<string, number>;
 
 // Ensure the data directory exists
 const dataDir = path.join(process.cwd(), 'data');
@@ -27,7 +28,7 @@ export async function GET(request: Request) {
     const page = searchParams.get('page') || 'resources';
     
     // Read the current counts
-    const data = JSON.parse(fs.readFileSync(counterFilePath, 'utf8'));
+    const data = JSON.parse(fs.readFileSync(counterFilePath, 'utf8')) as PageViews;
     
     return NextResponse.json({ count: data[page] || 0 });
   } catch (error) {
@@ -44,7 +45,7 @@ export async function POST(request: Request) {
     const page = searchParams.get('page') || 'resources';
     
     // Read the current counts
-    let data = {};
+    let data: PageViews = {};
     if (fs.existsSync(counterFilePath)) {
       data = JSON.parse(fs.readFileSync(counterFilePath, 'utf8'));
     }
