@@ -99,7 +99,7 @@ const chatGPTUseCaseFeatures: UseCaseFeature[] = [
 
 const cursorUseCaseFeatures: UseCaseFeature[] = [
   {
-    feature: "10 websites & apps",
+    feature: "15 websites, apps & technical tools",
     useCases: [
       "Build a portfolio website that actually feels like you.",
       "Make a study dashboard for all your classes.",
@@ -111,25 +111,27 @@ const cursorUseCaseFeatures: UseCaseFeature[] = [
       "Use multiple Cursor agents to build one project in parallel.",
       "Debug and test an app with real runtime evidence.",
       "Take an unfinished project all the way to launch.",
+      "Build a browser extension that solves an everyday annoyance.",
+      "Connect an app to an API and make it useful with real data.",
+      "Turn a prototype into a real product with sign-in, a database, and payments.",
+      "Use Cursor to understand and contribute to an unfamiliar codebase faster.",
+      "Turn your expertise into an internal tool your whole team can use.",
     ],
   },
   {
-    feature: "10 unconventional projects",
+    feature: "7 unexpected creative projects",
     useCases: [
       "Write and organize a full-length book with Cursor.",
-      "Turn a collection of poems into a designed digital poetry book.",
       "Turn physical artwork into a digital archive and print shop.",
       "Build your own digital museum around a person, place, or obsession.",
       "Create an interactive archive for your family stories.",
-      "Turn years of journal entries into a private digital garden.",
       "Build an interactive world around an album or playlist.",
-      "Create a personal magazine from your photos, essays, and memories.",
       "Turn family recipes into a searchable, shareable cookbook.",
       "Make a one-of-one digital experience as a gift for someone you love.",
     ],
   },
   {
-    feature: "10 career accelerators",
+    feature: "8 career accelerators",
     useCases: [
       "Build a personal career dashboard that tells you what to focus on next.",
       "Create an internship and job application tracker that updates itself.",
@@ -138,10 +140,65 @@ const cursorUseCaseFeatures: UseCaseFeature[] = [
       "Create a personal CRM that helps you maintain professional relationships.",
       "Automate the repetitive reports and updates you make at work.",
       "Build a dashboard that makes your impact impossible to overlook.",
-      "Use Cursor to understand and contribute to an unfamiliar codebase faster.",
-      "Turn your expertise into an internal tool your whole team can use.",
       "Prototype an idea before pitching it to your boss or starting a company.",
     ],
+  },
+];
+
+const cursorStartingUseCaseFeatures: UseCaseFeature[] = [
+  {
+    feature: "4 technical builds",
+    useCases: [0, 1, 6, 7].map(
+      (index) => cursorUseCaseFeatures[0].useCases[index],
+    ),
+  },
+  {
+    feature: "3 unexpected creative projects",
+    useCases: [0, 2, 4].map(
+      (index) => cursorUseCaseFeatures[1].useCases[index],
+    ),
+  },
+  {
+    feature: "3 career accelerators",
+    useCases: [1, 4, 7].map(
+      (index) => cursorUseCaseFeatures[2].useCases[index],
+    ),
+  },
+];
+
+type CursorFutureVideoConcept = {
+  src: string;
+  alt: string;
+};
+
+const cursorFutureVideoConcepts: CursorFutureVideoConcept[] = [
+  {
+    src: "/begin/cursor/concepts/portfolio-website-with-cursor.png",
+    alt: "How to build a portfolio website with Cursor video concept",
+  },
+  {
+    src: "/begin/cursor/concepts/study-dashboard.png",
+    alt: "How to make a study dashboard for all your classes video concept",
+  },
+  {
+    src: "/begin/cursor/concepts/digital-poetry-book.png",
+    alt: "Make a digital poetry book with me video concept",
+  },
+  {
+    src: "/begin/cursor/concepts/interactive-resume.png",
+    alt: "Turn your resume into an interactive website video concept",
+  },
+  {
+    src: "/begin/cursor/concepts/interview-practice-tool.png",
+    alt: "Make an interview practice tool in 60 seconds video concept",
+  },
+  {
+    src: "/begin/cursor/concepts/digital-recipe-book.png",
+    alt: "How to make a digital recipe book video concept",
+  },
+  {
+    src: "/begin/cursor/concepts/multi-agent-project.png",
+    alt: "How to set up a multi-agent project video concept",
   },
 ];
 
@@ -232,38 +289,6 @@ const proposalTimelineStages = [
   },
 ];
 
-const cursorTimelineStages = [
-  {
-    step: "01",
-    title: "Discussion",
-    duration: "1 week",
-    bullets: [
-      "Agree on goals, priority features, creative boundaries, KPIs, and what success looks like.",
-      "Confirm points of contact, approvals, and the first five how-tos.",
-    ],
-  },
-  {
-    step: "02",
-    title: "Education",
-    duration: "12 months",
-    bullets: [
-      "Publish 30 practical Cursor how-tos across 12 months.",
-      "Split the series evenly: 10 websites and apps, 10 unconventional projects, and 10 career accelerators.",
-      "Teach new features through projects Gen Z already wants to make.",
-    ],
-  },
-  {
-    step: "03",
-    title: "Evolution",
-    duration: "Monthly",
-    bullets: [
-      "Review what people saved, tried, asked about, and struggled with.",
-      "Use those signals and Cursor's current priorities to shape the next five videos.",
-      "End with a clear view of what a longer program could unlock.",
-    ],
-  },
-];
-
 const cursorFeatureAssets = [
   {
     src: "/begin/releases-generated/cursor-desktop.png",
@@ -318,7 +343,7 @@ const cursorFeatureAssets = [
 const cursorNavSections = [
   { id: "introduction", label: "Introduction" },
   { id: "the-proposal", label: "What I’d Make" },
-  { id: "chatgpt-videos", label: "30 Cursor how-tos" },
+  { id: "chatgpt-videos", label: "The first 10" },
   { id: "why-michelle", label: "Why Michelle?" },
   { id: "lets-talk", label: "Let’s Talk!" },
 ];
@@ -484,21 +509,19 @@ export default function ProposalPage({
     ? cursorEverydayQuestions
     : everydayQuestions;
   const activeUseCaseFeatures = isCursor
-    ? cursorUseCaseFeatures
+    ? cursorStartingUseCaseFeatures
     : chatGPTUseCaseFeatures;
   const activeProposalPayoffs = isCursor
     ? cursorProposalPayoffs
     : proposalPayoffs;
-  const activeTimelineStages = isCursor
-    ? cursorTimelineStages
-    : proposalTimelineStages;
+  const activeTimelineStages = proposalTimelineStages;
   const emailTeamHref = `mailto:michelle@thedriveagency.co,patrick@thedriveagency.co,teresa@thedriveagency.co?subject=${encodeURIComponent(
     isCursor
-      ? "Cursor × Michelle — 30 How-Tos in 12 Months"
+      ? "Cursor × Michelle — 30 Practical How-Tos"
       : "OpenAI × Michelle — Gen Z Product Education",
   )}&body=${encodeURIComponent(
     isCursor
-      ? "Hi Michelle, Patrick, and Teresa,\n\nI’d love to discuss the 12-month Cursor education program: 30 practical how-to videos showing Gen Z what they can build with Cursor.\n\nWhat would be the best next step?\n\nBest,"
+      ? "Hi Michelle, Patrick, and Teresa,\n\nI’d love to discuss the Cursor education series: a 30-video vision beginning with the first 10 practical how-tos.\n\nWhat would be the best next step?\n\nBest,"
       : "Hi Michelle, Patrick, and Teresa,\n\nI’d love to discuss the three-year Gen Z product-education program and its first Discussion and Discovery phases.\n\nWhat would be the best next step?\n\nBest,",
   )}`;
 
@@ -543,6 +566,35 @@ export default function ProposalPage({
             to {
               clip-path: inset(0 0 0 0);
               opacity: 1;
+            }
+          }
+
+          @keyframes begin-concept-marquee {
+            from {
+              transform: translateX(0);
+            }
+            to {
+              transform: translateX(-50%);
+            }
+          }
+
+          .begin-concept-marquee {
+            animation: begin-concept-marquee 42s linear infinite;
+            will-change: transform;
+          }
+
+          .begin-concept-marquee-shell:hover .begin-concept-marquee,
+          .begin-concept-marquee-shell:focus-within .begin-concept-marquee {
+            animation-play-state: paused;
+          }
+
+          @media (prefers-reduced-motion: reduce) {
+            .begin-concept-marquee-shell {
+              overflow-x: auto;
+            }
+
+            .begin-concept-marquee {
+              animation: none;
             }
           }
 
@@ -1635,7 +1687,7 @@ export default function ProposalPage({
                   "I already publish posts almost every day.",
                   "I have experience translating new launches quickly.",
                   isCursor
-                    ? "I have enough project ideas to sustain a full year of useful Cursor how-tos."
+                    ? "I have enough project ideas to sustain all 30 useful Cursor how-tos."
                     : "Oh, and I'm five minutes from OpenAI's Mission Bay office. 😉",
                 ].map((item) => (
                   <li key={item} className="flex gap-3">
@@ -1663,7 +1715,7 @@ export default function ProposalPage({
               <p className="mx-auto max-w-5xl text-center text-2xl leading-9 sm:text-4xl sm:leading-tight">
                 <strong className="text-white">
                   {isCursor
-                    ? "A 12-month program showing Gen Z what they can build with Cursor."
+                    ? "A 30-video series showing Gen Z what they can build with Cursor."
                     : "A three-year program to educate Gen Z on ways to use ChatGPT in daily life."}
                 </strong>
               </p>
@@ -1671,24 +1723,62 @@ export default function ProposalPage({
                 className={`${emphasisFontClassName} text-center text-4xl leading-none text-white sm:text-5xl`}
               >
                 {isCursor
-                  ? "30 practical Cursor how-tos in 12 months."
+                  ? "We’ll begin with the first 10. Then scale to all 30."
                   : "100 practical ChatGPT use cases every year."}
               </p>
+              {isCursor && (
+                <p className="mx-auto max-w-3xl text-center text-xl font-semibold leading-8 text-white/78 sm:text-2xl sm:leading-9">
+                  Each video will be published across Instagram, TikTok, and
+                  YouTube Shorts.
+                </p>
+              )}
+              {isCursor && cursorFutureVideoConcepts.length > 0 && (
+                <div className="relative left-1/2 w-[min(76rem,calc(100vw-3rem))] -translate-x-1/2 pt-2">
+                  <div className="begin-concept-marquee-shell overflow-hidden pb-5">
+                    <div className="begin-concept-marquee flex w-max">
+                      {[0, 1].map((copyIndex) => (
+                        <div
+                          key={copyIndex}
+                          className="flex shrink-0 gap-4 pr-4"
+                          aria-hidden={copyIndex === 1 ? true : undefined}
+                        >
+                          {cursorFutureVideoConcepts.map((concept, index) => (
+                            <div
+                              key={`${copyIndex}-${concept.src}`}
+                              className={`relative aspect-[9/16] w-40 shrink-0 overflow-hidden rounded-2xl border border-white/15 bg-white/5 shadow-[0_18px_45px_rgba(0,0,0,0.4)] sm:w-44 ${
+                                index % 2 === 0 ? "sm:-rotate-1" : "sm:rotate-1"
+                              }`}
+                            >
+                              <Image
+                                src={concept.src}
+                                alt={copyIndex === 0 ? concept.alt : ""}
+                                fill
+                                className="object-cover"
+                                sizes="(min-width: 640px) 176px, 160px"
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
               {isCursor && (
                 <div className="grid gap-5 py-5 sm:grid-cols-3">
                   {[
                     {
-                      title: "10 websites & apps",
+                      title: "15 technical builds",
                       description:
-                        "The coding projects my core audience already wants to build.",
+                        "Websites, apps, and technical tools my core audience already wants to build.",
                     },
                     {
-                      title: "10 unconventional projects",
+                      title: "7 unexpected creative projects",
                       description:
-                        "Books, art archives, digital museums, poetry collections, and ideas people would never expect to make with Cursor.",
+                        "Books, art archives, digital museums, interactive worlds, and ideas people would never expect to make with Cursor.",
                     },
                     {
-                      title: "10 career accelerators",
+                      title: "8 career accelerators",
                       description:
                         "Tools that help people work smarter, prove their impact, and get ahead in their careers.",
                     },
@@ -1712,7 +1802,7 @@ export default function ProposalPage({
               )}
               <p>
                 {isCursor
-                  ? "Coding is still the foundation. One third of the series will focus on websites and apps because builders are my primary audience. The other two thirds will show how Cursor can reach much further."
+                  ? "Coding is still the foundation. Half of the series will focus on websites, apps, and technical tools because builders are my primary audience. The other half will show how Cursor can help people advance their careers and create things they never expected to build with code."
                   : "You're creating more useful features than any single launch campaign can fully explain."}
               </p>
               <p>
@@ -1727,7 +1817,8 @@ export default function ProposalPage({
             </div>
 
             <div className="space-y-12">
-              <div className="relative left-1/2 w-[min(76rem,calc(100vw-3rem))] -translate-x-1/2 space-y-9 py-6 sm:py-10">
+              {!isCursor && (
+                <div className="relative left-1/2 w-[min(76rem,calc(100vw-3rem))] -translate-x-1/2 space-y-9 py-6 sm:py-10">
                 <div className="space-y-3 text-center">
                   <h3
                     className={`${emphasisFontClassName} text-5xl leading-none text-white sm:text-7xl`}
@@ -1814,7 +1905,8 @@ export default function ProposalPage({
                     </article>
                   ))}
                 </div>
-              </div>
+                </div>
+              )}
 
               <div className="space-y-5">
                 <p className="text-2xl font-semibold leading-8 text-white sm:text-3xl sm:leading-10">
@@ -1858,7 +1950,7 @@ export default function ProposalPage({
             <div className="space-y-7">
               <p>
                 {isCursor
-                  ? "Over 12 months, I will turn 30 practical Cursor use cases into education Gen Z can understand, remember, and try."
+                  ? "The first 10 videos give us a focused starting series. From there, we can scale what works into all 30 practical Cursor how-tos."
                   : "Every year, I will turn 100 practical ChatGPT use cases into education Gen Z can understand, remember, and try."}
               </p>
               <p className="text-white">
@@ -1877,7 +1969,7 @@ export default function ProposalPage({
               className={`${emphasisFontClassName} text-5xl font-normal leading-none tracking-tight text-white sm:text-8xl`}
             >
               {isCursor
-                ? "30 Cursor How-Tos I Could Teach in 12 Months"
+                ? "The First 10 Cursor How-Tos"
                 : "100 ChatGPT Use Cases I Could Teach Every Year"}
             </h2>
 
@@ -1938,11 +2030,11 @@ export default function ProposalPage({
             <p
               className={`${emphasisFontClassName} text-5xl leading-none sm:text-7xl`}
             >
-              {isCursor ? "That's all 30." : "That's the first 12."}
+              {isCursor ? "That's the first 10." : "That's the first 12."}
             </p>
             <p className="text-2xl leading-9 text-white/72 sm:text-3xl sm:leading-10">
               {isCursor
-                ? "Ready to decide which five we teach first? Let's talk!"
+                ? "I have 20 more ready to develop. Ready to choose the first 10? Let's talk!"
                 : "Want to see the next 88? Let's talk!"}
             </p>
 
