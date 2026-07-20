@@ -1,7 +1,14 @@
 import Image from "next/image";
 import { Mouse_Memoirs } from "next/font/google";
-import { ExternalLink } from "lucide-react";
+import {
+  ExternalLink,
+  GraduationCap,
+  MessagesSquare,
+  Repeat2,
+  TrendingUp,
+} from "lucide-react";
 import { ChalkTrail } from "./chalk-trail";
+import { ProposalSectionNav } from "./proposal-section-nav";
 import { ReleaseWordMap } from "./release-word-map";
 import { featuredReelSections, type FeaturedReel } from "./reels";
 
@@ -60,6 +67,33 @@ const chatGPTUseCaseFeatures = [
       "How to navigate your workplace culture.",
       "How to reverse-engineer your goals to achieve them faster.",
     ],
+  },
+];
+
+const proposalPayoffs = [
+  {
+    title: "Prolong launch impact",
+    description:
+      "Keep teaching people about each feature long after launch day.",
+    Icon: Repeat2,
+  },
+  {
+    title: "Greater feature adoption",
+    description:
+      "Make the features that matter most to OpenAI easier for Gen Z to discover, understand, and use.",
+    Icon: TrendingUp,
+  },
+  {
+    title: "Direct Gen Z insights",
+    description:
+      "OpenAI gets insights into what Gen Z wants to try and what still confuses them.",
+    Icon: MessagesSquare,
+  },
+  {
+    title: "A trusted Gen Z educator",
+    description:
+      "Give OpenAI one consistent educator Gen Z can recognize and trust.",
+    Icon: GraduationCap,
   },
 ];
 
@@ -261,6 +295,7 @@ export default function OpenAIBeginPage() {
       style={{ cursor: "url('/begin/chalk-cursor.png') 12 12, auto" }}
     >
       <ChalkTrail />
+      <ProposalSectionNav fontClassName={mouseMemoirs.className} />
       <style>
         {`
           @keyframes begin-arrow-bounce {
@@ -721,7 +756,10 @@ export default function OpenAIBeginPage() {
         </div>
       </section>
 
-      <section className="bg-black px-6 py-16 sm:px-10 sm:py-24 lg:px-16">
+      <section
+        id="the-opportunity"
+        className="scroll-mt-20 bg-black px-6 py-16 sm:px-10 sm:py-24 lg:px-16"
+      >
         <div className="mx-auto max-w-6xl space-y-16">
           <div className="relative max-w-5xl">
             <h2
@@ -743,13 +781,10 @@ export default function OpenAIBeginPage() {
           <ReleaseWordMap />
 
           <div className="mx-auto max-w-4xl space-y-7 py-12 text-xl leading-9 text-white/72">
-            <p>Every release unlocks dozens of new possibilities!!</p>
-            <p>
-              As someone who&apos;s worked with OpenAI on creator campaigns,
-              I&apos;ve had a front-row seat to these amazing launches.
-            </p>
             <p>And every single time, I run into the same problem.</p>
-            <p>I only get to make one or two videos.</p>
+            <p className="text-2xl font-semibold leading-9 text-white">
+              I only get to make one or two videos.
+            </p>
             <p>
               One or two chances to explain dozens of incredible features,
               possibilities, and ideas.
@@ -762,12 +797,12 @@ export default function OpenAIBeginPage() {
           </div>
 
           <div className="mx-auto max-w-5xl py-14 text-center">
-            <p
-              className={`${mouseMemoirs.className} text-4xl font-normal leading-none sm:text-6xl`}
-            >
+            <p className="mx-auto max-w-3xl text-xl leading-9 text-white/68">
               &quot;Which possibilities am I leaving out?&quot;
             </p>
-            <p className="mx-auto mt-8 max-w-3xl text-xl leading-9 text-white/68">
+            <p
+              className={`${mouseMemoirs.className} mx-auto mt-8 max-w-4xl text-4xl font-normal leading-none text-white sm:text-6xl`}
+            >
               There are simply too many good ones for one video.
             </p>
           </div>
@@ -799,7 +834,10 @@ export default function OpenAIBeginPage() {
         </div>
       </section>
 
-      <section className="bg-black px-6 py-16 sm:px-10 sm:py-24 lg:px-16">
+      <section
+        id="why-educate"
+        className="scroll-mt-20 bg-black px-6 py-16 sm:px-10 sm:py-24 lg:px-16"
+      >
         <div className="mx-auto max-w-5xl space-y-14">
           <div className="space-y-7">
             <h2
@@ -859,10 +897,16 @@ export default function OpenAIBeginPage() {
               can have a dedicated educator who teaches people what to do with
               them.
             </p>
+            <p className="mx-auto max-w-3xl py-4 text-center text-4xl font-bold leading-tight text-white sm:text-5xl">
+              That's where I come in,
+            </p>
+            <p className="text-2xl font-semibold leading-9 text-white sm:text-3xl sm:leading-10">
+              a dedicated educator who teaches people what to do with all
+              OpenAI's complex and brilliant tools.
+            </p>
             <p>
-              Someone who can turn complex and brilliant technological features
-              into simple, relevant lessons Gen Z will understand, remember, and
-              actually try.
+              I will turn your features into relevant lessons{" "}
+              <strong> Gen Z will understand, try, and come to love.</strong>
             </p>
           </div>
 
@@ -877,7 +921,10 @@ export default function OpenAIBeginPage() {
             />
           </div>
 
-          <div className="max-w-4xl space-y-16 text-xl leading-9 text-white/72">
+          <div
+            id="why-michelle"
+            className="scroll-mt-20 max-w-4xl space-y-16 text-xl leading-9 text-white/72"
+          >
             <div className="flex flex-wrap items-end gap-5 sm:gap-7">
               <h2
                 className={`${mouseMemoirs.className} text-6xl font-normal leading-none tracking-tight text-white sm:text-8xl`}
@@ -909,7 +956,8 @@ export default function OpenAIBeginPage() {
                 </h3>
               </div>
               <p className="text-xl leading-8 text-white sm:text-2xl sm:leading-9">
-                I make complicated concepts feel simple, useful, and empowering.
+                I make new concepts useful to my audience by connecting them to
+                ideas they are already familiar with.
               </p>
               <p>
                 I started my online presence by making computer science concepts
@@ -990,9 +1038,12 @@ export default function OpenAIBeginPage() {
                 11% Instagram engagement rate by reach.
               </p>
               <p className="text-xl leading-8 text-white sm:text-2xl sm:leading-9">
-                While the numbers speak for themselves, my philosophy is simple:
-                people learn so much more when ideas are presented in a fun and
-                engaging way.
+                The numbers speak for themselves. The philosophy that led me
+                here is simple:
+                <em>
+                  people learn so much more when ideas are presented in a fun
+                  and engaging way.
+                </em>
               </p>
               <p>
                 I&apos;m constantly sharing challenges with my audience and
@@ -1046,7 +1097,7 @@ export default function OpenAIBeginPage() {
                 <h3
                   className={`${mouseMemoirs.className} text-[2rem] leading-none text-white sm:text-5xl`}
                 >
-                  I&apos;ve already helped people discover OpenAI
+                  I&apos;ve helped people discover OpenAI
                 </h3>
               </div>
               <p>
@@ -1128,7 +1179,10 @@ export default function OpenAIBeginPage() {
             </div>
           </div>
 
-          <div className="max-w-4xl space-y-10 pt-14 text-xl leading-9 text-white/72">
+          <div
+            id="the-proposal"
+            className="scroll-mt-20 max-w-4xl space-y-10 pt-14 text-xl leading-9 text-white/72"
+          >
             <h2
               className={`${mouseMemoirs.className} text-5xl font-normal leading-none tracking-tight text-white sm:text-8xl`}
             >
@@ -1138,7 +1192,7 @@ export default function OpenAIBeginPage() {
             <div className="space-y-7">
               <p className="mx-auto max-w-5xl text-center text-2xl leading-9 sm:text-4xl sm:leading-tight">
                 <strong className="text-white">
-                  A year-long program to educate Gen Z on ways to use ChatGPT in
+                  A 3 year program to educate Gen Z on ways to use ChatGPT in
                   daily life.
                 </strong>
               </p>
@@ -1157,41 +1211,64 @@ export default function OpenAIBeginPage() {
               </p>
             </div>
 
-            <div className="space-y-5">
-              <p className="text-white">
-                We&apos;ll begin with a 90-day pilot:
-              </p>
-              <ul className="space-y-3">
-                {[
-                  "15-20 educational videos",
-                  "Revolving around three priority features aligned with your current business goals",
-                  "Each feature will have 5-7 practical use cases Gen Z would love to try.",
-                  "Clear performance and product-interest measurement through analytics",
-                  "Qualitative audience insights showing what people want to try, understand, and still find confusing",
-                ].map((item) => (
-                  <li key={item} className="flex gap-3">
-                    <span className="mt-4 h-1.5 w-1.5 shrink-0 rounded-full bg-white/70" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <div className="space-y-12">
+              <div className="space-y-5">
+                <p className="text-2xl font-semibold leading-8 text-white sm:text-3xl sm:leading-10">
+                  We&apos;ll begin with a 90-day pilot:
+                </p>
+                <ul className="space-y-3">
+                  {[
+                    "15-20 educational videos",
+                    "Revolving around three priority features aligned with your current business goals",
+                    "Each feature will have 5-7 practical use cases Gen Z would love to try.",
+                    "Clear performance and product-interest measurement through analytics",
+                    "Qualitative audience insights showing what people want to try, understand, and still find confusing",
+                  ].map((item) => (
+                    <li key={item} className="flex gap-3">
+                      <span className="mt-4 h-1.5 w-1.5 shrink-0 rounded-full bg-white/70" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
-            <div className="space-y-5">
-              <p className="text-white">What this gives you:</p>
-              <ul className="space-y-3">
-                {[
-                  "Longer-lasting and repeatable education around every product launch",
-                  "Greater discovery and adoption of priority features",
-                  "Direct insight into what Gen Z wants, understands, and still finds confusing",
-                  "A trusted, consistent Gen Z-facing educator for OpenAI",
-                ].map((item) => (
-                  <li key={item} className="flex gap-3">
-                    <span className="mt-4 h-1.5 w-1.5 shrink-0 rounded-full bg-white/70" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
+              <div className="space-y-5">
+                <p className="text-2xl font-semibold leading-8 text-white sm:text-3xl sm:leading-10">
+                  What this gives you:
+                </p>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  {proposalPayoffs.map(
+                    ({ title, description, Icon }, index) => (
+                      <div
+                        key={title}
+                        className="group relative min-h-56 p-8 sm:p-9"
+                      >
+                        <span
+                          aria-hidden="true"
+                          className={`pointer-events-none absolute inset-0 bg-[url('/begin/generated/chalk-card-border.png')] bg-[length:100%_100%] bg-center bg-no-repeat opacity-65 transition-[opacity,transform] duration-300 group-hover:scale-[1.01] group-hover:opacity-95 ${
+                            index % 2 === 0
+                              ? "-rotate-[0.3deg]"
+                              : "rotate-[0.3deg]"
+                          }`}
+                        />
+                        <div className="relative z-10 mb-5 flex h-12 w-12 items-center justify-center bg-[url('/begin/generated/chalk-nav-circle.png')] bg-contain bg-center bg-no-repeat opacity-85 transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-105">
+                          <Icon
+                            aria-hidden="true"
+                            className="h-5 w-5 text-white"
+                            strokeWidth={1.8}
+                          />
+                        </div>
+                        <h3 className="relative z-10 text-xl font-semibold leading-7 text-white sm:text-2xl">
+                          {title}
+                        </h3>
+                        <p className="relative z-10 mt-3 text-lg leading-8 text-white/68">
+                          {description}
+                        </p>
+                      </div>
+                    ),
+                  )}
+                </div>
+              </div>
             </div>
 
             <div className="space-y-7">
@@ -1208,7 +1285,7 @@ export default function OpenAIBeginPage() {
             </div>
           </div>
 
-          <div className="max-w-5xl pt-14">
+          <div id="chatgpt-videos" className="scroll-mt-20 max-w-5xl pt-14">
             <h2
               className={`${mouseMemoirs.className} text-5xl font-normal leading-none tracking-tight text-white sm:text-8xl`}
             >
@@ -1254,7 +1331,10 @@ export default function OpenAIBeginPage() {
               ))}
             </div>
 
-            <div className="mt-14 space-y-5 text-white sm:mt-20 sm:space-y-6">
+            <div
+              id="lets-talk"
+              className="scroll-mt-20 mt-14 space-y-5 text-white sm:mt-20 sm:space-y-6"
+            >
               <p
                 className={`${mouseMemoirs.className} text-5xl leading-none sm:text-7xl`}
               >

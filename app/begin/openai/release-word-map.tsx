@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import type { CSSProperties } from "react";
 import { useEffect, useRef, useState } from "react";
 
 const releases = [
@@ -85,32 +86,58 @@ export function ReleaseWordMap() {
       {releases.map((release, index) => (
         <div
           key={release.src}
-          className={`release-word absolute ${release.className} ${
-            isVisible ? "is-visible" : ""
-          }`}
-          style={{ animationDelay: `${index * 115}ms` }}
+          className={`release-word-position absolute ${release.className}`}
         >
-          <Image
-            src={release.src}
-            alt={release.alt}
-            width={1700}
-            height={500}
-            className="h-auto w-full object-contain mix-blend-screen"
-            sizes="(min-width: 640px) 32vw, 48vw"
-          />
+          <div
+            className={`release-word-pop ${isVisible ? "is-visible" : ""}`}
+            style={{ animationDelay: `${index * 115}ms` }}
+          >
+            <div
+              className="release-word-dance"
+              style={
+                {
+                  "--dance-delay": `${1050 + index * 135}ms`,
+                  "--dance-duration": `${3600 + (index % 4) * 520}ms`,
+                  "--dance-x": `${index % 2 === 0 ? 2.4 : -2.1}px`,
+                  "--dance-y": `${index % 3 === 0 ? 2.1 : -1.7}px`,
+                  "--dance-rotation": `${index % 2 === 0 ? 0.55 : -0.48}deg`,
+                  "--dance-x-back": `${index % 2 === 0 ? -1.3 : 1.15}px`,
+                  "--dance-y-back": `${index % 3 === 0 ? 1.45 : -1.2}px`,
+                  "--dance-rotation-back": `${index % 2 === 0 ? -0.39 : 0.34}deg`,
+                  "--dance-x-settle": `${index % 2 === 0 ? 1 : -0.88}px`,
+                  "--dance-y-settle": `${index % 3 === 0 ? -1.05 : 0.85}px`,
+                  "--dance-rotation-settle": `${index % 2 === 0 ? 0.26 : -0.23}deg`,
+                } as CSSProperties
+              }
+            >
+              <Image
+                src={release.src}
+                alt={release.alt}
+                width={1700}
+                height={500}
+                className="h-auto w-full object-contain mix-blend-screen"
+                sizes="(min-width: 640px) 32vw, 48vw"
+              />
+            </div>
+          </div>
         </div>
       ))}
 
       <style jsx>{`
-        .release-word {
+        .release-word-pop {
           opacity: 0;
           transform: scale(0.72) translateY(14px);
           filter: blur(3px);
         }
 
-        .release-word.is-visible {
+        .release-word-pop.is-visible {
           animation: release-word-pop 560ms cubic-bezier(0.2, 0.9, 0.25, 1.2)
             forwards;
+        }
+
+        .release-word-pop.is-visible .release-word-dance {
+          animation: release-word-dance var(--dance-duration) ease-in-out
+            var(--dance-delay) infinite;
         }
 
         @keyframes release-word-pop {
@@ -126,9 +153,33 @@ export function ReleaseWordMap() {
           }
         }
 
+        @keyframes release-word-dance {
+          0%,
+          100% {
+            transform: translate3d(0, 0, 0) rotate(0deg);
+          }
+          28% {
+            transform: translate3d(var(--dance-x), var(--dance-y), 0)
+              rotate(var(--dance-rotation));
+          }
+          54% {
+            transform: translate3d(var(--dance-x-back), var(--dance-y-back), 0)
+              rotate(var(--dance-rotation-back));
+          }
+          76% {
+            transform: translate3d(
+                var(--dance-x-settle),
+                var(--dance-y-settle),
+                0
+              )
+              rotate(var(--dance-rotation-settle));
+          }
+        }
+
         @media (prefers-reduced-motion: reduce) {
-          .release-word,
-          .release-word.is-visible {
+          .release-word-pop,
+          .release-word-pop.is-visible,
+          .release-word-pop.is-visible .release-word-dance {
             animation: none;
             opacity: 1;
             transform: none;

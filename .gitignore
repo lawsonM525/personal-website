@@ -4,6 +4,12 @@ node_modules
 out/
 .turbo/
 
+# Local testing and generated work files
+.playwright-cli/
+output/
+tmp/
+*.tsbuildinfo
+
 # OS
 .DS_Store
 
