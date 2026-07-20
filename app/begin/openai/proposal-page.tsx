@@ -1383,7 +1383,7 @@ export default function ProposalPage({
             <div
               id="why-michelle-point-4"
               data-step="4"
-              className="begin-why-michelle-card scroll-mt-24 space-y-7 lg:flex lg:flex-col lg:justify-center lg:py-20 lg:pr-4"
+              className="begin-why-michelle-card scroll-mt-24 space-y-7 lg:py-10 lg:pr-4"
             >
               <div className="flex items-start gap-4 sm:items-center">
                 <Image
@@ -1410,7 +1410,7 @@ export default function ProposalPage({
                   alt="Michelle Lawson with Jason and Romaine at OpenAI's Mission Bay office"
                   width={886}
                   height={886}
-                  className="h-auto w-full object-cover"
+                  className="mx-auto h-auto w-full object-cover lg:max-h-[56vh] lg:w-auto"
                   sizes="(min-width: 1024px) 640px, (min-width: 640px) 75vw, calc(100vw - 48px)"
                 />
                 <figcaption className="mt-3 text-center text-sm text-white/55">
