@@ -1490,12 +1490,12 @@ export default function ProposalPage({
                   </div>
                   <p>
                     {
-                      "I've already partnered with OpenAI multiple times, translated product launches into useful creator content, and participated in ChatGPT Futures."
+                      "I've developed this process by partnering with OpenAI multiple times and participating in ChatGPT Futures."
                     }
                   </p>
                   <p className="text-xl leading-8 text-white sm:text-2xl sm:leading-9">
                     {
-                      "I understand both the products and the audience response that turns a launch into sustained interest."
+                      "I pair my genuine excitement about new OpenAI features with my ability to make new ideas feel simple and useful. I show my audience not just what a feature does, but how they can use it for something they already care about—so it feels clear, relevant, and worth trying for themselves."
                     }
                   </p>
                   <ReelProofRow
@@ -1998,24 +1998,6 @@ export default function ProposalPage({
                       )}
                     </div>
 
-                    {feature.exampleThumbnails?.length ? (
-                      <div className="mt-5 flex flex-wrap gap-4 sm:ml-7">
-                        {feature.exampleThumbnails.map((thumbnail) => (
-                          <div
-                            key={thumbnail.src}
-                            className="relative aspect-[9/16] w-28 overflow-hidden rounded-2xl border border-white/15 bg-white/5 shadow-[0_18px_50px_rgba(0,0,0,0.35)] sm:w-32"
-                          >
-                            <Image
-                              src={thumbnail.src}
-                              alt={thumbnail.alt}
-                              fill
-                              className="object-cover"
-                              sizes="(min-width: 640px) 128px, 112px"
-                            />
-                          </div>
-                        ))}
-                      </div>
-                    ) : null}
                   </div>
 
                   <div className="relative ml-3 h-10 w-20 rotate-90 sm:ml-0 sm:mt-2 sm:h-16 sm:w-full sm:rotate-0">
@@ -2047,7 +2029,7 @@ export default function ProposalPage({
                   src="/begin/releases-generated/new-feature-question-v2.png"
                   alt="Two question marks above the words new feature written in chalk"
                   fill
-                  className="object-contain object-left mix-blend-screen"
+                  className="origin-left scale-125 object-contain object-left mix-blend-screen"
                   sizes="(min-width: 1024px) 360px, (min-width: 640px) 36vw, 90vw"
                 />
               </div>
@@ -2097,7 +2079,16 @@ export default function ProposalPage({
           </div>
 
           <footer className={`pt-24 text-center text-base text-white/48 ${""}`}>
-            {"This webpage was made with Codex 😉"}
+            <div
+              className="begin-codex-pet-lane relative left-1/2 mb-7 w-[min(72rem,calc(100vw-3rem))] -translate-x-1/2"
+              role="img"
+              aria-label="Animated Codex pet walking back and forth across the footer"
+            >
+              <div className="begin-codex-pet-traveler" aria-hidden="true">
+                <div className="begin-mia-sprite" />
+              </div>
+            </div>
+            <p>{"This webpage was made with Codex 😉"}</p>
           </footer>
         </div>
       </section>

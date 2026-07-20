@@ -42,8 +42,8 @@ export function PlayableReelCard({
       />
 
       {!hasStarted && showStatsByDefault && stats ? (
-        <span className="pointer-events-none absolute left-3 right-12 top-3 z-20 text-left">
-          <span className="inline-block rounded-full bg-black/70 px-2.5 py-1.5 text-xs font-bold uppercase leading-4 tracking-[0.06em] text-white shadow-[0_3px_12px_rgba(0,0,0,0.65)] backdrop-blur-sm">
+        <span className="pointer-events-none absolute inset-x-0 bottom-0 z-20 bg-gradient-to-t from-black/80 via-black/35 to-transparent px-3 pb-3 pt-14 text-left">
+          <span className="block text-xs font-bold uppercase leading-4 tracking-[0.06em] text-white drop-shadow-[0_2px_5px_rgba(0,0,0,0.95)] sm:text-sm sm:leading-5">
             {stats}
           </span>
         </span>
@@ -66,11 +66,7 @@ export function PlayableReelCard({
               className="h-16 w-16"
             />
           </span>
-          <span
-            className={`absolute left-3 right-12 -translate-y-2 text-left text-white opacity-0 drop-shadow-[0_2px_5px_rgba(0,0,0,0.95)] transition-all duration-200 sm:group-hover:translate-y-0 sm:group-hover:opacity-100 sm:group-focus-within:translate-y-0 sm:group-focus-within:opacity-100 ${
-              showStatsByDefault && stats ? "top-14" : "top-3"
-            }`}
-          >
+          <span className="absolute left-3 right-12 top-3 -translate-y-2 text-left text-white opacity-0 drop-shadow-[0_2px_5px_rgba(0,0,0,0.95)] transition-all duration-200 sm:group-hover:translate-y-0 sm:group-hover:opacity-100 sm:group-focus-within:translate-y-0 sm:group-focus-within:opacity-100">
             <span className="block text-sm font-semibold leading-5">
               {reel.title}
             </span>
