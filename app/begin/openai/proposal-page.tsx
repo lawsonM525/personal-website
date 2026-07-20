@@ -1,9 +1,11 @@
 import Image from "next/image";
 import {
+  AudioWaveform,
   ExternalLink,
   GraduationCap,
   Info,
   MessagesSquare,
+  Plus,
   Repeat2,
   TrendingUp,
 } from "lucide-react";
@@ -1561,20 +1563,33 @@ export default function ProposalPage({
                   </div>
                   <p className="text-xl leading-8 text-white sm:text-2xl sm:leading-9">
                     Oh, and I&apos;m five minutes away from OpenAI&apos;s
-                    Mission Bay office. I can come into the office to chat,
-                    record, and attend events. 😉
+                    Mission Bay office. 😉 I can come into the office to chat,
+                    record, and attend events.
                   </p>
                   <figure className="mx-auto mt-10 w-full max-w-2xl">
                     <Image
                       src="/begin/michelle-photos/michelle-at-openai-office.jpeg"
-                      alt="Michelle Lawson with Jason and Romaine at OpenAI's Mission Bay office"
+                      alt="Michelle Lawson with Romain Huet and Jason Liu at OpenAI's Mission Bay office"
                       width={886}
                       height={886}
                       className="mx-auto h-auto w-full object-cover lg:max-h-[56vh] lg:w-auto"
                       sizes="(min-width: 1024px) 640px, (min-width: 640px) 75vw, calc(100vw - 48px)"
                     />
-                    <figcaption className="mt-3 text-center text-sm text-white/55">
-                      At OpenAI&apos;s Mission Bay office.
+                    <figcaption className="mx-auto mt-4 flex w-full max-w-xl items-center gap-3 rounded-[2rem] border border-white/10 bg-[#202020] px-4 py-2.5 text-left shadow-[0_12px_36px_rgba(0,0,0,0.35)] sm:px-4 sm:py-3">
+                      <Plus
+                        aria-hidden="true"
+                        className="h-5 w-5 shrink-0 text-white/85"
+                      />
+                      <span className="min-w-0 flex-1 text-xs leading-5 text-white/70 sm:whitespace-nowrap sm:text-sm">
+                        At OpenAI&apos;s Mission Bay office with Romain Huet and
+                        Jason Liu.
+                      </span>
+                      <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[#ee6ba7] text-white shadow-[0_5px_18px_rgba(238,107,167,0.28)]">
+                        <AudioWaveform
+                          aria-hidden="true"
+                          className="h-5 w-5"
+                        />
+                      </span>
                     </figcaption>
                   </figure>
                 </div>
