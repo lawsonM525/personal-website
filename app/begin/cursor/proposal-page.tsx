@@ -245,9 +245,9 @@ const cursorTimelineStages = [
   {
     step: "02",
     title: "Education",
-    duration: "6 months",
+    duration: "12 months",
     bullets: [
-      "Publish five practical Cursor how-tos every month: 30 videos in total.",
+      "Publish 30 practical Cursor how-tos across 12 months.",
       "Split the series evenly: 10 websites and apps, 10 unconventional projects, and 10 career accelerators.",
       "Teach new features through projects Gen Z already wants to make.",
     ],
@@ -494,11 +494,11 @@ export default function ProposalPage({
     : proposalTimelineStages;
   const emailTeamHref = `mailto:michelle@thedriveagency.co,patrick@thedriveagency.co,teresa@thedriveagency.co?subject=${encodeURIComponent(
     isCursor
-      ? "Cursor × Michelle — 30 How-Tos in Six Months"
+      ? "Cursor × Michelle — 30 How-Tos in 12 Months"
       : "OpenAI × Michelle — Gen Z Product Education",
   )}&body=${encodeURIComponent(
     isCursor
-      ? "Hi Michelle, Patrick, and Teresa,\n\nI’d love to discuss the six-month Cursor education program: 30 practical how-to videos showing Gen Z what they can build with Cursor.\n\nWhat would be the best next step?\n\nBest,"
+      ? "Hi Michelle, Patrick, and Teresa,\n\nI’d love to discuss the 12-month Cursor education program: 30 practical how-to videos showing Gen Z what they can build with Cursor.\n\nWhat would be the best next step?\n\nBest,"
       : "Hi Michelle, Patrick, and Teresa,\n\nI’d love to discuss the three-year Gen Z product-education program and its first Discussion and Discovery phases.\n\nWhat would be the best next step?\n\nBest,",
   )}`;
 
@@ -1622,7 +1622,7 @@ export default function ProposalPage({
                   "I already publish posts almost every day.",
                   "I have experience translating new launches quickly.",
                   isCursor
-                    ? "I have enough project ideas to make five useful Cursor how-tos every month."
+                    ? "I have enough project ideas to sustain a full year of useful Cursor how-tos."
                     : "Oh, and I'm five minutes from OpenAI's Mission Bay office. 😉",
                 ].map((item) => (
                   <li key={item} className="flex gap-3">
@@ -1650,7 +1650,7 @@ export default function ProposalPage({
               <p className="mx-auto max-w-5xl text-center text-2xl leading-9 sm:text-4xl sm:leading-tight">
                 <strong className="text-white">
                   {isCursor
-                    ? "A six-month program showing Gen Z—and people who do not think of themselves as coders—what they can build with Cursor."
+                    ? "A 12-month program showing Gen Z what they can build with Cursor."
                     : "A three-year program to educate Gen Z on ways to use ChatGPT in daily life."}
                 </strong>
               </p>
@@ -1658,7 +1658,7 @@ export default function ProposalPage({
                 className={`${emphasisFontClassName} text-center text-4xl leading-none text-white sm:text-5xl`}
               >
                 {isCursor
-                  ? "30 practical Cursor how-tos in six months."
+                  ? "30 practical Cursor how-tos in 12 months."
                   : "100 practical ChatGPT use cases every year."}
               </p>
               {isCursor && (
@@ -1845,7 +1845,7 @@ export default function ProposalPage({
             <div className="space-y-7">
               <p>
                 {isCursor
-                  ? "Over six months, I will turn 30 practical Cursor use cases into education Gen Z can understand, remember, and try."
+                  ? "Over 12 months, I will turn 30 practical Cursor use cases into education Gen Z can understand, remember, and try."
                   : "Every year, I will turn 100 practical ChatGPT use cases into education Gen Z can understand, remember, and try."}
               </p>
               <p className="text-white">
@@ -1864,7 +1864,7 @@ export default function ProposalPage({
               className={`${emphasisFontClassName} text-5xl font-normal leading-none tracking-tight text-white sm:text-8xl`}
             >
               {isCursor
-                ? "30 Cursor How-Tos I Could Teach in Six Months"
+                ? "30 Cursor How-Tos I Could Teach in 12 Months"
                 : "100 ChatGPT Use Cases I Could Teach Every Year"}
             </h2>
 

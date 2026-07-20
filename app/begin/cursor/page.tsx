@@ -9,7 +9,7 @@ const mouseMemoirs = Mouse_Memoirs({
 export const metadata = {
   title: "Teaching the Next Generation How to Build with Cursor",
   description:
-    "A proposal for a six-month educational partnership between Michelle Lawson (@michellescomputer) and Cursor.",
+    "A proposal for a 12-month educational partnership between Michelle Lawson (@michellescomputer) and Cursor.",
 };
 
 export default function CursorProposalPage() {
