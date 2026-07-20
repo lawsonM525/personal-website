@@ -90,20 +90,29 @@ export function Nav({ onCommandOpen }: NavProps) {
 
   if (
     pathname === "/begin/openai" ||
+    pathname === "/begin/cursor" ||
     pathname === "/begin/OpenAIBeta" ||
     pathname === "/openaibeta"
   ) {
     return (
       <nav className="fixed left-0 right-0 top-0 z-30 flex items-center justify-start p-4">
-        <Link href="/" className="text-2xl font-bold text-white">
-          <Image
-            src={favicon}
-            alt="Logo"
-            width={32}
-            height={32}
-            className="h-8 w-8 rounded-full border border-white/50"
-          />
-        </Link>
+        <a
+          href="https://www.instagram.com/michellescomputer/"
+          target="_blank"
+          rel="noreferrer"
+          aria-label="Open Michelle Lawson's Instagram"
+          className="text-2xl font-bold text-white"
+        >
+          <span className="block h-9 w-9 overflow-hidden rounded-full border border-white/50">
+            <Image
+              src="/begin/michelle-portrait.jpeg"
+              alt="Michelle Lawson"
+              width={36}
+              height={36}
+              className="h-full w-full origin-top scale-[1.45] object-cover object-top"
+            />
+          </span>
+        </a>
       </nav>
     );
   }

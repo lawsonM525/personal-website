@@ -55,9 +55,25 @@ const releases = [
   },
 ];
 
-export function ReleaseWordMap() {
+export function ReleaseWordMap({
+  labels,
+  assets,
+  fontClassName = "",
+  ariaLabel = "Recent OpenAI releases",
+}: {
+  labels?: string[];
+  assets?: { src: string; alt: string; className?: string }[];
+  fontClassName?: string;
+  ariaLabel?: string;
+}) {
   const mapRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const displayReleases = assets?.length
+    ? assets.map((asset, index) => ({
+        ...asset,
+        className: asset.className ?? releases[index]?.className ?? "",
+      }))
+    : releases;
 
   useEffect(() => {
     const map = mapRef.current;
@@ -81,9 +97,9 @@ export function ReleaseWordMap() {
     <div
       ref={mapRef}
       className="relative mx-auto h-[19rem] w-full max-w-4xl sm:h-[23rem]"
-      aria-label="Recent OpenAI releases"
+      aria-label={ariaLabel}
     >
-      {releases.map((release, index) => (
+      {displayReleases.map((release, index) => (
         <div
           key={release.src}
           className={`release-word-position absolute ${release.className}`}
@@ -110,14 +126,22 @@ export function ReleaseWordMap() {
                 } as CSSProperties
               }
             >
-              <Image
-                src={release.src}
-                alt={release.alt}
-                width={1700}
-                height={500}
-                className="h-auto w-full object-contain mix-blend-screen"
-                sizes="(min-width: 640px) 32vw, 48vw"
-              />
+              {labels?.[index] ? (
+                <span
+                  className={`${fontClassName} block whitespace-nowrap text-center text-3xl leading-none text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.28)] sm:text-5xl`}
+                >
+                  {labels[index]}
+                </span>
+              ) : (
+                <Image
+                  src={release.src}
+                  alt={release.alt}
+                  width={1700}
+                  height={500}
+                  className="h-auto w-full object-contain mix-blend-screen"
+                  sizes="(min-width: 640px) 32vw, 48vw"
+                />
+              )}
             </div>
           </div>
         </div>

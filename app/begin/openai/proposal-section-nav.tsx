@@ -2,36 +2,40 @@
 
 import { useEffect, useState } from "react";
 
-const sections = [
+const defaultSections = [
+  { id: "introduction", label: "Introduction" },
   { id: "the-opportunity", label: "The Opportunity" },
   { id: "why-educate", label: "Why Educate?" },
   { id: "why-michelle", label: "Why Michelle?" },
   { id: "the-proposal", label: "The Proposal" },
-  { id: "chatgpt-videos", label: "100 videos on ChatGPT" },
+  { id: "chatgpt-videos", label: "100 ChatGPT use cases" },
   { id: "lets-talk", label: "Let’s Talk!" },
 ];
 
 export function ProposalSectionNav({
   fontClassName,
+  sections = defaultSections,
 }: {
   fontClassName: string;
+  sections?: { id: string; label: string }[];
 }) {
   const [activeSection, setActiveSection] = useState(sections[0].id);
-  const [hasReachedOpportunity, setHasReachedOpportunity] = useState(false);
+  const [hasReachedIntro, setHasReachedIntro] = useState(false);
 
   useEffect(() => {
     let frame = 0;
+    let restoreFrame = 0;
+    const introduction = document.getElementById("introduction");
 
     const updateActiveSection = () => {
       frame = 0;
       const marker = window.innerHeight * 0.42;
       let current = sections[0].id;
-      const opportunity = document.getElementById("the-opportunity");
 
-      setHasReachedOpportunity(
+      setHasReachedIntro(
         Boolean(
-          opportunity &&
-          opportunity.getBoundingClientRect().top <= window.innerHeight * 0.72,
+          introduction &&
+          introduction.getBoundingClientRect().top <= window.innerHeight * 0.72,
         ),
       );
 
@@ -49,14 +53,35 @@ export function ProposalSectionNav({
       if (!frame) frame = window.requestAnimationFrame(updateActiveSection);
     };
 
+    const introductionObserver = introduction
+      ? new IntersectionObserver(
+          ([entry]) => {
+            setHasReachedIntro(
+              entry.boundingClientRect.top <= window.innerHeight * 0.72,
+            );
+          },
+          { rootMargin: "0px 0px -28% 0px", threshold: 0 },
+        )
+      : null;
+
     updateActiveSection();
+    if (introduction) introductionObserver?.observe(introduction);
+
+    restoreFrame = window.requestAnimationFrame(() => {
+      restoreFrame = window.requestAnimationFrame(updateActiveSection);
+    });
+
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
+    window.addEventListener("pageshow", updateActiveSection);
 
     return () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
+      window.removeEventListener("pageshow", updateActiveSection);
+      introductionObserver?.disconnect();
       if (frame) window.cancelAnimationFrame(frame);
+      if (restoreFrame) window.cancelAnimationFrame(restoreFrame);
     };
   }, []);
 
@@ -64,7 +89,7 @@ export function ProposalSectionNav({
     <nav
       aria-label="Proposal sections"
       className={`fixed right-2 top-1/2 z-40 hidden -translate-y-1/2 transition-opacity duration-500 min-[1180px]:flex min-[1400px]:right-3 ${
-        hasReachedOpportunity ? "opacity-100" : "pointer-events-none opacity-0"
+        hasReachedIntro ? "opacity-100" : "pointer-events-none opacity-0"
       }`}
     >
       <div className="group/nav relative flex w-6 flex-col items-end gap-3 overflow-visible rounded-l-2xl bg-transparent py-4 transition-[width,background-color,padding] duration-300 hover:w-44 hover:bg-black/82 hover:px-4 focus-within:w-44 focus-within:bg-black/82 focus-within:px-4 min-[1400px]:gap-4 min-[1400px]:py-5">

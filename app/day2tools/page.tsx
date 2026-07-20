@@ -151,7 +151,7 @@ export default function Day2Tools() {
                 <Tool 
                   name="windsurf"
                   url="https://codeium.com/windsurf"
-                  description="this is my code editor. it's clean, ai-powered, and tracks how much you've been coding which is lowkey motivating (and kinda exposing). you could use Cursor instead, but windswept me prefers windsurf."
+                  description="this is my code editor. it's clean, ai-powered, and tracks how much you've been coding which is lowkey motivating (and kinda exposing). you could also use Cursor — it's great!"
                   isHot={true}
                 />
                 

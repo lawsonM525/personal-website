@@ -15,6 +15,13 @@ export type FeaturedReelSection = {
   reels: FeaturedReel[];
 };
 
+export const codexOpenClawReel: FeaturedReel = {
+  title: "Can Codex replace OpenClaw?",
+  instagramUrl: "https://www.instagram.com/reel/DWYvBzYDt4H/",
+  videoSrc: "/begin/reels/codex-vs-openclaw.mp4",
+  posterSrc: "/begin/reels/posters/codex-vs-openclaw.jpg",
+};
+
 export const featuredReelSections: FeaturedReelSection[] = [
   {
     eyebrow: "Teaching proof",
@@ -58,7 +65,7 @@ export const featuredReelSections: FeaturedReelSection[] = [
       "Two examples that turn ambitious technical ideas into compelling stories.",
     reels: [
       {
-        title: "Build a machine learning model for the NFL",
+        title: "Build a predictive model for the NFL",
         instagramUrl: "https://www.instagram.com/reel/DRc05k3Epk3/",
         videoSrc: "/begin/reels/nfl-predictive-model.mp4",
         posterSrc: "/begin/reels/posters/nfl-predictive-model.jpg",
@@ -89,7 +96,7 @@ export const featuredReelSections: FeaturedReelSection[] = [
   {
     eyebrow: "OpenAI proof",
     title: "I have already helped people discover OpenAI.",
-    description: "Two campaign examples, plus a moment from ChatGPT Futures.",
+    description: "Two campaign examples and a moment from ChatGPT Futures.",
     reels: [
       {
         title: "Codex huge update",
