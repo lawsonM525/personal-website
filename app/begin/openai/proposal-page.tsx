@@ -1086,7 +1086,7 @@ export default function ProposalPage({
 
               <p className="text-white">
                 {
-                  "But the more I work with OpenAI, the more questions come in on what to actually do with your products."
+                  "But there's still a huge gap between everything ChatGPT and Codex can do and what people know they can use them for."
                 }
               </p>
             </div>
