@@ -92,7 +92,7 @@ Use this file as the source of truth for the `/begin/openai` proposal. Add notes
 
 - [x] Turn the four Why Michelle proofs into a sticky numbered scrollytelling sequence. 🟠
   - Keep the “Why Michelle?” title, Codex pet, and labeled 1–4 markers fixed on the left.
-  - Keep every proof chapter on the same stage so the active chapter fades out and the next one fades in without traveling up the screen.
+  - Let the proof chapters move naturally down the page, softly fading and sharpening as each one enters and exits.
   - Release the fixed story panel after point four, before the chalkboard transition.
 
 - [x] Replace point four’s number with a yellow chalk light-bulb bonus marker. 🟠
@@ -128,15 +128,15 @@ Use this file as the source of truth for the `/begin/openai` proposal. Add notes
 - [x] Rename the use-case section. 🟠
   - Final: “100 ChatGPT Use Cases I Could Teach in the Next Year.”
 
-- [ ] Add a graphic to the use-case section.
-  - “New feature → I find the practical possibilities → each possibility becomes content.”
+- [x] Add a chalk graphic to the use-case section. 🟠
+  - “?? new feature?” → “I’m great at coming up with practical use cases for new features.”
 
 - [ ] Add three Michelle-style sample thumbnails to the use-case section.
 
 - [x] Generate poster images automatically from `0:00` of every MP4. 🟠
   - There are nine MP4 video cards and one static ChatGPT Futures card.
   - Extracted the first decodable frame from every MP4 as a lightweight JPEG.
-  - Exception: “Does Vibe Coding Really Work?” uses the frame at `0:05`.
+  - Exception: “Does Vibe Coding Really Work?” uses the frame at `0:00.5`.
   - Added each image to the existing `posterSrc` field.
   - Kept `preload="metadata"`; the poster supplies the visible frame before playback.
   - Regenerate all posters after replacing a video with `npm run posters:openai`.

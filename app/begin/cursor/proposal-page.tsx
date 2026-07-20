@@ -832,6 +832,19 @@ export default function ProposalPage({
               overflow-x: clip;
             }
 
+            .begin-mobile-intro-grid {
+              grid-template-columns: minmax(0, 1fr);
+              width: 100%;
+              min-width: 0;
+            }
+
+            .begin-mobile-intro-grid > *,
+            .begin-mobile-intro-copy {
+              width: 100%;
+              min-width: 0;
+              max-width: 100%;
+            }
+
             .begin-mia-sprite {
               filter: drop-shadow(0 0 12px rgba(255,255,255,0.14));
             }
@@ -993,7 +1006,7 @@ export default function ProposalPage({
         id="introduction"
         className="scroll-mt-20 bg-black px-6 py-16 sm:px-10 sm:py-24 lg:px-16 lg:pb-20 lg:pt-32"
       >
-        <div className="mx-auto grid max-w-6xl items-center gap-14 lg:grid-cols-[0.82fr_1.18fr] lg:items-start lg:gap-20">
+        <div className="begin-mobile-intro-grid mx-auto grid max-w-6xl items-center gap-14 lg:grid-cols-[0.82fr_1.18fr] lg:items-start lg:gap-20">
           <div className="relative mx-auto w-full max-w-[19rem] sm:max-w-md lg:sticky lg:top-24 lg:max-w-none lg:self-start">
             <div
               className="aspect-[4/5] overflow-hidden"
@@ -1019,7 +1032,7 @@ export default function ProposalPage({
             </div>
           </div>
 
-          <div className="space-y-9 sm:space-y-12">
+          <div className="begin-mobile-intro-copy space-y-9 sm:space-y-12">
             <div className="space-y-5">
               <h2
                 className={`${emphasisFontClassName} text-[3.5rem] font-normal leading-none sm:text-8xl`}

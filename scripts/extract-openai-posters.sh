@@ -19,7 +19,7 @@ for video_path in "$video_directory"/*.mp4; do
   poster_time="0"
 
   if [[ "$video_name" == "how-to-vibe-code-properly" ]]; then
-    poster_time="5"
+    poster_time="0.5"
   fi
 
   ffmpeg \

@@ -10,6 +10,7 @@ import {
 import { ChalkTrail } from "./chalk-trail";
 import { ProposalSectionNav } from "./proposal-section-nav";
 import { ReleaseWordMap } from "./release-word-map";
+import { ScrollScrubVideo } from "./scroll-scrub-video";
 import { PlayableReelCard } from "./playable-reel-card";
 import {
   codexOpenClawReel,
@@ -326,6 +327,19 @@ export default function ProposalPage({
             flex: none;
           }
 
+          @keyframes begin-why-michelle-story-focus {
+            0%, 100% {
+              opacity: 0.12;
+              filter: blur(7px);
+              transform: translateY(3rem) scale(0.975);
+            }
+            28%, 72% {
+              opacity: 1;
+              filter: blur(0);
+              transform: translateY(0) scale(1);
+            }
+          }
+
           @keyframes begin-codex-travel {
             0% {
               left: 0;
@@ -574,34 +588,10 @@ export default function ProposalPage({
               animation-range: entry 80% contain 95%;
             }
 
-          }
-
-          @media (min-width: 1024px) {
-            .begin-why-michelle-card {
-              position: absolute;
-              inset: 0;
-              opacity: 0;
-              visibility: hidden;
-              pointer-events: none;
-              filter: blur(8px);
-              transform: scale(0.985);
-              transition:
-                opacity 520ms ease,
-                filter 520ms ease,
-                transform 520ms ease,
-                visibility 0s linear 520ms;
-            }
-
-            #why-michelle[data-active-step="1"] .begin-why-michelle-card[data-step="1"],
-            #why-michelle[data-active-step="2"] .begin-why-michelle-card[data-step="2"],
-            #why-michelle[data-active-step="3"] .begin-why-michelle-card[data-step="3"],
-            #why-michelle[data-active-step="4"] .begin-why-michelle-card[data-step="4"] {
-              opacity: 1;
-              visibility: visible;
-              pointer-events: auto;
-              filter: blur(0);
-              transform: scale(1);
-              transition-delay: 0s;
+            .begin-why-michelle-story {
+              animation: begin-why-michelle-story-focus linear both;
+              animation-timeline: view();
+              animation-range: entry 0% exit 100%;
             }
           }
 
@@ -623,6 +613,26 @@ export default function ProposalPage({
             .begin-openai-page {
               cursor: auto !important;
               overflow-x: clip;
+            }
+
+            .begin-mobile-intro-grid {
+              grid-template-columns: minmax(0, 1fr);
+              width: 100%;
+              min-width: 0;
+            }
+
+            .begin-mobile-intro-grid > *,
+            .begin-mobile-intro-copy {
+              width: 100%;
+              min-width: 0;
+              max-width: 100%;
+            }
+
+            .begin-why-michelle-story {
+              animation: none !important;
+              opacity: 1 !important;
+              filter: none !important;
+              transform: none !important;
             }
 
             .begin-mia-sprite {
@@ -788,7 +798,7 @@ export default function ProposalPage({
         id="introduction"
         className="scroll-mt-20 bg-black px-6 py-16 sm:px-10 sm:py-24 lg:px-16 lg:pb-20 lg:pt-32"
       >
-        <div className="mx-auto grid max-w-6xl items-center gap-14 lg:grid-cols-[0.82fr_1.18fr] lg:items-start lg:gap-20">
+        <div className="begin-mobile-intro-grid mx-auto grid max-w-6xl items-center gap-14 lg:grid-cols-[0.82fr_1.18fr] lg:items-start lg:gap-20">
           <div className="relative mx-auto w-full max-w-[19rem] sm:max-w-md lg:sticky lg:top-24 lg:max-w-none lg:self-start">
             <div
               className="aspect-[4/5] overflow-hidden"
@@ -814,7 +824,7 @@ export default function ProposalPage({
             </div>
           </div>
 
-          <div className="space-y-9 sm:space-y-12">
+          <div className="begin-mobile-intro-copy space-y-9 sm:space-y-12">
             <div className="space-y-5">
               <h2
                 className={`${emphasisFontClassName} text-[3.5rem] font-normal leading-none sm:text-8xl`}
@@ -977,9 +987,7 @@ export default function ProposalPage({
 
             <div className="mx-auto max-w-5xl py-4 text-center sm:py-6">
               <p className="mx-auto max-w-3xl text-xl leading-9 text-white/68">
-                &quot;
-                Which possibilities am I leaving out?
-                &quot;
+                &quot; Which possibilities am I leaving out? &quot;
               </p>
               <p
                 className={`${emphasisFontClassName} mx-auto mt-6 max-w-5xl text-4xl font-normal leading-none text-white sm:text-[3.25rem]`}
@@ -1093,19 +1101,15 @@ export default function ProposalPage({
                 </p>
                 <p className="mx-auto max-w-3xl text-center">
                   I will turn your features into relevant lessons{" "}
-                  <strong>
-                    Gen Z will understand, try, and come to love.
-                  </strong>
+                  <strong>Gen Z will understand, try, and come to love.</strong>
                 </p>
               </div>
-
             </>
           }
 
           <div
             id="why-michelle"
-            data-active-step="1"
-            className="relative left-1/2 w-[min(72rem,calc(100vw-3rem))] -translate-x-1/2 scroll-mt-20 lg:h-[400vh]"
+            className="relative left-1/2 w-[min(72rem,calc(100vw-3rem))] -translate-x-1/2 scroll-mt-20"
           >
             <div className="mb-14 flex flex-wrap items-end gap-5 sm:flex-nowrap sm:gap-7 lg:hidden">
               <h2
@@ -1126,8 +1130,8 @@ export default function ProposalPage({
               </div>
             </div>
 
-            <div className="grid items-start lg:sticky lg:top-0 lg:h-screen lg:grid-cols-[19rem_minmax(0,1fr)] lg:gap-14">
-              <aside className="begin-why-michelle-sticky hidden h-full flex-col justify-center lg:flex">
+            <div className="grid items-start lg:grid-cols-[19rem_minmax(0,1fr)] lg:gap-14">
+              <aside className="begin-why-michelle-sticky sticky top-20 hidden h-[calc(100vh-5rem)] flex-col justify-center lg:flex">
                 <h2
                   className={`${emphasisFontClassName} text-7xl font-normal leading-none tracking-tight text-white`}
                 >
@@ -1147,302 +1151,279 @@ export default function ProposalPage({
                 <WhyMichelleStepRail />
               </aside>
 
-            <div className="relative min-w-0 max-w-4xl space-y-14 text-xl leading-9 text-white/72 sm:space-y-20 lg:h-screen lg:space-y-0 lg:overflow-hidden">
-            <div
-              id="why-michelle-point-1"
-              data-step="1"
-              className="begin-why-michelle-card scroll-mt-24 space-y-7 lg:py-20 lg:pr-4"
-            >
-              <div className="flex items-start gap-4 sm:items-center">
-                <Image
-                  src="/begin/chalk-numbers/chalk-circled-1.png"
-                  alt="1"
-                  width={512}
-                  height={512}
-                  className="mt-1 h-12 w-12 shrink-0 object-contain sm:mt-0 sm:h-14 sm:w-14 lg:hidden"
-                />
-                <h3
-                  className={`${emphasisFontClassName} text-[2rem] leading-none text-white sm:text-5xl`}
-                >
-                  I make complicated concepts simple
-                </h3>
-              </div>
-              <p className="text-xl leading-8 text-white sm:text-2xl sm:leading-9">
-                I make new concepts useful to my audience by connecting them to
-                ideas they are already familiar with.
-              </p>
-              <p>
-                I started my online presence by making computer science concepts
-                digestible. As I expanded into teaching AI and showing how it
-                can be useful, I kept the same core principles: explain ideas
-                step by step, make every video easy to understand, and ensure
-                viewers walk away with practical knowledge they can use.
-              </p>
-              <ReelProofRow
-                reels={featuredReelSections[0].reels}
-                fontClassName={emphasisFontClassName}
-              />
-              <div
-                className="begin-mobile-comment-carousel grid items-start gap-3 pt-2 sm:grid-cols-2 lg:grid-cols-3"
-                role="region"
-                aria-label="Audience comments. Swipe horizontally on mobile to see more."
-                tabIndex={0}
-              >
-                {[
-                  {
-                    src: "/begin/comments/agentic-ai-understanding.png",
-                    alt: "Audience comment praising the explanation of AI and agentic models",
-                    width: 562,
-                    height: 168,
-                  },
-                  {
-                    src: "/begin/comments/best-video-on-topic.png",
-                    alt: "Audience comment calling it one of the best videos on the topic",
-                    width: 574,
-                    height: 172,
-                  },
-                  {
-                    src: "/begin/comments/vibe-code-explanation.png",
-                    alt: "Audience comment praising the vibe coding explanation",
-                    width: 558,
-                    height: 164,
-                  },
-                  {
-                    src: "/begin/comments/enlightening-video.png",
-                    alt: "Audience comment describing the video as enlightening",
-                    width: 568,
-                    height: 128,
-                  },
-                  {
-                    src: "/begin/comments/beginner-coding-request.png",
-                    alt: "Audience comment asking for more beginner coding education",
-                    width: 794,
-                    height: 182,
-                  },
-                ].map((comment) => (
-                  <Image
-                    key={comment.src}
-                    src={comment.src}
-                    alt={comment.alt}
-                    width={comment.width}
-                    height={comment.height}
-                    className="h-auto w-full"
-                    sizes="(min-width: 1024px) 250px, (min-width: 768px) 390px, calc(100vw - 48px)"
-                  />
-                ))}
-              </div>
-            </div>
-
-            <div
-              id="why-michelle-point-2"
-              data-step="2"
-              className="begin-why-michelle-card scroll-mt-24 space-y-7 lg:py-20 lg:pr-4"
-            >
-              <div className="flex items-start gap-4 sm:items-center">
-                <Image
-                  src="/begin/chalk-numbers/chalk-circled-2.png"
-                  alt="2"
-                  width={512}
-                  height={512}
-                  className="mt-1 h-12 w-12 shrink-0 object-contain sm:mt-0 sm:h-14 sm:w-14 lg:hidden"
-                />
-                <h3
-                  className={`${emphasisFontClassName} text-[2rem] leading-none text-white sm:text-5xl`}
-                >
-                  I keep it engaging for Gen Z
-                </h3>
-              </div>
-              <p className="text-xl leading-8 text-white sm:text-2xl sm:leading-9">
-                250K+ followers across platforms. Millions of video views. An
-                11% Instagram engagement rate by reach.
-              </p>
-              <p className="text-xl leading-8 text-white sm:text-2xl sm:leading-9">
-                The numbers speak for themselves. The philosophy that led me
-                here is simple:
-                <em>
-                  people learn so much more when ideas are presented in a fun
-                  and engaging way.
-                </em>
-              </p>
-              <p>
-                My audience loves the variety in my content, whether it&apos;s my
-                challenge videos, inspiring stories, or tech news. Because I
-                speak fluent Gen Z, I keep them captivated with memes, jokes,
-                and nostalgic references. Basically, we&apos;re always joking
-                together while we learn.
-              </p>
-              <ReelProofRow
-                reels={featuredReelSections[1].reels}
-                fontClassName={emphasisFontClassName}
-              />
-              <div
-                className="begin-mobile-comment-carousel grid items-start gap-3 pt-2 sm:grid-cols-2"
-                role="region"
-                aria-label="Audience comments. Swipe horizontally on mobile to see more."
-                tabIndex={0}
-              >
-                {[
-                  {
-                    src: "/begin/comments/positive-growth-impact.png",
-                    alt: "Audience comment describing the positive impact of Michelle's content",
-                    width: 812,
-                    height: 128,
-                  },
-                  {
-                    src: "/begin/comments/audience-trust-following.png",
-                    alt: "Audience comment expressing trust and love for Michelle's content",
-                    width: 872,
-                    height: 148,
-                  },
-                ].map((comment) => (
-                  <Image
-                    key={comment.src}
-                    src={comment.src}
-                    alt={comment.alt}
-                    width={comment.width}
-                    height={comment.height}
-                    className="h-auto w-full"
-                    sizes="(min-width: 768px) 390px, calc(100vw - 48px)"
-                  />
-                ))}
-              </div>
-            </div>
-
-            <div
-              id="why-michelle-point-3"
-              data-step="3"
-              className="begin-why-michelle-card scroll-mt-24 space-y-7 lg:py-20 lg:pr-4"
-            >
-              <div className="flex items-start gap-4 sm:items-center">
-                <Image
-                  src="/begin/chalk-numbers/chalk-circled-3.png"
-                  alt="3"
-                  width={512}
-                  height={512}
-                  className="mt-1 h-12 w-12 shrink-0 object-contain sm:mt-0 sm:h-14 sm:w-14 lg:hidden"
-                />
-                <h3
-                  className={`${emphasisFontClassName} text-[2rem] leading-none text-white sm:text-5xl`}
-                >
-                  I&apos;ve helped people discover OpenAI
-                </h3>
-              </div>
-              <p>
-                {
-                  "I've already partnered with OpenAI, translated product launches into useful creator content, and participated in ChatGPT Futures."
-                }
-              </p>
-              <p className="text-xl leading-8 text-white sm:text-2xl sm:leading-9">
-                {
-                  "I understand both the products and the audience response that turns a launch into sustained interest."
-                }
-              </p>
-              <ReelProofRow
-                reels={featuredReelSections[2].reels}
-                fontClassName={emphasisFontClassName}
-              />
-              <div
-                className="begin-mobile-comment-carousel grid items-start gap-3 pt-2 sm:grid-cols-2 lg:grid-cols-3"
-                role="region"
-                aria-label="Audience comments. Swipe horizontally on mobile to see more."
-                tabIndex={0}
-              >
-                {[
-                  {
-                    src: "/begin/comments/codex-automations-discovery.png",
-                    alt: "Audience comment discovering Codex automations",
-                    width: 976,
-                    height: 122,
-                  },
-                  {
-                    src: "/begin/comments/codex-need-to-jump-on.png",
-                    alt: "Audience comment saying they need to start using Codex",
-                    width: 402,
-                    height: 100,
-                  },
-                  {
-                    src: "/begin/comments/codex-sites-automation-question.png",
-                    alt: "Audience question about using Codex to update sites automatically",
-                    width: 530,
-                    height: 202,
-                  },
-                ].map((comment) => (
-                  <Image
-                    key={comment.src}
-                    src={comment.src}
-                    alt={comment.alt}
-                    width={comment.width}
-                    height={comment.height}
-                    className="h-auto w-full"
-                    sizes="(min-width: 1024px) 250px, (min-width: 768px) 390px, calc(100vw - 48px)"
-                  />
-                ))}
-              </div>
-            </div>
-
-            <div
-              id="why-michelle-point-4"
-              data-step="4"
-              className="begin-why-michelle-card scroll-mt-24 space-y-7 lg:py-10 lg:pr-4"
-            >
-              <div className="flex items-start gap-4 sm:items-center">
-                <Image
-                  src="/begin/generated/chalk-bonus-lightbulb.png"
-                  alt="Bonus"
-                  width={512}
-                  height={512}
-                  className="mt-1 h-12 w-12 shrink-0 object-contain sm:mt-0 sm:h-14 sm:w-14 lg:hidden"
-                />
-                <h3
-                  className={`${emphasisFontClassName} text-[2rem] leading-none text-white sm:text-5xl`}
-                >
-                  One more thing...
-                </h3>
-              </div>
-              <p className="text-xl leading-8 text-white sm:text-2xl sm:leading-9">
-                Oh, and I&apos;m five minutes away from OpenAI&apos;s Mission Bay
-                office. I can come into the office to chat, record, and attend
-                events. 😉
-              </p>
-              <figure className="mx-auto mt-10 w-full max-w-2xl">
-                <Image
-                  src="/begin/michelle-photos/michelle-at-openai-office.jpeg"
-                  alt="Michelle Lawson with Jason and Romaine at OpenAI's Mission Bay office"
-                  width={886}
-                  height={886}
-                  className="mx-auto h-auto w-full object-cover lg:max-h-[56vh] lg:w-auto"
-                  sizes="(min-width: 1024px) 640px, (min-width: 640px) 75vw, calc(100vw - 48px)"
-                />
-                <figcaption className="mt-3 text-center text-sm text-white/55">
-                  At OpenAI&apos;s Mission Bay office.
-                </figcaption>
-              </figure>
-            </div>
-              </div>
-            </div>
-
-            <div aria-hidden="true" className="pointer-events-none absolute inset-0 hidden lg:block">
-              {[1, 2, 3, 4].map((step) => (
+              <div className="min-w-0 max-w-4xl space-y-14 text-xl leading-9 text-white/72 sm:space-y-20 lg:space-y-0">
                 <div
-                  key={step}
-                  id={`why-michelle-trigger-${step}`}
-                  className="absolute left-0 h-screen w-px"
-                  style={{ top: `${(step - 1) * 100}vh` }}
-                />
-              ))}
+                  id="why-michelle-point-1"
+                  className="begin-why-michelle-story scroll-mt-24 space-y-7 lg:min-h-screen lg:py-20 lg:pr-4"
+                >
+                  <div className="flex items-start gap-4 sm:items-center">
+                    <Image
+                      src="/begin/chalk-numbers/chalk-circled-1.png"
+                      alt="1"
+                      width={512}
+                      height={512}
+                      className="mt-1 h-12 w-12 shrink-0 object-contain sm:mt-0 sm:h-14 sm:w-14 lg:hidden"
+                    />
+                    <h3
+                      className={`${emphasisFontClassName} text-[2rem] leading-none text-white sm:text-5xl`}
+                    >
+                      I make complicated concepts simple
+                    </h3>
+                  </div>
+                  <p className="text-xl leading-8 text-white sm:text-2xl sm:leading-9">
+                    I make new concepts useful to my audience by connecting them
+                    to ideas they are already familiar with.
+                  </p>
+                  <p>
+                    I started my online presence by making computer science
+                    concepts digestible. As I expanded into teaching AI and
+                    showing how it can be useful, I kept the same core
+                    principles: explain ideas step by step, make every video
+                    easy to understand, and ensure viewers walk away with
+                    practical knowledge they can use.
+                  </p>
+                  <ReelProofRow
+                    reels={featuredReelSections[0].reels}
+                    fontClassName={emphasisFontClassName}
+                  />
+                  <div
+                    className="begin-mobile-comment-carousel grid items-start gap-3 pt-2 sm:grid-cols-2 lg:grid-cols-3"
+                    role="region"
+                    aria-label="Audience comments. Swipe horizontally on mobile to see more."
+                    tabIndex={0}
+                  >
+                    {[
+                      {
+                        src: "/begin/comments/agentic-ai-understanding.png",
+                        alt: "Audience comment praising the explanation of AI and agentic models",
+                        width: 562,
+                        height: 168,
+                      },
+                      {
+                        src: "/begin/comments/best-video-on-topic.png",
+                        alt: "Audience comment calling it one of the best videos on the topic",
+                        width: 574,
+                        height: 172,
+                      },
+                      {
+                        src: "/begin/comments/vibe-code-explanation.png",
+                        alt: "Audience comment praising the vibe coding explanation",
+                        width: 558,
+                        height: 164,
+                      },
+                      {
+                        src: "/begin/comments/enlightening-video.png",
+                        alt: "Audience comment describing the video as enlightening",
+                        width: 568,
+                        height: 128,
+                      },
+                      {
+                        src: "/begin/comments/beginner-coding-request.png",
+                        alt: "Audience comment asking for more beginner coding education",
+                        width: 794,
+                        height: 182,
+                      },
+                    ].map((comment) => (
+                      <Image
+                        key={comment.src}
+                        src={comment.src}
+                        alt={comment.alt}
+                        width={comment.width}
+                        height={comment.height}
+                        className="h-auto w-full"
+                        sizes="(min-width: 1024px) 250px, (min-width: 768px) 390px, calc(100vw - 48px)"
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                <div
+                  id="why-michelle-point-2"
+                  className="begin-why-michelle-story scroll-mt-24 space-y-7 lg:min-h-screen lg:py-20 lg:pr-4"
+                >
+                  <div className="flex items-start gap-4 sm:items-center">
+                    <Image
+                      src="/begin/chalk-numbers/chalk-circled-2.png"
+                      alt="2"
+                      width={512}
+                      height={512}
+                      className="mt-1 h-12 w-12 shrink-0 object-contain sm:mt-0 sm:h-14 sm:w-14 lg:hidden"
+                    />
+                    <h3
+                      className={`${emphasisFontClassName} text-[2rem] leading-none text-white sm:text-5xl`}
+                    >
+                      I keep it engaging for Gen Z
+                    </h3>
+                  </div>
+                  <p className="text-xl leading-8 text-white sm:text-2xl sm:leading-9">
+                    250K+ followers across platforms. Millions of video views.
+                    An 11% Instagram engagement rate by reach.
+                  </p>
+                  <p className="text-xl leading-8 text-white sm:text-2xl sm:leading-9">
+                    The numbers speak for themselves. The philosophy that led me
+                    here is simple:
+                    <em>
+                      people learn so much more when ideas are presented in a
+                      fun and engaging way.
+                    </em>
+                  </p>
+                  <p>
+                    My audience loves the variety in my content, whether
+                    it&apos;s my challenge videos, inspiring stories, or tech
+                    news. Because I speak fluent Gen Z, I keep them captivated
+                    with memes, jokes, and nostalgic references. Basically,
+                    we&apos;re always joking together while we learn.
+                  </p>
+                  <ReelProofRow
+                    reels={featuredReelSections[1].reels}
+                    fontClassName={emphasisFontClassName}
+                  />
+                  <div
+                    className="begin-mobile-comment-carousel grid items-start gap-3 pt-2 sm:grid-cols-2"
+                    role="region"
+                    aria-label="Audience comments. Swipe horizontally on mobile to see more."
+                    tabIndex={0}
+                  >
+                    {[
+                      {
+                        src: "/begin/comments/positive-growth-impact.png",
+                        alt: "Audience comment describing the positive impact of Michelle's content",
+                        width: 812,
+                        height: 128,
+                      },
+                      {
+                        src: "/begin/comments/audience-trust-following.png",
+                        alt: "Audience comment expressing trust and love for Michelle's content",
+                        width: 872,
+                        height: 148,
+                      },
+                    ].map((comment) => (
+                      <Image
+                        key={comment.src}
+                        src={comment.src}
+                        alt={comment.alt}
+                        width={comment.width}
+                        height={comment.height}
+                        className="h-auto w-full"
+                        sizes="(min-width: 768px) 390px, calc(100vw - 48px)"
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                <div
+                  id="why-michelle-point-3"
+                  className="begin-why-michelle-story scroll-mt-24 space-y-7 lg:min-h-screen lg:py-20 lg:pr-4"
+                >
+                  <div className="flex items-start gap-4 sm:items-center">
+                    <Image
+                      src="/begin/chalk-numbers/chalk-circled-3.png"
+                      alt="3"
+                      width={512}
+                      height={512}
+                      className="mt-1 h-12 w-12 shrink-0 object-contain sm:mt-0 sm:h-14 sm:w-14 lg:hidden"
+                    />
+                    <h3
+                      className={`${emphasisFontClassName} text-[2rem] leading-none text-white sm:text-5xl`}
+                    >
+                      I&apos;ve helped people discover OpenAI
+                    </h3>
+                  </div>
+                  <p>
+                    {
+                      "I've already partnered with OpenAI, translated product launches into useful creator content, and participated in ChatGPT Futures."
+                    }
+                  </p>
+                  <p className="text-xl leading-8 text-white sm:text-2xl sm:leading-9">
+                    {
+                      "I understand both the products and the audience response that turns a launch into sustained interest."
+                    }
+                  </p>
+                  <ReelProofRow
+                    reels={featuredReelSections[2].reels}
+                    fontClassName={emphasisFontClassName}
+                  />
+                  <div
+                    className="begin-mobile-comment-carousel grid items-start gap-3 pt-2 sm:grid-cols-2 lg:grid-cols-3"
+                    role="region"
+                    aria-label="Audience comments. Swipe horizontally on mobile to see more."
+                    tabIndex={0}
+                  >
+                    {[
+                      {
+                        src: "/begin/comments/codex-automations-discovery.png",
+                        alt: "Audience comment discovering Codex automations",
+                        width: 976,
+                        height: 122,
+                      },
+                      {
+                        src: "/begin/comments/codex-need-to-jump-on.png",
+                        alt: "Audience comment saying they need to start using Codex",
+                        width: 402,
+                        height: 100,
+                      },
+                      {
+                        src: "/begin/comments/codex-sites-automation-question.png",
+                        alt: "Audience question about using Codex to update sites automatically",
+                        width: 530,
+                        height: 202,
+                      },
+                    ].map((comment) => (
+                      <Image
+                        key={comment.src}
+                        src={comment.src}
+                        alt={comment.alt}
+                        width={comment.width}
+                        height={comment.height}
+                        className="h-auto w-full"
+                        sizes="(min-width: 1024px) 250px, (min-width: 768px) 390px, calc(100vw - 48px)"
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                <div
+                  id="why-michelle-point-4"
+                  className="begin-why-michelle-story scroll-mt-24 space-y-7 lg:flex lg:min-h-screen lg:flex-col lg:justify-center lg:py-20 lg:pr-4"
+                >
+                  <div className="flex items-start gap-4 sm:items-center">
+                    <Image
+                      src="/begin/generated/chalk-bonus-lightbulb.png"
+                      alt="Bonus"
+                      width={512}
+                      height={512}
+                      className="mt-1 h-12 w-12 shrink-0 object-contain sm:mt-0 sm:h-14 sm:w-14 lg:hidden"
+                    />
+                    <h3
+                      className={`${emphasisFontClassName} text-[2rem] leading-none text-white sm:text-5xl`}
+                    >
+                      One more thing...
+                    </h3>
+                  </div>
+                  <p className="text-xl leading-8 text-white sm:text-2xl sm:leading-9">
+                    Oh, and I&apos;m five minutes away from OpenAI&apos;s
+                    Mission Bay office. I can come into the office to chat,
+                    record, and attend events. 😉
+                  </p>
+                  <figure className="mx-auto mt-10 w-full max-w-2xl">
+                    <Image
+                      src="/begin/michelle-photos/michelle-at-openai-office.jpeg"
+                      alt="Michelle Lawson with Jason and Romaine at OpenAI's Mission Bay office"
+                      width={886}
+                      height={886}
+                      className="mx-auto h-auto w-full object-cover lg:max-h-[56vh] lg:w-auto"
+                      sizes="(min-width: 1024px) 640px, (min-width: 640px) 75vw, calc(100vw - 48px)"
+                    />
+                    <figcaption className="mt-3 text-center text-sm text-white/55">
+                      At OpenAI&apos;s Mission Bay office.
+                    </figcaption>
+                  </figure>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div className="relative left-1/2 w-screen -translate-x-1/2 overflow-hidden py-10">
-            <Image
-              src="/begin/michelle-photos/chalkboard-walking-wide.jpeg"
-              alt="Michelle Lawson walking in front of a chalkboard covered in math notes"
-              width={2048}
-              height={1018}
-              className="h-[25rem] min-h-0 w-full scale-100 object-cover object-[58%_center] sm:h-[70vh] sm:min-h-[34rem] sm:scale-110 sm:object-center"
-              sizes="100vw"
-            />
-          </div>
+          <ScrollScrubVideo />
 
           <div
             id="the-proposal"
@@ -1638,6 +1619,36 @@ export default function ProposalPage({
             >
               {"100 ChatGPT Use Cases I Could Teach Every Year"}
             </h2>
+
+            <div className="mt-12 grid items-center gap-4 sm:grid-cols-[minmax(12rem,0.8fr)_6rem_minmax(0,1fr)] sm:gap-7">
+              <div className="relative h-20 w-full sm:h-28">
+                <Image
+                  src="/begin/releases-generated/new-feature-question.png"
+                  alt="Question marks and the words new feature written in chalk"
+                  fill
+                  className="object-contain object-left mix-blend-screen"
+                  sizes="(min-width: 1024px) 360px, (min-width: 640px) 36vw, 90vw"
+                />
+              </div>
+
+              <div className="relative ml-3 h-10 w-20 rotate-90 sm:ml-0 sm:h-16 sm:w-full sm:rotate-0">
+                <Image
+                  src="/begin/chalk-arrow-right.png"
+                  alt=""
+                  fill
+                  aria-hidden="true"
+                  className="object-contain"
+                  sizes="112px"
+                />
+              </div>
+
+              <p
+                className={`${emphasisFontClassName} text-3xl leading-none text-white sm:text-4xl`}
+              >
+                I&apos;m great at coming up with practical use cases for new
+                features.
+              </p>
+            </div>
 
             <div className="mt-14 space-y-10">
               {chatGPTUseCaseFeatures.map((feature) => (

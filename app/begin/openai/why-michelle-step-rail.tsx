@@ -14,10 +14,9 @@ export function WhyMichelleStepRail() {
   const [activeStep, setActiveStep] = useState(1);
 
   useEffect(() => {
-    const story = document.getElementById("why-michelle");
     const sections = steps
       .map(({ number }) =>
-        document.getElementById(`why-michelle-trigger-${number}`),
+        document.getElementById(`why-michelle-point-${number}`),
       )
       .filter((section): section is HTMLElement => Boolean(section));
 
@@ -30,7 +29,6 @@ export function WhyMichelleStepRail() {
         const step = Number(activeEntry.target.id.split("-").at(-1));
         if (step) {
           setActiveStep(step);
-          if (story) story.dataset.activeStep = String(step);
         }
       },
       { rootMargin: "-42% 0px -42%", threshold: 0 },
@@ -50,7 +48,7 @@ export function WhyMichelleStepRail() {
         {steps.map(({ number, title }) => (
           <li key={number}>
             <a
-              href={`#why-michelle-trigger-${number}`}
+              href={`#why-michelle-point-${number}`}
               aria-current={activeStep === number ? "step" : undefined}
               aria-label={
                 number === 4
