@@ -320,19 +320,6 @@ export default function ProposalPage({
             }
           }
 
-          @keyframes begin-why-michelle-story-focus {
-            0%, 100% {
-              opacity: 0.12;
-              filter: blur(7px);
-              transform: translateY(3rem) scale(0.975);
-            }
-            28%, 72% {
-              opacity: 1;
-              filter: blur(0);
-              transform: translateY(0) scale(1);
-            }
-          }
-
           .begin-why-michelle-sticky .begin-codex-pet-lane {
             width: 100%;
             min-width: 0;
@@ -587,10 +574,34 @@ export default function ProposalPage({
               animation-range: entry 80% contain 95%;
             }
 
-            .begin-why-michelle-story {
-              animation: begin-why-michelle-story-focus linear both;
-              animation-timeline: view();
-              animation-range: entry 0% exit 100%;
+          }
+
+          @media (min-width: 1024px) {
+            .begin-why-michelle-card {
+              position: absolute;
+              inset: 0;
+              opacity: 0;
+              visibility: hidden;
+              pointer-events: none;
+              filter: blur(8px);
+              transform: scale(0.985);
+              transition:
+                opacity 520ms ease,
+                filter 520ms ease,
+                transform 520ms ease,
+                visibility 0s linear 520ms;
+            }
+
+            #why-michelle[data-active-step="1"] .begin-why-michelle-card[data-step="1"],
+            #why-michelle[data-active-step="2"] .begin-why-michelle-card[data-step="2"],
+            #why-michelle[data-active-step="3"] .begin-why-michelle-card[data-step="3"],
+            #why-michelle[data-active-step="4"] .begin-why-michelle-card[data-step="4"] {
+              opacity: 1;
+              visibility: visible;
+              pointer-events: auto;
+              filter: blur(0);
+              transform: scale(1);
+              transition-delay: 0s;
             }
           }
 
@@ -1093,7 +1104,8 @@ export default function ProposalPage({
 
           <div
             id="why-michelle"
-            className="relative left-1/2 w-[min(72rem,calc(100vw-3rem))] -translate-x-1/2 scroll-mt-20"
+            data-active-step="1"
+            className="relative left-1/2 w-[min(72rem,calc(100vw-3rem))] -translate-x-1/2 scroll-mt-20 lg:h-[400vh]"
           >
             <div className="mb-14 flex flex-wrap items-end gap-5 sm:flex-nowrap sm:gap-7 lg:hidden">
               <h2
@@ -1114,8 +1126,8 @@ export default function ProposalPage({
               </div>
             </div>
 
-            <div className="grid items-start lg:grid-cols-[19rem_minmax(0,1fr)] lg:gap-14">
-              <aside className="begin-why-michelle-sticky sticky top-20 hidden h-[calc(100vh-5rem)] flex-col justify-center lg:flex">
+            <div className="grid items-start lg:sticky lg:top-0 lg:h-screen lg:grid-cols-[19rem_minmax(0,1fr)] lg:gap-14">
+              <aside className="begin-why-michelle-sticky hidden h-full flex-col justify-center lg:flex">
                 <h2
                   className={`${emphasisFontClassName} text-7xl font-normal leading-none tracking-tight text-white`}
                 >
@@ -1135,10 +1147,11 @@ export default function ProposalPage({
                 <WhyMichelleStepRail />
               </aside>
 
-            <div className="min-w-0 max-w-4xl space-y-14 text-xl leading-9 text-white/72 sm:space-y-20 lg:space-y-0">
+            <div className="relative min-w-0 max-w-4xl space-y-14 text-xl leading-9 text-white/72 sm:space-y-20 lg:h-screen lg:space-y-0 lg:overflow-hidden">
             <div
               id="why-michelle-point-1"
-              className="begin-why-michelle-story scroll-mt-24 space-y-7 lg:min-h-screen lg:py-20"
+              data-step="1"
+              className="begin-why-michelle-card scroll-mt-24 space-y-7 lg:py-20 lg:pr-4"
             >
               <div className="flex items-start gap-4 sm:items-center">
                 <Image
@@ -1222,7 +1235,8 @@ export default function ProposalPage({
 
             <div
               id="why-michelle-point-2"
-              className="begin-why-michelle-story scroll-mt-24 space-y-7 lg:min-h-screen lg:py-20"
+              data-step="2"
+              className="begin-why-michelle-card scroll-mt-24 space-y-7 lg:py-20 lg:pr-4"
             >
               <div className="flex items-start gap-4 sm:items-center">
                 <Image
@@ -1296,7 +1310,8 @@ export default function ProposalPage({
 
             <div
               id="why-michelle-point-3"
-              className="begin-why-michelle-story scroll-mt-24 space-y-7 lg:min-h-screen lg:py-20"
+              data-step="3"
+              className="begin-why-michelle-card scroll-mt-24 space-y-7 lg:py-20 lg:pr-4"
             >
               <div className="flex items-start gap-4 sm:items-center">
                 <Image
@@ -1367,7 +1382,8 @@ export default function ProposalPage({
 
             <div
               id="why-michelle-point-4"
-              className="begin-why-michelle-story scroll-mt-24 space-y-7 lg:flex lg:min-h-screen lg:flex-col lg:justify-center lg:py-20"
+              data-step="4"
+              className="begin-why-michelle-card scroll-mt-24 space-y-7 lg:flex lg:flex-col lg:justify-center lg:py-20 lg:pr-4"
             >
               <div className="flex items-start gap-4 sm:items-center">
                 <Image
@@ -1403,6 +1419,17 @@ export default function ProposalPage({
               </figure>
             </div>
               </div>
+            </div>
+
+            <div aria-hidden="true" className="pointer-events-none absolute inset-0 hidden lg:block">
+              {[1, 2, 3, 4].map((step) => (
+                <div
+                  key={step}
+                  id={`why-michelle-trigger-${step}`}
+                  className="absolute left-0 h-screen w-px"
+                  style={{ top: `${(step - 1) * 100}vh` }}
+                />
+              ))}
             </div>
           </div>
 

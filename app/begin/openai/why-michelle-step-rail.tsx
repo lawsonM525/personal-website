@@ -3,14 +3,22 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-const steps = [1, 2, 3, 4];
+const steps = [
+  { number: 1, title: "I make complicated concepts simple" },
+  { number: 2, title: "I keep it engaging for Gen Z" },
+  { number: 3, title: "I’ve helped people discover OpenAI" },
+  { number: 4, title: "Five minutes from OpenAI" },
+];
 
 export function WhyMichelleStepRail() {
   const [activeStep, setActiveStep] = useState(1);
 
   useEffect(() => {
+    const story = document.getElementById("why-michelle");
     const sections = steps
-      .map((step) => document.getElementById(`why-michelle-point-${step}`))
+      .map(({ number }) =>
+        document.getElementById(`why-michelle-trigger-${number}`),
+      )
       .filter((section): section is HTMLElement => Boolean(section));
 
     const observer = new IntersectionObserver(
@@ -20,7 +28,10 @@ export function WhyMichelleStepRail() {
         if (!activeEntry) return;
 
         const step = Number(activeEntry.target.id.split("-").at(-1));
-        if (step) setActiveStep(step);
+        if (step) {
+          setActiveStep(step);
+          if (story) story.dataset.activeStep = String(step);
+        }
       },
       { rootMargin: "-42% 0px -42%", threshold: 0 },
     );
@@ -36,37 +47,44 @@ export function WhyMichelleStepRail() {
       className="mt-7"
     >
       <ol className="flex flex-col gap-5">
-        {steps.map((step) => (
-          <li key={step}>
+        {steps.map(({ number, title }) => (
+          <li key={number}>
             <a
-              href={`#why-michelle-point-${step}`}
-              aria-current={activeStep === step ? "step" : undefined}
+              href={`#why-michelle-trigger-${number}`}
+              aria-current={activeStep === number ? "step" : undefined}
               aria-label={
-                step === 4
+                number === 4
                   ? "Go to the Why Michelle bonus point"
-                  : `Go to Why Michelle point ${step}`
+                  : `Go to Why Michelle point ${number}`
               }
-              className={`block rounded-full transition duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-4 focus-visible:ring-offset-black ${
-                activeStep === step
-                  ? "scale-110 opacity-100"
-                  : "scale-90 opacity-35 hover:scale-100 hover:opacity-70"
+              className={`group flex items-center gap-3 rounded-xl transition duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-4 focus-visible:ring-offset-black ${
+                activeStep === number
+                  ? "opacity-100"
+                  : "opacity-35 hover:opacity-70"
               }`}
             >
               <Image
                 src={
-                  step === 4
+                  number === 4
                     ? "/begin/generated/chalk-bonus-lightbulb.png"
-                    : `/begin/chalk-numbers/chalk-circled-${step}.png`
+                    : `/begin/chalk-numbers/chalk-circled-${number}.png`
                 }
                 alt=""
                 width={512}
                 height={512}
                 aria-hidden="true"
-                className={`h-14 w-14 object-contain ${
-                  step === 4 ? "scale-110" : ""
+                className={`h-12 w-12 shrink-0 object-contain transition-transform duration-300 group-hover:scale-105 ${
+                  number === 4 ? "scale-110" : ""
                 }`}
-                sizes="56px"
+                sizes="48px"
               />
+              <span
+                className={`text-sm font-semibold leading-tight transition-colors duration-300 ${
+                  activeStep === number ? "text-white" : "text-white/75"
+                }`}
+              >
+                {title}
+              </span>
             </a>
           </li>
         ))}

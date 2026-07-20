@@ -19,7 +19,7 @@ for video_path in "$video_directory"/*.mp4; do
   poster_time="0"
 
   if [[ "$video_name" == "how-to-vibe-code-properly" ]]; then
-    poster_time="1"
+    poster_time="5"
   fi
 
   ffmpeg \
@@ -32,5 +32,5 @@ for video_path in "$video_directory"/*.mp4; do
     -q:v 3 \
     "$poster_path"
 
-  echo "Generated $poster_path from 0:0$poster_time"
+  echo "Generated $poster_path from ${poster_time}s"
 done

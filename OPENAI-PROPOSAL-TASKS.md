@@ -91,8 +91,8 @@ Use this file as the source of truth for the `/begin/openai` proposal. Add notes
 - [x] Make the Codex pet turn around and walk back after reaching the right edge. 🟠
 
 - [x] Turn the four Why Michelle proofs into a sticky numbered scrollytelling sequence. 🟠
-  - Keep the “Why Michelle?” title, Codex pet, and 1–4 markers fixed on the left.
-  - Highlight the active point and fade, blur, and sharpen each proof chapter as the next one takes over.
+  - Keep the “Why Michelle?” title, Codex pet, and labeled 1–4 markers fixed on the left.
+  - Keep every proof chapter on the same stage so the active chapter fades out and the next one fades in without traveling up the screen.
   - Release the fixed story panel after point four, before the chalkboard transition.
 
 - [x] Replace point four’s number with a yellow chalk light-bulb bonus marker. 🟠
@@ -136,7 +136,7 @@ Use this file as the source of truth for the `/begin/openai` proposal. Add notes
 - [x] Generate poster images automatically from `0:00` of every MP4. 🟠
   - There are nine MP4 video cards and one static ChatGPT Futures card.
   - Extracted the first decodable frame from every MP4 as a lightweight JPEG.
-  - Exception: “Does Vibe Coding Really Work?” uses the frame at `0:01`.
+  - Exception: “Does Vibe Coding Really Work?” uses the frame at `0:05`.
   - Added each image to the existing `posterSrc` field.
   - Kept `preload="metadata"`; the poster supplies the visible frame before playback.
   - Regenerate all posters after replacing a video with `npm run posters:openai`.
