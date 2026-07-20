@@ -1,12 +1,28 @@
 # OpenAI Proposal — Working Task List
 
-Last reviewed: July 20, 2026
+Last reconciled against the rendered website and source: July 20, 2026
 
 Use this file as the source of truth for the `/begin/openai` proposal. Add notes directly beneath a task when a decision or asset is still needed.
 
 - ✅ Michelle has reviewed or confirmed the completed task.
 - 🟠 Codex completed the task, but Michelle has not checked it yet.
 - No emoji means the task is still outstanding.
+
+## Current remaining work
+
+### Highest priority
+
+- [x] Add a projections block with conservative, expected and breakout scenarios. 🟠
+- [ ] Change the live use-case heading from “Every Year” to the approved “In the Next Year,” or explicitly reverse that decision.
+- [ ] Finish the teaching-and-memory argument with Michelle’s tutoring history and one credible source.
+- [ ] Add the planned “come to love” tooltip.
+
+### Evidence and visual polish
+
+- [ ] Add three Michelle-style sample thumbnails to the use-case section.
+- [ ] Standardize the three Codex comment screenshots.
+- [ ] Choose and apply one secondary interface color.
+- [ ] Plan the separate business photoshoot.
 
 ## Do first — business proposal and timeline
 
@@ -30,16 +46,28 @@ Use this file as the source of truth for the `/begin/openai` proposal. Add notes
 - [x] Position Discussion and Discovery as the opening phases of the three-year program instead of pitching a standalone pilot. ✅
 
 - [x] Keep operating logistics high-level and finalize the details during Discussion. ✅
-  - [x] Use three KPI categories: qualified reach and attention, useful engagement, and intent to try. ✅
+  - [x] Use four KPI categories: post views, useful engagement, intent to try and reported use-case trials. 🟠
   - The public proposal only needs to name these KPI categories.
   - Final targets, deliverable dates, approvals, reporting and review processes will be agreed with OpenAI during Discussion.
 
-- [ ] Add a projections block with conservative, expected and ambitious scenarios.
-  - Marketing: projected views, reach, feature discovery and audience access.
-  - Product: interest in priority features, use-case demand and recurring confusion.
-  - Finance: quarterly and annual program structure. Keep actual pricing out if Patrick is handling it.
-  - Legal: three-year contract framing, review periods, approvals and content-usage expectations.
-  - Define what “conversion” means before adding a conversion projection.
+- [x] Add a projections block with conservative, expected and breakout scenarios. 🟠
+  - Conservative annual post views: 4M (40K average views × 100 posts).
+  - Expected annual post views: 10M (100K average views × 100 posts).
+  - Conservative useful engagements: 440K (11% × 4M annual post views).
+  - Expected useful engagements: 1.1M (11% × 10M annual post views).
+  - Conservative intent-to-try signals: 100K (1K average signals × 100 posts).
+  - Expected intent-to-try signals: 300K (3K average signals × 100 posts).
+  - Conservative north star — reported use-case trials: 30K (300 average comments × 100 posts).
+  - Expected north star — reported use-case trials: 150K (1.5K average comments × 100 posts).
+  - Breakout annual post views: 25M (250K average views × 100 posts).
+  - Breakout useful engagements: 2.75M (11% × 25M annual post views).
+  - Breakout intent-to-try signals: 550K (5.5K average signals × 100 posts).
+  - Breakout north star — reported use-case trials: 400K (4K average comments × 100 posts).
+  - [x] Count each projection number up once when its table cell first enters the viewport. 🟠
+  - [x] Use metric-name tooltips for definitions and individual-cell tooltips for calculations. 🟠
+  - Reported trials are aggregate audience reports, not confirmed unique people.
+  - If OpenAI can provide privacy-safe aggregate product insights, explore whether trials contribute to repeat use over time.
+  - Keep actual pricing out; Patrick will handle it.
 
 - [x] Update every piece of the old offer language. 🟠
   - “90-day pilot”
@@ -56,7 +84,7 @@ Use this file as the source of truth for the `/begin/openai` proposal. Add notes
 
 ## Strengthen the argument
 
-- [ ] Reframe the opening opportunity around the real problem.
+- [x] Reframe the opening opportunity around the real problem. 🟠
   - Every few weeks, OpenAI releases something that blows Michelle’s mind.
   - Most people do not know about the releases or what they can do with them.
   - One or two launch videos cannot teach dozens of relevant use cases.
@@ -78,8 +106,8 @@ Use this file as the source of truth for the `/begin/openai` proposal. Add notes
 - [ ] Add a tooltip to “Gen Z will understand, try, and come to love.”
   - Tooltip: “I have no doubt they’ll come to love it, the way I love your tools.”
 
-- [ ] Add a small proposal tooltip showing current product awareness.
-  - Explain that Codex, Work and the broader product experience now live within ChatGPT.
+- [x] Do not add a separate current-product-awareness tooltip. ✅
+  - Michelle’s decision: the ChatGPT framing plus the Codex examples already make the broader product scope understandable.
 
 - [ ] Complete the teaching and memory argument.
   - Keep the existing line about connecting new concepts to familiar ideas.
@@ -103,33 +131,32 @@ Use this file as the source of truth for the `/begin/openai` proposal. Add notes
   - “Because I speak fluent Gen Z, I keep them captivated with memes, jokes, and nostalgic references.”
   - “Basically, we’re always joking together while we learn.”
 
-- [ ] Compare the 11% engagement rate with a properly sourced industry benchmark.
-  - Clearly state if the approximately 2% benchmark is for non-AI creators.
+- [x] Compare the 11% engagement rate with a sourced industry benchmark. 🟠
+  - The live tooltip compares 11% engagement by reach with Hootsuite’s cited 3.3% industry average and links to the source.
 
-- [ ] Add “thanks to our partnership” as a small chalk annotation near the OpenAI performance proof.
+- [x] Do not add a “thanks to our partnership” chalk annotation. ✅
+  - Michelle decided the existing OpenAI partnership proof is sufficient.
 
-- [ ] Rewrite point four, “I can sustain the program.”
-  - Start with an impactful sentence.
-  - Demonstrate publishing consistency and quick launch response.
-  - Explain what that reliability gives OpenAI.
-  - Keep the Mission Bay detail as the memorable bonus.
+- [x] Replace the old “I can sustain the program” point with one simple Mission Bay bonus point. 🟠
+  - Live copy: Michelle is five minutes from OpenAI’s Mission Bay office and can come in to chat, record and attend events.
 
 - [x] Add the photo with Jason and Romaine at the OpenAI office to point four. 🟠
 
 - [x] Move the chalkboard-walking image below the complete Why Michelle proof. 🟠
 
-- [ ] Convert the chalkboard-walking image into a slightly translucent scrollytelling transition.
-  - Film or source a short locked-camera walking clip.
-  - Tie the walking motion to scroll progress.
-  - Use the current photograph as the fallback image.
+- [x] Convert the chalkboard-walking image into a slightly translucent scrollytelling transition. ✅
+  - A 6.3 MB MP4 now scrubs with scroll progress in a sticky full-width transition.
+  - The video is muted, uses a poster fallback and respects reduced-motion preferences.
 
 ## Metrics, videos and visual proof
 
-- [x] Rename the use-case section. 🟠
-  - Final: “100 ChatGPT Use Cases I Could Teach in the Next Year.”
+- [ ] Apply the approved use-case section title consistently.
+  - Approved: “100 ChatGPT Use Cases I Could Teach in the Next Year.”
+  - Current live heading: “100 ChatGPT Use Cases I Could Teach Every Year.”
 
 - [x] Add a chalk graphic to the use-case section. 🟠
   - “?? new feature?” → “I’m great at coming up with practical use cases for new features.”
+  - Placed after the full example list, with the question marks stacked above “new feature?”.
 
 - [ ] Add three Michelle-style sample thumbnails to the use-case section.
 
@@ -158,18 +185,16 @@ Use this file as the source of truth for the `/begin/openai` proposal. Add notes
 
 ## Branding and personality
 
-- [ ] Remove the top-left logo from the OpenAI proposal page.
+- [x] Replace the top-left logo with Michelle’s circular portrait linking directly to Instagram. 🟠
 
 - [ ] Choose and introduce one secondary color.
   - Current recommendation: pink.
   - Keep major headers bold white.
   - Use the accent selectively for problem/solution statements, tooltips, timeline highlights and key numbers.
 
-- [ ] Decide which Codex pet belongs on the page.
-  - Default Codex pet: immediately recognizable to OpenAI.
-  - Michelle pet: more personal and distinctive.
-  - Add hover text: “Say hi to my Codex pet.”
-  - Keep the pet secondary to repeated images of Michelle.
+- [x] Use the default Codex pet so it is immediately recognizable to OpenAI. ✅
+  - [x] Do not add hover text to the Codex pet. ✅
+  - [x] Keep the pet secondary to repeated images of Michelle. 🟠
 
 - [ ] Plan and complete a separate business photoshoot.
   - Clear close-up portrait
@@ -198,16 +223,16 @@ Use this file as the source of truth for the `/begin/openai` proposal. Add notes
 - [x] Leave pricing and budget-allocation language to Patrick. ✅
 - [x] Do not include conversion or product-adoption KPIs until OpenAI confirms what can be tracked. ✅
 - [ ] Choose pink or sky blue as the secondary color.
-- [ ] Supply the Jason and Romaine photo.
-- [ ] Supply the walking video after it is filmed.
-- [ ] Choose the default Codex pet or Michelle’s custom pet.
+- [x] Supply the Jason and Romaine photo. ✅
+- [x] Supply and implement the walking video. ✅
+- [x] Use the default Codex pet. ✅
 
 ## Working order
 
-1. Three-year offer and timeline
-2. Logistics and projections
-3. Remove all outdated pilot/year-long/100-video language
-4. Opening argument and OpenAI proof
-5. Why Michelle copy and supporting evidence
-6. Video posters, sample thumbnails and use-case graphic
-7. Branding, tooltips, pet and photoshoot polish
+1. Review the projections block.
+2. Resolve the “Every Year” versus “In the Next Year” heading mismatch.
+3. Complete the teaching-and-memory proof.
+4. Add the “come to love” tooltip.
+5. Add sample thumbnails and standardize comment screenshots.
+6. Choose the secondary color.
+7. Plan the separate business photoshoot.

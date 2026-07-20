@@ -57,20 +57,34 @@ export function ScrollScrubVideo() {
   return (
     <section
       ref={sectionRef}
-      className="relative left-1/2 h-[185svh] w-screen -translate-x-1/2 bg-black sm:h-[220vh] motion-reduce:h-auto"
+      className="relative left-1/2 h-[175svh] w-screen -translate-x-1/2 bg-black sm:h-[205vh] motion-reduce:h-auto"
       aria-label="Michelle walking and writing across a classroom chalkboard"
     >
       <div className="sticky top-[20svh] flex h-[60svh] w-full items-center overflow-hidden bg-black sm:top-[15vh] sm:h-[70vh] motion-reduce:relative motion-reduce:top-auto">
         <video
           ref={videoRef}
-          src="/begin/why-michelle-scrollytelling.mp4"
-          poster="/begin/why-michelle-scrollytelling-poster.jpg"
-          className="h-full w-full object-cover object-center opacity-[0.78]"
+          src="/begin/why-michelle-scrollytelling-plan.mp4?v=6"
+          poster="/begin/why-michelle-scrollytelling-plan-poster.jpg"
+          className="begin-scroll-scrub-video pointer-events-none h-full w-full select-none object-cover object-center opacity-[0.78]"
           muted
           playsInline
           preload="auto"
+          disablePictureInPicture
+          disableRemotePlayback
+          controlsList="nodownload nofullscreen noplaybackrate noremoteplayback"
           aria-hidden="true"
         />
+        <style jsx>{`
+          .begin-scroll-scrub-video::-webkit-media-controls,
+          .begin-scroll-scrub-video::-webkit-media-controls-enclosure,
+          .begin-scroll-scrub-video::-webkit-media-controls-panel,
+          .begin-scroll-scrub-video::-webkit-media-controls-picture-in-picture-button,
+          .begin-scroll-scrub-video::-webkit-media-controls-fullscreen-button,
+          .begin-scroll-scrub-video::-webkit-media-controls-overlay-play-button {
+            display: none !important;
+            -webkit-appearance: none;
+          }
+        `}</style>
       </div>
     </section>
   );

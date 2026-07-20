@@ -12,9 +12,8 @@ export function TypedQuestionList({
   fontClassName,
 }: TypedQuestionListProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const hasStarted = useRef(false);
   const [visibleCharacters, setVisibleCharacters] = useState(() =>
-    questions.map(() => 0),
+    questions.map((question) => question.length),
   );
   const [activeQuestion, setActiveQuestion] = useState(-1);
 
@@ -34,14 +33,19 @@ export function TypedQuestionList({
     }
 
     let timeout: ReturnType<typeof setTimeout> | undefined;
+    let visibilityFrame = 0;
+    let hasStarted = false;
+    let isCancelled = false;
     let questionIndex = 0;
     let characterIndex = 0;
 
     const typeNextCharacter = () => {
+      if (isCancelled) return;
+
       const currentQuestion = questions[questionIndex];
 
       if (!currentQuestion) {
-        setActiveQuestion(-1);
+        showEverything();
         return;
       }
 
@@ -54,31 +58,62 @@ export function TypedQuestionList({
       );
 
       if (characterIndex < currentQuestion.length) {
-        timeout = setTimeout(typeNextCharacter, 24);
+        timeout = setTimeout(typeNextCharacter, 16);
         return;
       }
 
       questionIndex += 1;
       characterIndex = 0;
-      timeout = setTimeout(typeNextCharacter, 240);
+      timeout = setTimeout(typeNextCharacter, 120);
+    };
+
+    const startTyping = () => {
+      if (hasStarted) return;
+
+      hasStarted = true;
+      observer.disconnect();
+      setVisibleCharacters(questions.map(() => 0));
+      setActiveQuestion(-1);
+      typeNextCharacter();
     };
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (!entry.isIntersecting || hasStarted.current) return;
+        if (!entry.isIntersecting) return;
 
-        hasStarted.current = true;
-        observer.disconnect();
-        typeNextCharacter();
+        startTyping();
       },
       { rootMargin: "0px 0px -15%", threshold: 0.2 },
     );
 
+    const startIfVisible = () => {
+      if (hasStarted) return;
+
+      const rect = container.getBoundingClientRect();
+      const visibleHeight = Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0);
+
+      if (visibleHeight > Math.min(rect.height * 0.2, 80)) {
+        startTyping();
+      }
+    };
+
+    const scheduleVisibilityCheck = () => {
+      if (visibilityFrame) window.cancelAnimationFrame(visibilityFrame);
+      visibilityFrame = window.requestAnimationFrame(startIfVisible);
+    };
+
     observer.observe(container);
+    scheduleVisibilityCheck();
+    window.addEventListener("pageshow", scheduleVisibilityCheck);
+    document.addEventListener("visibilitychange", scheduleVisibilityCheck);
 
     return () => {
+      isCancelled = true;
       observer.disconnect();
       if (timeout) clearTimeout(timeout);
+      if (visibilityFrame) window.cancelAnimationFrame(visibilityFrame);
+      window.removeEventListener("pageshow", scheduleVisibilityCheck);
+      document.removeEventListener("visibilitychange", scheduleVisibilityCheck);
     };
   }, [questions]);
 

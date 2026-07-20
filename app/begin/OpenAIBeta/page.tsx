@@ -777,7 +777,9 @@ export default function OpenAIBeginPage() {
             </h2>
 
             <div className="space-y-7">
-              <p className="mx-auto max-w-5xl text-center text-2xl leading-9 sm:text-4xl sm:leading-tight">
+              <p
+                className={`${mouseMemoirs.className} mx-auto max-w-4xl text-center text-4xl font-normal leading-none sm:text-6xl`}
+              >
                 <strong className="text-white">
                   A year-long program to educate Gen Z on ChatGPT in daily life.
                 </strong>
