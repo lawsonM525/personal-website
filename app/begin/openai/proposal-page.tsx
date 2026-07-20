@@ -1490,12 +1490,12 @@ export default function ProposalPage({
                       I&apos;ve helped people discover OpenAI
                     </h3>
                   </div>
-                  <p>
+                  <p className="text-xl leading-8 text-white sm:text-2xl sm:leading-9">
                     {
-                      "I've developed this process by partnering with OpenAI multiple times and participating in ChatGPT Futures."
+                      "I've developed this process by partnering with OpenAI multiple times and sharing my ChatGPT Futures win with my audience."
                     }
                   </p>
-                  <p className="text-xl leading-8 text-white sm:text-2xl sm:leading-9">
+                  <p>
                     {
                       "I pair my genuine excitement about new OpenAI features with my ability to make new ideas feel simple and useful. I show my audience not just what a feature does, but how they can use it for something they already care about—so it feels clear, relevant, and worth trying for themselves."
                     }
