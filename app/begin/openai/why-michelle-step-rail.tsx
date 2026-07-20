@@ -7,7 +7,7 @@ const steps = [
   { number: 1, title: "I make complicated concepts simple" },
   { number: 2, title: "I keep it engaging for Gen Z" },
   { number: 3, title: "I’ve helped people discover OpenAI" },
-  { number: 4, title: "Five minutes from OpenAI" },
+  { number: 4, title: "One more thing…" },
 ];
 
 export function WhyMichelleStepRail() {

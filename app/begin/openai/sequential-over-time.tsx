@@ -27,7 +27,7 @@ export function SequentialOverTime({
         setIsVisible(true);
         observer.disconnect();
       },
-      { rootMargin: "0px 0px -18%", threshold: 0.45 },
+      { rootMargin: "0px 0px -10%", threshold: 0.7 },
     );
 
     observer.observe(line);
@@ -36,7 +36,7 @@ export function SequentialOverTime({
   }, []);
 
   const wordClassName =
-    "inline-block transform-gpu transition-all duration-500 ease-out motion-reduce:translate-y-0 motion-reduce:scale-100 motion-reduce:opacity-100";
+    "inline-block transform-gpu transition-all duration-700 ease-out motion-reduce:translate-y-0 motion-reduce:scale-100 motion-reduce:opacity-100 motion-reduce:blur-none";
 
   return (
     <p
@@ -48,17 +48,17 @@ export function SequentialOverTime({
         <span
           className={`${wordClassName} ${
             isVisible
-              ? "translate-y-0 scale-100 opacity-100"
-              : "translate-y-3 scale-90 opacity-0"
+              ? "translate-y-0 scale-100 opacity-100 blur-none"
+              : "-translate-y-10 scale-90 opacity-0 blur-[5px]"
           }`}
         >
           over
         </span>
         <span
-          className={`${wordClassName} delay-200 ${
+          className={`${wordClassName} delay-300 ${
             isVisible
-              ? "translate-y-0 scale-100 opacity-100"
-              : "translate-y-3 scale-90 opacity-0"
+              ? "translate-y-0 scale-100 opacity-100 blur-none"
+              : "-translate-y-10 scale-90 opacity-0 blur-[5px]"
           }`}
         >
           time.
