@@ -12,6 +12,7 @@ import { CountUpMetric } from "./count-up-metric";
 import { ProposalSectionNav } from "./proposal-section-nav";
 import { ReleaseWordMap } from "./release-word-map";
 import { ScrollScrubVideo } from "./scroll-scrub-video";
+import { SequentialOverTime } from "./sequential-over-time";
 import { PlayableReelCard } from "./playable-reel-card";
 import {
   codexOpenClawReel,
@@ -36,44 +37,120 @@ type UseCaseFeature = {
   feature: string;
   featureImage?: string;
   useCases: string[];
+  exampleThumbnails?: {
+    src: string;
+    alt: string;
+  }[];
 };
+const futureVideoConcepts = [
+  {
+    src: "/begin/reels/concepts/how-i-use-ai-to-run-my-day.jpg",
+    alt: "How I use AI to run my day video concept",
+  },
+  {
+    src: "/begin/reels/concepts/personal-income-tracker.png",
+    alt: "How to make a personal income tracker video concept",
+  },
+  {
+    src: "/begin/reels/concepts/2027-vision-board.png",
+    alt: "Make your 2027 vision board with ChatGPT and Canva video concept",
+  },
+  {
+    src: "/begin/reels/concepts/know-thyself.png",
+    alt: "How to know thyself by analyzing your behavioral patterns video concept",
+  },
+  {
+    src: "/begin/reels/concepts/reverse-engineer-goals.png",
+    alt: "How to reverse-engineer your goals video concept",
+  },
+  {
+    src: "/begin/reels/concepts/spotify-generational-lock-in.png",
+    alt: "Make a Spotify playlist for a generational lock-in video concept",
+  },
+  {
+    src: "/begin/reels/concepts/personal-crm.png",
+    alt: "Build your personal CRM that stays automatically updated video concept",
+  },
+  {
+    src: "/begin/reels/concepts/write-full-book-in-60-seconds.png",
+    alt: "How to write a full book in 60 seconds video concept",
+  },
+  {
+    src: "/begin/reels/concepts/portfolio-website-with-codex.png",
+    alt: "Build a portfolio website with Codex video concept",
+  },
+  {
+    src: "/begin/reels/concepts/emails-homework-tracker.png",
+    alt: "Turn your emails into a homework tracker video concept",
+  },
+];
 const chatGPTUseCaseFeatures: UseCaseFeature[] = [
   {
     feature: "Connectors",
     featureImage: "/begin/releases-generated/connectors.png",
     useCases: [
-      "How to make a personal income tracker.",
-      "How to look through your Granola meetings and update your personal CRM.",
-      "How to dig through your emails and find assignments you are losing track of.",
-      "How to make a Canva vision board from your saved ideas.",
-      "How to make a Spotify playlist for a road trip, a study night, or a GENERATIONAL lock in. (that's 3 😉)",
+      "How to make a personal income tracker?",
+      "How to look through your Granola meetings and update your personal CRM?",
+      "How to dig through your emails and find assignments you are losing track of?",
+      "How to make a Canva vision board from your saved ideas?",
+      "How to make a Spotify playlist for a road trip, a study night, or a GENERATIONAL lock in? (that's 3 😉)",
+    ],
+    exampleThumbnails: [
+      {
+        src: "/begin/reels/concepts/personal-income-tracker.png",
+        alt: "How to make a personal income tracker video concept",
+      },
+      {
+        src: "/begin/reels/concepts/personal-crm.png",
+        alt: "Build your personal CRM that stays automatically updated video concept",
+      },
     ],
   },
   {
     feature: "Codex",
     featureImage: "/begin/releases-generated/codex.png",
     useCases: [
-      "How to use Codex to build a portfolio website as an artist, writer, or musician.",
-      "How to use Codex to research a health problem that has been bothering you.",
-      "How to use Codex to write a full-length book that's 300+ pages. (I have lots of friends with book ideas sitting in their Notes app 😅)",
+      "How to use Codex to build a portfolio website as an artist, writer, or musician?",
+      "How to use Codex to research a health problem that has been bothering you?",
+      "How to use Codex to write a full-length book that's 300+ pages? (I have lots of friends with book ideas sitting in their Notes app 😅)",
+    ],
+    exampleThumbnails: [
+      {
+        src: "/begin/reels/concepts/write-full-book-in-60-seconds.png",
+        alt: "How to write a full book in 60 seconds video concept",
+      },
+      {
+        src: "/begin/reels/concepts/portfolio-website-with-codex.png",
+        alt: "Build a portfolio website with Codex video concept",
+      },
     ],
   },
   {
     feature: "Memory",
     featureImage: "/begin/releases-generated/memory-dreaming.png",
     useCases: [
-      "How to keep track of your daily tasks like a personal assistant.",
-      "How to analyze your behavioral patterns and find ways to grow.",
-      "How to navigate your workplace culture.",
-      "How to reverse-engineer your goals to achieve them faster.",
+      "How to keep track of your daily tasks like a personal assistant?",
+      "How to analyze your behavioral patterns and find ways to grow?",
+      "How to navigate your workplace culture?",
+      "How to reverse-engineer your goals to achieve them faster?",
+    ],
+    exampleThumbnails: [
+      {
+        src: "/begin/reels/concepts/how-i-use-ai-to-run-my-day.jpg",
+        alt: "How I use AI to run my day video concept",
+      },
+      {
+        src: "/begin/reels/concepts/know-thyself.png",
+        alt: "How to know thyself by analyzing your behavioral patterns video concept",
+      },
     ],
   },
 ];
 const proposalPayoffs = [
   {
-    title: "Prolong launch impact",
+    title: "Prolonged launch impact",
     description:
-      "Keep teaching people about each feature long after launch day.",
+      "Keep teaching people about each incredible feature long after launch day.",
     Icon: Repeat2,
   },
   {
@@ -85,13 +162,13 @@ const proposalPayoffs = [
   {
     title: "Direct Gen Z insights",
     description:
-      "OpenAI gets insights into what Gen Z wants to try and what still confuses them.",
+      "OpenAI gets insights into what Gen Z wants to try, and feedback on what still confuses them.",
     Icon: MessagesSquare,
   },
   {
     title: "A trusted Gen Z educator",
     description:
-      "Give OpenAI one consistent educator Gen Z can recognize and trust.",
+      "Give OpenAI one consistent educator that Gen Z can recognize and trust.",
     Icon: GraduationCap,
   },
 ];
@@ -112,7 +189,7 @@ const proposalTimelineStages = [
     bullets: [
       "Test practical use cases through different formats: videos, carousels, and stories.",
       "Learn what Gen Z responds well to and what they are excited to try.",
-      "Measure post views, useful engagement, intent to try, and reported use-case trials.",
+      "Measure post views, useful engagement, and intent to try.",
       "Take one week to review what worked and plan what comes next.",
     ],
   },
@@ -134,11 +211,14 @@ const projectionScenarios = [
     expected: "10M",
     breakout: "25M",
     definition:
-      "The total views generated by 100 content pieces across Instagram and TikTok.",
+      "The total views generated by 100 original content pieces, each published on Instagram and TikTok.",
     calculations: {
-      conservative: "40K average views × 100 posts = 4M.",
-      expected: "100K average views × 100 posts = 10M.",
-      breakout: "250K average views × 100 posts = 25M.",
+      conservative:
+        "40K average views per content piece × 100 content pieces = 4M.",
+      expected:
+        "100K average views per content piece × 100 content pieces = 10M.",
+      breakout:
+        "250K average views per content piece × 100 content pieces = 25M.",
     },
   },
   {
@@ -147,11 +227,11 @@ const projectionScenarios = [
     expected: "1.1M",
     breakout: "2.75M",
     definition:
-      "The total likes, comments, saves, and shares generated by the program.",
+      "The total likes, comments, saves, and shares generated by 100 content pieces.",
     calculations: {
-      conservative: "11% engagement × 4M views = 440K.",
-      expected: "11% engagement × 10M views = 1.1M.",
-      breakout: "11% engagement × 25M views = 2.75M.",
+      conservative: "Base case: 11% engagement × 4M views = 440K.",
+      expected: "Expected: 11% engagement × 10M views = 1.1M.",
+      breakout: "Optimistic: 11% engagement × 25M views = 2.75M.",
     },
   },
   {
@@ -159,35 +239,24 @@ const projectionScenarios = [
     conservative: "100K",
     expected: "300K",
     breakout: "550K",
-    definition:
-      "Audience actions showing they want to try a use case, such as saves, resource requests, clicks, or comments expressing interest.",
-    calculations: {
-      conservative: "1K average signals × 100 posts = 100K.",
-      expected: "3K average signals × 100 posts = 300K.",
-      breakout: "5.5K average signals × 100 posts = 550K.",
-    },
-  },
-  {
-    metric: "Reported use-case trials",
-    conservative: "30K",
-    expected: "150K",
-    breakout: "400K",
     northStar: true,
     definition:
-      "Measured through comments and other audience responses asking to try the featured use case.",
+      "Audience actions showing clear intent to try a use case, including saves, resource requests, clicks, and direct comments asking to try it.",
     calculations: {
-      conservative: "300 average comments × 100 posts = 30K.",
-      expected: "1.5K average comments × 100 posts = 150K.",
-      breakout: "4K average comments × 100 posts = 400K.",
+      conservative: "1K base-case signals per content piece × 100 = 100K.",
+      expected: "3K expected signals per content piece × 100 = 300K.",
+      breakout: "5.5K optimistic signals per content piece × 100 = 550K.",
     },
   },
 ];
 function ReelProofRow({
   reels,
   fontClassName,
+  showStatsByDefault = false,
 }: {
   reels: FeaturedReel[];
   fontClassName: string;
+  showStatsByDefault?: boolean;
 }) {
   return (
     <>
@@ -288,7 +357,10 @@ function ReelProofRow({
               }`}
             >
               {reel.videoSrc ? (
-                <PlayableReelCard reel={reel} />
+                <PlayableReelCard
+                  reel={reel}
+                  showStatsByDefault={showStatsByDefault}
+                />
               ) : reel.posterSrc ? (
                 reel.instagramUrl ? (
                   <a
@@ -374,6 +446,35 @@ export default function ProposalPage({
             to {
               clip-path: inset(0 0 0 0);
               opacity: 1;
+            }
+          }
+
+          @keyframes begin-concept-marquee {
+            from {
+              transform: translateX(0);
+            }
+            to {
+              transform: translateX(-50%);
+            }
+          }
+
+          .begin-concept-marquee {
+            animation: begin-concept-marquee 42s linear infinite;
+            will-change: transform;
+          }
+
+          .begin-concept-marquee-shell:hover .begin-concept-marquee,
+          .begin-concept-marquee-shell:focus-within .begin-concept-marquee {
+            animation-play-state: paused;
+          }
+
+          @media (prefers-reduced-motion: reduce) {
+            .begin-concept-marquee-shell {
+              overflow-x: auto;
+            }
+
+            .begin-concept-marquee {
+              animation: none;
             }
           }
 
@@ -894,7 +995,7 @@ export default function ProposalPage({
               </p>
             </div>
 
-            <div className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3 sm:gap-5">
+            <div className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3 sm:gap-x-7 sm:gap-y-5 lg:gap-x-9">
               <div className="space-y-3">
                 <Image
                   src="/begin/about-stats/250k.png"
@@ -973,6 +1074,7 @@ export default function ProposalPage({
               <div className="mx-auto max-w-[34rem]">
                 <ReelProofRow
                   fontClassName={emphasisFontClassName}
+                  showStatsByDefault
                   reels={[
                     ...featuredReelSections[2].reels.filter(
                       (reel) => reel.videoSrc,
@@ -984,7 +1086,7 @@ export default function ProposalPage({
 
               <p className="text-white">
                 {
-                  "But the more I work with OpenAI, the more I realize that the biggest opportunity is teaching people what to actually do with your products."
+                  "But the more I work with OpenAI, the more questions come in on what to actually do with your products."
                 }
               </p>
             </div>
@@ -1024,18 +1126,18 @@ export default function ProposalPage({
             />
 
             <div className="mx-auto max-w-4xl space-y-7 pt-8 text-xl leading-9 text-white/72 sm:pt-12">
-              <p>And every single time, I run into the same problem.</p>
+              <p>And every single time, we have the same problem.</p>
               <p className="text-2xl font-semibold leading-9 text-white">
                 I only get to make one or two videos.
               </p>
               <p>
                 {
-                  "One or two chances to explain dozens of incredible features, possibilities, and ideas."
+                  "Only one or two chances to explain dozens of incredible features, possibilities, and ideas."
                 }
               </p>
               <p>
                 {
-                  "But I know the most memorable posts must have one simple core idea, so people walk away with something to try."
+                  "But the most memorable posts must have one simple core idea (so people walk away with something to try immediately)."
                 }
               </p>
               <p>So I constantly find myself asking:</p>
@@ -1059,16 +1161,17 @@ export default function ProposalPage({
                     "Maybe the goal isn't to fit everything into one video, or even one influencer campaign sprint."
                   }
                 </p>
-                <p
-                  className={`${emphasisFontClassName} py-8 text-4xl font-normal leading-none text-white sm:text-6xl`}
-                >
-                  The goal is to educate people over time.
-                </p>
+                <SequentialOverTime fontClassName={emphasisFontClassName} />
                 <p>
                   Because education is the highest form of product leverage.
                 </p>
                 <p>
-                  <strong>So let's teach people!</strong>
+                  <a
+                    href="#the-proposal"
+                    className="inline-flex rounded-sm font-bold text-white underline decoration-white/35 underline-offset-4 transition hover:decoration-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-4 focus-visible:ring-offset-black"
+                  >
+                    So let&apos;s teach people!
+                  </a>
                 </p>
               </div>
             }
@@ -1157,7 +1260,7 @@ export default function ProposalPage({
                 </p>
                 <p className="mx-auto max-w-3xl text-center">
                   I will turn your features into relevant lessons{" "}
-                  <strong>Gen Z will understand, try, and come to love.</strong>
+                  <strong>Gen Z will understand, try, and COME TO LOVE.</strong>
                 </p>
               </div>
             </>
@@ -1231,12 +1334,12 @@ export default function ProposalPage({
                     to ideas they are already familiar with.
                   </p>
                   <p>
-                    I started my online presence by making computer science
-                    concepts digestible. As I expanded into teaching AI and
-                    showing how it can be useful, I kept the same core
-                    principles: explain ideas step by step, make every video
-                    easy to understand, and ensure viewers walk away with
-                    practical knowledge they can use.
+                    I&apos;ve been tutoring for years, long before I started
+                    teaching online. That experience taught me how to break
+                    down complex ideas and find the explanation that makes them
+                    click. I bring the same approach to every video, using fun
+                    analogies and practical use cases to make computer science
+                    and AI accessible to anyone.
                   </p>
                   <ReelProofRow
                     reels={featuredReelSections[0].reels}
@@ -1317,7 +1420,7 @@ export default function ProposalPage({
                   </p>
                   <p className="text-xl leading-8 text-white sm:text-2xl sm:leading-9">
                     The numbers speak for themselves. The philosophy that led me
-                    here is simple:
+                    here is simple:{" "}
                     <em>
                       people learn so much more when ideas are presented in a
                       fun and engaging way.
@@ -1328,7 +1431,7 @@ export default function ProposalPage({
                     it&apos;s my challenge videos, inspiring stories, or tech
                     news. Because I speak fluent Gen Z, I keep them captivated
                     with memes, jokes, and nostalgic references. Basically,
-                    we&apos;re always joking together while we learn.
+                    we&apos;re always having fun while we learn.
                   </p>
                   <ReelProofRow
                     reels={featuredReelSections[1].reels}
@@ -1387,7 +1490,7 @@ export default function ProposalPage({
                   </div>
                   <p>
                     {
-                      "I've already partnered with OpenAI, translated product launches into useful creator content, and participated in ChatGPT Futures."
+                      "I've already partnered with OpenAI multiple times, translated product launches into useful creator content, and participated in ChatGPT Futures."
                     }
                   </p>
                   <p className="text-xl leading-8 text-white sm:text-2xl sm:leading-9">
@@ -1504,6 +1607,37 @@ export default function ProposalPage({
               >
                 {"100 practical ChatGPT use cases every year."}
               </p>
+
+              <div className="relative left-1/2 w-[min(76rem,calc(100vw-3rem))] -translate-x-1/2 pt-2">
+                <div className="begin-concept-marquee-shell overflow-hidden pb-5">
+                  <div className="begin-concept-marquee flex w-max">
+                    {[0, 1].map((copyIndex) => (
+                      <div
+                        key={copyIndex}
+                        className="flex shrink-0 gap-4 pr-4"
+                        aria-hidden={copyIndex === 1 ? true : undefined}
+                      >
+                        {futureVideoConcepts.map((concept, index) => (
+                          <div
+                            key={`${copyIndex}-${concept.src}`}
+                            className={`relative aspect-[9/16] w-40 shrink-0 overflow-hidden rounded-2xl border border-white/15 bg-white/5 shadow-[0_18px_45px_rgba(0,0,0,0.4)] sm:w-44 ${
+                              index % 2 === 0 ? "sm:-rotate-1" : "sm:rotate-1"
+                            }`}
+                          >
+                            <Image
+                              src={concept.src}
+                              alt={copyIndex === 0 ? concept.alt : ""}
+                              fill
+                              className="object-cover"
+                              sizes="(min-width: 640px) 176px, 160px"
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
 
               <p>
                 {
@@ -1624,7 +1758,7 @@ export default function ProposalPage({
                       What could this achieve?
                     </h3>
                     <p className="text-lg text-white/68 sm:text-xl">
-                      Annual planning projections for 100 practical use cases.
+                      Annual planning projections for 100 content pieces.
                     </p>
                   </div>
 
@@ -1767,8 +1901,11 @@ export default function ProposalPage({
                   </div>
 
                   <p className="mx-auto mt-5 max-w-4xl text-center text-sm leading-6 text-white/50 sm:text-base">
-                    These are planning scenarios, not guarantees. Final targets
-                    and measurement methods will be agreed during Discussion.
+                    These are planning scenarios. Exact final targets
+                    and measurement methods will be agreed during the Discussion stage.
+                    These projections reflect organic posting only; paid ad
+                    spend behind strong posts could help us reach even more
+                    people.
                   </p>
                 </section>
 
@@ -1820,7 +1957,7 @@ export default function ProposalPage({
               </p>
               <p className="text-white">
                 {
-                  "With me as your dedicated educator and ambassador to Gen Z, more people will understand what ChatGPT can do, see themselves in the use case, try it once, and build the habit of coming back."
+                  "With me as your dedicated educator and ambassador to Gen Z, more people will understand what ChatGPT can do. They'll see themselves in the use case, try it once, and build the habit of coming back."
                 }
               </p>
             </div>
@@ -1842,22 +1979,43 @@ export default function ProposalPage({
                   key={feature.feature}
                   className="grid items-start gap-4 sm:grid-cols-[minmax(10rem,0.7fr)_6rem_minmax(0,1.3fr)] sm:gap-8"
                 >
-                  <div className="relative h-16 w-full sm:h-24">
-                    {feature.featureImage ? (
-                      <Image
-                        src={feature.featureImage}
-                        alt={feature.feature}
-                        fill
-                        className="object-contain object-left"
-                        sizes="(min-width: 1024px) 280px, (min-width: 640px) 34vw, 90vw"
-                      />
-                    ) : (
-                      <p
-                        className={`${emphasisFontClassName} text-4xl leading-none text-white sm:text-5xl`}
-                      >
-                        {feature.feature}
-                      </p>
-                    )}
+                  <div>
+                    <div className="relative h-16 w-full sm:h-24">
+                      {feature.featureImage ? (
+                        <Image
+                          src={feature.featureImage}
+                          alt={feature.feature}
+                          fill
+                          className="object-contain object-left"
+                          sizes="(min-width: 1024px) 280px, (min-width: 640px) 34vw, 90vw"
+                        />
+                      ) : (
+                        <p
+                          className={`${emphasisFontClassName} text-4xl leading-none text-white sm:text-5xl`}
+                        >
+                          {feature.feature}
+                        </p>
+                      )}
+                    </div>
+
+                    {feature.exampleThumbnails?.length ? (
+                      <div className="mt-5 flex flex-wrap gap-4 sm:ml-7">
+                        {feature.exampleThumbnails.map((thumbnail) => (
+                          <div
+                            key={thumbnail.src}
+                            className="relative aspect-[9/16] w-28 overflow-hidden rounded-2xl border border-white/15 bg-white/5 shadow-[0_18px_50px_rgba(0,0,0,0.35)] sm:w-32"
+                          >
+                            <Image
+                              src={thumbnail.src}
+                              alt={thumbnail.alt}
+                              fill
+                              className="object-cover"
+                              sizes="(min-width: 640px) 128px, 112px"
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    ) : null}
                   </div>
 
                   <div className="relative ml-3 h-10 w-20 rotate-90 sm:ml-0 sm:mt-2 sm:h-16 sm:w-full sm:rotate-0">
@@ -1908,8 +2066,9 @@ export default function ProposalPage({
               <p className="flex gap-3 text-xl leading-8 text-white/72">
                 <span className="mt-3 h-1.5 w-1.5 shrink-0 rounded-full bg-white/70" />
                 <span>
-                  Let&apos;s discuss which new features matter most and turn
-                  them into practical use cases people can try.
+                  I&apos;m great at coming up with use cases for new features as
+                  I love experimenting and finding things to do with different
+                  technology. Let&apos;s chat.
                 </span>
               </p>
             </div>

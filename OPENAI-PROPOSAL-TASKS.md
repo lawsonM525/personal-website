@@ -13,13 +13,13 @@ Use this file as the source of truth for the `/begin/openai` proposal. Add notes
 ### Highest priority
 
 - [x] Add a projections block with conservative, expected and breakout scenarios. 🟠
-- [ ] Change the live use-case heading from “Every Year” to the approved “In the Next Year,” or explicitly reverse that decision.
+- [x] Use the approved “In the Next Year” heading in the live use-case section. 🟠
 - [ ] Finish the teaching-and-memory argument with Michelle’s tutoring history and one credible source.
 - [ ] Add the planned “come to love” tooltip.
 
 ### Evidence and visual polish
 
-- [ ] Add three Michelle-style sample thumbnails to the use-case section.
+- [x] Add ten Michelle-style future-video thumbnails to the proposal preview and use-case section. 🟠
 - [ ] Standardize the three Codex comment screenshots.
 - [ ] Choose and apply one secondary interface color.
 - [ ] Plan the separate business photoshoot.
@@ -46,7 +46,7 @@ Use this file as the source of truth for the `/begin/openai` proposal. Add notes
 - [x] Position Discussion and Discovery as the opening phases of the three-year program instead of pitching a standalone pilot. ✅
 
 - [x] Keep operating logistics high-level and finalize the details during Discussion. ✅
-  - [x] Use four KPI categories: post views, useful engagement, intent to try and reported use-case trials. 🟠
+  - [x] Use three KPI categories: post views, useful engagement and intent to try. Intent to try is the north-star metric Michelle can measure directly. 🟠
   - The public proposal only needs to name these KPI categories.
   - Final targets, deliverable dates, approvals, reporting and review processes will be agreed with OpenAI during Discussion.
 
@@ -57,16 +57,14 @@ Use this file as the source of truth for the `/begin/openai` proposal. Add notes
   - Expected useful engagements: 1.1M (11% × 10M annual post views).
   - Conservative intent-to-try signals: 100K (1K average signals × 100 posts).
   - Expected intent-to-try signals: 300K (3K average signals × 100 posts).
-  - Conservative north star — reported use-case trials: 30K (300 average comments × 100 posts).
-  - Expected north star — reported use-case trials: 150K (1.5K average comments × 100 posts).
   - Breakout annual post views: 25M (250K average views × 100 posts).
   - Breakout useful engagements: 2.75M (11% × 25M annual post views).
-  - Breakout intent-to-try signals: 550K (5.5K average signals × 100 posts).
-  - Breakout north star — reported use-case trials: 400K (4K average comments × 100 posts).
+  - Breakout north star — intent-to-try signals: 550K (5.5K average signals × 100 posts).
+  - Each scenario represents 100 original content pieces, with every piece published on both Instagram and TikTok.
+  - Projections reflect organic posting only; paid support could extend the reach of strong posts. 🟠
   - [x] Count each projection number up once when its table cell first enters the viewport. 🟠
   - [x] Use metric-name tooltips for definitions and individual-cell tooltips for calculations. 🟠
-  - Reported trials are aggregate audience reports, not confirmed unique people.
-  - If OpenAI can provide privacy-safe aggregate product insights, explore whether trials contribute to repeat use over time.
+  - OpenAI may separately connect these signals to privacy-safe aggregate product usage on its end, if it chooses.
   - Keep actual pricing out; Patrick will handle it.
 
 - [x] Update every piece of the old offer language. 🟠
@@ -110,9 +108,9 @@ Use this file as the source of truth for the `/begin/openai` proposal. Add notes
   - Michelle’s decision: the ChatGPT framing plus the Codex examples already make the broader product scope understandable.
 
 - [ ] Complete the teaching and memory argument.
-  - Keep the existing line about connecting new concepts to familiar ideas.
-  - Add Michelle’s years of tutoring before teaching online.
-  - Find and cite one credible source about prior knowledge helping people understand and remember new information.
+  - [x] Keep the existing line about connecting new concepts to familiar ideas. 🟠
+  - [x] Add Michelle’s years of tutoring before teaching online and explain her teaching method. 🟠
+  - [ ] Find and cite one credible source about prior knowledge helping people understand and remember new information.
 
 ## Why Michelle?
 
@@ -150,15 +148,18 @@ Use this file as the source of truth for the `/begin/openai` proposal. Add notes
 
 ## Metrics, videos and visual proof
 
-- [ ] Apply the approved use-case section title consistently.
+- [x] Apply the approved use-case section title consistently. 🟠
   - Approved: “100 ChatGPT Use Cases I Could Teach in the Next Year.”
-  - Current live heading: “100 ChatGPT Use Cases I Could Teach Every Year.”
+  - Current live heading matches the approved version.
 
 - [x] Add a chalk graphic to the use-case section. 🟠
-  - “?? new feature?” → “I’m great at coming up with practical use cases for new features.”
+  - “?? new feature?” → “I’m great at coming up with use cases for new features as I love experimenting and finding things to do with different technology. Let’s chat.”
   - Placed after the full example list, with the question marks stacked above “new feature?”.
 
-- [ ] Add three Michelle-style sample thumbnails to the use-case section.
+- [x] Add ten Michelle-style future-video thumbnails to the use-case section. 🟠
+  - Every generated headline uses no more than two lines.
+  - The complete set appears as a continuously moving horizontal preview near the beginning of the proposal; it pauses on hover and respects reduced-motion preferences.
+  - The detailed use-case section shows exactly two representative thumbnails under each of Connectors, Codex and Memory.
 
 - [x] Generate poster images automatically from `0:00` of every MP4. 🟠
   - There are nine MP4 video cards and one static ChatGPT Futures card.
@@ -230,9 +231,8 @@ Use this file as the source of truth for the `/begin/openai` proposal. Add notes
 ## Working order
 
 1. Review the projections block.
-2. Resolve the “Every Year” versus “In the Next Year” heading mismatch.
-3. Complete the teaching-and-memory proof.
-4. Add the “come to love” tooltip.
-5. Add sample thumbnails and standardize comment screenshots.
-6. Choose the secondary color.
-7. Plan the separate business photoshoot.
+2. Complete the teaching-and-memory proof.
+3. Add the “come to love” tooltip.
+4. Standardize the comment screenshots.
+5. Choose the secondary color.
+6. Plan the separate business photoshoot.
