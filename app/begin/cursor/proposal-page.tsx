@@ -13,6 +13,7 @@ import { ReleaseWordMap } from "./release-word-map";
 import { PlayableReelCard } from "./playable-reel-card";
 import { featuredReelSections, type FeaturedReel } from "./reels";
 import { TypedQuestionList } from "./typed-question-list";
+import { WhyMichelleStepRail } from "./why-michelle-step-rail";
 
 const cursorIntroReelTitles = [
   "How to vibe code properly",
@@ -29,6 +30,30 @@ const cursorIntroReels = cursorIntroReelTitles.flatMap((title) => {
   return reel ? [reel] : [];
 });
 
+const lovableBuildReel: FeaturedReel = {
+  title: "Three web apps in three days with Lovable",
+  instagramUrl: "https://www.instagram.com/reel/DIbRSBFAjwm/",
+  videoSrc: "/begin/reels/three-web-apps-three-days-lovable.mp4",
+  posterSrc: "/begin/reels/posters/three-web-apps-three-days-lovable.jpg",
+  views: "100K",
+  likes: "2K",
+  saves: "500",
+};
+
+const properVibeCodingReel: FeaturedReel = {
+  title: "The proper way to vibe code",
+  instagramUrl: "https://www.instagram.com/reel/DTr_XbnDNYR/",
+  videoSrc: "/begin/reels/proper-way-to-vibe-code.mp4",
+  posterSrc: "/begin/reels/posters/proper-way-to-vibe-code.jpg",
+};
+
+const cursorBuildProofReels = [
+  featuredReelSections[2].reels[0],
+  lovableBuildReel,
+  properVibeCodingReel,
+  featuredReelSections[2].reels[1],
+];
+
 const heroIntro = [
   "ChatGPT has the power to completely change how people learn, work, create, build, and live.",
   "But most people still don't know how to actually use it.",
@@ -37,8 +62,8 @@ const heroIntro = [
 
 const cursorHeroIntro = [
   "Cursor can help people build websites, apps, and tools.",
-  "It can also help them create books, art archives, and automations that advance their careers.",
-  "But few people know all they can actually use it for.",
+  "It can also help them make books, art archives, and automations that advance their careers.",
+  "But a lot of people don't know that yet.",
   "I want to help change that.",
 ];
 
@@ -51,7 +76,7 @@ const everydayQuestions = [
 ];
 
 const cursorEverydayQuestions = [
-  "Can I build a portfolio that actually feels like me? How?",
+  "Can I build a portfolio that feels unique to me? How?",
   "Can I make an app to organize my semester? How?",
   "Can I turn this idea into something my friends can use? How?",
   "Can I automate the annoying parts of my week? How?",
@@ -101,13 +126,13 @@ const cursorUseCaseFeatures: UseCaseFeature[] = [
   {
     feature: "15 websites, apps & technical tools",
     useCases: [
-      "Build a portfolio website that actually feels like you.",
+      "How to build a portfolio website (that's truly unique).",
       "Make a study dashboard for all your classes.",
       "Turn your notes into a quiz app.",
       "Build a useful mobile app from an idea in your Notes app.",
       "Create a tiny game inspired by your childhood.",
       "Make a tool that automates an annoying weekly task.",
-      "Build and launch a tiny SaaS product people would pay for.",
+      "How to make money with Cursor.",
       "Use multiple Cursor agents to build one project in parallel.",
       "Debug and test an app with real runtime evidence.",
       "Take an unfinished project all the way to launch.",
@@ -123,7 +148,7 @@ const cursorUseCaseFeatures: UseCaseFeature[] = [
     useCases: [
       "Write and organize a full-length book with Cursor.",
       "Turn physical artwork into a digital archive and print shop.",
-      "Build your own digital museum around a person, place, or obsession.",
+      "Make a poetry book with me.",
       "Create an interactive archive for your family stories.",
       "Build an interactive world around an album or playlist.",
       "Turn family recipes into a searchable, shareable cookbook.",
@@ -136,7 +161,7 @@ const cursorUseCaseFeatures: UseCaseFeature[] = [
       "Build a personal career dashboard that tells you what to focus on next.",
       "Create an internship and job application tracker that updates itself.",
       "Turn your résumé into an interactive website.",
-      "Build an interview practice tool tailored to your dream role.",
+      "Build a personalized interview practice tool.",
       "Create a personal CRM that helps you maintain professional relationships.",
       "Automate the repetitive reports and updates you make at work.",
       "Build a dashboard that makes your impact impossible to overlook.",
@@ -160,7 +185,7 @@ const cursorStartingUseCaseFeatures: UseCaseFeature[] = [
   },
   {
     feature: "3 career accelerators",
-    useCases: [1, 4, 7].map(
+    useCases: [3, 4, 7].map(
       (index) => cursorUseCaseFeatures[2].useCases[index],
     ),
   },
@@ -231,25 +256,25 @@ const proposalPayoffs = [
 
 const cursorProposalPayoffs = [
   {
-    title: "More reasons to try Cursor",
-    description:
-      "Show Gen Z projects they already want to make instead of asking them to imagine the use case themselves.",
-    Icon: Repeat2,
-  },
-  {
     title: "Greater feature discovery",
     description:
-      "Give desktop, CLI, cloud agents, mobile, automations, and integrations room to become stories people understand.",
+      "Give desktop, CLI, cloud agents, mobile, automations, and integrations real, practical use cases people can understand and try.",
     Icon: TrendingUp,
+  },
+  {
+    title: "A wider audience",
+    description:
+      "Show people beyond Cursor's typical audience how it can help them create, learn, and advance in their careers.",
+    Icon: Repeat2,
   },
   {
     title: "Direct Gen Z insights",
     description:
-      "Cursor learns what young people want to build, what stops them, and which workflows make them feel capable.",
+      "I'll give the Cursor team feedback on what young people want to build and which workflows they're most excited to try.",
     Icon: MessagesSquare,
   },
   {
-    title: "A trusted Gen Z educator",
+    title: "A consistent educator",
     description:
       "Give Cursor one consistent educator who can welcome new builders without losing technical credibility.",
     Icon: GraduationCap,
@@ -588,6 +613,25 @@ export default function ProposalPage({
             animation-play-state: paused;
           }
 
+          .begin-why-michelle-sticky .begin-codex-pet-lane {
+            width: 100%;
+            min-width: 0;
+            flex: none;
+          }
+
+          @keyframes begin-why-michelle-story-focus {
+            0%, 100% {
+              opacity: 0.12;
+              filter: blur(7px);
+              transform: translateY(3rem) scale(0.975);
+            }
+            28%, 72% {
+              opacity: 1;
+              filter: blur(0);
+              transform: translateY(0) scale(1);
+            }
+          }
+
           @media (prefers-reduced-motion: reduce) {
             .begin-concept-marquee-shell {
               overflow-x: auto;
@@ -862,6 +906,12 @@ export default function ProposalPage({
             .begin-chalk-strike-line:nth-child(2)::after {
               animation-range: entry 80% contain 95%;
             }
+
+            .begin-why-michelle-story {
+              animation: begin-why-michelle-story-focus linear both;
+              animation-timeline: view();
+              animation-range: entry 0% exit 100%;
+            }
           }
 
           @media (max-width: 900px) {
@@ -899,6 +949,13 @@ export default function ProposalPage({
 
             .begin-mia-sprite {
               filter: drop-shadow(0 0 12px rgba(255,255,255,0.14));
+            }
+
+            .begin-why-michelle-story {
+              animation: none !important;
+              opacity: 1 !important;
+              filter: none !important;
+              transform: none !important;
             }
 
             .begin-codex-pet-lane {
@@ -968,6 +1025,13 @@ export default function ProposalPage({
             .begin-codex-pet-traveler {
               left: 0;
               opacity: 1;
+            }
+
+            .begin-why-michelle-story {
+              animation: none;
+              opacity: 1;
+              filter: none;
+              transform: none;
             }
           }
 
@@ -1405,11 +1469,11 @@ export default function ProposalPage({
 
           <div
             id="why-michelle"
-            className={`scroll-mt-20 max-w-4xl space-y-16 text-xl leading-9 text-white/72 ${
+            className={`relative left-1/2 w-[min(72rem,calc(100vw-3rem))] -translate-x-1/2 scroll-mt-20 ${
               isCursor ? "order-3" : ""
             }`}
           >
-            <div className="flex flex-wrap items-end gap-5 sm:flex-nowrap sm:gap-7">
+            <div className="mb-14 flex flex-wrap items-end gap-5 sm:flex-nowrap sm:gap-7 lg:hidden">
               <h2
                 className={`${emphasisFontClassName} text-6xl font-normal leading-none tracking-tight text-white sm:text-8xl`}
               >
@@ -1418,36 +1482,45 @@ export default function ProposalPage({
               <div
                 className="begin-codex-pet-lane"
                 role="img"
-                aria-label={
-                  isCursor
-                    ? "Animated Michelle pet running from left to right, waving, and jumping"
-                    : "Animated Codex pet running from left to right, waving, and jumping"
-                }
+                aria-label="Animated Michelle pet walking beside the Why Michelle heading"
               >
                 <div className="begin-codex-pet-traveler" aria-hidden="true">
-                  <div
-                    className={`begin-mia-sprite ${
-                      isCursor ? "begin-mia-sprite-michelle" : ""
-                    }`}
-                  />
+                  <div className="begin-mia-sprite begin-mia-sprite-michelle" />
                 </div>
               </div>
             </div>
-          </div>
 
-          <div
-            className={`max-w-4xl space-y-14 text-xl leading-9 text-white/72 sm:space-y-20 ${
-              isCursor ? "order-3" : ""
-            }`}
-          >
-            <div className="space-y-7">
+            <div className="grid items-start lg:grid-cols-[19rem_minmax(0,1fr)] lg:gap-14">
+              <aside className="begin-why-michelle-sticky sticky top-20 hidden h-[calc(100vh-5rem)] flex-col justify-center lg:flex">
+                <h2
+                  className={`${emphasisFontClassName} text-7xl font-normal leading-none tracking-tight text-white`}
+                >
+                  Why Michelle?
+                </h2>
+                <div
+                  className="begin-codex-pet-lane mt-5"
+                  role="img"
+                  aria-label="Animated Michelle pet walking beside the Why Michelle heading"
+                >
+                  <div className="begin-codex-pet-traveler" aria-hidden="true">
+                    <div className="begin-mia-sprite begin-mia-sprite-michelle" />
+                  </div>
+                </div>
+                <WhyMichelleStepRail />
+              </aside>
+
+              <div className="min-w-0 max-w-4xl space-y-14 text-xl leading-9 text-white/72 sm:space-y-20 lg:space-y-0">
+            <div
+              id="why-michelle-point-1"
+              className="begin-why-michelle-story scroll-mt-24 space-y-7 lg:min-h-screen lg:py-20 lg:pr-4"
+            >
               <div className="flex items-start gap-4 sm:items-center">
                 <Image
                   src="/begin/chalk-numbers/chalk-circled-1.png"
                   alt="1"
                   width={512}
                   height={512}
-                  className="mt-1 h-12 w-12 shrink-0 object-contain sm:mt-0 sm:h-14 sm:w-14"
+                  className="mt-1 h-12 w-12 shrink-0 object-contain sm:mt-0 sm:h-14 sm:w-14 lg:hidden"
                 />
                 <h3
                   className={`${emphasisFontClassName} text-[2rem] leading-none text-white sm:text-5xl`}
@@ -1460,11 +1533,12 @@ export default function ProposalPage({
                 ideas they are already familiar with.
               </p>
               <p>
-                I started my online presence by making computer science concepts
-                digestible. As I expanded into teaching AI and showing how it
-                can be useful, I kept the same core principles: explain ideas
-                step by step, make every video easy to understand, and ensure
-                viewers walk away with practical knowledge they can use.
+                I&apos;ve been tutoring for years, long before I started
+                teaching online. That experience taught me how to break down
+                complex ideas and find the explanation that makes them click. I
+                bring the same approach to every video, using fun analogies and
+                practical use cases to make computer science and AI accessible
+                to anyone.
               </p>
               <ReelProofRow
                 reels={featuredReelSections[0].reels}
@@ -1521,14 +1595,17 @@ export default function ProposalPage({
               </div>
             </div>
 
-            <div className="space-y-7">
+            <div
+              id="why-michelle-point-2"
+              className="begin-why-michelle-story scroll-mt-24 space-y-7 lg:min-h-screen lg:py-20 lg:pr-4"
+            >
               <div className="flex items-start gap-4 sm:items-center">
                 <Image
                   src="/begin/chalk-numbers/chalk-circled-2.png"
                   alt="2"
                   width={512}
                   height={512}
-                  className="mt-1 h-12 w-12 shrink-0 object-contain sm:mt-0 sm:h-14 sm:w-14"
+                  className="mt-1 h-12 w-12 shrink-0 object-contain sm:mt-0 sm:h-14 sm:w-14 lg:hidden"
                 />
                 <h3
                   className={`${emphasisFontClassName} text-[2rem] leading-none text-white sm:text-5xl`}
@@ -1549,10 +1626,11 @@ export default function ProposalPage({
                 </em>
               </p>
               <p>
-                I&apos;m constantly sharing challenges with my audience and
-                making videos with memes, jokes, and references I know will keep
-                them engaged. My audience loves it, and we&apos;re always joking
-                together while we learn.
+                My audience loves the variety in my content, whether it&apos;s
+                my challenge videos, inspiring stories, or tech news. Because I
+                speak fluent Gen Z, I keep them captivated with memes, jokes,
+                and nostalgic references. Basically, we&apos;re always having
+                fun while we learn.
               </p>
               <ReelProofRow
                 reels={featuredReelSections[1].reels}
@@ -1591,14 +1669,17 @@ export default function ProposalPage({
               </div>
             </div>
 
-            <div className="space-y-7">
+            <div
+              id="why-michelle-point-3"
+              className="begin-why-michelle-story scroll-mt-24 space-y-7 lg:min-h-screen lg:py-20 lg:pr-4"
+            >
               <div className="flex items-start gap-4 sm:items-center">
                 <Image
                   src="/begin/chalk-numbers/chalk-circled-3.png"
                   alt="3"
                   width={512}
                   height={512}
-                  className="mt-1 h-12 w-12 shrink-0 object-contain sm:mt-0 sm:h-14 sm:w-14"
+                  className="mt-1 h-12 w-12 shrink-0 object-contain sm:mt-0 sm:h-14 sm:w-14 lg:hidden"
                 />
                 <h3
                   className={`${emphasisFontClassName} text-[2rem] leading-none text-white sm:text-5xl`}
@@ -1621,81 +1702,53 @@ export default function ProposalPage({
               <ReelProofRow
                 reels={
                   isCursor
-                    ? featuredReelSections[2].reels.filter(
-                        (reel) => reel.videoSrc,
-                      )
+                    ? cursorBuildProofReels
                     : featuredReelSections[2].reels
                 }
                 fontClassName={emphasisFontClassName}
               />
-              <div
-                className="begin-mobile-comment-carousel grid items-start gap-3 pt-2 sm:grid-cols-2 lg:grid-cols-3"
-                role="region"
-                aria-label="Audience comments. Swipe horizontally on mobile to see more."
-                tabIndex={0}
-              >
-                {[
-                  {
-                    src: "/begin/comments/codex-automations-discovery.png",
-                    alt: "Audience comment discovering Codex automations",
-                    width: 976,
-                    height: 122,
-                  },
-                  {
-                    src: "/begin/comments/codex-need-to-jump-on.png",
-                    alt: "Audience comment saying they need to start using Codex",
-                    width: 402,
-                    height: 100,
-                  },
-                  {
-                    src: "/begin/comments/codex-sites-automation-question.png",
-                    alt: "Audience question about using Codex to update sites automatically",
-                    width: 530,
-                    height: 202,
-                  },
-                ].map((comment) => (
-                  <Image
-                    key={comment.src}
-                    src={comment.src}
-                    alt={comment.alt}
-                    width={comment.width}
-                    height={comment.height}
-                    className="h-auto w-full"
-                    sizes="(min-width: 1024px) 250px, (min-width: 768px) 390px, calc(100vw - 48px)"
-                  />
-                ))}
-              </div>
+              {!isCursor && (
+                <div
+                  className="begin-mobile-comment-carousel grid items-start gap-3 pt-2 sm:grid-cols-2 lg:grid-cols-3"
+                  role="region"
+                  aria-label="Audience comments. Swipe horizontally on mobile to see more."
+                  tabIndex={0}
+                >
+                  {[
+                    {
+                      src: "/begin/comments/codex-automations-discovery.png",
+                      alt: "Audience comment discovering Codex automations",
+                      width: 976,
+                      height: 122,
+                    },
+                    {
+                      src: "/begin/comments/codex-need-to-jump-on.png",
+                      alt: "Audience comment saying they need to start using Codex",
+                      width: 402,
+                      height: 100,
+                    },
+                    {
+                      src: "/begin/comments/codex-sites-automation-question.png",
+                      alt: "Audience question about using Codex to update sites automatically",
+                      width: 530,
+                      height: 202,
+                    },
+                  ].map((comment) => (
+                    <Image
+                      key={comment.src}
+                      src={comment.src}
+                      alt={comment.alt}
+                      width={comment.width}
+                      height={comment.height}
+                      className="h-auto w-full"
+                      sizes="(min-width: 1024px) 250px, (min-width: 768px) 390px, calc(100vw - 48px)"
+                    />
+                  ))}
+                </div>
+              )}
             </div>
 
-            <div className="space-y-7">
-              <div className="flex items-start gap-4 sm:items-center">
-                <Image
-                  src="/begin/chalk-numbers/chalk-circled-4.png"
-                  alt="4"
-                  width={512}
-                  height={512}
-                  className="mt-1 h-12 w-12 shrink-0 object-contain sm:mt-0 sm:h-14 sm:w-14"
-                />
-                <h3
-                  className={`${emphasisFontClassName} text-[2rem] leading-none text-white sm:text-5xl`}
-                >
-                  I can sustain the program
-                </h3>
               </div>
-              <ul className="space-y-4">
-                {[
-                  "I already publish posts almost every day.",
-                  "I have experience translating new launches quickly.",
-                  isCursor
-                    ? "I have enough project ideas to sustain all 30 useful Cursor how-tos."
-                    : "Oh, and I'm five minutes from OpenAI's Mission Bay office. 😉",
-                ].map((item) => (
-                  <li key={item} className="flex gap-3">
-                    <span className="mt-4 h-1.5 w-1.5 shrink-0 rounded-full bg-white/70" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
             </div>
           </div>
 
@@ -1723,7 +1776,7 @@ export default function ProposalPage({
                 className={`${emphasisFontClassName} text-center text-4xl leading-none text-white sm:text-5xl`}
               >
                 {isCursor
-                  ? "We’ll begin with the first 10. Then scale to all 30."
+                  ? "We’ll begin with the first 10. We can review, then scale to all 30."
                   : "100 practical ChatGPT use cases every year."}
               </p>
               {isCursor && (
@@ -1775,12 +1828,12 @@ export default function ProposalPage({
                     {
                       title: "7 unexpected creative projects",
                       description:
-                        "Books, art archives, digital museums, interactive worlds, and ideas people would never expect to make with Cursor.",
+                        "Books, art archives, interactive worlds, and ideas people would never have thought to try with Cursor.",
                     },
                     {
                       title: "8 career accelerators",
                       description:
-                        "Tools that help people work smarter, prove their impact, and get ahead in their careers.",
+                        "Tools that help people work smarter and advance in their careers and education—something almost everyone wants to do.",
                     },
                   ].map(({ title, description }) => (
                     <div key={title} className="group relative min-h-56 p-7">
@@ -1802,7 +1855,7 @@ export default function ProposalPage({
               )}
               <p>
                 {isCursor
-                  ? "Coding is still the foundation. Half of the series will focus on websites, apps, and technical tools because builders are my primary audience. The other half will show how Cursor can help people advance their careers and create things they never expected to build with code."
+                  ? "Coding is still the foundation. Half of the series will focus on websites, apps, and technical tools. The other half will show how Cursor can help people advance in their careers and create things they never thought to build with code. This will help Cursor reach beyond its typical audience."
                   : "You're creating more useful features than any single launch campaign can fully explain."}
               </p>
               <p>
@@ -1950,7 +2003,7 @@ export default function ProposalPage({
             <div className="space-y-7">
               <p>
                 {isCursor
-                  ? "The first 10 videos give us a focused starting series. From there, we can scale what works into all 30 practical Cursor how-tos."
+                  ? "From the first 10, we can review and then scale what works into 30 practical Cursor how-tos."
                   : "Every year, I will turn 100 practical ChatGPT use cases into education Gen Z can understand, remember, and try."}
               </p>
               <p className="text-white">
@@ -2030,11 +2083,11 @@ export default function ProposalPage({
             <p
               className={`${emphasisFontClassName} text-5xl leading-none sm:text-7xl`}
             >
-              {isCursor ? "That's the first 10." : "That's the first 12."}
+              {isCursor ? "Ready to get started?" : "That's the first 12."}
             </p>
             <p className="text-2xl leading-9 text-white/72 sm:text-3xl sm:leading-10">
               {isCursor
-                ? "I have 20 more ready to develop. Ready to choose the first 10? Let's talk!"
+                ? "Let's talk!"
                 : "Want to see the next 88? Let's talk!"}
             </p>
 
@@ -2053,7 +2106,7 @@ export default function ProposalPage({
             }`}
           >
             {isCursor
-              ? "This webpage was made with AI—and a lot of human direction 😉"
+              ? "This pitch page was built with AI—so yes, I can make a ‘How to Make a Pitch Deck with Cursor’ video. 😉"
               : "This webpage was made with Codex 😉"}
           </footer>
         </div>

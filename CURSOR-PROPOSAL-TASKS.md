@@ -15,7 +15,8 @@
 
 ## Category proof
 
-- [ ] Add Michelle’s Lovable video to the Cursor proof section.
+- [ ] Duplicate OpenAI’s “Why Michelle?” scrollytelling treatment with three Cursor-specific points. 🟠
+- [ ] Add Michelle’s Lovable video to the Cursor proof section. 🟠
 - [ ] Add Michelle’s Windsurf video to the Cursor proof section.
 - [ ] Keep the 9M-view Codex example, but surround it with Cursor-adjacent and product-neutral building examples.
 
