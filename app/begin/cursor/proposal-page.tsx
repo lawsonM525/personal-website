@@ -45,13 +45,15 @@ const properVibeCodingReel: FeaturedReel = {
   instagramUrl: "https://www.instagram.com/reel/DTr_XbnDNYR/",
   videoSrc: "/begin/reels/proper-way-to-vibe-code.mp4",
   posterSrc: "/begin/reels/posters/proper-way-to-vibe-code.jpg",
+  views: "250K",
+  likes: "17.5K",
+  saves: "8.9K",
 };
 
 const cursorBuildProofReels = [
   featuredReelSections[2].reels[0],
   lovableBuildReel,
   properVibeCodingReel,
-  featuredReelSections[2].reels[1],
 ];
 
 const heroIntro = [
