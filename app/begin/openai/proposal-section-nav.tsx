@@ -6,9 +6,8 @@ const defaultSections = [
   { id: "introduction", label: "Introduction" },
   { id: "the-opportunity", label: "The Opportunity" },
   { id: "why-educate", label: "Why Educate?" },
-  { id: "why-michelle", label: "Why Michelle?" },
   { id: "the-proposal", label: "The Proposal" },
-  { id: "chatgpt-videos", label: "100 ChatGPT use cases" },
+  { id: "why-michelle", label: "Why Michelle?" },
   { id: "lets-talk", label: "Let’s Talk!" },
 ];
 

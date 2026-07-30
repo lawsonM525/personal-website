@@ -10,7 +10,6 @@ import {
   TrendingUp,
 } from "lucide-react";
 import { ChalkTrail } from "./chalk-trail";
-import { CountUpMetric } from "./count-up-metric";
 import { ProposalSectionNav } from "./proposal-section-nav";
 import { ReleaseWordMap } from "./release-word-map";
 import { ScrollScrubVideo } from "./scroll-scrub-video";
@@ -35,15 +34,6 @@ const everydayQuestions = [
   "Can AI help me organize my week? How?",
   "Can AI help me make more money? How?",
 ];
-type UseCaseFeature = {
-  feature: string;
-  featureImage?: string;
-  useCases: string[];
-  exampleThumbnails?: {
-    src: string;
-    alt: string;
-  }[];
-};
 const futureVideoConcepts = [
   {
     src: "/begin/reels/concepts/how-i-use-ai-to-run-my-day.jpg",
@@ -86,68 +76,6 @@ const futureVideoConcepts = [
     alt: "Turn your emails into a homework tracker video concept",
   },
 ];
-const chatGPTUseCaseFeatures: UseCaseFeature[] = [
-  {
-    feature: "Connectors",
-    featureImage: "/begin/releases-generated/connectors.png",
-    useCases: [
-      "How to make a personal income tracker?",
-      "How to look through your Granola meetings and update your personal CRM?",
-      "How to dig through your emails and find assignments you are losing track of?",
-      "How to make a Canva vision board from your saved ideas?",
-      "How to make a Spotify playlist for a road trip, a study night, or a GENERATIONAL lock in? (that's 3 😉)",
-    ],
-    exampleThumbnails: [
-      {
-        src: "/begin/reels/concepts/personal-income-tracker.png",
-        alt: "How to make a personal income tracker video concept",
-      },
-      {
-        src: "/begin/reels/concepts/personal-crm.png",
-        alt: "Build your personal CRM that stays automatically updated video concept",
-      },
-    ],
-  },
-  {
-    feature: "Codex",
-    featureImage: "/begin/releases-generated/codex.png",
-    useCases: [
-      "How to use Codex to build a portfolio website as an artist, writer, or musician?",
-      "How to use Codex to research a health problem that has been bothering you?",
-      "How to use Codex to write a full-length book that's 300+ pages? (I have lots of friends with book ideas sitting in their Notes app 😅)",
-    ],
-    exampleThumbnails: [
-      {
-        src: "/begin/reels/concepts/write-full-book-in-60-seconds.png",
-        alt: "How to write a full book in 60 seconds video concept",
-      },
-      {
-        src: "/begin/reels/concepts/portfolio-website-with-codex.png",
-        alt: "Build a portfolio website with Codex video concept",
-      },
-    ],
-  },
-  {
-    feature: "Memory",
-    featureImage: "/begin/releases-generated/memory-dreaming.png",
-    useCases: [
-      "How to keep track of your daily tasks like a personal assistant?",
-      "How to analyze your behavioral patterns and find ways to grow?",
-      "How to navigate your workplace culture?",
-      "How to reverse-engineer your goals to achieve them faster?",
-    ],
-    exampleThumbnails: [
-      {
-        src: "/begin/reels/concepts/how-i-use-ai-to-run-my-day.jpg",
-        alt: "How I use AI to run my day video concept",
-      },
-      {
-        src: "/begin/reels/concepts/know-thyself.png",
-        alt: "How to know thyself by analyzing your behavioral patterns video concept",
-      },
-    ],
-  },
-];
 const proposalPayoffs = [
   {
     title: "Prolonged launch impact",
@@ -176,79 +104,34 @@ const proposalPayoffs = [
 ];
 const proposalTimelineStages = [
   {
-    step: "01",
-    title: "Discussion",
-    duration: "2 weeks",
+    step: "Month 1",
+    title: "September",
     bullets: [
-      "Agree on goals, current priority features, KPIs, and what success looks like.",
-      "Confirm points of contact, content formats, and publishing rhythm.",
+      "3 original videos, each posted to Instagram and TikTok.",
+      "Boosting rights for the partnership content.",
+      "Full exclusivity from other AI companies.",
+      "60-minute virtual workshop: Get Hired with ChatGPT: Resume to Interview.",
     ],
   },
   {
-    step: "02",
-    title: "Discovery",
-    duration: "3 months",
+    step: "Month 2",
+    title: "October",
     bullets: [
-      "Test practical use cases through different formats: videos, carousels, and stories.",
-      "Learn what Gen Z responds well to and what they are excited to try.",
-      "Measure post views, useful engagement, and intent to try.",
-      "Take one week to review what worked and plan what comes next.",
+      "3 original videos, each posted to Instagram and TikTok.",
+      "Boosting rights for the partnership content.",
+      "Full exclusivity from other AI companies.",
+      "60-minute virtual workshop: Build Your First Working App with Codex.",
     ],
   },
   {
-    step: "03",
-    title: "Delivery",
-    duration: "6-month blocks",
+    step: "Month 3",
+    title: "November",
     bullets: [
-      "Scale what worked in Discovery into 50 practical ChatGPT use cases every six months.",
-      "Focus each block on the features and use cases that support OpenAI's current business priorities.",
-      "Take two weeks before the next block to review results and adapt the program around new launches and changing priorities.",
+      "3 original videos, each posted to Instagram and TikTok.",
+      "Boosting rights for the partnership content.",
+      "Full exclusivity from other AI companies.",
+      "60-minute virtual workshop: Build a Finals Study Plan with ChatGPT (Academic Weapon Edition).",
     ],
-  },
-];
-const projectionScenarios = [
-  {
-    metric: "Annual post views",
-    conservative: "4M",
-    expected: "10M",
-    breakout: "25M",
-    definition:
-      "The total views generated by 100 original content pieces, each published on Instagram and TikTok.",
-    calculations: {
-      conservative:
-        "40K average views per content piece × 100 content pieces = 4M.",
-      expected:
-        "100K average views per content piece × 100 content pieces = 10M.",
-      breakout:
-        "250K average views per content piece × 100 content pieces = 25M.",
-    },
-  },
-  {
-    metric: "Useful engagements",
-    conservative: "440K",
-    expected: "1.1M",
-    breakout: "2.75M",
-    definition:
-      "The total likes, comments, saves, and shares generated by 100 content pieces.",
-    calculations: {
-      conservative: "Base case: 11% engagement × 4M views = 440K.",
-      expected: "Expected: 11% engagement × 10M views = 1.1M.",
-      breakout: "Optimistic: 11% engagement × 25M views = 2.75M.",
-    },
-  },
-  {
-    metric: "Intent-to-try signals",
-    conservative: "100K",
-    expected: "300K",
-    breakout: "550K",
-    northStar: true,
-    definition:
-      "Audience actions showing clear intent to try a use case, including saves, resource requests, clicks, and direct comments asking to try it.",
-    calculations: {
-      conservative: "1K base-case signals per content piece × 100 = 100K.",
-      expected: "3K expected signals per content piece × 100 = 300K.",
-      breakout: "5.5K optimistic signals per content piece × 100 = 550K.",
-    },
   },
 ];
 function ReelProofRow({
@@ -409,7 +292,8 @@ export default function ProposalPage({
 }: {
   emphasisFontClassName: string;
 }) {
-  const emailTeamHref = `mailto:michelle@thedriveagency.co,patrick@thedriveagency.co,teresa@thedriveagency.co?subject=${encodeURIComponent("OpenAI × Michelle — Gen Z Product Education")}&body=${encodeURIComponent("Hi Michelle, Patrick, and Teresa,\n\nI’d love to discuss the three-year Gen Z product-education program and its first Discussion and Discovery phases.\n\nWhat would be the best next step?\n\nBest,")}`;
+  const emailTeamHref = `mailto:michelle@thedriveagency.co,patrick@thedriveagency.co,teresa@thedriveagency.co?subject=${encodeURIComponent("OpenAI × Michelle — Gen Z Product Education")}&body=${encodeURIComponent("Hi Michelle, Patrick, and Teresa,\n\nI’d love to discuss the three-month Gen Z product-education partnership.\n\nWhat would be the best next step?\n\nBest,")}`;
+
   return (
     <main
       className="begin-openai-page bg-black pt-16 text-white"
@@ -1185,7 +1069,7 @@ export default function ProposalPage({
         id="why-educate"
         className="scroll-mt-20 bg-black px-6 py-16 sm:px-10 sm:pb-24 sm:pt-16 lg:px-16"
       >
-        <div className="mx-auto max-w-5xl space-y-14">
+        <div className="mx-auto flex max-w-5xl flex-col gap-14">
           {
             <>
               <div className="space-y-7">
@@ -1267,6 +1151,209 @@ export default function ProposalPage({
               </div>
             </>
           }
+
+          <div
+            id="the-proposal"
+            className={`scroll-mt-20 max-w-4xl space-y-10 pt-14 text-xl leading-9 text-white/72 ${""}`}
+          >
+            <h2
+              className={`${emphasisFontClassName} text-5xl font-normal leading-none tracking-tight text-white sm:text-8xl`}
+            >
+              {"What I’m Proposing"}
+            </h2>
+
+            <div className="space-y-7">
+              <p className="mx-auto max-w-5xl text-center text-2xl leading-9 sm:text-4xl sm:leading-tight">
+                <strong className="text-white">
+                  {
+                    "A three-month partnership to educate Gen Z on ways to use ChatGPT in their daily life."
+                  }
+                </strong>
+              </p>
+              <div className="relative left-1/2 w-[min(76rem,calc(100vw-3rem))] -translate-x-1/2 pt-2">
+                <div className="begin-concept-marquee-shell overflow-hidden pb-5">
+                  <div className="begin-concept-marquee flex w-max">
+                    {[0, 1].map((copyIndex) => (
+                      <div
+                        key={copyIndex}
+                        className="flex shrink-0 gap-4 pr-4"
+                        aria-hidden={copyIndex === 1 ? true : undefined}
+                      >
+                        {futureVideoConcepts.map((concept, index) => (
+                          <div
+                            key={`${copyIndex}-${concept.src}`}
+                            className={`relative aspect-[9/16] w-40 shrink-0 overflow-hidden rounded-2xl border border-white/15 bg-white/5 shadow-[0_18px_45px_rgba(0,0,0,0.4)] sm:w-44 ${
+                              index % 2 === 0 ? "sm:-rotate-1" : "sm:rotate-1"
+                            }`}
+                          >
+                            <Image
+                              src={concept.src}
+                              alt={copyIndex === 0 ? concept.alt : ""}
+                              fill
+                              className="object-cover"
+                              sizes="(min-width: 640px) 176px, 160px"
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <p>
+                {
+                  "You're creating more useful features than any single launch campaign can fully explain."
+                }
+              </p>
+              <p>
+                I will help Gen Z understand what your features can do for them
+                with one practical use case at a time.
+              </p>
+              <p>
+                {
+                  "Together, we can create an educational series that turns new and existing OpenAI capabilities into practical content and live walkthroughs that people can understand, remember, and try."
+                }
+              </p>
+            </div>
+
+            {
+              <div className="space-y-12">
+                <div className="relative left-1/2 w-[min(76rem,calc(100vw-3rem))] -translate-x-1/2 space-y-9 py-6 sm:py-10">
+                  <div className="space-y-3 text-center">
+                    <h3
+                      className={`${emphasisFontClassName} text-5xl leading-none text-white sm:text-7xl`}
+                    >
+                      How will this work?
+                    </h3>
+                  </div>
+
+                  <div className="grid gap-12 md:grid-cols-3 md:gap-5">
+                    {proposalTimelineStages.map((stage, stageIndex) => (
+                      <article
+                        key={stage.title}
+                        className="group relative min-w-0 px-2 md:px-7"
+                      >
+                        {stageIndex > 0 && (
+                          <>
+                            <Image
+                              aria-hidden="true"
+                              src="/begin/generated/chalk-timeline-divider.png"
+                              alt=""
+                              width={18}
+                              height={700}
+                              className="absolute -left-2.5 top-0 hidden h-full w-2 object-fill opacity-65 md:block"
+                            />
+                            <Image
+                              aria-hidden="true"
+                              src="/begin/generated/chalk-timeline-ticks.png"
+                              alt=""
+                              width={1200}
+                              height={220}
+                              className="mb-8 h-7 w-full object-fill opacity-70 contrast-125 brightness-125 md:hidden"
+                            />
+                          </>
+                        )}
+
+                        <div className="flex items-center gap-4">
+                          <span
+                            className={`${emphasisFontClassName} flex min-h-12 min-w-24 shrink-0 items-center justify-center bg-[url('/begin/generated/chalk-card-border.png')] bg-[length:100%_100%] bg-center bg-no-repeat px-4 text-2xl leading-none text-white`}
+                          >
+                            {stage.step}
+                          </span>
+                          <div
+                            aria-hidden="true"
+                            className="h-7 min-w-0 flex-1 overflow-hidden"
+                          >
+                            <Image
+                              src="/begin/generated/chalk-timeline-ticks.png"
+                              alt=""
+                              width={1200}
+                              height={220}
+                              className={`h-full w-full object-fill opacity-[0.72] contrast-125 brightness-125 transition-opacity duration-300 group-hover:opacity-95 ${
+                                stageIndex === 1
+                                  ? "scale-x-[-1]"
+                                  : stageIndex === 2
+                                    ? "scale-x-[0.97]"
+                                    : ""
+                              }`}
+                            />
+                          </div>
+                        </div>
+
+                        <h4
+                          className={`${emphasisFontClassName} mt-6 text-4xl leading-none text-white sm:text-5xl`}
+                        >
+                          {stage.title}
+                        </h4>
+                        <ul className="mt-5 space-y-3 text-lg leading-7 text-white/68">
+                          {stage.bullets.map((bullet) => (
+                            <li key={bullet} className="flex gap-3">
+                              <span
+                                aria-hidden="true"
+                                className="mt-[0.45rem] h-3.5 w-3.5 shrink-0 bg-[url('/begin/generated/chalk-nav-circle.png')] bg-contain bg-center bg-no-repeat opacity-70"
+                              />
+                              <span>{bullet}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </article>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="space-y-5">
+                  <p className="text-2xl font-semibold leading-8 text-white sm:text-3xl sm:leading-10">
+                    What this gives you:
+                  </p>
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    {proposalPayoffs.map(
+                      ({ title, description, Icon }, index) => (
+                        <div
+                          key={title}
+                          className="group relative min-h-56 p-8 sm:p-9"
+                        >
+                          <span
+                            aria-hidden="true"
+                            className={`pointer-events-none absolute inset-0 bg-[url('/begin/generated/chalk-card-border.png')] bg-[length:100%_100%] bg-center bg-no-repeat opacity-65 transition-[opacity,transform] duration-300 group-hover:scale-[1.01] group-hover:opacity-95 ${
+                              index % 2 === 0
+                                ? "-rotate-[0.3deg]"
+                                : "rotate-[0.3deg]"
+                            }`}
+                          />
+                          <div className="relative z-10 mb-5 flex h-12 w-12 items-center justify-center bg-[url('/begin/generated/chalk-nav-circle.png')] bg-contain bg-center bg-no-repeat opacity-85 transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-105">
+                            <Icon
+                              aria-hidden="true"
+                              className="h-5 w-5 text-white"
+                              strokeWidth={1.8}
+                            />
+                          </div>
+                          <h3 className="relative z-10 text-xl font-semibold leading-7 text-white sm:text-2xl">
+                            {title}
+                          </h3>
+                          <p className="relative z-10 mt-3 text-lg leading-8 text-white/68">
+                            {description}
+                          </p>
+                        </div>
+                      ),
+                    )}
+                  </div>
+                </div>
+              </div>
+            }
+
+            <div className="space-y-7">
+              <p className="text-white">
+                {
+                  "With me as your dedicated educator and ambassador to Gen Z, more people will understand what ChatGPT can do. They'll see themselves in the use case, try it once, and build the habit of coming back."
+                }
+              </p>
+            </div>
+          </div>
+
+          <div>
+            <ScrollScrubVideo />
+          </div>
 
           <div
             id="why-michelle"
@@ -1597,503 +1684,29 @@ export default function ProposalPage({
             </div>
           </div>
 
-          <ScrollScrubVideo />
-
-          <div
-            id="the-proposal"
-            className={`scroll-mt-20 max-w-4xl space-y-10 pt-14 text-xl leading-9 text-white/72 ${""}`}
-          >
-            <h2
-              className={`${emphasisFontClassName} text-5xl font-normal leading-none tracking-tight text-white sm:text-8xl`}
-            >
-              {"What I’m Proposing"}
-            </h2>
-
-            <div className="space-y-7">
-              <p className="mx-auto max-w-5xl text-center text-2xl leading-9 sm:text-4xl sm:leading-tight">
-                <strong className="text-white">
-                  {
-                    "A three-year program to educate Gen Z on ways to use ChatGPT in daily life."
-                  }
-                </strong>
-              </p>
-              <p
-                className={`${emphasisFontClassName} text-center text-4xl leading-none text-white sm:text-5xl`}
-              >
-                {"100 practical ChatGPT use cases every year."}
-              </p>
-
-              <div className="relative left-1/2 w-[min(76rem,calc(100vw-3rem))] -translate-x-1/2 pt-2">
-                <div className="begin-concept-marquee-shell overflow-hidden pb-5">
-                  <div className="begin-concept-marquee flex w-max">
-                    {[0, 1].map((copyIndex) => (
-                      <div
-                        key={copyIndex}
-                        className="flex shrink-0 gap-4 pr-4"
-                        aria-hidden={copyIndex === 1 ? true : undefined}
-                      >
-                        {futureVideoConcepts.map((concept, index) => (
-                          <div
-                            key={`${copyIndex}-${concept.src}`}
-                            className={`relative aspect-[9/16] w-40 shrink-0 overflow-hidden rounded-2xl border border-white/15 bg-white/5 shadow-[0_18px_45px_rgba(0,0,0,0.4)] sm:w-44 ${
-                              index % 2 === 0 ? "sm:-rotate-1" : "sm:rotate-1"
-                            }`}
-                          >
-                            <Image
-                              src={concept.src}
-                              alt={copyIndex === 0 ? concept.alt : ""}
-                              fill
-                              className="object-cover"
-                              sizes="(min-width: 640px) 176px, 160px"
-                            />
-                          </div>
-                        ))}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              <p>
-                {
-                  "You're creating more useful features than any single launch campaign can fully explain."
-                }
-              </p>
-              <p>
-                I will help Gen Z understand what your features can do for them
-                with one practical use case at a time.
-              </p>
-              <p>
-                {
-                  "Together, we can create an ongoing educational series that turns new and existing OpenAI capabilities into habit-building, practical how-to videos that people can understand, remember, and try."
-                }
-              </p>
-            </div>
-
-            {
-              <div className="space-y-12">
-                <div className="relative left-1/2 w-[min(76rem,calc(100vw-3rem))] -translate-x-1/2 space-y-9 py-6 sm:py-10">
-                  <div className="space-y-3 text-center">
-                    <h3
-                      className={`${emphasisFontClassName} text-5xl leading-none text-white sm:text-7xl`}
-                    >
-                      How will this work?
-                    </h3>
-                    <p className="text-xl font-semibold text-white/78 sm:text-2xl">
-                      Test. Learn. Scale what works.
-                    </p>
-                  </div>
-
-                  <div className="grid gap-12 md:grid-cols-3 md:gap-5">
-                    {proposalTimelineStages.map((stage, stageIndex) => (
-                      <article
-                        key={stage.title}
-                        className="group relative min-w-0 px-2 md:px-7"
-                      >
-                        {stageIndex > 0 && (
-                          <>
-                            <Image
-                              aria-hidden="true"
-                              src="/begin/generated/chalk-timeline-divider.png"
-                              alt=""
-                              width={18}
-                              height={700}
-                              className="absolute -left-2.5 top-0 hidden h-full w-2 object-fill opacity-65 md:block"
-                            />
-                            <Image
-                              aria-hidden="true"
-                              src="/begin/generated/chalk-timeline-ticks.png"
-                              alt=""
-                              width={1200}
-                              height={220}
-                              className="mb-8 h-7 w-full object-fill opacity-70 contrast-125 brightness-125 md:hidden"
-                            />
-                          </>
-                        )}
-
-                        <div className="flex items-center gap-4">
-                          <span
-                            className={`${emphasisFontClassName} flex h-12 w-12 shrink-0 items-center justify-center bg-[url('/begin/generated/chalk-nav-circle.png')] bg-contain bg-center bg-no-repeat text-2xl leading-none text-white`}
-                          >
-                            {stage.step}
-                          </span>
-                          <div
-                            aria-hidden="true"
-                            className="h-7 min-w-0 flex-1 overflow-hidden"
-                          >
-                            <Image
-                              src="/begin/generated/chalk-timeline-ticks.png"
-                              alt=""
-                              width={1200}
-                              height={220}
-                              className={`h-full w-full object-fill opacity-[0.72] contrast-125 brightness-125 transition-opacity duration-300 group-hover:opacity-95 ${
-                                stageIndex === 1
-                                  ? "scale-x-[-1]"
-                                  : stageIndex === 2
-                                    ? "scale-x-[0.97]"
-                                    : ""
-                              }`}
-                            />
-                          </div>
-                        </div>
-
-                        <h4
-                          className={`${emphasisFontClassName} mt-6 text-4xl leading-none text-white sm:text-5xl`}
-                        >
-                          {stage.title}
-                        </h4>
-                        <p className="mt-2 text-sm font-semibold uppercase tracking-[0.16em] text-white/58">
-                          {stage.duration}
-                        </p>
-                        <ul className="mt-5 space-y-3 text-lg leading-7 text-white/68">
-                          {stage.bullets.map((bullet) => (
-                            <li key={bullet} className="flex gap-3">
-                              <span
-                                aria-hidden="true"
-                                className="mt-[0.45rem] h-3.5 w-3.5 shrink-0 bg-[url('/begin/generated/chalk-nav-circle.png')] bg-contain bg-center bg-no-repeat opacity-70"
-                              />
-                              <span>{bullet}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </article>
-                    ))}
-                  </div>
-                </div>
-
-                <section
-                  aria-labelledby="projection-heading"
-                  className="relative left-1/2 w-[min(76rem,calc(100vw-3rem))] -translate-x-1/2 py-4 sm:py-8"
-                >
-                  <div className="space-y-3 text-center">
-                    <h3
-                      id="projection-heading"
-                      className={`${emphasisFontClassName} text-5xl leading-none text-white sm:text-7xl`}
-                    >
-                      What could this achieve?
-                    </h3>
-                    <p className="text-lg text-white/68 sm:text-xl">
-                      Annual planning projections for 100 content pieces.
-                    </p>
-                  </div>
-
-                  <div className="mt-12 overflow-x-auto px-4 pb-2 sm:overflow-visible sm:px-16">
-                    <table className="w-full min-w-[860px] table-fixed border-collapse text-left">
-                      <colgroup>
-                        <col className="w-[31%]" />
-                        <col className="w-[23%]" />
-                        <col className="w-[23%]" />
-                        <col className="w-[23%]" />
-                      </colgroup>
-                      <thead>
-                        <tr className="bg-[url('/begin/generated/chalk-timeline-ticks.png')] bg-[length:100%_9px] bg-bottom bg-no-repeat">
-                          <th className="px-5 pb-8 align-bottom text-sm font-semibold uppercase tracking-[0.16em] text-white/48">
-                            Projection metric
-                          </th>
-                          {["Conservative", "Expected", "Breakout"].map(
-                            (scenario) => (
-                              <th
-                                key={scenario}
-                                className="relative px-3 pb-8 text-center"
-                              >
-                                <span className="relative block px-3 py-5 text-xl font-semibold text-white sm:text-2xl">
-                                  <span
-                                    aria-hidden="true"
-                                    className="pointer-events-none absolute inset-0 bg-[url('/begin/generated/chalk-card-border.png')] bg-[length:100%_100%] bg-center bg-no-repeat opacity-70"
-                                  />
-                                  <span className="relative z-10">
-                                    {scenario}
-                                  </span>
-                                </span>
-                              </th>
-                            ),
-                          )}
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {projectionScenarios.map((row, index) => (
-                          <tr
-                            key={row.metric}
-                            className={
-                              index < projectionScenarios.length - 1
-                                ? "bg-[url('/begin/generated/chalk-timeline-ticks.png')] bg-[length:100%_7px] bg-bottom bg-no-repeat"
-                                : ""
-                            }
-                          >
-                            <th
-                              scope="row"
-                              className="relative px-5 py-7 text-lg font-semibold leading-7 text-white sm:text-xl"
-                            >
-                              <span className="flex items-center gap-2">
-                                <span>{row.metric}</span>
-                                <span className="group/metric-tip relative inline-flex shrink-0">
-                                  <button
-                                    type="button"
-                                    aria-label={`Define ${row.metric}`}
-                                    aria-describedby={`projection-definition-${index}`}
-                                    className="inline-flex h-5 w-5 cursor-help items-center justify-center rounded-full border border-white/30 text-white/60 outline-none transition-colors hover:border-white/70 hover:text-white focus-visible:border-white focus-visible:text-white"
-                                  >
-                                    <Info
-                                      aria-hidden="true"
-                                      className="h-3 w-3"
-                                    />
-                                  </button>
-                                  <span
-                                    id={`projection-definition-${index}`}
-                                    role="tooltip"
-                                    className="pointer-events-none absolute bottom-full left-0 z-50 mb-3 w-80 translate-y-1 p-5 text-left text-sm font-normal leading-6 text-white opacity-0 shadow-2xl transition-all duration-200 group-hover/metric-tip:translate-y-0 group-hover/metric-tip:opacity-100 group-focus-within/metric-tip:translate-y-0 group-focus-within/metric-tip:opacity-100"
-                                  >
-                                    <span
-                                      aria-hidden="true"
-                                      className="absolute inset-0 bg-black/95 bg-[url('/begin/generated/chalk-card-border.png')] bg-[length:100%_100%] bg-center bg-no-repeat"
-                                    />
-                                    <span className="relative z-10 block px-1 py-0.5">
-                                      {row.definition}
-                                    </span>
-                                  </span>
-                                </span>
-                              </span>
-                              {row.northStar && (
-                                <span className="mt-1 block text-xs font-semibold uppercase tracking-[0.16em] text-white/48">
-                                  North-star metric
-                                </span>
-                              )}
-                            </th>
-                            {[
-                              {
-                                value: row.conservative,
-                                calculation: row.calculations.conservative,
-                              },
-                              {
-                                value: row.expected,
-                                calculation: row.calculations.expected,
-                              },
-                              {
-                                value: row.breakout,
-                                calculation: row.calculations.breakout,
-                              },
-                            ].map(({ value, calculation }, valueIndex) => (
-                                <td
-                                  key={`${row.metric}-${valueIndex}`}
-                                  className="relative px-4 py-7 text-center text-3xl font-semibold leading-none text-white sm:text-4xl"
-                                >
-                                  <span
-                                    aria-hidden="true"
-                                    className="pointer-events-none absolute -left-1 top-2 h-[calc(100%-1rem)] w-2 bg-[url('/begin/generated/chalk-timeline-divider.png')] bg-[length:100%_100%] bg-center bg-no-repeat opacity-30"
-                                  />
-                                  <span className="group/cell-tip relative inline-flex">
-                                    <button
-                                      type="button"
-                                      aria-label={`Explain the ${value} ${row.metric} calculation`}
-                                      aria-describedby={`projection-calculation-${index}-${valueIndex}`}
-                                      className="cursor-help rounded-sm outline-none focus-visible:ring-1 focus-visible:ring-white/70"
-                                    >
-                                      <CountUpMetric
-                                        value={value}
-                                        delayMs={index * 55 + valueIndex * 70}
-                                      />
-                                    </button>
-                                    <span
-                                      id={`projection-calculation-${index}-${valueIndex}`}
-                                      role="tooltip"
-                                      className="pointer-events-none absolute bottom-full left-1/2 z-50 mb-2 w-64 -translate-x-1/2 translate-y-1 p-4 text-left text-sm font-normal leading-6 text-white opacity-0 shadow-2xl transition-all duration-200 group-hover/cell-tip:translate-y-0 group-hover/cell-tip:opacity-100 group-focus-within/cell-tip:translate-y-0 group-focus-within/cell-tip:opacity-100"
-                                    >
-                                      <span
-                                        aria-hidden="true"
-                                        className="absolute inset-0 bg-black/95 bg-[url('/begin/generated/chalk-card-border.png')] bg-[length:100%_100%] bg-center bg-no-repeat"
-                                      />
-                                      <span className="relative z-10 block px-1 py-0.5">
-                                        {calculation}
-                                      </span>
-                                    </span>
-                                  </span>
-                                </td>
-                              ))}
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-
-                  <p className="mx-auto mt-5 max-w-4xl text-center text-sm leading-6 text-white/50 sm:text-base">
-                    These are planning scenarios. Exact final targets
-                    and measurement methods will be agreed during the Discussion stage.
-                    These projections reflect organic posting only; paid ad
-                    spend behind strong posts could help us reach even more
-                    people.
-                  </p>
-                </section>
-
-                <div className="space-y-5">
-                  <p className="text-2xl font-semibold leading-8 text-white sm:text-3xl sm:leading-10">
-                    What this gives you:
-                  </p>
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    {proposalPayoffs.map(
-                      ({ title, description, Icon }, index) => (
-                        <div
-                          key={title}
-                          className="group relative min-h-56 p-8 sm:p-9"
-                        >
-                          <span
-                            aria-hidden="true"
-                            className={`pointer-events-none absolute inset-0 bg-[url('/begin/generated/chalk-card-border.png')] bg-[length:100%_100%] bg-center bg-no-repeat opacity-65 transition-[opacity,transform] duration-300 group-hover:scale-[1.01] group-hover:opacity-95 ${
-                              index % 2 === 0
-                                ? "-rotate-[0.3deg]"
-                                : "rotate-[0.3deg]"
-                            }`}
-                          />
-                          <div className="relative z-10 mb-5 flex h-12 w-12 items-center justify-center bg-[url('/begin/generated/chalk-nav-circle.png')] bg-contain bg-center bg-no-repeat opacity-85 transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-105">
-                            <Icon
-                              aria-hidden="true"
-                              className="h-5 w-5 text-white"
-                              strokeWidth={1.8}
-                            />
-                          </div>
-                          <h3 className="relative z-10 text-xl font-semibold leading-7 text-white sm:text-2xl">
-                            {title}
-                          </h3>
-                          <p className="relative z-10 mt-3 text-lg leading-8 text-white/68">
-                            {description}
-                          </p>
-                        </div>
-                      ),
-                    )}
-                  </div>
-                </div>
-              </div>
-            }
-
-            <div className="space-y-7">
-              <p>
-                {
-                  "Every year, I will turn 100 practical ChatGPT use cases into education Gen Z can understand, remember, and try."
-                }
-              </p>
-              <p className="text-white">
-                {
-                  "With me as your dedicated educator and ambassador to Gen Z, more people will understand what ChatGPT can do. They'll see themselves in the use case, try it once, and build the habit of coming back."
-                }
-              </p>
-            </div>
-          </div>
-
-          <div
-            id="chatgpt-videos"
-            className={`scroll-mt-20 max-w-5xl pt-14 ${""}`}
-          >
-            <h2
-              className={`${emphasisFontClassName} text-5xl font-normal leading-none tracking-tight text-white sm:text-8xl`}
-            >
-              {"100 ChatGPT Use Cases I Could Teach in the Next Year"}
-            </h2>
-
-            <div className="mt-14 space-y-10">
-              {chatGPTUseCaseFeatures.map((feature) => (
-                <div
-                  key={feature.feature}
-                  className="grid items-start gap-4 sm:grid-cols-[minmax(10rem,0.7fr)_6rem_minmax(0,1.3fr)] sm:gap-8"
-                >
-                  <div>
-                    <div className="relative h-16 w-full sm:h-24">
-                      {feature.featureImage ? (
-                        <Image
-                          src={feature.featureImage}
-                          alt={feature.feature}
-                          fill
-                          className="object-contain object-left"
-                          sizes="(min-width: 1024px) 280px, (min-width: 640px) 34vw, 90vw"
-                        />
-                      ) : (
-                        <p
-                          className={`${emphasisFontClassName} text-4xl leading-none text-white sm:text-5xl`}
-                        >
-                          {feature.feature}
-                        </p>
-                      )}
-                    </div>
-
-                  </div>
-
-                  <div className="relative ml-3 h-10 w-20 rotate-90 sm:ml-0 sm:mt-2 sm:h-16 sm:w-full sm:rotate-0">
-                    <Image
-                      src="/begin/chalk-arrow-right.png"
-                      alt=""
-                      fill
-                      aria-hidden="true"
-                      className="object-contain"
-                      sizes="112px"
-                    />
-                  </div>
-
-                  <ul className="space-y-3 text-xl leading-8 text-white/72">
-                    {feature.useCases.map((useCase) => (
-                      <li key={useCase} className="flex gap-3">
-                        <span className="mt-3 h-1.5 w-1.5 shrink-0 rounded-full bg-white/70" />
-                        <span>{useCase}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-16 grid items-start gap-4 sm:grid-cols-[minmax(10rem,0.7fr)_6rem_minmax(0,1.3fr)] sm:gap-8">
-              <div className="relative h-16 w-full sm:h-24">
-                <Image
-                  src="/begin/releases-generated/new-feature-question-v2.png"
-                  alt="Two question marks above the words new feature written in chalk"
-                  fill
-                  className="origin-left scale-125 object-contain object-left mix-blend-screen"
-                  sizes="(min-width: 1024px) 360px, (min-width: 640px) 36vw, 90vw"
-                />
-              </div>
-
-              <div className="relative ml-3 h-10 w-20 rotate-90 sm:ml-0 sm:mt-2 sm:h-16 sm:w-full sm:rotate-0">
-                <Image
-                  src="/begin/chalk-arrow-right.png"
-                  alt=""
-                  fill
-                  aria-hidden="true"
-                  className="object-contain"
-                  sizes="112px"
-                />
-              </div>
-
-              <p className="flex gap-3 text-xl leading-8 text-white/72">
-                <span className="mt-3 h-1.5 w-1.5 shrink-0 rounded-full bg-white/70" />
-                <span>
-                  I&apos;m great at coming up with use cases for new features as
-                  I love experimenting and finding things to do with different
-                  technology. Let&apos;s chat.
-                </span>
-              </p>
-            </div>
-          </div>
-
           <div
             id="lets-talk"
-            className={`scroll-mt-20 mt-14 space-y-5 text-white sm:mt-20 sm:space-y-6 ${""}`}
+            className="scroll-mt-20 space-y-6 pt-20 text-center text-white sm:pt-28"
           >
-            <p
-              className={`${emphasisFontClassName} text-5xl leading-none sm:text-7xl`}
+            <h2
+              className={`${emphasisFontClassName} text-5xl leading-none sm:text-8xl`}
             >
-              {"That's the first 12."}
+              Let&apos;s teach Gen Z together.
+            </h2>
+            <p className="mx-auto max-w-2xl text-xl leading-8 text-white/68 sm:text-2xl sm:leading-9">
+              If this feels aligned, let&apos;s talk about bringing the
+              three-month partnership to life.
             </p>
-            <p className="text-2xl leading-9 text-white/72 sm:text-3xl sm:leading-10">
-              {"Want to see the next 88? Let's talk!"}
-            </p>
-
-            <div className="flex justify-center pt-6 sm:pt-10">
+            <div className="flex justify-center pt-4 sm:pt-8">
               <a
                 href={emailTeamHref}
                 className="begin-email-team-button"
-                aria-label={`Email Michelle, Patrick, and Teresa about the ${"OpenAI"} partnership`}
+                aria-label="Email Michelle, Patrick, and Teresa about the OpenAI partnership"
               />
             </div>
           </div>
 
-          <footer className={`pt-24 text-center text-base text-white/48 ${""}`}>
+          <footer className="pt-24 text-center text-base text-white/48">
             <div
               className="begin-codex-pet-lane relative left-1/2 mb-7 w-[min(72rem,calc(100vw-3rem))] -translate-x-1/2"
               role="img"
