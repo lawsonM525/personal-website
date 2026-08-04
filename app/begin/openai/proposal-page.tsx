@@ -12,7 +12,6 @@ import {
 import { ChalkTrail } from "./chalk-trail";
 import { ProposalSectionNav } from "./proposal-section-nav";
 import { ReleaseWordMap } from "./release-word-map";
-import { ScrollScrubVideo } from "./scroll-scrub-video";
 import { SequentialOverTime } from "./sequential-over-time";
 import { PlayableReelCard } from "./playable-reel-card";
 import {
@@ -1370,10 +1369,6 @@ export default function ProposalPage({
                 }
               </p>
             </div>
-          </div>
-
-          <div>
-            <ScrollScrubVideo />
           </div>
 
           <div
