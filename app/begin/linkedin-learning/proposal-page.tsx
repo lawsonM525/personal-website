@@ -55,6 +55,30 @@ const educationalReels: FeaturedReel[] = [
   },
 ];
 
+const featuredLinkedInPosts = [
+  {
+    title: "I published a paper on teaching computer science and STEM well",
+    href: "https://lnkd.in/p/gpD4WnA3",
+  },
+  {
+    title: "My takeaways from OpenAI DevDay",
+    href: "https://lnkd.in/p/gHBjw4eR",
+  },
+  {
+    title: "How I built a machine-learning model for the NFL",
+    href: "https://www.linkedin.com/posts/michelle-o-lawson_computerscience-aiml-machinelearning-activity-7398812749281169408-64vX?utm_source=share&utm_medium=member_desktop&rcm=ACoAADZp5TQBWJIIpU5_eWoT3dfLZFH4YAX1wJ4",
+  },
+  {
+    title: "How a machine-learning concept can help you grow in life",
+    href: "https://www.linkedin.com/posts/michelle-o-lawson_this-machine-learning-concept-will-help-you-activity-7327720467534921729-fAdv?utm_source=share&utm_medium=member_desktop&rcm=ACoAADZp5TQBWJIIpU5_eWoT3dfLZFH4YAX1wJ4",
+  },
+  {
+    title: "How I built an AI app that helps people find their dream career",
+    detail: "1,000+ users on its first day",
+    href: "https://www.linkedin.com/posts/michelle-o-lawson_ai-machinelearning-retrievalaugmentedgeneration-activity-7309974423774674944-jfcO?utm_source=share&utm_medium=member_desktop&rcm=ACoAADZp5TQBWJIIpU5_eWoT3dfLZFH4YAX1wJ4",
+  },
+];
+
 const credentials = [
   {
     title: "AI engineer and educator",
@@ -595,10 +619,11 @@ export default function LinkedInLearningProposal({
               Educational content people watch and use.
             </h2>
             <p className="mt-7 max-w-3xl text-xl leading-9 text-white/70">
-              Across LinkedIn, Instagram, and TikTok, I post daily for students,
-              early-career professionals, builders, and nontechnical people. I
-              cover AI, coding, career growth, learning, and building useful
-              projects.
+              Across LinkedIn, Instagram, and TikTok, I create educational
+              content for students, early-career professionals, builders, and
+              nontechnical people. I publish daily across platforms and about
+              once a week on LinkedIn, covering AI, coding, career growth,
+              learning, and building useful projects.
             </p>
           </div>
 
@@ -649,6 +674,41 @@ export default function LinkedInLearningProposal({
                       .join(" · ")}
                   </p>
                 </article>
+              ))}
+            </div>
+          </div>
+
+          <div className="mx-auto max-w-4xl">
+            <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#70b5f9]">
+              Recent LinkedIn posts
+            </p>
+            <h3
+              className={`${emphasisFontClassName} mt-2 text-5xl leading-none`}
+            >
+              Ideas I teach and build in public.
+            </h3>
+            <div className="mt-7 space-y-5">
+              {featuredLinkedInPosts.map((post) => (
+                <a
+                  key={post.href}
+                  href={post.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group flex items-start justify-between gap-6 text-lg leading-7 text-white/72 transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#70b5f9]"
+                >
+                  <span>
+                    <span className="font-semibold text-white">{post.title}</span>
+                    {post.detail && (
+                      <span className="ml-2 text-[#70b5f9]">{post.detail}</span>
+                    )}
+                  </span>
+                  <span
+                    aria-hidden="true"
+                    className="shrink-0 text-[#70b5f9] transition-transform group-hover:-translate-y-1 group-hover:translate-x-1"
+                  >
+                    ↗
+                  </span>
+                </a>
               ))}
             </div>
           </div>
