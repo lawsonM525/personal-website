@@ -107,18 +107,18 @@ const proposalTimelineStages = [
     step: "Month 1",
     title: "September",
     bullets: [
-      "3 original videos, each posted to Instagram and TikTok.",
+      "Three original short-form videos, each posted to Instagram and TikTok.",
       "One 30-minute evergreen YouTube guide: How to Learn ANYTHING with ChatGPT.",
+      "One 45-minute interactive virtual workshop followed by 15 minutes of live Q&A: Get Hired with ChatGPT: Resume to Interview.",
       "Boosting rights for the partnership content.",
       "Full exclusivity from other AI companies.",
-      "One 20–30-minute interactive virtual workshop with live Q&A throughout: Get Hired with ChatGPT: Resume to Interview.",
     ],
   },
   {
     step: "Month 2",
     title: "October",
     bullets: [
-      "3 original videos, each posted to Instagram and TikTok.",
+      "Three original short-form videos, each posted to Instagram and TikTok.",
       "One 30-minute evergreen YouTube guide: How to Build Your First Tool with ChatGPT.",
       "Boosting rights for the partnership content.",
       "Full exclusivity from other AI companies.",
@@ -128,11 +128,11 @@ const proposalTimelineStages = [
     step: "Month 3",
     title: "November",
     bullets: [
-      "3 original videos, each posted to Instagram and TikTok.",
+      "Three original short-form videos, each posted to Instagram and TikTok.",
       "One 30-minute evergreen YouTube video: Will AI Take My Job? And Other Big Questions About Our Future.",
+      "One 45-minute interactive virtual workshop followed by 15 minutes of live Q&A: Build Your First Working App with Codex.",
       "Boosting rights for the partnership content.",
       "Full exclusivity from other AI companies.",
-      "One 20–30-minute interactive virtual workshop with live Q&A throughout: Build Your First Working App with Codex.",
     ],
   },
 ];
@@ -1306,10 +1306,9 @@ export default function ProposalPage({
                   <div className="mx-auto max-w-4xl space-y-3 text-center text-base leading-7 text-white/60 sm:text-lg">
                     <p>
                       The long-form videos are evergreen YouTube videos. The
-                      virtual workshops are live, interactive sessions where
-                      attendees can submit questions and get answers in real
-                      time. OpenAI may also publish the workshop recordings on
-                      YouTube.
+                      virtual workshops include 45 minutes of live instruction
+                      followed by a dedicated 15-minute Q&amp;A. Recordings of
+                      the live workshops can also be published on YouTube.
                     </p>
                     <p>
                       These are suggested topics and can be adjusted based on
