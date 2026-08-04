@@ -422,7 +422,7 @@ export default function LinkedInLearningProposal({
             themselves, choose what comes next in life, and do better work.
           </p>
           <a
-            href="#course-outline"
+            href="#course-details"
             className="mt-10 inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 font-semibold text-black transition hover:-translate-y-0.5 hover:bg-[#dceeff] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#70b5f9]"
           >
             See the course I&apos;m proposing
