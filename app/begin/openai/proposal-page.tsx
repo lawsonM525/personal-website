@@ -108,9 +108,10 @@ const proposalTimelineStages = [
     title: "September",
     bullets: [
       "3 original videos, each posted to Instagram and TikTok.",
+      "One 30-minute evergreen YouTube guide: How to Learn ANYTHING with ChatGPT.",
       "Boosting rights for the partnership content.",
       "Full exclusivity from other AI companies.",
-      "60-minute virtual workshop: Get Hired with ChatGPT: Resume to Interview.",
+      "One 20–30-minute interactive virtual workshop with live Q&A throughout: Get Hired with ChatGPT: Resume to Interview.",
     ],
   },
   {
@@ -118,9 +119,9 @@ const proposalTimelineStages = [
     title: "October",
     bullets: [
       "3 original videos, each posted to Instagram and TikTok.",
+      "One 30-minute evergreen YouTube guide: How to Build Your First Tool with ChatGPT.",
       "Boosting rights for the partnership content.",
       "Full exclusivity from other AI companies.",
-      "60-minute virtual workshop: Build Your First Working App with Codex.",
     ],
   },
   {
@@ -128,9 +129,10 @@ const proposalTimelineStages = [
     title: "November",
     bullets: [
       "3 original videos, each posted to Instagram and TikTok.",
+      "One 30-minute evergreen YouTube video: Will AI Take My Job? And Other Big Questions About Our Future.",
       "Boosting rights for the partnership content.",
       "Full exclusivity from other AI companies.",
-      "60-minute virtual workshop: Build a Finals Study Plan with ChatGPT (Academic Weapon Edition).",
+      "One 20–30-minute interactive virtual workshop with live Q&A throughout: Build Your First Working App with Codex.",
     ],
   },
 ];
@@ -1299,6 +1301,21 @@ export default function ProposalPage({
                         </ul>
                       </article>
                     ))}
+                  </div>
+
+                  <div className="mx-auto max-w-4xl space-y-3 text-center text-base leading-7 text-white/60 sm:text-lg">
+                    <p>
+                      The long-form videos are evergreen YouTube videos. The
+                      virtual workshops are live, interactive sessions where
+                      attendees can submit questions and get answers in real
+                      time. OpenAI may also publish the workshop recordings on
+                      YouTube.
+                    </p>
+                    <p>
+                      These are suggested topics and can be adjusted based on
+                      OpenAI&apos;s upcoming launches, campaign priorities, or
+                      audience needs.
+                    </p>
                   </div>
                 </div>
 
