@@ -85,7 +85,7 @@ const proposalPayoffs = [
   {
     title: "Greater feature adoption",
     description:
-      "Make the features that matter most to OpenAI easier for Gen Z to discover, understand, and use.",
+      "Short-form videos create consistent awareness of key features, while long-form videos and live workshops teach people more deeply how they can use them.",
     Icon: TrendingUp,
   },
   {
