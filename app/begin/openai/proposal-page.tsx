@@ -790,8 +790,8 @@ export default function ProposalPage({
               Teaching the Next Generation How to Use AI
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-white/74 sm:mt-7 sm:text-xl sm:leading-8">
-              A proposal for an ongoing educational partnership between Michelle
-              Lawson (
+              A proposal for a three-month educational partnership between
+              Michelle Lawson (
               <a
                 href="https://www.instagram.com/michellescomputer/"
                 target="_blank"
@@ -1015,17 +1015,22 @@ export default function ProposalPage({
 
             <div className="mx-auto max-w-4xl space-y-7 pt-8 text-xl leading-9 text-white/72 sm:pt-12">
               <p>And every single time, we have the same problem.</p>
+              <p>
+                Because I typically get to create only one or two posts per
+                campaign,
+              </p>
               <p className="text-2xl font-semibold leading-9 text-white">
-                I only get to make one or two videos.
+                People only get one or two chances to understand why a new
+                feature or model is useful, exciting, and worth trying.
               </p>
               <p>
                 {
-                  "Only one or two chances to explain dozens of incredible features, possibilities, and ideas."
+                  "If someone is distracted during that 60-second video — or watches it once and forgets — why the feature matters never gets the chance to stick."
                 }
               </p>
               <p>
                 {
-                  "But the most memorable posts must have one simple core idea (so people walk away with something to try immediately)."
+                  "And because every memorable video needs one clear core idea, each post can only teach one use case at a time."
                 }
               </p>
               <p>So I constantly find myself asking:</p>
@@ -1033,7 +1038,7 @@ export default function ProposalPage({
 
             <div className="mx-auto max-w-5xl py-4 text-center sm:py-6">
               <p className="mx-auto max-w-3xl text-xl leading-9 text-white/68">
-                &quot; Which possibilities am I leaving out? &quot;
+                &quot;What is the single best use case to feature?&quot;
               </p>
               <p
                 className={`${emphasisFontClassName} mx-auto mt-6 max-w-5xl text-4xl font-normal leading-none text-white sm:text-[3.25rem]`}
