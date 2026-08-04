@@ -91,6 +91,7 @@ export function Nav({ onCommandOpen }: NavProps) {
   if (
     pathname === "/begin/openai" ||
     pathname === "/begin/cursor" ||
+    pathname === "/begin/linkedin-learning" ||
     pathname === "/begin/OpenAIBeta" ||
     pathname === "/openaibeta"
   ) {
