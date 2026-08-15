@@ -717,9 +717,9 @@ export default function MbaMissionProposal({
       </section>
 
       <section className="relative bg-black px-6 py-24 text-center sm:px-10 sm:py-32 lg:px-16">
-        <div className="mx-auto max-w-4xl">
+        <div className="mx-auto max-w-3xl">
           <h2
-            className={`${emphasisFontClassName} text-6xl leading-[0.9] sm:text-8xl`}
+            className={`${emphasisFontClassName} text-4xl leading-[0.95] sm:text-5xl lg:text-6xl`}
           >
             Let&apos;s make mbaMission the place Gen Z learners go to become
             their best selves in an AI-native world.
