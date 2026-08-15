@@ -499,19 +499,17 @@ export default function MbaMissionProposal({
                 <p
                   className={`${emphasisFontClassName} text-[7.5rem] leading-[0.72] text-[#c42339] sm:text-[10rem]`}
                 >
-                  47%
+                  87%
                 </p>
                 <h3
                   className={`${emphasisFontClassName} mt-7 max-w-lg text-5xl leading-[0.95] text-white sm:text-6xl`}
                 >
-                  of my TikTok audience is 18–24.
+                  of my TikTok audience is 18–34.
                 </h3>
                 <p className="mt-6 max-w-xl text-xl leading-8 text-white/72">
-                  That is core Gen Z—and eight points higher than Instagram.
-                  Across both platforms, ages 18–34 dominate:{" "}
-                  <strong className="text-white">
-                    87% on TikTok and 78% on Instagram.
-                  </strong>
+                  On Instagram, the same 18–34 audience makes up{" "}
+                  <strong className="text-white">78%.</strong> Across both
+                  platforms, my audience is overwhelmingly Gen Z.
                 </p>
               </div>
 
@@ -528,11 +526,10 @@ export default function MbaMissionProposal({
                 </div>
                 {[
                   {
-                    label: "Core Gen Z · ages 18–24",
-                    instagram: 39,
-                    tiktok: 47,
+                    label: "Ages 18–34",
+                    instagram: 78,
+                    tiktok: 87,
                   },
-                  { label: "Ages 25–34", instagram: 39, tiktok: 40 },
                   { label: "United States", instagram: 26, tiktok: 36 },
                 ].map((metric) => (
                   <div key={metric.label} className="mb-7 last:mb-0">
@@ -571,7 +568,7 @@ export default function MbaMissionProposal({
             <div className="mt-16 grid gap-16 lg:grid-cols-[0.9fr_1.1fr] lg:gap-24">
               <div>
                 <p className="text-xs font-black uppercase tracking-[0.18em] text-white/58">
-                  A highly engaged female audience
+                  Audience gender
                 </p>
                 <div className="mt-7 space-y-7">
                   {[
@@ -614,34 +611,30 @@ export default function MbaMissionProposal({
 
               <div>
                 <p className="text-xs font-black uppercase tracking-[0.18em] text-white/58">
-                  TikTok strengthens U.S. reach
+                  United States audience
                 </p>
-                <div className="mt-6 flex items-end gap-5">
-                  <p
-                    className={`${emphasisFontClassName} text-7xl leading-none text-[#64b0ba] sm:text-8xl`}
-                  >
-                    26%
-                  </p>
-                  <Image
-                    src="/begin/chalk-arrow-right.png"
-                    alt="increases to"
-                    width={167}
-                    height={74}
-                    className="mb-3 h-auto w-16 opacity-90"
-                  />
-                  <p
-                    className={`${emphasisFontClassName} text-7xl leading-none text-[#c42339] sm:text-8xl`}
-                  >
-                    36%
-                  </p>
+                <div className="mt-6 grid grid-cols-2 gap-8">
+                  <div>
+                    <p
+                      className={`${emphasisFontClassName} text-7xl leading-none text-[#64b0ba] sm:text-8xl`}
+                    >
+                      26%
+                    </p>
+                    <p className="mt-3 text-sm font-black uppercase tracking-[0.1em] text-white/72">
+                      Instagram
+                    </p>
+                  </div>
+                  <div>
+                    <p
+                      className={`${emphasisFontClassName} text-7xl leading-none text-[#c42339] sm:text-8xl`}
+                    >
+                      36%
+                    </p>
+                    <p className="mt-3 text-sm font-black uppercase tracking-[0.1em] text-white/72">
+                      TikTok
+                    </p>
+                  </div>
                 </div>
-                <p className="mt-3 text-lg font-bold text-white">
-                  U.S. audience: Instagram to TikTok
-                </p>
-                <p className="mt-5 max-w-xl text-sm leading-6 text-white/58">
-                  TikTok also reaches South Africa 5% · Nigeria 4% · United
-                  Kingdom 4% · Philippines 3%.
-                </p>
               </div>
             </div>
           </div>
