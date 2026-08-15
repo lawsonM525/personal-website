@@ -1,31 +1,24 @@
-"use client"
-import { CommandMenu } from "@/components/command-menu"
-import { EmailPopup } from "@/components/email-popup"
-import { Toaster } from "@/components/ui/toaster"
-import { Nav } from "@/components/nav"
-import { useState } from "react"
+"use client";
+import { CommandMenu } from "@/components/command-menu";
+import { EmailPopup } from "@/components/email-popup";
+import { Toaster } from "@/components/ui/toaster";
+import { Nav } from "@/components/nav";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
 
-export function LayoutClient({
-  children,
-}: {
-  children: React.ReactNode
-}) {
-  const [commandMenuOpen, setCommandMenuOpen] = useState(false)
-  const [emailPopupOpen, setEmailPopupOpen] = useState(false)
+export function LayoutClient({ children }: { children: React.ReactNode }) {
+  const [commandMenuOpen, setCommandMenuOpen] = useState(false);
+  const [emailPopupOpen, setEmailPopupOpen] = useState(false);
+  const pathname = usePathname();
+  const isLearnRoute = pathname === "/learn" || pathname.startsWith("/learn/");
 
   return (
     <>
-      <Nav onCommandOpen={() => setCommandMenuOpen(true)} />
-      <CommandMenu 
-        open={commandMenuOpen} 
-        onOpenChange={setCommandMenuOpen}
-      />
+      {!isLearnRoute && <Nav onCommandOpen={() => setCommandMenuOpen(true)} />}
+      <CommandMenu open={commandMenuOpen} onOpenChange={setCommandMenuOpen} />
       {children}
-      <EmailPopup 
-        open={emailPopupOpen} 
-        onOpenChange={setEmailPopupOpen} 
-      />
+      <EmailPopup open={emailPopupOpen} onOpenChange={setEmailPopupOpen} />
       <Toaster />
     </>
-  )
-} 
+  );
+}

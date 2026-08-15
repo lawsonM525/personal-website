@@ -124,7 +124,7 @@ export default async function ArticlePage({ params }: PageProps) {
     : null;
 
   return (
-    <main className="learn-bg min-h-screen pb-24 pt-24">
+    <main className="learn-bg min-h-screen pb-24">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
