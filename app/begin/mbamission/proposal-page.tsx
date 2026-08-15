@@ -706,8 +706,9 @@ export default function MbaMissionProposal({
               </h3>
               <p className="mt-6 text-xl leading-9 text-black/78">
                 We expand the campaign with two additional full videos per
-                acceptance, up to six acceptance videos total. The success
-                series is scoped with a separate creator fee.
+                acceptance, up to six acceptance videos total. These additional
+                videos would be a paid campaign extension, with the creator fee
+                agreed separately.
               </p>
             </div>
           </div>
