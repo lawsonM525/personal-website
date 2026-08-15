@@ -657,8 +657,11 @@ export default function MbaMissionProposal({
 
           <p className="mt-10 max-w-4xl text-2xl leading-10 text-black/78">
             mbaMission provides comprehensive, start-to-finish consulting across
-            three applications. In return, I create and publish three original
-            short-form videos covering the journey, regardless of the results.
+            three applications. In return, I create and publish{" "}
+            <strong className="font-black text-black">
+              three original short-form videos
+            </strong>{" "}
+            covering the journey, regardless of the results.
           </p>
 
           <div className="mt-14 grid gap-12 border-t-2 border-black pt-10 lg:grid-cols-2 lg:gap-20">
@@ -669,8 +672,20 @@ export default function MbaMissionProposal({
                 The core campaign
               </h3>
               <ul className="mt-7 space-y-4 text-black/78">
+                <li className="flex gap-3 text-lg leading-8">
+                  <Check
+                    className="mt-1 h-5 w-5 shrink-0 text-[#c42339]"
+                    aria-hidden="true"
+                  />
+                  <span>
+                    <strong className="font-black text-black">
+                      Three original short-form videos
+                    </strong>{" "}
+                    distributed across Instagram and TikTok to an audience of
+                    250,000 followers
+                  </span>
+                </li>
                 {[
-                  "Three original short-form videos distributed across Instagram and TikTok to an audience of 250,000 followers",
                   "Limited paid-media usage rights for mutually selected assets, with duration and placements finalized together",
                   "Tracked campaign links or calls to action",
                   "Post-campaign performance and audience-insight reporting",
