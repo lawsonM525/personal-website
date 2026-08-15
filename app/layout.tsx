@@ -5,6 +5,9 @@ import favicon from "@/assets/mia-icon-big.png"
 import Script from 'next/script';
 import { siteConfig } from "@/lib/seo"
 import { Inter, Playfair_Display, Caveat } from "next/font/google"
+import { draftMode } from "next/headers"
+import { VisualEditing } from "next-sanity/visual-editing"
+import { SanityLive } from "@/sanity/lib/live"
 
 const inter = Inter({ subsets: ["latin"] })
 const playfair = Playfair_Display({
@@ -58,7 +61,7 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
@@ -66,25 +69,28 @@ export default function RootLayout({
   return (
     <html lang="en" className={`dark ${playfair.variable} ${caveat.variable}`}>
       <head>
-        <Script
-          async
-          src="https://www.googletagmanager.com/gtag/js?id=G-JDSM0Q7X0G"
-        />
-        <Script id="google-analytics">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);} 
-            gtag('js', new Date());
-
-            gtag('config', 'G-JDSM0Q7X0G');
-          `}
-        </Script>
-        <Script
-          src="https://datafa.st/js/script.js"
-          strategy="afterInteractive"
-          data-website-id="68b655f869db4035eb9dde6a"
-          data-domain="michellelawson.me"
-        />
+        {process.env.NODE_ENV === "production" && (
+          <>
+            <Script
+              async
+              src="https://www.googletagmanager.com/gtag/js?id=G-JDSM0Q7X0G"
+            />
+            <Script id="google-analytics">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){window.dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', 'G-JDSM0Q7X0G');
+              `}
+            </Script>
+            <Script
+              src="https://datafa.st/js/script.js"
+              strategy="afterInteractive"
+              data-website-id="68b655f869db4035eb9dde6a"
+              data-domain="michellelawson.me"
+            />
+          </>
+        )}
         {/* JSON-LD: Person */}
         <script
           type="application/ld+json"
@@ -136,6 +142,8 @@ export default function RootLayout({
       </head>
       <body className={`${inter.className} bg-black text-white min-h-screen`}>
         <LayoutClient>{children}</LayoutClient>
+        <SanityLive />
+        {(await draftMode()).isEnabled && <VisualEditing />}
       </body>
     </html>
   );

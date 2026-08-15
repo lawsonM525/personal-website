@@ -24,6 +24,7 @@ export function Nav({ onCommandOpen }: NavProps) {
   const menuRef = useRef<HTMLDivElement>(null);
 
   const links = [
+    { href: "/learn", label: "LEARN" },
     { href: "/about", label: "MY STORY" },
     { href: "/projects", label: "PROJECTS" },
     { href: "/research", label: "RESEARCH" },
@@ -52,7 +53,6 @@ export function Nav({ onCommandOpen }: NavProps) {
 
   // Prevent scrolling when mobile menu is open
   useEffect(() => {
-    console.log("Menu state changed:", isMenuOpen);
     if (isMenuOpen) {
       document.body.style.overflow = "hidden";
     } else {
@@ -82,9 +82,8 @@ export function Nav({ onCommandOpen }: NavProps) {
     };
   }, [isMenuOpen]);
 
-  // Toggle menu function with debug logs
+  // Toggle menu function
   const toggleMenu = () => {
-    console.log("Toggling menu from", isMenuOpen, "to", !isMenuOpen);
     setIsMenuOpen(!isMenuOpen);
   };
 
@@ -92,6 +91,7 @@ export function Nav({ onCommandOpen }: NavProps) {
     pathname === "/begin/openai" ||
     pathname === "/begin/cursor" ||
     pathname === "/begin/linkedin-learning" ||
+    pathname === "/begin/mbamission" ||
     pathname === "/begin/OpenAIBeta" ||
     pathname === "/openaibeta"
   ) {
@@ -148,7 +148,7 @@ export function Nav({ onCommandOpen }: NavProps) {
               href={link.href}
               className={`text-sm transition-colors relative py-2 px-3 rounded-md
                 ${
-                  pathname === link.href
+                  pathname === link.href || pathname.startsWith(`${link.href}/`)
                     ? "text-white after:absolute after:bottom-0 after:left-0 after:right-0 after:mx-auto after:w-12 after:h-0.5 after:bg-white"
                     : "text-gray-400 hover:text-white"
                 }`}
@@ -285,7 +285,8 @@ export function Nav({ onCommandOpen }: NavProps) {
                   key={link.href}
                   href={link.href}
                   className={`text-lg font-medium py-3 px-1 border-b border-gray-800 ${
-                    pathname === link.href
+                    pathname === link.href ||
+                    pathname.startsWith(`${link.href}/`)
                       ? "text-white"
                       : "text-gray-400 hover:text-white"
                   }`}
