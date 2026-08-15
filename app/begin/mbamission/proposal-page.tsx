@@ -386,7 +386,8 @@ export default function MbaMissionProposal({
           <h2
             className={`${emphasisFontClassName} mt-4 max-w-5xl text-6xl leading-[0.9] sm:text-8xl`}
           >
-            One application journey. Three guaranteed short-form videos.
+            Document one application journey through videos Gen Z can learn
+            from.
           </h2>
           <p className="mt-8 max-w-3xl text-xl leading-9 text-white/80">
             Together, the videos move viewers from questioning the MBA, to
