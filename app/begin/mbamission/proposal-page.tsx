@@ -95,6 +95,41 @@ function SectionLabel({
   );
 }
 
+function SocialMark({ platform }: { platform: "linkedin" | "instagram" | "tiktok" }) {
+  if (platform === "instagram") {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden="true" className="h-7 w-7">
+        <rect x="3.5" y="3.5" width="17" height="17" rx="5" fill="none" stroke="currentColor" strokeWidth="1.9" />
+        <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" strokeWidth="1.9" />
+        <circle cx="17.6" cy="6.6" r="1.15" fill="currentColor" />
+      </svg>
+    );
+  }
+
+  if (platform === "tiktok") {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden="true" className="h-7 w-7">
+        <path
+          d="M14.25 3.25v10.1a4.15 4.15 0 1 1-3.4-4.08v2.75a1.65 1.65 0 1 0 1.05 1.54V3.25h2.35Zm0 0c.45 2.2 1.8 3.63 4.15 4.05v2.55a7.02 7.02 0 0 1-4.15-1.62"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.9"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    );
+  }
+
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-7 w-7">
+      <rect x="3.5" y="3.5" width="17" height="17" rx="2.5" fill="none" stroke="currentColor" strokeWidth="1.9" />
+      <circle cx="7.7" cy="8.1" r="1.25" fill="currentColor" />
+      <path d="M7.7 11v6.1M11.1 17.1V11m0 2.65c.75-1.75 4.95-2.05 4.95 1.35v2.1" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 export default function MbaMissionProposal({
   emphasisFontClassName,
 }: {
@@ -219,6 +254,40 @@ export default function MbaMissionProposal({
                 sizes="(min-width: 1024px) 430px, (min-width: 640px) 448px, calc(100vw - 48px)"
               />
             </div>
+            <div
+              className="mt-7 flex items-center justify-center gap-3"
+              aria-label="Michelle's social profiles"
+            >
+              {[
+                {
+                  platform: "linkedin" as const,
+                  label: "LinkedIn",
+                  href: "https://www.linkedin.com/in/michelle-o-lawson/",
+                },
+                {
+                  platform: "instagram" as const,
+                  label: "Instagram",
+                  href: "https://www.instagram.com/michellescomputer/",
+                },
+                {
+                  platform: "tiktok" as const,
+                  label: "TikTok",
+                  href: "https://www.tiktok.com/@michellexcomputer",
+                },
+              ].map((social) => (
+                <a
+                  key={social.platform}
+                  href={social.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={`Visit Michelle on ${social.label}`}
+                  title={social.label}
+                  className="group/social grid h-14 w-14 place-items-center text-white/82 transition hover:-translate-y-1 hover:text-[#64b0ba] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#64b0ba]"
+                >
+                  <SocialMark platform={social.platform} />
+                </a>
+              ))}
+            </div>
           </div>
 
           <div className="space-y-9 sm:space-y-12">
@@ -304,9 +373,17 @@ export default function MbaMissionProposal({
 
               <p>
                 I&apos;m now applying to top business schools with a 3.7 GPA and
-                an unconventional creator-founder profile. This campaign would
-                let my audience see how expert guidance turns that body of work
-                into a focused MBA story.
+                an{" "}
+                <a
+                  href="https://www.linkedin.com/in/michelle-o-lawson/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="underline decoration-white/35 underline-offset-4 transition hover:text-[#64b0ba] hover:decoration-[#64b0ba] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#64b0ba]"
+                >
+                  unconventional creator-founder profile
+                </a>
+                . This campaign would let my audience see how expert guidance
+                turns that body of work into a focused MBA story.
               </p>
             </div>
           </div>
@@ -687,7 +764,7 @@ export default function MbaMissionProposal({
                 </li>
                 {[
                   "Limited paid-media usage rights for mutually selected assets, with duration and placements finalized together",
-                  "Tracked campaign links or calls to action",
+                  "A unique mbaMission affiliate link included across campaign content to track traffic and conversions",
                   "Post-campaign performance and audience-insight reporting",
                 ].map((item) => (
                   <li key={item} className="flex gap-3 text-lg leading-8">
