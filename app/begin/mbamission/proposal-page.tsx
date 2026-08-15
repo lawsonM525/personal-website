@@ -100,12 +100,10 @@ export default function MbaMissionProposal({
 }: {
   emphasisFontClassName: string;
 }) {
-  const emailHref = `mailto:aimee@mbamission.com?cc=${encodeURIComponent(
-    "jenell@mbamission.com",
-  )}&subject=${encodeURIComponent(
+  const emailHref = `mailto:michellelawsonmedia@gmail.com?subject=${encodeURIComponent(
     "mbaMission × Michelle Lawson — Gen Z Application Campaign",
   )}&body=${encodeURIComponent(
-    "Hi Aimee and Jenell,\n\nI'd love to discuss the Gen Z application campaign and next steps.\n\nBest,\nMichelle",
+    "Hi Michelle,\n\nWe'd love to discuss the Gen Z application campaign and next steps.\n\nBest,\n",
   )}`;
 
   return (
