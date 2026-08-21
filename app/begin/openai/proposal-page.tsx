@@ -106,7 +106,7 @@ const proposalTimelineStages = [
     step: "Month 1",
     title: "September",
     bullets: [
-      "Three original short-form videos, each posted to Instagram and TikTok.",
+      "Two original short-form videos, each posted to Instagram and TikTok.",
       "One 30-minute evergreen YouTube guide: How to Learn ANYTHING with ChatGPT.",
       "One 45-minute interactive virtual workshop followed by 15 minutes of live Q&A: Get Hired with ChatGPT: Resume to Interview.",
       "Boosting rights for the partnership content.",
@@ -117,7 +117,7 @@ const proposalTimelineStages = [
     step: "Month 2",
     title: "October",
     bullets: [
-      "Three original short-form videos, each posted to Instagram and TikTok.",
+      "Two original short-form videos, each posted to Instagram and TikTok.",
       "One 30-minute evergreen YouTube guide: How to Build Your First Tool with ChatGPT.",
       "Boosting rights for the partnership content.",
       "Full exclusivity from other AI companies.",
@@ -127,7 +127,7 @@ const proposalTimelineStages = [
     step: "Month 3",
     title: "November",
     bullets: [
-      "Three original short-form videos, each posted to Instagram and TikTok.",
+      "Two original short-form videos, each posted to Instagram and TikTok.",
       "One 30-minute evergreen YouTube video: Will AI Take My Job? And Other Big Questions About Our Future.",
       "One 45-minute interactive virtual workshop followed by 15 minutes of live Q&A: Build Your First Working App with Codex.",
       "Boosting rights for the partnership content.",
