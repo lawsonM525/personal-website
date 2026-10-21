@@ -4,24 +4,16 @@ The review is in `lawsonM525/personal-website`, branch `codex/michellescomputer-
 
 ## Current design and journey
 
-The revised implementation follows Michelle’s direct feedback: clear navigation from the existing `https://www.michellelawson.me/`, illustrated folder assets generated with ImageGen, and actual HTML/CSS computer windows modeled on `https://pals.michellelawson.me/`. The typo `pauls.michellelawson.me` did not resolve; the working pals reference had already been inspected.
+The current review implements Michelle’s selected **D — Deep Denim Bright Windows** (Library `libfile_815b1ecd5c388191873bbbc63aeef446`), inspected visually before implementation. Her later clarification keeps D’s **blue** main title bar. The earlier circular portrait and sky-blue hero are superseded.
 
-- Main choices: Learn, Resources, Magazine, Pen pals. Each folder names its destination, explains the outcome, and links in one click.
-- Primary hero action opens Resources. My story opens the original About page.
-- The welcome window now says “Welcome to Michelle’s Computer” and uses Michelle’s existing pink-scarf photo in a circular profile link. The computer illustration has been removed from the hero. Sky blue, blue title bars, and orange accents are brighter.
-- Desktop pointers use preloaded 48×48 PNG cursors with one arrow silhouette and a shared (3,2) hotspot. Links use a muted warm fill rather than switching to a differently anchored hand. Descendants inherit the active cursor, and the Learn pages use the same assets. Native text entry cursors are preserved, and custom cursors apply only to devices with a fine pointer and hover support.
-- Learn and Resources now use separate transparent image files. The complete Learn pen fits inside its own asset; no part of it is shared with the Resources illustration. Neither asset uses a clipping workaround.
-- The three desktop shortcuts now use muted retro desktop artwork with crisp pixel edges and small bevels: stacked paper folders for Projects, fanned research papers with a gray clip for Research, and slate-blue/ivory chat bubbles for Talks. The palette uses soft manila, ivory, slate blue, and charcoal; decorative comic bursts are removed. They use independent transparent image files, with a small lift/tilt on hover. The header is a text wordmark; monitor glyphs were removed from the shared desktop interface, including the welcome title bar and taskbar.
-- Original copy reused: “Turning my ideas, and yours, into reality.”; “I love building things that inspire and educate.”; “Inspire. Educate. Create.” The learning and magazine descriptions are drawn from the existing site and published form.
-- Window chrome is built in CSS: sharp edges, beveled borders, title bars, toolbar, status bars. Welcome can be minimized, maximized/restored, closed, and reopened. Magazine and Pen pals open as modal computer windows over the current page, with the real Tally forms embedded immediately after the click. Folder cards, navigation, search, and the Learn waitlist CTA all use this flow. Their windows minimize/restore, maximize/restore on desktop, and close back to the current page. Opened forms stay mounted when closed or switched so their current contents are preserved within that page session.
-- Search/command menu filters actual pages and the published AI Wardrobe guide. It supports Cmd/Ctrl+K, Escape, Tab, and Enter.
-- Folder filters separate learning/building from the two opt-ins without changing their destinations.
-- Window entrance motion, folder/portrait hover feedback, pressed controls, and reduced-motion media support.
-- Mobile keeps all four main destinations in a visible quick-navigation row, plus an expandable menu.
-- The same navigation header is used across the existing full-site routes. Duplicate page-level navigation was removed. Existing page content and proposal pages remain intact.
-- The old Learn newsletter form was a nonfunctional preview. It is replaced with an explicit link to the existing magazine waitlist; it no longer pretends to accept an email address.
-
-The generated initial visual direction is in [design-direction.webp](design-direction.webp). The implemented window chrome deliberately follows the real pals interface rather than the illustrated chrome in that concept.
+- Deep denim desktop, slim cream navigation, sharp cream computer windows, royal-blue welcome title bar, cyan Keep in touch window, large system-serif welcome heading, and a new tactile envelope illustration derived from D. Asset prompts and provenance are in [selected-d-assets.md](selected-d-assets.md).
+- Exact existing Learn notebook/blue pen, Resources wrench folder, coastal Magazine stack, and Pen pals heart-envelope illustrations are retained. The four destinations sit in the desktop rail and across the top on phones. Labels explain each action. Icons enlarge on hover/focus with no border or background; keyboard focus underlines the label.
+- The welcome heading reads “Welcome to Michelle’s Computer.” Original copy remains: “Turning my ideas, and yours, into reality.” The primary action opens Learn; My story opens the original About page. Real links retain the full existing site: Resources, Projects, Research, Talks, Posts, and the published learning guide.
+- The smaller window contains real magazine and pen-pal signup links, rather than a pretend email composer. Clicking or keyboard-focusing a window brings it forward. Welcome minimizes, maximizes/restores, closes, and reopens from the taskbar. Keep in touch minimizes/closes and reopens from its taskbar button. The taskbar contains window controls, search, and the actual clock, with no footer slogan.
+- Magazine and Pen pals retain their in-page computer-window flow, real existing Tally destinations, direct-entry routes, close/minimize/maximize controls, and reload fallback. No signup data is collected by the website itself.
+- Search filters actual site pages and supports Cmd/Ctrl+K, Escape, Tab, and Enter. Mobile keeps the four main destinations visible and provides an expanded navigation menu. Reduced-motion preferences disable entrance and hover animation.
+- The confirmed smooth native retro cursor fix is retained: preloaded PNGs with one silhouette and shared (3,2) hotspot; no JavaScript cursor follower. Text fields retain a native text cursor.
+- System Times/Georgia provide the selected serif direction. No new webfont license is assumed or embedded. Existing full-site content and proposal routes remain intact.
 
 ## Existing signup destinations and storage
 
@@ -48,20 +40,13 @@ The profile photo is an unchanged copy of the existing `assets/michelle-pink.jpe
 
 ## Verification
 
-- Next.js production build with TypeScript checking and all existing routes.
-- `git diff --check`.
-- Desktop visual inspection, window minimize/reopen and maximize/restore, folder filtering, command search and its exact pen-pal result.
-- Signup folders, header, command search, and Learn waitlist links open the internal signup windows, preserving direct-entry route hrefs. The only direct Tally links are the explicit fallback links.
-- Phone layout at 390×844 and tablet layout at 768×900: main content and windows fit their viewports. Mobile menu opens/closes, and four primary destinations remain visible above the welcome window.
-- Browser screenshots and current preview verification are in the task’s separate `evidence` folder. Earlier blank-form screenshots are retained as history and do not establish current hosted behavior.
-- Latest refinement checks: built production site inspected at 1306px desktop, 768px tablet, and 390px phone widths; the two independent icons render with the full Learn pen and no Resources fragment. Viewports have no horizontal overflow. Welcome maximizes/restores and folder filtering still works. Computed desktop styles select the 48px arrow/hand cursor files. New evidence uses the `refined-` filename prefix.
-- Desktop shortcut refinement: the final muted `projects-icon-v2.webp`, `research-icon-v2.webp`, and `talks-icon-v2.webp` files load and use pixelated rendering. The header and shared homepage have no monitor glyphs. Shortcut layout was checked at 1306px and 1024px; the mobile text wordmark was checked at 390px with no horizontal overflow. The new Talks shortcut reaches the existing `/talks` page, which currently displays its original “Under Construction” content; no speaking history was invented. Latest shortcut evidence uses the `retro-shortcuts-` filename prefix.
-- Cursor patch: verified that both PNGs have the same 48×48 dimensions and identical alpha silhouettes, with matching (3,2) hotspots. Browser checks found zero cursor-style mismatches between buttons/links and their descendants; both assets are preloaded. A native pointer drag across blank blue space, opening/closing search, the text-entry cursor, and shared cursor styles on `/learn` were checked. The user's continuous flicker could not be established from still screenshots, so the exact browser rendering cause remains unconfirmed; this patch removes SVG cursor rasterization, shape/hotspot changes, and redundant descendant resets as suspected contributors. No cursor-following JavaScript exists. Michelle subsequently confirmed: “It’s smooth now.”
-
-- Signup-window patch: both forms rendered with their expected fields in the desktop modal; switching back preserved the existing iframe. The magazine and pen-pal windows keep the current desktop behind them and provide native dialog keyboard behavior, close, minimize/restore, and desktop maximize. The form loader waits for iframe loading before initializing Tally resizing and retries an initial same-origin blank document once.
-- Phone emulation at 390×844 verified a 362px-wide window and no page overflow. The browser still intermittently displayed an initially blank Tally frame in that emulation. The explicit “Reload the form” control restored the form inside the same window. This remaining intermittent load must be reviewed in the user’s browser before production; do not describe all loads as conclusively fixed. No form data was entered or submitted.
-
-The cursor patch is separate from the pending hero/art-direction selection; it does not implement a new selection.
+- Final selected-D production build and TypeScript checks pass for all 39 routes; `git diff --check` passes.
+- Desktop at 1306×866 and phone at 390×844 were visually inspected. The phone page has no horizontal overflow, all four icon destinations are visible above Welcome, and the smaller signup-choice window follows the hero in the phone reading order. The earlier circular portrait is absent.
+- Welcome maximizes/restores, both signup choices open in dialogs while the current page URL stays unchanged, and switching retains both existing Tally iframes. The final local production build rendered both real forms and their expected fields on first open. No data was entered and neither final submission action was activated.
+- An intermittent initially blank Tally embed was reproduced in prior hosted desktop and phone checks. The explicit in-window Reload restored the fields. The successful latest local loads do not prove this intermittent issue is eliminated; keep it under review before production replacement.
+- The confirmed smooth cursor implementation and existing four illustration files are unchanged. Icon anchors retain transparent backgrounds and zero-width borders; their artwork enlarges, and keyboard focus underlines their label.
+- Search, real navigation, taskbar reopen behavior, the cyan window’s foreground behavior, final hosted desktop/mobile screenshots, and hosted form loading are recorded in the task’s separate `evidence` folder.
+- The existing `/talks` route retains its original “Under Construction” content; no speaking history was invented.
 
 Local run: `npm run build`, then `npm run start -- --hostname 127.0.0.1 -p 3100`.
 

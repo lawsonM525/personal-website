@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { useEffect, useMemo, useRef, useState, type MouseEvent } from "react"
-import { ArrowRight, ArrowUpRight, ChevronRight, Clock3, FileText, Folder, Home, Menu, Search, X } from "lucide-react"
+import { ArrowRight, ArrowUpRight, Clock3, FileText, Mail, Menu, Search, X } from "lucide-react"
 import { signupForms } from "./signup-config"
 import { SignupWindow } from "./signup-window"
 import { WindowBar } from "./window-bar"
@@ -21,12 +21,7 @@ const pages = [
   { label: "Reminder", description: "A reminder from Michelle", href: "/reminder", keywords: "reminder" },
   { label: "How to Build Your Own AI Wardrobe", description: "No, you don’t need to know how to code", href: "/learn/how-to-build-ai-wardrobe-digital-closet", keywords: "wardrobe clothes closet ai guide" },
 ]
-const mainLinks = [pages[0], pages[1], pages[5], pages[4], { ...pages[2], label: "Magazine" }, pages[3]]
-const desktopShortcuts = [
-  { label: "Projects", href: "/projects", image: "/homepage/projects-icon-v2.webp" },
-  { label: "Research", href: "/research", image: "/homepage/research-icon-v2.webp" },
-  { label: "Talks", href: "/talks", image: "/homepage/talks-icon-v2.webp" },
-]
+const mainLinks = [pages[0], pages[1], pages[5], { ...pages[2], label: "Magazine" }, pages[3], { ...pages[4], label: "About" }]
 
 type SignupKind = keyof typeof signupForms
 
@@ -137,45 +132,46 @@ const folders = [
 
 export default function HomeDesktop() {
   const [welcomeOpen, setWelcomeOpen] = useState(true)
+  const [contactOpen, setContactOpen] = useState(true)
   const [maximized, setMaximized] = useState(false)
-  const [folderView, setFolderView] = useState<"all" | "learn" | "connect">("all")
+  const [activeWindow, setActiveWindow] = useState<"welcome" | "contact">("welcome")
   const [time, setTime] = useState("")
   useEffect(() => { function tick() { setTime(new Intl.DateTimeFormat(undefined, { hour: "numeric", minute: "2-digit" }).format(new Date())) }; tick(); const timer = setInterval(tick, 60000); return () => clearInterval(timer) }, [])
-  const visibleFolders = folders.filter(item => folderView === "all" || (folderView === "learn" ? ["learn", "resources"].includes(item.kind) : ["magazine", "penpals"].includes(item.kind)))
+
+  function restoreWelcome() { setWelcomeOpen(true); setMaximized(false); setActiveWindow("welcome") }
 
   return <div className={`${styles.site} ${styles.desktopSite}`}>
     <a href="#main" className={styles.skip}>Skip to content</a>
     <HomeHeader />
     <main id="main" className={styles.desktop}>
-      <nav className={styles.desktopShortcuts} aria-label="Desktop shortcuts">{desktopShortcuts.map(item => <a key={item.href} href={item.href} onClick={event => handleSignupLink(event, item.href)}><img className={styles.shortcutArt} src={item.image} width="68" height="68" alt="" aria-hidden="true" decoding="async" /><span>{item.label}</span></a>)}</nav>
+      <nav className={styles.desktopShortcuts} aria-label="Desktop shortcuts">{folders.map(folder => <a key={folder.kind} href={folder.href} aria-label={`${folder.title}: ${folder.action}`} onClick={event => handleSignupLink(event, folder.href)}>
+        <SpriteIcon kind={folder.kind} />
+        <span className={styles.shortcutLabel}>{folder.title}</span>
+        <span className={styles.shortcutHint}>{folder.kind === "magazine" ? "Join the waitlist" : folder.kind === "penpals" ? "Get a handwritten letter" : folder.kind === "learn" ? "Guides & tutorials" : "Tools & textbooks"}</span>
+      </a>)}</nav>
       <div className={`${styles.workspace} ${maximized ? styles.workspaceMaximized : ""}`}>
-        {welcomeOpen ? <section className={`${styles.window} ${styles.welcomeWindow}`} aria-labelledby="home-title">
-          <WindowBar title="welcome.exe" onMinimize={() => { setWelcomeOpen(false); setMaximized(false) }} onMaximize={() => setMaximized(value => !value)} onClose={() => { setWelcomeOpen(false); setMaximized(false) }} maximized={maximized} />
-          <div className={styles.windowMenu}><a href="/about">About Michelle</a><a href="/resources">Resources</a><button type="button" onClick={() => window.dispatchEvent(new Event("michelle:search"))}>Find a page</button><span className={styles.windowPath}>Michelle’s Computer / Welcome</span></div>
+        {welcomeOpen ? <section className={`${styles.window} ${styles.welcomeWindow} ${activeWindow === "welcome" ? styles.activeWindow : ""}`} aria-labelledby="home-title" onPointerDown={() => setActiveWindow("welcome")} onFocusCapture={() => setActiveWindow("welcome")}>
+          <WindowBar title="Dear Internet," onMinimize={() => { setWelcomeOpen(false); setMaximized(false) }} onMaximize={() => setMaximized(value => !value)} onClose={() => { setWelcomeOpen(false); setMaximized(false) }} maximized={maximized} />
           <div className={styles.heroBody}>
             <div className={styles.heroCopy}>
-              <h1 id="home-title"><span className={styles.welcomeKicker}>Welcome to</span><span className={styles.srOnly}> Michelle’s Computer</span><img src="/homepage/welcome-title-v3.png" alt="" width="656" height="234" fetchPriority="high" /></h1>
+              <h1 id="home-title">Welcome<br />to Michelle’s<br />Computer.</h1>
               <p className={styles.tagline}>Turning my ideas, and yours,<br className={styles.desktopBreak} /> into reality.</p>
-              <div className={styles.heroActions}><a href="/resources" className={styles.button}>Explore resources <ArrowRight size={21} aria-hidden="true" /></a><a href="/about" className={styles.textLink}>My story <ArrowUpRight size={16} aria-hidden="true" /></a></div>
+              <div className={styles.heroActions}><a href="/learn" className={styles.button}>Explore the guides <ArrowRight size={24} aria-hidden="true" /></a><a href="/about" className={styles.textLink}>My story <ArrowUpRight size={16} aria-hidden="true" /></a></div>
             </div>
-            <a className={styles.profile} href="/about" aria-label="Meet Michelle Lawson"><img src="/homepage/michelle-profile-v3.jpg" width="1244" height="1244" alt="Michelle smiling at her computer in her pink scarf and glasses" fetchPriority="high" /><span>Michelle Lawson <ArrowUpRight size={14} aria-hidden="true" /></span></a>
+            <img className={styles.heroLetter} src="/homepage/welcome-letter-d.webp" width="1024" height="1024" alt="An open paper envelope with a handwritten note: Glad you’re here. A kinder internet is possible." fetchPriority="high" />
           </div>
-          <div className={styles.statusBar}><span>I love building things that inspire and educate.</span><span className={styles.resizeGrip} aria-hidden="true" /></div>
-        </section> : <button className={`${styles.window} ${styles.restoreWelcome}`} type="button" onClick={() => setWelcomeOpen(true)}><FileText size={19} aria-hidden="true" /><span>Open welcome.exe</span><ChevronRight size={18} aria-hidden="true" /></button>}
-        <section className={`${styles.window} ${styles.explorer}`} aria-labelledby="explorer-title">
-          <div className={styles.windowBar}><Folder size={14} aria-hidden="true" /><h2 id="explorer-title">Explore Michelle’s Computer</h2><span className={styles.barLines} aria-hidden="true" /><span className={styles.itemCount}>{visibleFolders.length} folders</span></div>
-          <div className={styles.explorerToolbar}><span className={styles.location}><Home size={13} aria-hidden="true" /><span>My computer</span><ChevronRight size={12} aria-hidden="true" /></span><div className={styles.folderFilters} role="group" aria-label="Filter folders"><button type="button" aria-pressed={folderView === "all"} onClick={() => setFolderView("all")}>All folders</button><button type="button" aria-pressed={folderView === "learn"} onClick={() => setFolderView("learn")}>Learn & build</button><button type="button" aria-pressed={folderView === "connect"} onClick={() => setFolderView("connect")}>Keep in touch</button></div></div>
-          <div className={styles.folderGrid} data-count={visibleFolders.length}>
-            {visibleFolders.map(folder => <a href={folder.href} key={folder.kind} className={styles.folderCard} onClick={event => handleSignupLink(event, folder.href)}>
-              <SpriteIcon kind={folder.kind} />
-              <h3>{folder.title}</h3><p>{folder.description}</p><span className={styles.folderAction}>{folder.action}<ArrowRight size={18} aria-hidden="true" /></span>
-            </a>)}
+        </section> : <button className={`${styles.window} ${styles.restoreWelcome}`} type="button" onClick={restoreWelcome}><FileText size={19} aria-hidden="true" /><span>Open Dear Internet,</span><ArrowUpRight size={18} aria-hidden="true" /></button>}
+        {contactOpen && <section className={`${styles.window} ${styles.contactWindow} ${activeWindow === "contact" ? styles.activeWindow : ""}`} aria-labelledby="contact-title" onPointerDown={() => setActiveWindow("contact")} onFocusCapture={() => setActiveWindow("contact")}>
+          <WindowBar title="Keep in touch" warm onMinimize={() => setContactOpen(false)} onClose={() => setContactOpen(false)} />
+          <div className={styles.contactBody}>
+            <h2 id="contact-title">A little mail from Michelle.</h2>
+            <a href={signupForms.magazine.pagePath} onClick={event => handleSignupLink(event, signupForms.magazine.pagePath)}><span><strong>Magazine</strong><small>Join the magazine waitlist</small></span><ArrowUpRight size={20} aria-hidden="true" /></a>
+            <a href={signupForms.penpals.pagePath} onClick={event => handleSignupLink(event, signupForms.penpals.pagePath)}><span><strong>Pen pals</strong><small>Want a handwritten letter from me?</small></span><ArrowUpRight size={20} aria-hidden="true" /></a>
           </div>
-          <div className={styles.explorerStatus}><span>Click a folder to explore.</span><span>Magazine and pen pals are separate signups.</span></div>
-        </section>
-        <div className={styles.moreLinks}><span>More from Michelle</span><a href="/projects">Projects</a><a href="/research">Research</a><a href="/talks">Talks</a><a href="/posts">Posts</a></div>
+        </section>}
+        <nav className={styles.moreLinks} aria-label="More from Michelle"><a href="/projects">Projects <ArrowUpRight size={13} aria-hidden="true" /></a><a href="/research">Research <ArrowUpRight size={13} aria-hidden="true" /></a><a href="/talks">Talks <ArrowUpRight size={13} aria-hidden="true" /></a><a href="/posts">Posts <ArrowUpRight size={13} aria-hidden="true" /></a></nav>
       </div>
     </main>
-    <div className={styles.taskbar} role="toolbar" aria-label="Desktop controls"><button type="button" className={styles.startButton} onClick={() => window.dispatchEvent(new Event("michelle:search"))}><Search size={19} aria-hidden="true" />Explore</button><button type="button" className={styles.taskButton} aria-pressed={welcomeOpen} onClick={() => { setWelcomeOpen(true); setMaximized(false) }}><FileText size={15} aria-hidden="true" />welcome.exe</button><span className={styles.clock}><Clock3 size={13} aria-hidden="true" />{time || "—"}</span></div>
+    <div className={styles.taskbar} role="toolbar" aria-label="Desktop controls"><button type="button" className={styles.startButton} onClick={() => window.dispatchEvent(new Event("michelle:search"))}><Search size={19} aria-hidden="true" /><span>Explore</span></button><button type="button" className={styles.taskButton} aria-pressed={welcomeOpen && activeWindow === "welcome"} onClick={restoreWelcome}><FileText size={16} aria-hidden="true" /><span>Dear Internet,</span></button><button type="button" className={styles.taskButton} aria-pressed={contactOpen && activeWindow === "contact"} onClick={() => { setContactOpen(true); setActiveWindow("contact") }}><Mail size={16} aria-hidden="true" /><span>Keep in touch</span></button><span className={styles.clock}><Clock3 size={13} aria-hidden="true" />{time || "—"}</span></div>
   </div>
 }
