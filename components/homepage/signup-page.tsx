@@ -3,7 +3,7 @@
 import Link from "next/link"
 import Script from "next/script"
 import { useRouter } from "next/navigation"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import { FileText } from "lucide-react"
 import { HomeHeader, HomeFooter, WindowBar } from "./home-desktop"
 import { signupForms } from "./signup-config"
@@ -18,16 +18,11 @@ function loadEmbeds() {
 
 function TallyForm({ kind }: { kind: SignupKind }) {
   const form = signupForms[kind]
-  const frame = useRef<HTMLIFrameElement>(null)
   useEffect(() => { loadEmbeds() }, [kind])
 
-  function loadWithoutWidget() {
-    if (frame.current && !frame.current.getAttribute("src")) frame.current.src = form.embedUrl
-  }
-
   return <>
-    <iframe ref={frame} data-tally-src={form.embedUrl} width="100%" height={form.height} frameBorder={0} title={form.title} className={styles.tallyFrame} />
-    <Script src="https://tally.so/widgets/embed.js" strategy="afterInteractive" onReady={loadEmbeds} onError={loadWithoutWidget} />
+    <iframe src={form.embedUrl} loading="eager" width="100%" height={form.height} frameBorder={0} title={form.title} className={styles.tallyFrame} />
+    <Script src="https://tally.so/widgets/embed.js" strategy="afterInteractive" onReady={loadEmbeds} />
   </>
 }
 
