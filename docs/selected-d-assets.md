@@ -8,7 +8,22 @@ Michelle selected Deep Denim Bright Windows (Library `libfile_815b1ecd5c38819187
 - Computer windows, text, buttons, navigation, focus, and window controls are HTML/CSS/React, not part of the generated images.
 - Typography uses system Times and Georgia. No Soup du Jour webfont was embedded. The reported MyFonts webfont license needs domain/expiry verification before future embedding; no payment or renewal was changed.
 
-## Envelope prompt
+## Current envelope text-removal edit
+
+The initial mockup wording was not approved brand copy. The final asset removes all lettering instead of inventing a mission or replacing the slogan. The four existing navigation illustrations were visually audited and retained unchanged; none contains readable generic slogans.
+
+```text
+Generate an image with the following prompt, dont change it(DO NOT CHANGE THIS PROMPT, IT'S ALREADY AN IMPROVED PROMPT) -
+
+Task: precise text removal from the attached transparent envelope illustration.
+Aspect ratio: 1:1.
+Edit target: the attached existing envelope artwork.
+Change only: remove ALL handwriting, words, slogans, letters and numbers, including "Glad you’re here.", its underline, the "A kinder internet is possible." label wording, tiny script on the inner folded paper, and the stamp's number. Replace those marks with matching blank ivory paper texture or matching blue stamp texture. The orange-bordered label must be blank. The letter sticking out must be blank.
+Preserve: the exact envelope and paper composition, orientation, scale, outline style, paper grain, cream/navy/orange palette, navy botanical postage stamp, black postal cancellation wavy lines, orange airmail border, layered paper edges, transparency and shadow.
+Constraints: actual transparent background. No replacement slogans, no new copy, no symbols added, no new objects, no redesigned illustration. Avoid excessive yellow.
+```
+
+## Superseded initial envelope prompt — provenance only
 
 ```text
 Generate an image with the following prompt, dont change it(DO NOT CHANGE THIS PROMPT, IT'S ALREADY AN IMPROVED PROMPT) -

@@ -15,6 +15,14 @@ The current review implements Michelle’s selected **D — Deep Denim Bright Wi
 - The confirmed smooth native retro cursor fix is retained: preloaded PNGs with one silhouette and shared (3,2) hotspot; no JavaScript cursor follower. Text fields retain a native text cursor.
 - System Times/Georgia provide the selected serif direction. No new webfont license is assumed or embedded. Existing full-site content and proposal routes remain intact.
 
+## Artwork and copy audit
+
+The D reference is visual direction, not approved brand copy. The envelope asset was edited to remove every word, slogan, handwritten line, underline, and stamp numeral. Its paper, outline, blue botanical stamp, orange airmail label and composition remain. Its alt text now describes the blank artwork. The small window heading is the functional “Magazine & pen pals.”
+
+The exact existing Learn, Resources, Magazine and Pen pals icons were visually inspected at full resolution. They contain notebook squiggles, document lines, an abstract magazine masthead and envelope marks, but no readable feel-good slogans; they remain unchanged. The magazine banner contains only the brand and “the magazine.” No “good days” wording was found in the current shipped homepage illustrations or copy. Historical mockup text is not reused as a mission statement. The original verified “Turning my ideas, and yours, into reality.” remains.
+
+Both forms loaded on first open in the hosted D desktop preview. The hosted phone pen-pal form initially displayed a blank iframe; Reload restored all fields in the same362px window. No data was entered or submitted.
+
 ## Existing signup destinations and storage
 
 - Magazine: **https://tally.so/r/zxP9JM**. First name and email, for magazine updates as it comes together. Tally stores the responses; the form’s Integrations view showed no connected destinations.

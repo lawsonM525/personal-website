@@ -158,13 +158,13 @@ export default function HomeDesktop() {
               <p className={styles.tagline}>Turning my ideas, and yours,<br className={styles.desktopBreak} /> into reality.</p>
               <div className={styles.heroActions}><a href="/learn" className={styles.button}>Explore the guides <ArrowRight size={24} aria-hidden="true" /></a><a href="/about" className={styles.textLink}>My story <ArrowUpRight size={16} aria-hidden="true" /></a></div>
             </div>
-            <img className={styles.heroLetter} src="/homepage/welcome-letter-d.webp" width="1024" height="1024" alt="An open paper envelope with a handwritten note: Glad you’re here. A kinder internet is possible." fetchPriority="high" />
+            <img className={styles.heroLetter} src="/homepage/welcome-letter-d.webp" width="1024" height="1024" alt="An open ivory envelope with blank paper and a blue botanical postage stamp." fetchPriority="high" />
           </div>
         </section> : <button className={`${styles.window} ${styles.restoreWelcome}`} type="button" onClick={restoreWelcome}><FileText size={19} aria-hidden="true" /><span>Open Dear Internet,</span><ArrowUpRight size={18} aria-hidden="true" /></button>}
         {contactOpen && <section className={`${styles.window} ${styles.contactWindow} ${activeWindow === "contact" ? styles.activeWindow : ""}`} aria-labelledby="contact-title" onPointerDown={() => setActiveWindow("contact")} onFocusCapture={() => setActiveWindow("contact")}>
           <WindowBar title="Keep in touch" warm onMinimize={() => setContactOpen(false)} onClose={() => setContactOpen(false)} />
           <div className={styles.contactBody}>
-            <h2 id="contact-title">A little mail from Michelle.</h2>
+            <h2 id="contact-title">Magazine &amp; pen pals</h2>
             <a href={signupForms.magazine.pagePath} onClick={event => handleSignupLink(event, signupForms.magazine.pagePath)}><span><strong>Magazine</strong><small>Join the magazine waitlist</small></span><ArrowUpRight size={20} aria-hidden="true" /></a>
             <a href={signupForms.penpals.pagePath} onClick={event => handleSignupLink(event, signupForms.penpals.pagePath)}><span><strong>Pen pals</strong><small>Want a handwritten letter from me?</small></span><ArrowUpRight size={20} aria-hidden="true" /></a>
           </div>
