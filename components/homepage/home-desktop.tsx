@@ -9,8 +9,8 @@ import styles from "./home.module.css"
 const pages = [
   { label: "Learn", description: "Practical guides for using AI and building projects", href: "/learn", keywords: "guides tutorials ai college career" },
   { label: "Resources", description: "Tools, textbooks, and learning resources", href: "/resources", keywords: "tools books downloads textbook" },
-  { label: "Magazine waitlist", description: "Join the waitlist for magazine updates", href: signupForms.magazine.publicUrl, keywords: "magazine email signup waitlist" },
-  { label: "Pen pals", description: "Leave your mailing details for a handwritten letter", href: signupForms.penpals.publicUrl, keywords: "pen pals letter mail address signup" },
+  { label: "Magazine waitlist", description: "Join the waitlist for magazine updates", href: signupForms.magazine.pagePath, keywords: "magazine email signup waitlist" },
+  { label: "Pen pals", description: "Leave your mailing details for a handwritten letter", href: signupForms.penpals.pagePath, keywords: "pen pals letter mail address signup" },
   { label: "My story", description: "About Michelle Lawson", href: "/about", keywords: "bio about story michelle" },
   { label: "Projects", description: "What can we build today?", href: "/projects", keywords: "build apps work projects" },
   { label: "Research", description: "Michelle’s published research", href: "/research", keywords: "papers publications research" },
@@ -95,8 +95,8 @@ export function HomeFooter() {
 const folders = [
   { kind: "learn" as const, title: "Learn", description: "Practical guides for using AI and building projects.", action: "Read the guides", href: "/learn" },
   { kind: "resources" as const, title: "Resources", description: "Tools, textbooks, and learning resources.", action: "Explore resources", href: "/resources" },
-  { kind: "magazine" as const, title: "Magazine", description: "An artsy magazine about AI and learning.", action: "Join the waitlist", href: signupForms.magazine.publicUrl },
-  { kind: "penpals" as const, title: "Pen pals", description: "Want a handwritten letter from me?", action: "Sign up to be pen pals", href: signupForms.penpals.publicUrl },
+  { kind: "magazine" as const, title: "Magazine", description: "An artsy magazine about AI and learning.", action: "Join the waitlist", href: signupForms.magazine.pagePath },
+  { kind: "penpals" as const, title: "Pen pals", description: "Want a handwritten letter from me?", action: "Sign up to be pen pals", href: signupForms.penpals.pagePath },
 ]
 
 export default function HomeDesktop() {
