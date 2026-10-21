@@ -71,3 +71,60 @@ Framing: one centered, complete illustration on a square canvas with generous tr
 Aspect ratio: 1:1.
 Avoid: any pen, notebook, magazine, envelope, fragments from neighboring icons, labels, text additions, white background, checkerboard background, excessive yellow.
 ```
+
+
+## Projects, Research, and Talks desktop shortcuts
+
+Final muted versions use the built-in ImageGen tool to restyle the original concepts as retro desktop icons with pixel edges, small bevels, and restrained manila, ivory, slate blue, and charcoal. Each is an independent transparent file. The header uses a text wordmark; monitor glyphs have been removed from the shared desktop interface. The initial bright illustration variants remain only in the task's generated-image archive and are not shipped.
+
+### Projects
+
+Project asset: `public/homepage/projects-icon-v2.webp`. Generated original: `generated_images/exec-d7caa4ab-5b2a-4a24-a7ec-a62fd4756861.png`.
+
+```text
+Generate an image with the following prompt, dont change it(DO NOT CHANGE THIS PROMPT, IT'S ALREADY AN IMPROVED PROMPT) -
+Asset: Projects shortcut.
+Subject: THREE staggered paper file folders, front muted manila, one soft blue and one ivory behind it, a few paper edges inside. Keep the playful stack from the reference but make it look like an actual retro desktop folder icon.
+Use case: style-transfer.
+Request: Restyle the provided icon so it feels like a real retro computer desktop icon. It is currently too bright and too much like a comic illustration.
+Rendering: a native 1990s desktop file/application icon, drawn on a 64-by-64 logical pixel grid and enlarged cleanly. Crisp square pixel steps, narrow charcoal edges, tiny beveled highlights, restrained pixel shading. Simple, legible silhouette; no thick hand-drawn outline or textured marker strokes.
+Palette: muted powder/slate blue, ivory/off-white paper, soft manila, light warm gray, charcoal navy. A tiny muted clay accent is allowed. Low saturation. No vivid orange.
+Background: genuine transparent alpha. One isolated complete icon, with ample clear padding on all sides.
+Aspect ratio: 1:1.
+Avoid: a computer or monitor, bright colors, blue/orange comic styling, decorative rays or bursts, grain, scribbled thick strokes, glossy 3D, modern line icons, elaborate detail, text labels, words, logos, watermark, white or colored background, checkerboard, cropped edges, excessive yellow.
+Input roles: Image 1 is the original folder icon to restyle; Image 2 is the new Research icon as a muted pixel rendering reference.
+```
+
+### Research
+
+Project asset: `public/homepage/research-icon-v2.webp`. Generated original: `generated_images/exec-667e60fd-9171-43e7-ae29-7e4585bfb80b.png`.
+
+```text
+Generate an image with the following prompt, dont change it(DO NOT CHANGE THIS PROMPT, IT'S ALREADY AN IMPROVED PROMPT) -
+Asset: Research shortcut.
+Subject: a small fanned stack of ivory document files, one muted slate-blue sheet behind, one tiny gray or muted-clay paperclip. Short pixel rules and a very simple small chart on the front sheet. Keep the stacked-paper idea but make it look like a native retro desktop document icon.
+Use case: style-transfer.
+Request: Restyle the provided icon so it feels like a real retro computer desktop icon. It is currently too bright and too much like a comic illustration.
+Rendering: a native 1990s desktop file/application icon, drawn on a 64-by-64 logical pixel grid and enlarged cleanly. Crisp square pixel steps, narrow charcoal edges, tiny beveled highlights, restrained pixel shading. Simple, legible silhouette; no thick hand-drawn outline or textured marker strokes.
+Palette: muted powder/slate blue, ivory/off-white paper, soft manila, light warm gray, charcoal navy. A tiny muted clay accent is allowed. Low saturation. No vivid orange.
+Background: genuine transparent alpha. One isolated complete icon, with ample clear padding on all sides.
+Aspect ratio: 1:1.
+Avoid: a computer or monitor, bright colors, blue/orange comic styling, decorative rays or bursts, grain, scribbled thick strokes, glossy 3D, modern line icons, elaborate detail, text labels, words, logos, watermark, white or colored background, checkerboard, cropped edges, excessive yellow.
+```
+
+### Talks
+
+Project asset: `public/homepage/talks-icon-v2.webp`. Generated original: `generated_images/exec-1e0f178a-fca4-48b2-9ebd-d6aa1e1e7268.png`.
+
+```text
+Generate an image with the following prompt, dont change it(DO NOT CHANGE THIS PROMPT, IT'S ALREADY AN IMPROVED PROMPT) -
+Asset: Talks shortcut.
+Subject: TWO overlapping chat/speech bubbles, one soft slate blue, one ivory, containing only a few tiny charcoal pixel rules. Keep the conversation idea but make it feel like a native old desktop chat application icon. Calm colors, compact square proportions, small beveled highlights.
+Use case: style-transfer.
+Request: Restyle the provided icon so it feels like a real retro computer desktop icon. It is currently too bright and too much like a comic illustration.
+Rendering: a native 1990s desktop file/application icon, drawn on a 64-by-64 logical pixel grid and enlarged cleanly. Crisp square pixel steps, narrow charcoal edges, tiny beveled highlights, restrained pixel shading. Simple, legible silhouette; no thick hand-drawn outline or textured marker strokes.
+Palette: muted powder/slate blue, ivory/off-white paper, soft manila, light warm gray, charcoal navy. A tiny muted clay accent is allowed. Low saturation. No vivid orange.
+Background: genuine transparent alpha. One isolated complete icon, with ample clear padding on all sides.
+Aspect ratio: 1:1.
+Avoid: a computer or monitor, bright colors, blue/orange comic styling, decorative rays or bursts, grain, scribbled thick strokes, glossy 3D, modern line icons, elaborate detail, text labels, words, logos, watermark, white or colored background, checkerboard, cropped edges, excessive yellow.
+```
