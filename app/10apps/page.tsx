@@ -1,6 +1,5 @@
 'use client'
 
-import { Nav } from "@/components/nav"
 import { Footer } from "@/components/footer"
 import Link from 'next/link'
 import { links } from "@/data/links"
@@ -53,7 +52,7 @@ export default function TenApps() {
         .blink {
           animation: blink 1.2s infinite;
         }
-        
+
         @keyframes marquee {
           0% { transform: translateX(0); }
           100% { transform: translateX(-100%); }
@@ -61,7 +60,7 @@ export default function TenApps() {
         .marquee {
           animation: marquee 20s linear infinite;
         }
-        
+
         @keyframes glitch {
           0% { text-shadow: -2px 0 #ff00ff, 2px 0 #00ffff; }
           25% { text-shadow: 2px 0 #ff00ff, -2px 0 #00ffff; }
@@ -72,7 +71,7 @@ export default function TenApps() {
         .glitch {
           animation: glitch 3s infinite;
         }
-        
+
         .pixel-border {
           position: relative;
           border-style: solid;
@@ -113,7 +112,7 @@ export default function TenApps() {
         }}
       />
 
-      <Nav />
+
 
       <main className="container mx-auto px-4 pt-24 pb-16">
         {/* Y2K browser-style header */}
@@ -325,19 +324,19 @@ function ResourceSection({
           backgroundImage: 'linear-gradient(90deg, var(--tw-gradient-stops)), linear-gradient(90deg, black 25%, transparent 25%, transparent 50%, black 50%, black 75%, transparent 75%, transparent)',
           backgroundSize: '100% 100%, 8px 8px',
         }}></div>
-        
+
         <div className="flex items-center mb-1">
           <span className="text-3xl mr-2">{emoji}</span>
           <h2 className={`text-2xl font-bold ${textColor} glitch`}>{title}</h2>
           <span className="ml-2 blink text-xl">★</span>
         </div>
-        
+
         <div className={`h-2 bg-gradient-to-r ${getBorderClass()} mt-1`} style={{
           backgroundImage: 'linear-gradient(90deg, var(--tw-gradient-stops)), linear-gradient(90deg, black 25%, transparent 25%, transparent 50%, black 50%, black 75%, transparent 75%, transparent)',
           backgroundSize: '100% 100%, 8px 8px',
         }}></div>
       </div>
-      
+
       <div className="space-y-4">
         {children}
       </div>
@@ -387,9 +386,9 @@ function ResourceCard({
               )}
             </div>
           </div>
-          
+
           <p className="text-gray-300 text-sm mb-4">{description}</p>
-          
+
           <Link 
             href={link} 
             target={isExternal ? "_blank" : undefined}

@@ -1,6 +1,5 @@
 'use client'
 
-import { Nav } from "@/components/nav"
 import { Footer } from "@/components/footer"
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
@@ -9,7 +8,7 @@ export default function Day2Tools() {
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
   const [showTrail, setShowTrail] = useState(false);
   const [currentTime, setCurrentTime] = useState('');
-  
+
   useEffect(() => {
     // Cursor trail effect
     const handleMouseMove = (e: MouseEvent) => {
@@ -17,9 +16,9 @@ export default function Day2Tools() {
       setShowTrail(true);
       setTimeout(() => setShowTrail(false), 200);
     };
-    
+
     window.addEventListener('mousemove', handleMouseMove);
-    
+
     // Update time
     const updateTime = () => {
       const now = new Date();
@@ -28,10 +27,10 @@ export default function Day2Tools() {
       const ampm = now.getHours() >= 12 ? 'PM' : 'AM';
       setCurrentTime(`${hours}:${minutes} ${ampm}`);
     };
-    
+
     updateTime();
     const interval = setInterval(updateTime, 60000);
-    
+
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
       clearInterval(interval);
@@ -49,7 +48,7 @@ export default function Day2Tools() {
         .blink {
           animation: blink 1.2s infinite;
         }
-        
+
         @keyframes marquee {
           0% { transform: translateX(0); }
           100% { transform: translateX(-100%); }
@@ -57,7 +56,7 @@ export default function Day2Tools() {
         .marquee {
           animation: marquee 20s linear infinite;
         }
-        
+
         @keyframes glitch {
           0% { text-shadow: -2px 0 #ff00ff, 2px 0 #00ffff; }
           25% { text-shadow: 2px 0 #ff00ff, -2px 0 #00ffff; }
@@ -68,7 +67,7 @@ export default function Day2Tools() {
         .glitch {
           animation: glitch 3s infinite;
         }
-        
+
         .pixel-border {
           position: relative;
           border-style: solid;
@@ -81,7 +80,7 @@ export default function Day2Tools() {
           box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.3);
         }
       `}</style>
-      
+
       {/* Cursor trail effect */}
       {showTrail && (
         <div 
@@ -95,7 +94,7 @@ export default function Day2Tools() {
           }}
         />
       )}
-      
+
       {/* Y2K scanlines and noise overlay */}
       <div className="fixed inset-0 pointer-events-none z-10 opacity-5" 
         style={{
@@ -108,9 +107,9 @@ export default function Day2Tools() {
           )`
         }}
       />
-      
-      <Nav />
-      
+
+
+
       <main className="container mx-auto px-4 pt-24 pb-16">
         {/* Y2K browser-style header */}
         <div className="bg-gradient-to-r from-purple-800 to-blue-900 mb-8 rounded-t-lg border-b-2 border-white/20 p-2 flex items-center justify-between">
@@ -121,7 +120,7 @@ export default function Day2Tools() {
           </div>
           <div className="font-mono text-white/80 text-sm">{currentTime}</div>
         </div>
-        
+
         <div className="bg-black/80 backdrop-blur-sm rounded-b-lg border-2 border-pink-500/30 p-6 mb-10">
           {/* Y2K Window-style Title */}
           <div className="overflow-hidden mb-8">
@@ -132,7 +131,7 @@ export default function Day2Tools() {
             </div>
           </div>
         </div>
-        
+
         {/* Main content with Y2K aesthetic */}
         <div className="bg-gradient-to-r p-[2px] from-pink-500/40 to-purple-500/40 rounded-lg">
           <div className="bg-black/80 backdrop-blur-sm p-8 rounded-lg">
@@ -147,56 +146,56 @@ export default function Day2Tools() {
                   url="https://lovable.dev"
                   description="i use this for frontend *but* it's honestly good for way more than that. it helps you whip up a super quick MVP for almost any idea. and it just… looks good. like i'll be tweaking the code and seeing live previews and i'm like oh okayyy. it gives &quot;cute, functioning, and ready to demo.&quot;"
                 />
-                
+
                 <Tool 
                   name="windsurf"
                   url="https://codeium.com/windsurf"
                   description="this is my code editor. it's clean, ai-powered, and tracks how much you've been coding which is lowkey motivating (and kinda exposing). you could also use Cursor — it's great!"
                   isHot={true}
                 />
-                
+
                 <Tool 
                   name="mistral 7b"
                   url="https://mistral.ai"
                   description="i use this for my AI model — especially for bots and chat features. it's free, open-source, and light enough to actually run fast. perfect if you want your app to say things that sound like a person and not like a weird robot."
                 />
-                
+
                 <Tool 
                   name="huggingface"
                   url="https://huggingface.co"
                   description="this is where i grab my models. i got mistral here, but you can also find models like Deepseek, LLama, and a bunch of other open-source options. great for experimenting with different AI brains till you find *your guy*."
                 />
-                
+
                 <Tool 
                   name="cron-job.org"
                   url="https://cron-job.org"
                   description="super simple tool to run cron jobs — like &quot;send a reminder email every morning&quot; or &quot;ping my API once a day.&quot; no frills, just functional."
                 />
-                
+
                 <Tool 
                   name="claude (via anthropic)"
                   url="https://www.anthropic.com"
                   description="i used Claude to help me figure out my database schema. it was actually so helpful — i just described what my app does and it gave me the whole schema layout, normalized and everything. like… okay architect!!"
                   isNew={true}
                 />
-                
+
                 <Tool 
                   name="supabase"
                   url="https://supabase.com"
                   description="this is where my actual database lives. super dev-friendly, realtime features, works well with Claude's schema suggestions. it's giving postgres, but make it ✨modern✨."
                 />
-                
+
                 <Tool 
                   name="giphy api"
                   url="https://developers.giphy.com"
                   description="because what is life without gifs??? i used the Giphy API to sprinkle a lil joy into the app. great for reaction gifs, mood boards, or just making your interface feel alive."
                 />
               </div>
-              
+
               <hr className="border-pink-500/30 my-6" />
-              
+
               <p className="mb-4">if you want to build something like this or just wanna vibe-code together, lemme know. i'll send you links, tips, and whatever else you need.</p>
-              
+
               <p className="text-pink-400 mt-8">
                 talk soon,<br />
                 michelle 🦩
@@ -204,7 +203,7 @@ export default function Day2Tools() {
             </div>
           </div>
         </div>
-        
+
         {/* Y2K Footer */}
         <div className="mt-12 text-center">
           <div className="inline-block bg-gradient-to-r from-pink-900/40 to-purple-900/40 p-[2px] rounded-lg">
@@ -217,7 +216,7 @@ export default function Day2Tools() {
           </div>
         </div>
       </main>
-      
+
       <Footer />
     </div>
   )
@@ -242,20 +241,20 @@ function Tool({
         <div className="bg-black/60 rounded-md p-5 hover:bg-black/40 transition-all duration-200">
           <div className="flex flex-wrap justify-between items-start mb-2 gap-3">
             <h3 className="text-xl font-bold text-white glitch">{name}</h3>
-            
+
             <div className="flex items-center gap-2">
               {isNew && (
                 <span className="blink px-2 py-0.5 text-xs rounded bg-gradient-to-r from-pink-500 to-purple-500 text-white font-bold">
                   NEW!
                 </span>
               )}
-              
+
               {isHot && (
                 <span className="blink px-2 py-0.5 text-xs rounded bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold">
                   HOT!
                 </span>
               )}
-              
+
               <Link 
                 href={url} 
                 target="_blank" 
@@ -266,7 +265,7 @@ function Tool({
               </Link>
             </div>
           </div>
-          
+
           <p className="text-gray-300 text-base">{description}</p>
         </div>
       </div>

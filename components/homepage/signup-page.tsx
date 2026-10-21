@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { HomeHeader, HomeFooter, WindowBar } from "./home-desktop"
+import { HomeHeader, HomeFooter, WindowBar, SpriteIcon } from "./home-desktop"
 import { signupForms } from "./signup-config"
 import { ArrowUpRight } from "lucide-react"
 import styles from "./home.module.css"
@@ -16,10 +16,10 @@ export default function SignupPage({ kind }: { kind: "magazine" | "penpals" }) {
         <div className={styles.formIntro}>
           <p className={styles.eyebrow}>{magazine ? "A MAGAZINE IN THE MAKING" : "A LITTLE LESS SCREEN TIME"}</p>
           <h1 id="signup-title">{magazine ? "the magazine waitlist" : "wanna be pen pals?"}</h1>
-          <p>{magazine ? "An illustrated field guide to figuring out life in the age of AI. Join the waitlist for updates as it comes together." : "If you’d like a handwritten letter from me, leave your mailing details below. This is an interest signup."}</p>
+          <p>{magazine ? "We’re putting together an artsy magazine about AI and learning—with comics, diary entries, and handwritten pages. Join the waitlist for updates as it comes together." : "If you’d like a handwritten letter from me, leave your mailing details below. This is an interest signup."}</p>
         </div>
         <div className={styles.directSignup}>
-          <img src={magazine ? "/homepage/magazine-banner.webp" : "/homepage/penpal-mail.webp"} alt={magazine ? "Michelle’s Computer — the magazine" : "An illustrated handwritten letter and envelope"} width={magazine ? 2048 : 420} height={magazine ? 682 : 420} className={magazine ? styles.directMagazineArt : styles.directPenpalArt} />
+          <SpriteIcon kind={kind} className={styles.signupIcon} />
           <a href={signupForms[kind].publicUrl} className={`${styles.button} ${magazine ? "" : styles.orangeButton}`}>{magazine ? "Join the magazine waitlist" : "Sign up to be pen pals"}<ArrowUpRight size={19} aria-hidden="true" /></a>
           <p>Continue to the short signup form on Tally.</p>
         </div>

@@ -1,6 +1,5 @@
 "use client"
 
-import { Nav } from "@/components/nav"
 import { Footer } from "@/components/footer"
 import { ScrollySection } from "@/components/scrolly-section"
 import { ScrollyFullText } from "@/components/scrolly-full-text"
@@ -42,7 +41,7 @@ export default function RAGInPractice() {
 
   return (
     <main className="min-h-screen bg-black text-white">
-      <Nav />
+
       <div className="pt-20 pb-16">
         <h1 className="text-4xl font-bold text-center mb-8">RAG in Practice</h1>
         <div className="flex justify-center space-x-4 mb-8">
@@ -174,7 +173,7 @@ function AllAboutRAG({ setActivePage }: { setActivePage: (page: string) => void 
           </div>
         }
       >
-        
+
         <div className="space-y-6">
           <div>
             <h3 className="text-xl font-semibold mb-2 text-white">1. Embedding Spaces</h3>
@@ -186,7 +185,7 @@ function AllAboutRAG({ setActivePage }: { setActivePage: (page: string) => void 
             <ul className="list-disc list-inside text-gray-400 mt-2 ml-4 space-y-2">
               <li><strong>CBOW (Continuous Bag of Words):</strong> Predicts a target word from its context words. For example, given the sentence "The cat sits on the mat", CBOW might try to predict "sits" from ["The", "cat", "on", "the", "mat"].</li>
               <li><strong>Skip-gram:</strong> The reverse of CBOW - predicts context words from a target word. Using the same example, Skip-gram would try to predict ["The", "cat", "on", "the", "mat"] from the word "sits".</li>
-              
+
             </ul>
             <br />
             <p className="text-gray-400">Both architectures learn word relationships by analyzing how words appear together in text. The key principle is that words appearing in similar contexts should have similar vector representations. For instance, "king" and "queen" might have similar vectors because they often appear in similar contexts about royalty.</p>
@@ -204,7 +203,7 @@ function AllAboutRAG({ setActivePage }: { setActivePage: (page: string) => void 
             <p className="text-gray-400 mb-4">
               While RAG commonly uses cosine similarity, there are several ways to measure vector similarity:
             </p>
-            
+
             <ul className="list-disc list-inside text-gray-400 mb-6 space-y-2">
               <li><strong>Euclidean Distance:</strong> Measures straight-line distance between vectors</li>
               <li><strong>Manhattan Distance:</strong> Measures distance along axes (like city blocks)</li>
@@ -213,7 +212,7 @@ function AllAboutRAG({ setActivePage }: { setActivePage: (page: string) => void 
               <li><strong>Cosine Similarity:</strong> Measures angle between vectors</li>
             </ul>
 
-    
+
           </div>
         </div>
       </ScrollyFullText>
@@ -294,7 +293,7 @@ function AllAboutRAG({ setActivePage }: { setActivePage: (page: string) => void 
             <p className="text-gray-400 mb-4">
               The above was a simple rule-based algorithm. If we want to refine the similarity scores, RAG can use:
             </p>
-            
+
             <div className="bg-gray-800 p-4 rounded-md my-4">
               <p className="text-gray-300 font-mono mb-2">Softmax Function:</p>
               <p className="text-gray-300 font-mono">
@@ -317,12 +316,12 @@ function AllAboutRAG({ setActivePage }: { setActivePage: (page: string) => void 
             <circle cx="40" cy="40" r="8" fill="#4299E1" />
             <circle cx="40" cy="100" r="8" fill="#4299E1" />
             <circle cx="40" cy="160" r="8" fill="#4299E1" />
-            
+
             <circle cx="100" cy="70" r="8" fill="#48BB78" />
             <circle cx="100" cy="130" r="8" fill="#48BB78" />
-            
+
             <circle cx="160" cy="100" r="8" fill="#ECC94B" />
-            
+
             {/* Connections */}
             <path d="M40 40 L100 70 M40 40 L100 130" stroke="white" strokeWidth="2" opacity="0.5" />
             <path d="M40 100 L100 70 M40 100 L100 130" stroke="white" strokeWidth="2" opacity="0.5" />
@@ -331,7 +330,7 @@ function AllAboutRAG({ setActivePage }: { setActivePage: (page: string) => void 
           </svg>
         }
       >
-       
+
         <div className="space-y-6">
           <div>
           <p className="text-gray-400">
@@ -390,7 +389,7 @@ function AllAboutRAG({ setActivePage }: { setActivePage: (page: string) => void 
       >
         <h2 className="text-2xl font-bold mb-4">Examples of RAG in Action</h2>
         <ul className="list-disc list-inside text-gray-400 space-y-4">
-          
+
           <li>
             <strong>Technical Documentation:</strong> When searching through code documentation:
             <ol className="list-decimal list-inside ml-6 mt-2">
@@ -421,7 +420,7 @@ function AllAboutRAG({ setActivePage }: { setActivePage: (page: string) => void 
           </li>
         </ul>
       </ScrollySection>
- 
+
     </div>
   )
 }
@@ -430,7 +429,7 @@ function FutureUBTS({ setActivePage }: { setActivePage: (page: string) => void }
   return (
     <div className="max-w-4xl mx-auto px-4">
       <h2 className="text-4xl font-bold mb-8 text-center">Behind the Scenes: How I Built Future U</h2>
-      
+
       <p className="text-gray-400 mb-12">
         In building Future U as my final project for MTH 354, I wanted a solution that could help users explore tailored career paths by leveraging <strong>Retrieval-Augmented Generation (RAG)</strong> and <strong>Large Language Models (LLMs)</strong>. Here's a breakdown of how it all came together – from tools to data to the math that makes it work.
       </p>
@@ -456,9 +455,9 @@ function FutureUBTS({ setActivePage }: { setActivePage: (page: string) => void }
         <Section
           title="2. Implementing RAG and LLM"
           content={`To make this project efficient and scalable, I opted for established tools:
-          
+
           • OpenAI's API for the LLM: Building a custom large language model would have been time-consuming and resource-intensive. OpenAI's GPT model is cost-efficient, reliable and flexible out of the box.
-          
+
           • Pinecone for RAG: Pinecone served as the vector database where I uploaded our data. It allowed for efficient similarity search using cosine similarity (described and explained this in "All about RAG")`}
         />
 
@@ -478,13 +477,13 @@ function FutureUBTS({ setActivePage }: { setActivePage: (page: string) => void }
           content={`Good results require good data, so I focused on gathering diverse datasets:
 
           • LinkedIn Job Descriptions: A dataset with varied job roles with their descriptions, which detail what employers are looking for and responsibilities.
-          
+
           • Data Analyst Job Descriptions: Similar to LinkedIn jobs data set but focused on data analyst jobs
-          
+
           • Reddit Career Guidance Subreddit: I scraped 1,000 posts from this subreddit, where people share real-world career advice and stories.
-          
+
           • Twitter Posts: Scraped approximately 200 tweets gathered under keywords like "career tips," "intern tips," and "career guidance."
-          
+
           While the datasets were small due to time and cost constraints (API scraping tools are very pricey!), they provided a solid foundation.`}
         />
 
@@ -528,9 +527,9 @@ function FutureUBTS({ setActivePage }: { setActivePage: (page: string) => void }
           content={`When a user takes a quiz on the website, their answers are combined into a single user profile document. This is where all the RAG magic happens:
 
           1. Vectorizing the User Profile: The user profile is transformed into a vector using the same process as the datasets.
-          
+
           2. Querying Pinecone: The vectorized profile is sent as a query to Pinecone. Pinecone compares this query using cosine similarity.
-          
+
           3. Selecting Relevant Data: Pinecone ranks the top matches by cosine similarity. We take the top 5 most similar records as the most relevant career data.`}
         />
 
@@ -568,7 +567,7 @@ function FutureUBTS({ setActivePage }: { setActivePage: (page: string) => void }
         <Section
           title="6. Combining RAG with the LLM"
           content={`The next step is integrating this retrieved data with the LLM:
-          
+
           • The user profile and the top 5 retrieved career data points are combined into a single input.
           • This input, along with a carefully crafted prompt, is sent to OpenAI's LLM.
           • The LLM processes everything and generates a personalized career report for the user.`}
@@ -593,7 +592,7 @@ function FutureUBTS({ setActivePage }: { setActivePage: (page: string) => void }
         <Section
           title="8. Future Improvements"
           content={`While the project works well, there's room for improvement:
-          
+
           • Expanding the Datasets: Adding larger and more diverse datasets will improve the quality and relevance of results.
           • Improving the Retrieval Process: Fine-tuning the vector embeddings or exploring hybrid search techniques.
           • Lower-Cost Data Scraping: Building efficient pipelines for collecting larger datasets without breaking the bank.`}
@@ -604,7 +603,7 @@ function FutureUBTS({ setActivePage }: { setActivePage: (page: string) => void }
           content={`Building Future U in just four weeks was an incredible learning experience. I dove deep into the math behind RAG and LLMs, reading research papers like "Attention is All You Need" and "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks".
 
           For the first time, I wasn't just coding—I truly understood the math behind the models and what good results look like mathematically. Seeing theory come to life and putting it into practice was so exciting.
-          
+
           I'm proud of what I built and excited for the future because I believe Future U can genuinely help students like me find the career guidance they need. This project has shown me what's possible when you combine learning, research, and real-world applications.`}
         />
 
@@ -624,7 +623,7 @@ function FutureUBTS({ setActivePage }: { setActivePage: (page: string) => void }
                 >
                   Next Page: Future U
                 </button>
-        
+
       </div>
     </div>
   )

@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { Nav } from "@/components/nav"
 import { Footer } from "@/components/footer"
 import { ProfileHeader } from "@/components/profile-header"
 import { PostGrid } from "@/components/post-grid"
@@ -17,7 +16,7 @@ export default function PostsPage() {
 
   return (
     <main className="min-h-screen bg-black">
-      <Nav />
+
       <div className="max-w-4xl mx-auto px-4 pt-20 pb-28">
         <ProfileHeader />
         <Tabs value={activeTab} onValueChange={setActiveTab} className="mt-8">

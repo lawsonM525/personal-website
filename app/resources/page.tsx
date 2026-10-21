@@ -1,6 +1,5 @@
 'use client'
 
-import { Nav } from "@/components/nav"
 import { Footer } from "@/components/footer"
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
@@ -10,7 +9,7 @@ export default function Resources() {
   const [showTrail, setShowTrail] = useState(false);
   const [hitCount, setHitCount] = useState(137);
   const [currentTime, setCurrentTime] = useState('');
-  
+
   useEffect(() => {
     // Cursor trail effect
     const handleMouseMove = (e: MouseEvent) => {
@@ -18,9 +17,9 @@ export default function Resources() {
       setShowTrail(true);
       setTimeout(() => setShowTrail(false), 200);
     };
-    
+
     window.addEventListener('mousemove', handleMouseMove);
-    
+
     // Update time
     const updateTime = () => {
       const now = new Date();
@@ -29,10 +28,10 @@ export default function Resources() {
       const ampm = now.getHours() >= 12 ? 'PM' : 'AM';
       setCurrentTime(`${hours}:${minutes} ${ampm}`);
     };
-    
+
     updateTime();
     const interval = setInterval(updateTime, 60000);
-    
+
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
       clearInterval(interval);
@@ -50,7 +49,7 @@ export default function Resources() {
         .blink {
           animation: blink 1.2s infinite;
         }
-        
+
         @keyframes marquee {
           0% { transform: translateX(0); }
           100% { transform: translateX(-100%); }
@@ -58,7 +57,7 @@ export default function Resources() {
         .marquee {
           animation: marquee 20s linear infinite;
         }
-        
+
         @keyframes glitch {
           0% { text-shadow: -2px 0 #ff00ff, 2px 0 #00ffff; }
           25% { text-shadow: 2px 0 #ff00ff, -2px 0 #00ffff; }
@@ -69,7 +68,7 @@ export default function Resources() {
         .glitch {
           animation: glitch 3s infinite;
         }
-        
+
         .pixel-border {
           position: relative;
           border-style: solid;
@@ -82,7 +81,7 @@ export default function Resources() {
           box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.3);
         }
       `}</style>
-      
+
       {/* Cursor trail effect */}
       {showTrail && (
         <div 
@@ -96,7 +95,7 @@ export default function Resources() {
           }}
         />
       )}
-      
+
       {/* Y2K scanlines and noise overlay */}
       <div className="fixed inset-0 pointer-events-none z-10 opacity-5" 
         style={{
@@ -109,9 +108,9 @@ export default function Resources() {
           )`
         }}
       />
-      
-      <Nav />
-      
+
+
+
       <main className="container mx-auto px-4 pt-24 pb-16">
         {/* Y2K browser-style header */}
         <div className="bg-gradient-to-r from-purple-800 to-blue-900 mb-8 rounded-t-lg border-b-2 border-white/20 p-2 flex items-center justify-between">
@@ -122,7 +121,7 @@ export default function Resources() {
           </div>
           <div className="font-mono text-white/80 text-sm">{currentTime}</div>
         </div>
-        
+
         <div className="bg-black/80 backdrop-blur-sm rounded-b-lg border-2 border-pink-500/30 p-6 mb-10">
           {/* Y2K Window-style Title */}
           <div className="overflow-hidden mb-8">
@@ -132,14 +131,14 @@ export default function Resources() {
               </h1>
             </div>
           </div>
-          
+
           <div className="pixel-border mb-8 p-4 bg-gradient-to-r from-pink-900/30 to-purple-900/30">
             <p className="text-center text-lg">
               for learning more, building faster, and living your best life 🙂‍↕️
             </p>
           </div>
         </div>
-        
+
         {/* Featured Section */}
         <div className="mb-12">
           <ResourceSection 
@@ -170,7 +169,7 @@ export default function Resources() {
             </div>
           </ResourceSection>
         </div>
-        
+
         {/* AI tools (moved from Day 2 Tools) */}
         <ResourceSection 
           title="AI tools" 
@@ -242,7 +241,7 @@ export default function Resources() {
                 link="https://michellexcomputer.gumroad.com/l/algorithmsforthegirlies"
               />
             </ResourceSection>
-            
+
             {/* Learning Resources */}
             <ResourceSection 
               title="Learn & Think Like a Coder" 
@@ -278,7 +277,7 @@ export default function Resources() {
                 isHot={true}
               />
             </ResourceSection>
-            
+
             {/* Developer Resources */}
             <ResourceSection 
               title="Developer Resources" 
@@ -308,9 +307,9 @@ export default function Resources() {
                 link="https://datafa.st/?via=michelle"
               />
             </ResourceSection>
-      
+
           </div>
-          
+
           {/* Right Column */}
           <div>
             {/* Practice Resources */}
@@ -343,7 +342,7 @@ export default function Resources() {
                 isHot={true}
               />
             </ResourceSection>
-            
+
             {/* Productivity Tools */}
             <ResourceSection 
               title="Productivity Tools" 
@@ -368,7 +367,7 @@ export default function Resources() {
                 link="https://www.16personalities.com"
               />
             </ResourceSection>
-            
+
             {/* Internships Section */}
             <ResourceSection 
               title="Internships + Career" 
@@ -395,7 +394,7 @@ export default function Resources() {
             </ResourceSection>
           </div>
         </div>
-        
+
         {/* Y2K Guestbook and stats section */}
         <div className="mt-16 mb-8">
           <div className="bg-black border-2 border-dashed border-pink-500/50 p-4 rounded-lg">
@@ -431,7 +430,7 @@ export default function Resources() {
           </div>
         </div>
       </main>
-      
+
       <Footer />
     </div>
   )
@@ -467,19 +466,19 @@ function ResourceSection({
           backgroundImage: 'linear-gradient(90deg, var(--tw-gradient-stops)), linear-gradient(90deg, black 25%, transparent 25%, transparent 50%, black 50%, black 75%, transparent 75%, transparent)',
           backgroundSize: '100% 100%, 8px 8px',
         }}></div>
-        
+
         <div className="flex items-center mb-1">
           <span className="text-3xl mr-2">{emoji}</span>
           <h2 className={`text-2xl font-bold ${textColor} glitch`}>{title}</h2>
           <span className="ml-2 blink text-xl">★</span>
         </div>
-        
+
         <div className={`h-2 bg-gradient-to-r ${getBorderClass()} mt-1`} style={{
           backgroundImage: 'linear-gradient(90deg, var(--tw-gradient-stops)), linear-gradient(90deg, black 25%, transparent 25%, transparent 50%, black 50%, black 75%, transparent 75%, transparent)',
           backgroundSize: '100% 100%, 8px 8px',
         }}></div>
       </div>
-      
+
       <div className="space-y-4">
         {children}
       </div>
@@ -506,22 +505,22 @@ function ResourceCard({
         <div className="bg-black rounded-md p-4 hover:bg-black/80 transition-all duration-200">
           <div className="flex justify-between items-start mb-2">
             <h3 className="text-xl font-bold">{title}</h3>
-            
+
             {isNew && (
               <span className="blink px-2 py-0.5 text-xs rounded bg-gradient-to-r from-pink-500 to-purple-500 text-white font-bold">
                 NEW!
               </span>
             )}
-            
+
             {isHot && (
               <span className="blink px-2 py-0.5 text-xs rounded bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold">
                 HOT!
               </span>
             )}
           </div>
-          
+
           <p className="text-gray-300 text-sm mb-4">{description}</p>
-          
+
           <Link 
             href={link} 
             target="_blank" 

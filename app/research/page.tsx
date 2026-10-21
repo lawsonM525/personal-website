@@ -1,13 +1,12 @@
 'use client'
 
-import { Nav } from "@/components/nav"
 import { Footer } from "@/components/footer"
 import Link from 'next/link'
 
 export default function Research() {
   return (
     <main className="container mx-auto px-4 py-16 max-w-3xl">
-      <Nav />
+
       <h1 className="text-5xl font-bold text-center mb-16 bg-gradient-to-r from-pink-500 to-purple-500 text-transparent bg-clip-text">
         Research Publications
       </h1>
@@ -34,7 +33,7 @@ export default function Research() {
             </Link>
           </div>
         </div>
- 
+
       </div>
 
       <Footer />

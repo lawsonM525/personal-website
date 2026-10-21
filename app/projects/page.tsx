@@ -1,4 +1,3 @@
-import { Nav } from "@/components/nav"
 import { Footer } from "@/components/footer"
 import Link from "next/link"
 import { ArrowUpRight } from 'lucide-react'
@@ -84,7 +83,7 @@ export default function Projects() {
 
   return (
     <main className="min-h-screen bg-black">
-      <Nav />
+
       <div className="h-16" />  {/* spacer */ }
       <div className="pt-20 pb-16">
         <div className="max-w-7xl mx-auto px-4">

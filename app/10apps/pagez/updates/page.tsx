@@ -1,6 +1,5 @@
 "use client"
 
-import { Nav } from "@/components/nav"
 import { Footer } from "@/components/footer"
 import { useEffect, useState } from "react"
 import Image from "next/image"
@@ -46,7 +45,7 @@ export default function PagezUpdates() {
         style={{ backgroundImage: `repeating-linear-gradient(0deg, rgba(255,255,255,0.2), rgba(255,255,255,0.2) 1px, transparent 1px, transparent 2px)` }}
       />
 
-      <Nav />
+
 
       <main className="container mx-auto px-4 pt-24 pb-16">
         <div className="bg-gradient-to-r from-purple-800 to-blue-900 mb-8 rounded-t-lg border-b-2 border-white/20 p-2 flex items-center justify-between">

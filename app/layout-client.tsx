@@ -1,27 +1,16 @@
-"use client";
-import { CommandMenu } from "@/components/command-menu";
-import { EmailPopup } from "@/components/email-popup";
-import { Toaster } from "@/components/ui/toaster";
-import { Nav } from "@/components/nav";
-import { usePathname } from "next/navigation";
-import { useState } from "react";
+"use client"
+
+import { Toaster } from "@/components/ui/toaster"
+import { HomeHeader } from "@/components/homepage/home-desktop"
+import { usePathname } from "next/navigation"
 
 export function LayoutClient({ children }: { children: React.ReactNode }) {
-  const [commandMenuOpen, setCommandMenuOpen] = useState(false);
-  const [emailPopupOpen, setEmailPopupOpen] = useState(false);
-  const pathname = usePathname();
-  const isLearnRoute = pathname === "/learn" || pathname.startsWith("/learn/");
-  const isComputerHome = pathname === "/" || pathname === "/magazine" || pathname === "/penpals";
-
-  if (isComputerHome) return <>{children}</>;
-
-  return (
-    <>
-      {!isLearnRoute && <Nav onCommandOpen={() => setCommandMenuOpen(true)} />}
-      <CommandMenu open={commandMenuOpen} onOpenChange={setCommandMenuOpen} />
-      {children}
-      <EmailPopup open={emailPopupOpen} onOpenChange={setEmailPopupOpen} />
-      <Toaster />
-    </>
-  );
+  const pathname = usePathname()
+  const hasOwnHeader = pathname === "/" || pathname === "/magazine" || pathname === "/penpals" || pathname === "/learn" || pathname.startsWith("/learn/")
+  const isProposal = pathname.startsWith("/begin") || pathname === "/openaibeta"
+  return <>
+    {!hasOwnHeader && !isProposal && <HomeHeader />}
+    {children}
+    <Toaster />
+  </>
 }
