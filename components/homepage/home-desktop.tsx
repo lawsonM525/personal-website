@@ -176,6 +176,6 @@ export default function HomeDesktop() {
         <div className={styles.moreLinks}><span>More from Michelle</span><a href="/projects">Projects</a><a href="/research">Research</a><a href="/talks">Talks</a><a href="/posts">Posts</a></div>
       </div>
     </main>
-    <div className={styles.taskbar} role="toolbar" aria-label="Desktop controls"><button type="button" className={styles.startButton} onClick={() => window.dispatchEvent(new Event("michelle:search"))}><Search size={19} aria-hidden="true" />Explore</button><button type="button" className={styles.taskButton} aria-pressed={welcomeOpen} onClick={() => { setWelcomeOpen(true); setMaximized(false) }}><FileText size={15} aria-hidden="true" />welcome.exe</button><span className={styles.motto}>Inspire. Educate. Create.</span><span className={styles.clock}><Clock3 size={13} aria-hidden="true" />{time || "—"}</span></div>
+    <div className={styles.taskbar} role="toolbar" aria-label="Desktop controls"><button type="button" className={styles.startButton} onClick={() => window.dispatchEvent(new Event("michelle:search"))}><Search size={19} aria-hidden="true" />Explore</button><button type="button" className={styles.taskButton} aria-pressed={welcomeOpen} onClick={() => { setWelcomeOpen(true); setMaximized(false) }}><FileText size={15} aria-hidden="true" />welcome.exe</button><span className={styles.clock}><Clock3 size={13} aria-hidden="true" />{time || "—"}</span></div>
   </div>
 }
