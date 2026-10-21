@@ -16,7 +16,7 @@ The main buttons link directly to the existing published Tally forms. Both forms
 
 - Magazine: `https://tally.so/r/zxP9JM`. First name and email; separate opt-in for updates while the magazine comes together.
 - Pen pals: `https://tally.so/r/68alRY`. Full name and mailing address; interest signup, without a checkout or a guaranteed letter or ongoing replies.
-- Tally stores responses. The pen pal form’s existing Google Sheets integration was verified as enabled in the form’s Integrations view. No response rows were downloaded or added.
+- Tally stores responses. The pen pal form’s existing Google Sheets integration was verified as enabled in the form’s Integrations view. The magazine form’s Integrations view showed no connected destinations, so magazine responses remain in Tally. No response rows were downloaded or added.
 - No new email automation, confirmation email, integration, credential, paid service, or account permission was created.
 - `/magazine` and `/penpals` are optional branded entry pages that point to the same forms. The site itself does not handle or retain signup data and does not manufacture a success state.
 
