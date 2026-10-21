@@ -1,28 +1,20 @@
-"use client"
+import type { Metadata } from "next"
+import HomeDesktop from "@/components/homepage/home-desktop"
 
-import { Footer } from "@/components/footer"
-import { CommandMenu } from "@/components/command-menu"
-import { useState } from "react"
+export const metadata: Metadata = {
+  title: { absolute: "Michelle’s Computer — a little corner of the internet" },
+  description: "Figuring out life in the age of AI with Michelle Lawson. Explore the magazine in the making, join the waitlist, or sign up to be pen pals.",
+  alternates: { canonical: "https://michellescomputer.com/" },
+  openGraph: {
+    title: "Michelle’s Computer",
+    description: "Open tabs, big ideas & little letters. A magazine in the making and a little post office from Michelle Lawson.",
+    url: "https://michellescomputer.com/",
+    images: [{ url: "https://michellescomputer.com/homepage/magazine-banner.webp", width: 1200, height: 400, alt: "Michelle’s Computer — the magazine" }],
+  },
+  twitter: { card: "summary_large_image", title: "Michelle’s Computer", images: ["https://michellescomputer.com/homepage/magazine-banner.webp"] },
+}
 
 export default function Home() {
-  const [commandOpen, setCommandOpen] = useState(false)
-
-  return (
-    <main className="flex min-h-screen flex-col items-start justify-center p-4">
-      <CommandMenu open={commandOpen} onOpenChange={setCommandOpen} />
-      <div className="space-y-4 max-w-2xl mx-auto">
-        <h1 className="text-4xl font-bold">Michelle Lawson</h1>
-        <p className="text-gray-400">Turning my ideas, and yours, into reality.</p>
-        <button
-          onClick={() => setCommandOpen(true)}
-          className="text-sm text-gray-400 mt-8 px-2 py-1 rounded-md transition-all duration-200 ease-in-out hover:bg-gray-800"
-        >
-          Press <kbd className="px-2 py-1 bg-gray-800 rounded-full">Ctrl</kbd> +{" "}
-          <kbd className="px-2 py-1 bg-gray-800 rounded-full">K</kbd> to start →
-        </button>
-      </div>
-      <Footer />
-    </main>
-  )
+  return <HomeDesktop />
 }
 

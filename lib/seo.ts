@@ -1,12 +1,12 @@
 import type { Metadata } from "next"
 
-const DEFAULT_SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://michellelawson.me"
+const DEFAULT_SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://michellescomputer.com"
 
 export const siteConfig = {
-  name: "Michelle Lawson",
+  name: "Michelle’s Computer",
   url: DEFAULT_SITE_URL,
   description:
-    "AI educator and computer science student at Smith College. Founder of Computer Science Girlies. Projects, research, talks, resources, and posts for Gen Z learning AI and CS.",
+    "Figuring out life in the age of AI with Michelle Lawson. Experiments, stories, a magazine in the making, and handwritten letters.",
   ogImage: "/placeholder.jpg",
   keywords: [
     // Branded

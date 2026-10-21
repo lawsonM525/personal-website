@@ -7,6 +7,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const lastModified = new Date()
   const routes = [
     "/",
+    "/magazine",
+    "/penpals",
     "/about",
     "/learn",
     "/projects",

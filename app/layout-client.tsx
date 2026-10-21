@@ -11,6 +11,9 @@ export function LayoutClient({ children }: { children: React.ReactNode }) {
   const [emailPopupOpen, setEmailPopupOpen] = useState(false);
   const pathname = usePathname();
   const isLearnRoute = pathname === "/learn" || pathname.startsWith("/learn/");
+  const isComputerHome = pathname === "/" || pathname === "/magazine" || pathname === "/penpals";
+
+  if (isComputerHome) return <>{children}</>;
 
   return (
     <>
