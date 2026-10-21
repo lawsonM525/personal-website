@@ -1,9 +1,11 @@
 "use client"
 
 import Link from "next/link"
-import { useEffect, useMemo, useRef, useState } from "react"
-import { ArrowRight, ArrowUpRight, ChevronRight, Clock3, FileText, Folder, Home, Menu, Minus, Search, Square, X } from "lucide-react"
+import { useEffect, useMemo, useRef, useState, type MouseEvent } from "react"
+import { ArrowRight, ArrowUpRight, ChevronRight, Clock3, FileText, Folder, Home, Menu, Search, X } from "lucide-react"
 import { signupForms } from "./signup-config"
+import { SignupWindow } from "./signup-window"
+import { WindowBar } from "./window-bar"
 import styles from "./home.module.css"
 
 const pages = [
@@ -26,10 +28,32 @@ const desktopShortcuts = [
   { label: "Talks", href: "/talks", image: "/homepage/talks-icon-v2.webp" },
 ]
 
+type SignupKind = keyof typeof signupForms
+
+function signupKindFor(href: string): SignupKind | undefined {
+  return (Object.keys(signupForms) as SignupKind[]).find(kind => signupForms[kind].pagePath === href)
+}
+
+function launchSignup(href: string) {
+  const kind = signupKindFor(href)
+  if (!kind) return false
+  window.dispatchEvent(new CustomEvent("michelle:signup", { detail: kind }))
+  return true
+}
+
+export function handleSignupLink(event: MouseEvent<HTMLAnchorElement>, href: string) {
+  if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || !signupKindFor(href)) return
+  event.preventDefault()
+  launchSignup(href)
+}
+
 export function HomeHeader() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const [query, setQuery] = useState("")
+  const [signupKind, setSignupKind] = useState<SignupKind | null>(null)
+  const [openedSignups, setOpenedSignups] = useState<SignupKind[]>([])
+  const signupDialog = useRef<HTMLDialogElement>(null)
   const dialog = useRef<HTMLDialogElement>(null)
   const input = useRef<HTMLInputElement>(null)
   const matches = useMemo(() => {
@@ -37,52 +61,64 @@ export function HomeHeader() {
     return pages.filter(page => words.every(word => `${page.label} ${page.description} ${page.keywords}`.toLowerCase().includes(word)))
   }, [query])
 
+  function showSignup(kind: SignupKind) {
+    setSearchOpen(false)
+    setMenuOpen(false)
+    if (!signupDialog.current?.open) signupDialog.current?.showModal()
+    setOpenedSignups(previous => previous.includes(kind) ? previous : [...previous, kind])
+    setSignupKind(kind)
+  }
+
   useEffect(() => {
     function keyboard(event: KeyboardEvent) {
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") { event.preventDefault(); setSearchOpen(value => !value) }
     }
     function openSearch() { setSearchOpen(true) }
+    function openSignup(event: Event) {
+      const kind = (event as CustomEvent).detail
+      if (kind !== "magazine" && kind !== "penpals") return
+      showSignup(kind)
+    }
+    window.addEventListener("michelle:signup", openSignup)
     window.addEventListener("keydown", keyboard)
     window.addEventListener("michelle:search", openSearch)
-    return () => { window.removeEventListener("keydown", keyboard); window.removeEventListener("michelle:search", openSearch) }
+    return () => { window.removeEventListener("michelle:signup", openSignup); window.removeEventListener("keydown", keyboard); window.removeEventListener("michelle:search", openSearch) }
   }, [])
   useEffect(() => {
     if (searchOpen && !dialog.current?.open) { dialog.current?.showModal(); input.current?.focus() }
     if (!searchOpen && dialog.current?.open) dialog.current?.close()
   }, [searchOpen])
+  useEffect(() => {
+    if (!signupKind && signupDialog.current?.open) signupDialog.current?.close()
+    if (signupKind) signupDialog.current?.querySelector<HTMLElement>(`[data-signup-kind="${signupKind}"] button`)?.focus()
+  }, [signupKind])
 
   return <>
     <header className={styles.header}>
       <Link href="/" className={styles.brand} aria-label="Michelle’s Computer home"><span>Michelle’s Computer</span></Link>
-      <nav className={styles.desktopNav} aria-label="Main navigation">{mainLinks.map(item => <a key={item.href} href={item.href}>{item.label}</a>)}</nav>
+      <nav className={styles.desktopNav} aria-label="Main navigation">{mainLinks.map(item => <a key={item.href} href={item.href} onClick={event => handleSignupLink(event, item.href)}>{item.label}</a>)}</nav>
       <div className={styles.headerActions}>
         <button type="button" className={styles.searchButton} aria-label="Search pages" onClick={() => { setQuery(""); setSearchOpen(true) }}><Search size={17} aria-hidden="true" /><span>Search</span><kbd>⌘ K</kbd></button>
         <button type="button" className={styles.mobileMenuButton} aria-label={menuOpen ? "Close navigation" : "Open navigation"} aria-expanded={menuOpen} aria-controls="mobile-site-navigation" onClick={() => setMenuOpen(value => !value)}>{menuOpen ? <X size={22} /> : <Menu size={22} />}</button>
       </div>
-      {menuOpen && <nav id="mobile-site-navigation" className={styles.mobileNav} aria-label="Mobile navigation">{mainLinks.map(item => <a key={item.href} href={item.href} onClick={() => setMenuOpen(false)}><span>{item.label}</span><ArrowUpRight size={17} aria-hidden="true" /></a>)}<a href="/research">Research</a><a href="/talks">Talks</a><a href="/posts">Posts</a></nav>}
+      {menuOpen && <nav id="mobile-site-navigation" className={styles.mobileNav} aria-label="Mobile navigation">{mainLinks.map(item => <a key={item.href} href={item.href} onClick={event => { setMenuOpen(false); handleSignupLink(event, item.href) }}><span>{item.label}</span><ArrowUpRight size={17} aria-hidden="true" /></a>)}<a href="/research">Research</a><a href="/talks">Talks</a><a href="/posts">Posts</a></nav>}
     </header>
-    <nav className={styles.mobileQuickLinks} aria-label="Quick navigation">{[pages[0], pages[1], { ...pages[2], label: "Magazine" }, pages[3]].map(item => <a key={item.href} href={item.href}>{item.label}</a>)}</nav>
+    <nav className={styles.mobileQuickLinks} aria-label="Quick navigation">{[pages[0], pages[1], { ...pages[2], label: "Magazine" }, pages[3]].map(item => <a key={item.href} href={item.href} onClick={event => handleSignupLink(event, item.href)}>{item.label}</a>)}</nav>
     <dialog ref={dialog} className={styles.commandDialog} aria-labelledby="command-title" onClose={() => setSearchOpen(false)} onClick={event => { if (event.target === event.currentTarget) setSearchOpen(false) }}>
       <div className={styles.commandInner}>
         <div className={styles.windowBar}><Search size={15} aria-hidden="true" /><h2 id="command-title">Find a page or guide</h2><button type="button" aria-label="Close search" onClick={() => setSearchOpen(false)}><X size={16} /></button></div>
-        <label className={styles.searchField}><Search size={20} aria-hidden="true" /><input ref={input} value={query} onChange={event => setQuery(event.target.value)} placeholder="Try resources, magazine, pen pals…" aria-label="Search pages and guides" onKeyDown={event => { if (event.key === "Enter" && matches[0]) window.location.assign(matches[0].href) }} /></label>
-        <div className={styles.searchResults} aria-live="polite">{matches.length ? matches.map(page => <a href={page.href} key={page.href}><span><strong>{page.label}</strong><small>{page.description}</small></span><ArrowUpRight size={18} aria-hidden="true" /></a>) : <p>No matching pages. Try “learn”, “resources”, or “pen pals”.</p>}</div>
+        <label className={styles.searchField}><Search size={20} aria-hidden="true" /><input ref={input} value={query} onChange={event => setQuery(event.target.value)} placeholder="Try resources, magazine, pen pals…" aria-label="Search pages and guides" onKeyDown={event => { if (event.key === "Enter" && matches[0] && !launchSignup(matches[0].href)) window.location.assign(matches[0].href) }} /></label>
+        <div className={styles.searchResults} aria-live="polite">{matches.length ? matches.map(page => <a href={page.href} key={page.href} onClick={event => handleSignupLink(event, page.href)}><span><strong>{page.label}</strong><small>{page.description}</small></span><ArrowUpRight size={18} aria-hidden="true" /></a>) : <p>No matching pages. Try “learn”, “resources”, or “pen pals”.</p>}</div>
         <div className={styles.commandHint}><span>Enter opens the first result · Tab to choose</span><kbd>esc</kbd></div>
       </div>
+    </dialog>
+    <dialog ref={signupDialog} className={`${styles.commandDialog} ${styles.signupDialog}`} aria-label={signupKind === "magazine" ? "Magazine waitlist window" : "Pen pals window"} onClose={() => setSignupKind(null)} onClick={event => { if (event.target === event.currentTarget) setSignupKind(null) }}>
+      {openedSignups.map(kind => <div key={kind} data-signup-kind={kind} hidden={signupKind !== kind}><SignupWindow kind={kind} onClose={() => setSignupKind(null)} onSwitch={showSignup} /></div>)}
     </dialog>
   </>
 }
 
-export function WindowBar({ title, warm = false, onMinimize, onMaximize, onClose, maximized = false }: { title: string; warm?: boolean; onMinimize?: () => void; onMaximize?: () => void; onClose?: () => void; maximized?: boolean }) {
-  return <div className={`${styles.windowBar} ${warm ? styles.warmBar : ""}`}>
-    <FileText size={14} aria-hidden="true" /><span>{title}</span><span className={styles.barLines} aria-hidden="true" />
-    {(onMinimize || onMaximize || onClose) && <span className={styles.windowControls}>
-      {onMinimize && <button type="button" onClick={onMinimize} aria-label={`Minimize ${title}`}><Minus size={13} aria-hidden="true" /></button>}
-      {onMaximize && <button type="button" onClick={onMaximize} aria-label={`${maximized ? "Restore" : "Maximize"} ${title}`}><Square size={11} aria-hidden="true" /></button>}
-      {onClose && <button type="button" onClick={onClose} aria-label={`Close ${title}`}><X size={13} aria-hidden="true" /></button>}
-    </span>}
-  </div>
-}
+export { WindowBar } from "./window-bar"
 
 export function SpriteIcon({ kind, className = "" }: { kind: "learn" | "resources" | "magazine" | "penpals"; className?: string }) {
   return <span className={`${styles.sprite} ${styles[`sprite_${kind}`]} ${className}`} aria-hidden="true" />
@@ -111,7 +147,7 @@ export default function HomeDesktop() {
     <a href="#main" className={styles.skip}>Skip to content</a>
     <HomeHeader />
     <main id="main" className={styles.desktop}>
-      <nav className={styles.desktopShortcuts} aria-label="Desktop shortcuts">{desktopShortcuts.map(item => <a key={item.href} href={item.href}><img className={styles.shortcutArt} src={item.image} width="68" height="68" alt="" aria-hidden="true" decoding="async" /><span>{item.label}</span></a>)}</nav>
+      <nav className={styles.desktopShortcuts} aria-label="Desktop shortcuts">{desktopShortcuts.map(item => <a key={item.href} href={item.href} onClick={event => handleSignupLink(event, item.href)}><img className={styles.shortcutArt} src={item.image} width="68" height="68" alt="" aria-hidden="true" decoding="async" /><span>{item.label}</span></a>)}</nav>
       <div className={`${styles.workspace} ${maximized ? styles.workspaceMaximized : ""}`}>
         {welcomeOpen ? <section className={`${styles.window} ${styles.welcomeWindow}`} aria-labelledby="home-title">
           <WindowBar title="welcome.exe" onMinimize={() => { setWelcomeOpen(false); setMaximized(false) }} onMaximize={() => setMaximized(value => !value)} onClose={() => { setWelcomeOpen(false); setMaximized(false) }} maximized={maximized} />
@@ -130,7 +166,7 @@ export default function HomeDesktop() {
           <div className={styles.windowBar}><Folder size={14} aria-hidden="true" /><h2 id="explorer-title">Explore Michelle’s Computer</h2><span className={styles.barLines} aria-hidden="true" /><span className={styles.itemCount}>{visibleFolders.length} folders</span></div>
           <div className={styles.explorerToolbar}><span className={styles.location}><Home size={13} aria-hidden="true" /><span>My computer</span><ChevronRight size={12} aria-hidden="true" /></span><div className={styles.folderFilters} role="group" aria-label="Filter folders"><button type="button" aria-pressed={folderView === "all"} onClick={() => setFolderView("all")}>All folders</button><button type="button" aria-pressed={folderView === "learn"} onClick={() => setFolderView("learn")}>Learn & build</button><button type="button" aria-pressed={folderView === "connect"} onClick={() => setFolderView("connect")}>Keep in touch</button></div></div>
           <div className={styles.folderGrid} data-count={visibleFolders.length}>
-            {visibleFolders.map(folder => <a href={folder.href} key={folder.kind} className={styles.folderCard}>
+            {visibleFolders.map(folder => <a href={folder.href} key={folder.kind} className={styles.folderCard} onClick={event => handleSignupLink(event, folder.href)}>
               <SpriteIcon kind={folder.kind} />
               <h3>{folder.title}</h3><p>{folder.description}</p><span className={styles.folderAction}>{folder.action}<ArrowRight size={18} aria-hidden="true" /></span>
             </a>)}
