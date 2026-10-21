@@ -1,28 +1,18 @@
 'use client'
 
+import { ResourceSection, ResourceCard } from "@/components/resource-catalog"
 import { Footer } from "@/components/footer"
 import Link from 'next/link'
 import { links } from "@/data/links"
 import { useState, useEffect } from 'react'
 
 export default function TenApps() {
-  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
-  const [showTrail, setShowTrail] = useState(false);
   const [currentTime, setCurrentTime] = useState('');
 
   const completed = 6;
   const total = 10;
 
   useEffect(() => {
-    // Cursor trail effect
-    const handleMouseMove = (e: MouseEvent) => {
-      setCursorPosition({ x: e.clientX, y: e.clientY });
-      setShowTrail(true);
-      setTimeout(() => setShowTrail(false), 200);
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-
     // Update time
     const updateTime = () => {
       const now = new Date();
@@ -36,7 +26,6 @@ export default function TenApps() {
     const interval = setInterval(updateTime, 60000);
 
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
       clearInterval(interval);
     };
   }, []);
@@ -85,52 +74,13 @@ export default function TenApps() {
         }
       `}</style>
 
-      {/* Cursor trail effect */}
-      {showTrail && (
-        <div 
-          className="fixed pointer-events-none z-50 w-6 h-6 rounded-full"
-          style={{ 
-            background: 'radial-gradient(circle, rgba(255,105,180,0.8) 0%, rgba(255,105,180,0) 70%)',
-            left: `${cursorPosition.x}px`, 
-            top: `${cursorPosition.y}px`,
-            transform: 'translate(-50%, -50%)',
-            mixBlendMode: 'screen'
-          }}
-        />
-      )}
-
-      {/* Y2K scanlines and noise overlay */}
-      <div className="fixed inset-0 pointer-events-none z-10 opacity-5" 
-        style={{
-          backgroundImage: `repeating-linear-gradient(
-            0deg,
-            rgba(255, 255, 255, 0.2),
-            rgba(255, 255, 255, 0.2) 1px,
-            transparent 1px,
-            transparent 2px
-          )`
-        }}
-      />
-
-
-
       <main className="container mx-auto px-4 pt-24 pb-16">
-        {/* Y2K browser-style header */}
-        <div className="bg-gradient-to-r from-purple-800 to-blue-900 mb-8 rounded-t-lg border-b-2 border-white/20 p-2 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded-full bg-red-500"></div>
-            <div className="w-4 h-4 rounded-full bg-yellow-500"></div>
-            <div className="w-4 h-4 rounded-full bg-green-500"></div>
-          </div>
-          <div className="font-mono text-white/80 text-sm">{currentTime}</div>
-        </div>
-
         <div className="bg-black/80 backdrop-blur-sm rounded-b-lg border-2 border-pink-500/30 p-6 mb-10">
           {/* Y2K Window-style Title */}
           <div className="overflow-hidden mb-8">
             <div className="marquee whitespace-nowrap">
               <h1 className="text-5xl font-bold bg-gradient-to-r from-pink-500 to-purple-500 text-transparent bg-clip-text inline-block">
-                ★彡 mia's 10 apps challenge 彡★ ⋆｡°✩ 10 apps in 10 weeks ✩°｡⋆ ★彡 mia's 10 apps challenge 彡★ ⋆｡°✩ 10 apps in 10 weeks ✩°｡⋆
+                10 Apps in 10 Weeks
               </h1>
             </div>
           </div>
@@ -290,116 +240,6 @@ export default function TenApps() {
       </main>
 
       <Footer />
-    </div>
-  )
-}
-
-function ResourceSection({ 
-  title, 
-  emoji, 
-  children,
-  textColor = "text-white",
-  borderColor = "pink" 
-}: { 
-  title: string, 
-  emoji: string, 
-  children: React.ReactNode,
-  textColor?: string,
-  borderColor?: string
-}) {
-  const getBorderClass = () => {
-    switch(borderColor) {
-      case 'blue': return 'from-blue-500 to-cyan-500';
-      case 'purple': return 'from-purple-500 to-indigo-500';
-      case 'pink':
-      default: return 'from-pink-500 to-purple-500';
-    }
-  };
-
-  return (
-    <section className="mb-10">
-      {/* Y2K style header with pixel border */}
-      <div className="mb-4">
-        <div className={`h-2 bg-gradient-to-r ${getBorderClass()} mb-1`} style={{
-          backgroundImage: 'linear-gradient(90deg, var(--tw-gradient-stops)), linear-gradient(90deg, black 25%, transparent 25%, transparent 50%, black 50%, black 75%, transparent 75%, transparent)',
-          backgroundSize: '100% 100%, 8px 8px',
-        }}></div>
-
-        <div className="flex items-center mb-1">
-          <span className="text-3xl mr-2">{emoji}</span>
-          <h2 className={`text-2xl font-bold ${textColor} glitch`}>{title}</h2>
-          <span className="ml-2 blink text-xl">★</span>
-        </div>
-
-        <div className={`h-2 bg-gradient-to-r ${getBorderClass()} mt-1`} style={{
-          backgroundImage: 'linear-gradient(90deg, var(--tw-gradient-stops)), linear-gradient(90deg, black 25%, transparent 25%, transparent 50%, black 50%, black 75%, transparent 75%, transparent)',
-          backgroundSize: '100% 100%, 8px 8px',
-        }}></div>
-      </div>
-
-      <div className="space-y-4">
-        {children}
-      </div>
-    </section>
-  )
-}
-
-function ResourceCard({ 
-  title, 
-  description, 
-  link, 
-  isNew, 
-  isHot,
-  isBeta,
-  cta = "enter site"
-}: { 
-  title: string, 
-  description: string, 
-  link: string,
-  isNew?: boolean,
-  isHot?: boolean,
-  isBeta?: boolean,
-  cta?: string
-}) {
-  const isExternal = link.startsWith('http')
-  return (
-    <div className="group">
-      <div className="bg-gradient-to-r from-pink-800/30 to-purple-800/30 p-[2px] rounded-md">
-        <div className="bg-black rounded-md p-4 hover:bg-black/80 transition-all duration-200">
-          <div className="flex justify-between items-start mb-2">
-            <h3 className="text-xl font-bold">{title}</h3>
-            <div className="flex items-center gap-2">
-              {isBeta && (
-                <span className="blink px-2 py-0.5 text-xs rounded bg-gradient-to-r from-yellow-500 to-amber-500 text-black font-bold">
-                  BETA
-                </span>
-              )}
-              {isNew && (
-                <span className="blink px-2 py-0.5 text-xs rounded bg-gradient-to-r from-pink-500 to-purple-500 text-white font-bold">
-                  NEW!
-                </span>
-              )}
-              {isHot && (
-                <span className="blink px-2 py-0.5 text-xs rounded bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold">
-                  HOT!
-                </span>
-              )}
-            </div>
-          </div>
-
-          <p className="text-gray-300 text-sm mb-4">{description}</p>
-
-          <Link 
-            href={link} 
-            target={isExternal ? "_blank" : undefined}
-            rel={isExternal ? "noopener noreferrer" : undefined}
-            className="inline-flex items-center text-pink-400 hover:text-pink-300 text-sm group-hover:underline"
-          >
-            <span className="mr-1">→</span>
-            <span>{cta}</span>
-          </Link>
-        </div>
-      </div>
     </div>
   )
 }

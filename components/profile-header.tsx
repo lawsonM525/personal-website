@@ -13,7 +13,7 @@ import {
 
 export function ProfileHeader() {
   return (
-    <div className="flex flex-col md:flex-row gap-8 items-start md:items-center">
+    <div className="computer-profile flex flex-col md:flex-row gap-8 items-start md:items-center">
       <div className="relative w-32 h-32 rounded-full overflow-hidden">
         <Image
           src={profileImage}

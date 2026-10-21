@@ -5,20 +5,9 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 
 export default function Day2Tools() {
-  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
-  const [showTrail, setShowTrail] = useState(false);
   const [currentTime, setCurrentTime] = useState('');
 
   useEffect(() => {
-    // Cursor trail effect
-    const handleMouseMove = (e: MouseEvent) => {
-      setCursorPosition({ x: e.clientX, y: e.clientY });
-      setShowTrail(true);
-      setTimeout(() => setShowTrail(false), 200);
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-
     // Update time
     const updateTime = () => {
       const now = new Date();
@@ -32,7 +21,6 @@ export default function Day2Tools() {
     const interval = setInterval(updateTime, 60000);
 
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
       clearInterval(interval);
     };
   }, []);
@@ -81,46 +69,7 @@ export default function Day2Tools() {
         }
       `}</style>
 
-      {/* Cursor trail effect */}
-      {showTrail && (
-        <div 
-          className="fixed pointer-events-none z-50 w-6 h-6 rounded-full"
-          style={{ 
-            background: 'radial-gradient(circle, rgba(255,105,180,0.8) 0%, rgba(255,105,180,0) 70%)',
-            left: `${cursorPosition.x}px`, 
-            top: `${cursorPosition.y}px`,
-            transform: 'translate(-50%, -50%)',
-            mixBlendMode: 'screen'
-          }}
-        />
-      )}
-
-      {/* Y2K scanlines and noise overlay */}
-      <div className="fixed inset-0 pointer-events-none z-10 opacity-5" 
-        style={{
-          backgroundImage: `repeating-linear-gradient(
-            0deg,
-            rgba(255, 255, 255, 0.2),
-            rgba(255, 255, 255, 0.2) 1px,
-            transparent 1px,
-            transparent 2px
-          )`
-        }}
-      />
-
-
-
       <main className="container mx-auto px-4 pt-24 pb-16">
-        {/* Y2K browser-style header */}
-        <div className="bg-gradient-to-r from-purple-800 to-blue-900 mb-8 rounded-t-lg border-b-2 border-white/20 p-2 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded-full bg-red-500"></div>
-            <div className="w-4 h-4 rounded-full bg-yellow-500"></div>
-            <div className="w-4 h-4 rounded-full bg-green-500"></div>
-          </div>
-          <div className="font-mono text-white/80 text-sm">{currentTime}</div>
-        </div>
-
         <div className="bg-black/80 backdrop-blur-sm rounded-b-lg border-2 border-pink-500/30 p-6 mb-10">
           {/* Y2K Window-style Title */}
           <div className="overflow-hidden mb-8">

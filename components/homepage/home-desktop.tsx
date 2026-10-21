@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { useEffect, useMemo, useRef, useState, type MouseEvent } from "react"
 import { ArrowRight, ArrowUpRight, Clock3, FileText, Mail, Menu, Search, X } from "lucide-react"
 import { signupForms } from "./signup-config"
@@ -43,14 +44,18 @@ export function handleSignupLink(event: MouseEvent<HTMLAnchorElement>, href: str
 }
 
 export function HomeHeader() {
+  const pathname = usePathname()
   const [menuOpen, setMenuOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const [query, setQuery] = useState("")
   const [signupKind, setSignupKind] = useState<SignupKind | null>(null)
   const [openedSignups, setOpenedSignups] = useState<SignupKind[]>([])
   const signupDialog = useRef<HTMLDialogElement>(null)
+  const chrome = useRef<HTMLDivElement>(null)
+  const signupReturnFocus = useRef<HTMLElement | null>(null)
   const dialog = useRef<HTMLDialogElement>(null)
   const input = useRef<HTMLInputElement>(null)
+  useEffect(() => { setSignupKind(null); setMenuOpen(false); setSearchOpen(false) }, [pathname])
   const matches = useMemo(() => {
     const words = query.toLowerCase().trim().split(/\s+/).filter(Boolean)
     return pages.filter(page => words.every(word => `${page.label} ${page.description} ${page.keywords}`.toLowerCase().includes(word)))
@@ -59,7 +64,7 @@ export function HomeHeader() {
   function showSignup(kind: SignupKind) {
     setSearchOpen(false)
     setMenuOpen(false)
-    if (!signupDialog.current?.open) signupDialog.current?.showModal()
+    if (!signupDialog.current?.open) signupReturnFocus.current = document.activeElement as HTMLElement | null
     setOpenedSignups(previous => previous.includes(kind) ? previous : [...previous, kind])
     setSignupKind(kind)
   }
@@ -84,11 +89,21 @@ export function HomeHeader() {
     if (!searchOpen && dialog.current?.open) dialog.current?.close()
   }, [searchOpen])
   useEffect(() => {
-    if (!signupKind && signupDialog.current?.open) signupDialog.current?.close()
     if (signupKind) signupDialog.current?.querySelector<HTMLElement>(`[data-signup-kind="${signupKind}"] button`)?.focus()
+    else if (signupReturnFocus.current?.isConnected) signupReturnFocus.current.focus()
   }, [signupKind])
+  useEffect(() => {
+    const element = chrome.current
+    if (!element) return
+    function measure() { document.documentElement.style.setProperty("--computer-header-height", `${element!.getBoundingClientRect().height}px`) }
+    measure()
+    const observer = new ResizeObserver(measure)
+    observer.observe(element)
+    return () => observer.disconnect()
+  }, [])
 
   return <>
+    <div ref={chrome} className={styles.siteChrome}>
     <header className={styles.header}>
       <Link href="/" className={styles.brand} aria-label="Michelle’s Computer home"><span>Michelle’s Computer</span></Link>
       <nav className={styles.desktopNav} aria-label="Main navigation">{mainLinks.map(item => <a key={item.href} href={item.href} onClick={event => handleSignupLink(event, item.href)}>{item.label}</a>)}</nav>
@@ -99,6 +114,7 @@ export function HomeHeader() {
       {menuOpen && <nav id="mobile-site-navigation" className={styles.mobileNav} aria-label="Mobile navigation">{mainLinks.map(item => <a key={item.href} href={item.href} onClick={event => { setMenuOpen(false); handleSignupLink(event, item.href) }}><span>{item.label}</span><ArrowUpRight size={17} aria-hidden="true" /></a>)}<a href="/research">Research</a><a href="/talks">Talks</a><a href="/posts">Posts</a></nav>}
     </header>
     <nav className={styles.mobileQuickLinks} aria-label="Quick navigation">{[pages[0], pages[1], { ...pages[2], label: "Magazine" }, pages[3]].map(item => <a key={item.href} href={item.href} onClick={event => handleSignupLink(event, item.href)}>{item.label}</a>)}</nav>
+    </div>
     <dialog ref={dialog} className={styles.commandDialog} aria-labelledby="command-title" onClose={() => setSearchOpen(false)} onClick={event => { if (event.target === event.currentTarget) setSearchOpen(false) }}>
       <div className={styles.commandInner}>
         <div className={styles.windowBar}><Search size={15} aria-hidden="true" /><h2 id="command-title">Find a page or guide</h2><button type="button" aria-label="Close search" onClick={() => setSearchOpen(false)}><X size={16} /></button></div>
@@ -107,8 +123,8 @@ export function HomeHeader() {
         <div className={styles.commandHint}><span>Enter opens the first result · Tab to choose</span><kbd>esc</kbd></div>
       </div>
     </dialog>
-    <dialog ref={signupDialog} className={`${styles.commandDialog} ${styles.signupDialog}`} aria-label={signupKind === "magazine" ? "Magazine waitlist window" : "Pen pals window"} onClose={() => setSignupKind(null)} onClick={event => { if (event.target === event.currentTarget) setSignupKind(null) }}>
-      {openedSignups.map(kind => <div key={kind} data-signup-kind={kind} hidden={signupKind !== kind}><SignupWindow kind={kind} onClose={() => setSignupKind(null)} onSwitch={showSignup} /></div>)}
+    <dialog ref={signupDialog} open={signupKind !== null} className={`${styles.commandDialog} ${styles.signupDialog}`} aria-modal="false" aria-label={signupKind === "magazine" ? "Magazine waitlist window" : "Pen pals window"} onClose={() => setSignupKind(null)} onKeyDown={event => { if (event.key === "Escape") { event.preventDefault(); setSignupKind(null) } }}>
+      {openedSignups.map(kind => <div key={kind} data-signup-kind={kind} hidden={signupKind !== kind}><SignupWindow kind={kind} active={signupKind === kind} onClose={() => setSignupKind(null)} onSwitch={showSignup} /></div>)}
     </dialog>
   </>
 }
@@ -132,7 +148,7 @@ const folders = [
 
 export default function HomeDesktop() {
   const [welcomeOpen, setWelcomeOpen] = useState(true)
-  const [contactOpen, setContactOpen] = useState(true)
+  const [contactOpen, setContactOpen] = useState(false)
   const [maximized, setMaximized] = useState(false)
   const [activeWindow, setActiveWindow] = useState<"welcome" | "contact">("welcome")
   const [time, setTime] = useState("")

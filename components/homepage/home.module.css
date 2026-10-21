@@ -39,9 +39,12 @@
  .formRestore{font-size:11px!important}
 }
 
-.signupDialog{width:calc(100vw - 28px);max-width:1100px;max-height:calc(100svh - 36px);padding:0;border:0;background:transparent;box-shadow:none;overflow:auto;overscroll-behavior:contain}
-.signupDialog::backdrop{background:#12366b6b;backdrop-filter:blur(2px)}
+.siteChrome{position:sticky;top:0;z-index:60}
+.signupDialog{position:fixed;inset:auto 0;top:calc(var(--computer-header-height,52px) + 14px);width:min(720px,calc(100vw - 28px));max-width:1100px;height:fit-content;max-height:calc(100dvh - var(--computer-header-height,52px) - 88px);margin:0 auto;padding:0;border:0;background:transparent;box-shadow:4px 5px 0 #081b3638;overflow:auto;overscroll-behavior:contain;z-index:45}
+.signupDialog::backdrop{display:none}
 .signupDialog .signupWindow{margin:0 auto}
+.signupDialog:has(.formWindowMaximized){width:calc(100vw - 28px);height:calc(100dvh - var(--computer-header-height,52px) - 88px)}
+.signupDialog .formWindowMaximized{min-height:100%;width:100%}
 .signupWindow .formIntro h2{font-family:var(--font-caveat),cursive;font-size:45px;line-height:1.08;margin:0 0 16px}
 .signupWindow .formIntro .button{margin-top:22px}
 
@@ -55,3 +58,9 @@
 @media(prefers-reduced-motion:reduce){.site *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}.site[data-motion=off] *{animation:none!important;transition:none!important}
 /* Native bitmap pointers share one silhouette and hotspot; keep the verified cursor fix. */
 @media(hover:hover) and (pointer:fine){.site,.header,.commandDialog,.footer{cursor:var(--computer-cursor)}.site *,.header *,.commandDialog *,.footer *{cursor:inherit}.site :is(a,button,summary,[role="button"]),.header :is(a,button,summary,[role="button"]),.commandDialog :is(a,button,summary,[role="button"]),.footer a{cursor:var(--computer-link-cursor)}.site :is(input,textarea,[contenteditable="true"]),.commandDialog input{cursor:text}}
+
+/* Recovery stays reachable before the iframe, including a stalled embed. */
+.signupWindow .formRecovery{margin:12px 20px 0;padding-top:0;border:0}
+
+.formLoadStatus{display:block;padding:8px 0;color:#536074;font:11px/1.5 Arial,sans-serif}
+.siteChrome{--ink:#121b2a;--paper:#faf7ed}

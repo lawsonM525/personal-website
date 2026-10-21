@@ -1,16 +1,12 @@
 "use client"
 
 import { Toaster } from "@/components/ui/toaster"
-import { HomeHeader } from "@/components/homepage/home-desktop"
+import { ComputerPageShell } from "@/components/homepage/computer-page-shell"
 import { usePathname } from "next/navigation"
 
 export function LayoutClient({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
-  const hasOwnHeader = pathname === "/" || pathname === "/magazine" || pathname === "/penpals" || pathname === "/learn" || pathname.startsWith("/learn/")
+  const ownsDesktop = pathname === "/" || pathname === "/magazine" || pathname === "/penpals"
   const isProposal = pathname.startsWith("/begin") || pathname === "/openaibeta"
-  return <>
-    {!hasOwnHeader && !isProposal && <HomeHeader />}
-    {children}
-    <Toaster />
-  </>
+  return <>{ownsDesktop || isProposal ? children : <ComputerPageShell>{children}</ComputerPageShell>}<Toaster /></>
 }

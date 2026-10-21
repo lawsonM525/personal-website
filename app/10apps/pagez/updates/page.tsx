@@ -1,5 +1,6 @@
 "use client"
 
+import { ResourceSection as Section } from "@/components/resource-catalog"
 import { Footer } from "@/components/footer"
 import { useEffect, useState } from "react"
 import Image from "next/image"
@@ -41,27 +42,12 @@ export default function PagezUpdates() {
         .pixel-border { position: relative; border-style: solid; border-width: 3px; border-image-slice: 2; border-image-width: 2; border-image-outset: 0; border-image-source: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='6' height='6'><path d='M0 2h2v2H0zM2 0h2v2H2zM4 2h2v2H4zM2 4h2v2H2z' fill='%23ff56c1' /></svg>"); border-image-repeat: stretch; box-shadow: 0 0 0 2px rgba(0,0,0,0.3); }
       `}</style>
 
-      <div className="fixed inset-0 pointer-events-none z-10 opacity-5"
-        style={{ backgroundImage: `repeating-linear-gradient(0deg, rgba(255,255,255,0.2), rgba(255,255,255,0.2) 1px, transparent 1px, transparent 2px)` }}
-      />
-
-
-
       <main className="container mx-auto px-4 pt-24 pb-16">
-        <div className="bg-gradient-to-r from-purple-800 to-blue-900 mb-8 rounded-t-lg border-b-2 border-white/20 p-2 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded-full bg-red-500" />
-            <div className="w-4 h-4 rounded-full bg-yellow-500" />
-            <div className="w-4 h-4 rounded-full bg-green-500" />
-          </div>
-          <div className="font-mono text-white/80 text-sm">{currentTime}</div>
-        </div>
-
         <div className="bg-black/80 backdrop-blur-sm rounded-b-lg border-2 border-pink-500/30 p-6 mb-10">
           <div className="overflow-hidden mb-8">
             <div className="marquee whitespace-nowrap">
               <h1 className="text-5xl font-bold bg-gradient-to-r from-pink-500 to-purple-500 text-transparent bg-clip-text inline-block">
-                Pagez — updates • Pagez — updates • Pagez — updates • Pagez — updates •
+                Pagez — updates
               </h1>
             </div>
           </div>
@@ -130,39 +116,5 @@ export default function PagezUpdates() {
 
       <Footer />
     </div>
-  )
-}
-
-function Section({ title, emoji, children, textColor = "text-white", borderColor = "pink" }: { title: string; emoji: string; children: React.ReactNode; textColor?: string; borderColor?: "pink" | "purple" | "blue" }) {
-  const getBorderClass = () => {
-    switch (borderColor) {
-      case "blue":
-        return "from-blue-500 to-cyan-500"
-      case "purple":
-        return "from-purple-500 to-indigo-500"
-      case "pink":
-      default:
-        return "from-pink-500 to-purple-500"
-    }
-  }
-  return (
-    <section className="mb-10">
-      <div className="mb-4">
-        <div
-          className={`h-2 bg-gradient-to-r ${getBorderClass()} mb-1`}
-          style={{ backgroundImage: "linear-gradient(90deg, var(--tw-gradient-stops)), linear-gradient(90deg, black 25%, transparent 25%, transparent 50%, black 50%, black 75%, transparent 75%, transparent)", backgroundSize: "100% 100%, 8px 8px" }}
-        />
-        <div className="flex items-center mb-1">
-          <span className="text-3xl mr-2">{emoji}</span>
-          <h2 className={`text-2xl font-bold ${textColor} glitch`}>{title}</h2>
-          <span className="ml-2 blink text-xl">★</span>
-        </div>
-        <div
-          className={`h-2 bg-gradient-to-r ${getBorderClass()} mt-1`}
-          style={{ backgroundImage: "linear-gradient(90deg, var(--tw-gradient-stops)), linear-gradient(90deg, black 25%, transparent 25%, transparent 50%, black 50%, black 75%, transparent 75%, transparent)", backgroundSize: "100% 100%, 8px 8px" }}
-        />
-      </div>
-      <div className="space-y-4">{children}</div>
-    </section>
   )
 }

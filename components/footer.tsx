@@ -50,7 +50,7 @@ export function Footer({ fixed = true }: FooterProps) {
   return (
     <>
       <EmailPopup open={emailOpen} onOpenChange={setEmailOpen} />
-      <footer className={`${fixed ? "fixed bottom-0 left-0 right-0" : "relative"} p-4 flex justify-center space-x-6`}>
+      <footer className={`computer-content-footer ${fixed ? "fixed bottom-0 left-0 right-0" : "relative"} p-4 flex justify-center space-x-6`}>
         {socialLinks.map((link) => (
           <Link
             key={link.href}

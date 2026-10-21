@@ -111,7 +111,7 @@ const components: PortableTextComponents = {
       );
     },
     code: ({ value }) => (
-      <div className="learn-border my-8 overflow-hidden border-2 bg-[#111] text-white shadow-[5px_5px_0_#7557ff]">
+      <div className="learn-code-panel learn-border my-8 overflow-hidden border-2">
         <div className="flex min-h-12 items-center justify-between gap-4 border-b border-white/20 px-4 py-2">
           <span className="text-xs font-bold uppercase tracking-[.16em] text-white/55">
             {value?.language === "text"

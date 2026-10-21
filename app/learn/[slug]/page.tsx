@@ -194,8 +194,8 @@ export default async function ArticlePage({ params }: PageProps) {
           </div>
         )}
 
-        <div className="mx-auto grid max-w-6xl gap-12 px-5 py-12 sm:px-8 sm:py-16 lg:grid-cols-[minmax(0,760px)_240px]">
-          <div>
+        <div className="mx-auto grid grid-cols-1 max-w-6xl gap-12 px-5 py-12 sm:px-8 sm:py-16 lg:grid-cols-[minmax(0,760px)_240px]">
+          <div className="min-w-0">
             {sourceUrl && !hasEmbeddedVideo && (
               <a
                 href={sourceUrl}

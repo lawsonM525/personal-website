@@ -20,7 +20,7 @@ export function LearnThemeProvider({ children }: { children: React.ReactNode }) 
       return
     }
 
-    if (window.matchMedia("(prefers-color-scheme: dark)").matches) setTheme("dark")
+    // Default to the approved cream reading surface; explicit saved choices remain.
   }, [])
 
   function toggleTheme() {

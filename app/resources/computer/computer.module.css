@@ -400,3 +400,17 @@
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
+
+/* The resource desktop uses the shared Michelle's Computer window system. */
+.shell,.pageShell{min-height:0;background:#faf7ed;color:#121b2a;padding-top:0;overflow:clip;font-family:Arial,sans-serif}.shell::before{display:none}
+.topbar{padding:12px 20px;background:#efede2;border-bottom:1px solid #bbc0b7;box-shadow:none}.brand{font:18px Georgia,serif;color:#121b2a;text-transform:none}.nav a{border:1px solid #8d9088;border-radius:0;background:#faf7ed;box-shadow:inset 1px 1px white,inset -1px -1px #d4d0c4;color:#121b2a;font:12px Arial,sans-serif}
+.hero{min-height:0;padding-top:35px;padding-bottom:35px}.badge{border:1px solid #8d9088;border-radius:0;background:#faf7ed;box-shadow:2px 3px 0 #122f5730;color:#121b2a}.badge h1{font:48px/1 Georgia,serif}.badge p{color:#536074}
+.search{border:1px solid #8d9088;background:#efede2;box-shadow:inset 1px 1px #ccc7bb;border-radius:0;color:#121b2a}.search input{color:#121b2a;font-weight:400}.search button,.primaryButton{background:#ff7950;border:1px solid #121b2a;border-radius:0;box-shadow:inset 1px 1px #ffb38c,inset -1px -1px #c75630;color:#121b2a}
+.folder{color:#121b2a;text-shadow:none;outline:none}.folder:focus-visible strong{text-decoration:underline;text-underline-offset:4px}.folder img{transition:transform .18s}.folder:is(:hover,:focus-visible) img{transform:translateY(-4px) scale(1.06)}
+.dock,.pageShell .dock{position:relative;inset:auto;transform:none;display:flex;flex-direction:row;flex-wrap:wrap;justify-content:center;gap:12px;max-width:100%;margin:12px 20px 0;padding:15px 0 20px;background:#faf7ed;border-radius:0;border-top:1px solid #bbc0b7;box-shadow:none}.dock a{border-radius:0;background:transparent;color:#121b2a;box-shadow:none}.toolChips span{border:1px solid #bbc0b7;border-radius:0;color:#121b2a;background:#efede2}
+@media(max-width:760px){.hero{padding-bottom:25px}.badge h1{font-size:38px}.dock,.pageShell .dock{justify-content:flex-start}.topbar{padding:12px}.michelle{bottom:35px}}
+
+.window{border:1px solid #121b2a;border-radius:0;background:#faf7ed;box-shadow:3px 4px 0 #122f5730}.windowBar{background:#0848d5;border:0;color:#faf7ed;font:17px Georgia,serif}.dot{display:none}.windowBody h1{color:#121b2a}.windowBody>p,.card p,.card li{color:#536074;font-weight:400}.card{border:1px solid #aeb7b6;border-radius:0;background:#faf7ed;box-shadow:inset 1px 1px white,inset -1px -1px #ddd8cb}.card h2{color:#121b2a}.page{padding-bottom:30px}
+
+.badge h1{color:#121b2a;text-shadow:none}.folder strong{font-family:Georgia,serif;font-weight:400}.search button{font-weight:500}
+@media(max-width:760px){.michelle{position:relative;left:auto;bottom:auto;order:2;width:150px;max-height:230px;margin:auto;opacity:1}.panel{order:1}}

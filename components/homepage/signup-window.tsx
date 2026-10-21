@@ -1,8 +1,9 @@
 "use client"
 
 import Script from "next/script"
-import { useEffect, useId, useRef, useState, type SyntheticEvent } from "react"
+import { useEffect, useId, useRef, useState } from "react"
 import { FileText } from "lucide-react"
+import { isTallyReadyEvent, shouldRetryEmbed } from "@/lib/tally-embed"
 import { WindowBar } from "./window-bar"
 import { signupForms } from "./signup-config"
 import styles from "./home.module.css"
@@ -14,35 +15,99 @@ function loadEmbeds() {
   (window as Window & { Tally?: TallyRuntime }).Tally?.loadEmbeds()
 }
 
-function TallyForm({ kind }: { kind: SignupKind }) {
+function TallyForm({ kind, active, recoveryId }: { kind: SignupKind; active: boolean; recoveryId: string }) {
   const form = signupForms[kind]
-  const loaded = useRef(false)
-  const retriedBlank = useRef(false)
+  const frame = useRef<HTMLIFrameElement>(null)
+  const [frameVersion, setFrameVersion] = useState(0)
+  const [widgetReady, setWidgetReady] = useState(false)
+  const engaged = useRef(false)
+  const ready = useRef(false)
+  const navigated = useRef(false)
+  const attempts = useRef(0)
+  const [state, setState] = useState<"loading" | "ready" | "unavailable">("loading")
 
-  function formLoaded(event: SyntheticEvent<HTMLIFrameElement>) {
-    const frame = event.currentTarget
-    // A newly attached iframe can fire its initial blank-document load first.
-    // Initialize resizing only after the actual form has navigated.
-    if (frame.contentDocument?.URL === "about:blank") {
-      if (!retriedBlank.current) {
-        retriedBlank.current = true
-        frame.src = form.embedUrl
-      }
-      return
-    }
-    loaded.current = true
-    loadEmbeds()
+  function isInitialBlank(element: HTMLIFrameElement) {
+    // Cross-origin contents stay unreadable. Readiness and the focus guard
+    // protect a loaded or engaged form from automatic replacement.
+    try { return element.contentDocument?.URL === "about:blank" }
+    catch { return false }
   }
 
-  return <>
-    <iframe src={form.embedUrl} onLoad={formLoaded} loading="eager" width="100%" height={form.height} frameBorder={0} title={form.title} className={styles.tallyFrame} />
-    <Script src="https://tally.so/widgets/embed.js" strategy="afterInteractive" onReady={() => { if (loaded.current) loadEmbeds() }} />
-  </>
+  useEffect(() => {
+    const element = frame.current
+    if (!element) return
+    function receive(event: MessageEvent) {
+      if (!isTallyReadyEvent(event, element?.contentWindow ?? null, form.id)) return
+      // Consume readiness only; never retain or log answers.
+      ready.current = true
+      navigated.current = true
+      setState("ready")
+      loadEmbeds()
+    }
+    function protectInput() { if (document.activeElement === element) engaged.current = true }
+    window.addEventListener("blur", protectInput)
+    window.addEventListener("message", receive)
+    return () => { window.removeEventListener("message", receive); window.removeEventListener("blur", protectInput) }
+  }, [form.id, frameVersion])
+
+  useEffect(() => {
+    // A blocked resizing widget must not prevent the form itself from loading.
+    const timer = setTimeout(() => setWidgetReady(true), 1500)
+    return () => clearTimeout(timer)
+  }, [])
+
+  useEffect(() => {
+    const element = frame.current
+    if (!active || !widgetReady || !element || ready.current) return
+    let cancelled = false
+    let animation = 0
+    let checkTimer = 0
+    const started = Date.now()
+
+    function check() {
+      if (cancelled || !element || ready.current) return
+      const dialog = element.closest("dialog")
+      const visible = !document.hidden && element.getBoundingClientRect().width > 0 && !element.closest("[hidden]") && (!dialog || dialog.open)
+      if (visible) {
+        if (!element.hasAttribute("src")) {
+          attempts.current += 1
+          element.dataset.loadAttempts = String(attempts.current)
+          element.src = form.embedUrl
+        } else if (shouldRetryEmbed({ ready: ready.current, engaged: engaged.current, attempts: attempts.current, elapsed: Date.now() - started, initialBlank: isInitialBlank(element) })) {
+          // Reassigning src on the stalled browsing context did not recover it.
+          // Replace only a never-ready, untouched frame; retain loaded forms.
+          navigated.current = false
+          setFrameVersion(value => value + 1)
+          return
+        } else if (!isInitialBlank(element)) {
+          navigated.current = true
+        }
+        if (Date.now() - started >= 12000) {
+          setState("unavailable")
+          return
+        }
+      }
+      checkTimer = window.setTimeout(check, 1500)
+    }
+
+    // Start navigation after React has committed and the native dialog has a
+    // visible layout, not while the iframe is being inserted into its subtree.
+    animation = requestAnimationFrame(check)
+    return () => { cancelled = true; cancelAnimationFrame(animation); clearTimeout(checkTimer) }
+  }, [active, widgetReady, form.embedUrl, frameVersion])
+
+  return <div data-tally-state={state}>
+    <span className={state === "ready" ? styles.srOnly : styles.formLoadStatus} role="status">{state === "loading" ? "Loading form…" : state === "unavailable" ? "Form loading is taking longer. You can reload it or use the direct form link." : "Form loaded."}</span>
+    <iframe key={frameVersion} ref={frame} onFocus={() => { engaged.current = true }} onLoad={() => { if (frame.current && !isInitialBlank(frame.current)) { navigated.current = true; loadEmbeds() } }} loading="eager" width="100%" height={form.height} frameBorder={0} title={form.title} aria-describedby={recoveryId} aria-busy={state === "loading"} className={styles.tallyFrame} />
+    <Script src="https://tally.so/widgets/embed.js" strategy="afterInteractive" onReady={() => { setWidgetReady(true); if (navigated.current) loadEmbeds() }} onError={() => setWidgetReady(true)} />
+  </div>
 }
 
-export function SignupWindow({ kind, onClose, onSwitch, startOpen = true }: { kind: SignupKind; onClose: () => void; onSwitch?: (kind: SignupKind) => void; startOpen?: boolean }) {
+export function SignupWindow({ kind, onClose, onSwitch, startOpen = true, active = true }: { kind: SignupKind; onClose: () => void; onSwitch?: (kind: SignupKind) => void; startOpen?: boolean; active?: boolean }) {
+  const form = signupForms[kind]
   const magazine = kind === "magazine"
   const headingId = useId()
+  const recoveryId = useId()
   const windowRef = useRef<HTMLElement>(null)
   useEffect(() => { windowRef.current?.querySelector("button")?.focus() }, [])
   const [minimized, setMinimized] = useState(false)
@@ -59,13 +124,15 @@ export function SignupWindow({ kind, onClose, onSwitch, startOpen = true }: { ki
     {minimized && <button type="button" className={styles.formRestore} onClick={() => setMinimized(false)}><FileText size={19} aria-hidden="true" />Restore {title}</button>}
     <div hidden={minimized}>
       <div className={styles.windowMenu}><a href="/" onClick={onSwitch ? event => { event.preventDefault(); onClose() } : undefined}>My computer</a><span>{magazine ? "Magazine waitlist" : "The little post office"}</span><a href={other.pagePath} onClick={onSwitch ? event => { event.preventDefault(); onSwitch(otherKind) } : undefined}>{magazine ? "Pen pals" : "Magazine"} →</a></div>
-      {formOpen ? <div className={styles.formEmbed}><TallyForm key={`${kind}:${formVersion}`} kind={kind} /></div> : <div className={styles.formIntro}>
+      {formOpen && <div id={recoveryId} className={`${styles.formFallback} ${styles.formRecovery}`}>
+        <p>Form not loading? <button type="button" className={styles.formReload} onClick={() => setFormVersion(value => value + 1)}>Reload the form</button> or <a href={signupForms[kind].publicUrl} target="_blank" rel="noopener noreferrer" aria-label={`Open ${form.title.toLowerCase()} in a new tab`}>open it in a new tab</a>.</p>
+      </div>}
+      {formOpen ? <div className={styles.formEmbed}><TallyForm key={`${kind}:${formVersion}`} kind={kind} active={active && !minimized} recoveryId={recoveryId} /></div> : <div className={styles.formIntro}>
         <h2>{magazine ? "the magazine waitlist" : "wanna be penpals?"}</h2>
         <p>{magazine ? "We’re putting together an artsy magazine about AI and learning — with comics, diary entries, and handwritten, junk-journal-style pages. Join the waitlist for updates as it comes together." : "Want a handwritten letter from me? Leave your mailing address below!!"}</p>
         <button type="button" className={styles.button} onClick={() => setFormOpen(true)}>{magazine ? "Join the magazine waitlist" : "Leave my mailing address"} →</button>
       </div>}
       {formOpen && <div className={styles.formFallback}>
-        <p>Form not loading? <button type="button" className={styles.formReload} onClick={() => setFormVersion(value => value + 1)}>Reload the form</button> or <a href={signupForms[kind].publicUrl} target="_blank" rel="noopener noreferrer">open it in a new tab</a>.</p>
         <p>Magazine and pen pals are separate signups.</p>
       </div>}
       <div className={styles.statusBar}><span>{magazine ? "The magazine waitlist" : "Pen pal interest signup"}</span><span className={styles.resizeGrip} aria-hidden="true" /></div>
