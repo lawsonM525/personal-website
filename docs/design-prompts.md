@@ -35,3 +35,39 @@ Output: `generated_images/exec-28565ba9-37da-45f1-8cea-792d26c52714.png`. Projec
 ## Implementation correction
 
 Michelle’s later direction requires actual computer windows like pals.michellelawson.me. Therefore the concept’s illustrated window outlines are not used as interface chrome. The implementation uses real HTML/CSS windows and functional controls. Illustrations are content assets inside that interface; navigation and copy are live text/links.
+
+
+## Individual Learn and Resources repair
+
+Built-in ImageGen edited the original navigation sheet into individual transparent assets. Packaging to WebP preserves alpha; CSS uses `background-size: contain` with no clipping for these two icons.
+
+- Learn: `public/homepage/learn-icon-v3.webp`; original `generated_images/exec-51d05071-4b42-47e0-811b-38441f423928.png`.
+- Resources: `public/homepage/resources-icon-v3.webp`; original `generated_images/exec-4ab12ed2-8a28-4df3-975f-cce2a2b308d2.png`.
+
+### Learn
+
+```text
+Generate an image with the following prompt, dont change it(DO NOT CHANGE THIS PROMPT, IT'S ALREADY AN IMPROVED PROMPT) -
+Use case: background-extraction
+Asset type: individual Learn navigation illustration for Michelle's website.
+Input image: edit target, a four-icon illustration sheet.
+Request: Extract ONLY the upper-left Learn illustration: the open cream notebook with orange cover, navy handwritten marks, lightbulb, and the COMPLETE blue pen below it. Preserve that exact illustration's drawing, colors, texture, and proportions. Restore any tiny pen edge needed so the whole pen is present.
+Background: actual transparency.
+Framing: one centered, complete illustration on a square canvas with generous transparent padding on every side. No part of the book, orange accent marks, or pen touches an edge. Keep the whole pen comfortably inside the same Learn icon.
+Aspect ratio: 1:1.
+Avoid: the blue Resources folder, magazine, envelope, fragments from neighboring icons, labels, text additions, white background, checkerboard background, excessive yellow.
+```
+
+### Resources
+
+```text
+Generate an image with the following prompt, dont change it(DO NOT CHANGE THIS PROMPT, IT'S ALREADY AN IMPROVED PROMPT) -
+Use case: background-extraction
+Asset type: individual Resources navigation illustration for Michelle's website.
+Input image: edit target, a four-icon illustration sheet.
+Request: Extract ONLY the upper-right Resources illustration: the sky blue file folder with a navy wrench, cream documents, blue tab, and orange/navy accent marks. Preserve that exact illustration's drawing, colors, texture, and proportions. Remove all pieces of the Learn notebook and blue pen; the Resources icon contains NO pen.
+Background: actual transparency.
+Framing: one centered, complete illustration on a square canvas with generous transparent padding on every side. No part of the folder, papers, or accent marks touches an edge.
+Aspect ratio: 1:1.
+Avoid: any pen, notebook, magazine, envelope, fragments from neighboring icons, labels, text additions, white background, checkerboard background, excessive yellow.
+```

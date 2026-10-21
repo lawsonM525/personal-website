@@ -113,11 +113,11 @@ export default function HomeDesktop() {
           <div className={styles.windowMenu}><a href="/about">About Michelle</a><a href="/resources">Resources</a><button type="button" onClick={() => window.dispatchEvent(new Event("michelle:search"))}>Find a page</button><span className={styles.windowPath}>Michelle’s Computer / Welcome</span></div>
           <div className={styles.heroBody}>
             <div className={styles.heroCopy}>
-              <h1 id="home-title"><span className={styles.srOnly}>Michelle Lawson</span><img src="/homepage/michelle-lawson-v2.png" alt="" width="557" height="274" fetchPriority="high" /></h1>
+              <h1 id="home-title"><span className={styles.welcomeKicker}>Welcome to</span><span className={styles.srOnly}> Michelle’s Computer</span><img src="/homepage/welcome-title-v3.png" alt="" width="656" height="234" fetchPriority="high" /></h1>
               <p className={styles.tagline}>Turning my ideas, and yours,<br className={styles.desktopBreak} /> into reality.</p>
               <div className={styles.heroActions}><a href="/resources" className={styles.button}>Explore resources <ArrowRight size={21} aria-hidden="true" /></a><a href="/about" className={styles.textLink}>My story <ArrowUpRight size={16} aria-hidden="true" /></a></div>
             </div>
-            <img className={styles.computerArt} src="/homepage/computer-desk-v2.webp" width="1536" height="1024" alt="A friendly illustrated computer at a desk with books, notes, and a plant" fetchPriority="high" />
+            <a className={styles.profile} href="/about" aria-label="Meet Michelle Lawson"><img src="/homepage/michelle-profile-v3.jpg" width="1244" height="1244" alt="Michelle smiling at her computer in her pink scarf and glasses" fetchPriority="high" /><span>Michelle Lawson <ArrowUpRight size={14} aria-hidden="true" /></span></a>
           </div>
           <div className={styles.statusBar}><span>I love building things that inspire and educate.</span><span className={styles.resizeGrip} aria-hidden="true" /></div>
         </section> : <button className={`${styles.window} ${styles.restoreWelcome}`} type="button" onClick={() => setWelcomeOpen(true)}><Monitor size={19} aria-hidden="true" /><span>Open welcome.exe</span><ChevronRight size={18} aria-hidden="true" /></button>}
