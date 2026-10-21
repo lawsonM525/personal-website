@@ -18,19 +18,22 @@
 .mobileQuickLinks{display:none}.folderGrid[data-count="2"]{grid-template-columns:repeat(2,minmax(0,1fr))}
 @media(max-width:900px){.mobileQuickLinks{position:relative;z-index:29;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));background:#f3efe3;color:#142e58;border-bottom:1px solid #142e58;font:700 11px Arial,sans-serif}.mobileQuickLinks a{display:flex;align-items:center;justify-content:center;min-height:42px;text-decoration:none;color:inherit;border-right:1px solid #c3c7c4}.mobileQuickLinks a:hover{background:#d3e7f4}.mobileQuickLinks a:focus-visible{outline:2px solid #ee591f;outline-offset:-3px}.workspaceMaximized .welcomeWindow{inset:119px 13px 61px}.windowControls button{width:25px;height:25px}}
 
-/* Native cursors keep the desktop tactile without tracking the pointer in JS. */
+/* Inherit fixed bitmap cursors; links keep the same silhouette and hotspot. */
 @media (hover: hover) and (pointer: fine) {
-  .site, .header, .commandDialog, .footer,
+  .site, .header, .commandDialog, .footer {
+    cursor: var(--computer-cursor);
+  }
   .site *, .header *, .commandDialog *, .footer * {
-    cursor: url('/cursors/retro-arrow-v2.svg') 3 3, default;
+    cursor: inherit;
   }
-  .site a, .site a *, .site button, .site button *,
-  .header a, .header a *, .header button, .header button *,
-  .commandDialog a, .commandDialog a *, .commandDialog button, .commandDialog button *,
-  .footer a, .footer a * {
-    cursor: url('/cursors/retro-hand-v2.svg') 16 3, pointer;
+  .site :is(a, button, summary, [role="button"]),
+  .header :is(a, button, summary, [role="button"]),
+  .commandDialog :is(a, button, summary, [role="button"]),
+  .footer a {
+    cursor: var(--computer-link-cursor);
   }
-  .site input, .site textarea, .commandDialog input {
+  .site :is(input, textarea, [contenteditable="true"]),
+  .commandDialog input {
     cursor: text;
   }
 }

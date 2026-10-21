@@ -69,6 +69,8 @@ export default async function RootLayout({
   return (
     <html lang="en" className={`dark ${playfair.variable} ${caveat.variable}`}>
       <head>
+        <link rel="preload" href="/cursors/retro-arrow-v3.png" as="image" />
+        <link rel="preload" href="/cursors/retro-link-v3.png" as="image" />
         {process.env.NODE_ENV === "production" && (
           <>
             <Script

@@ -228,20 +228,25 @@
   border-bottom: 2px solid var(--learn-window-highlight);
 }
 
+:root {
+  --computer-cursor: url("/cursors/retro-arrow-v3.png") 3 2, default;
+  --computer-link-cursor: url("/cursors/retro-link-v3.png") 3 2, pointer;
+}
+
 @media (hover: hover) and (pointer: fine) {
   .learn-shell {
-    cursor:
-      url("/cursors/retro-arrow.svg") 3 2,
-      default;
+    cursor: var(--computer-cursor);
+  }
+
+  .learn-shell * {
+    cursor: inherit;
   }
 
   .learn-shell a,
   .learn-shell button,
   .learn-shell summary,
   .learn-shell [role="button"] {
-    cursor:
-      url("/cursors/retro-hand.svg") 10 2,
-      pointer;
+    cursor: var(--computer-link-cursor);
   }
 
   .learn-shell input,
