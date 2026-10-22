@@ -1,3 +1,0 @@
-export function ButterflyMark({ className = "" }: { className?: string }) {
-  return <svg className={className} viewBox="0 0 44 36" fill="none" aria-hidden="true"><path d="M21 18C17 4 4-1 3 9c-1 8 8 12 17 12C8 16 3 24 9 30c4 4 10-2 12-9" fill="#4084dc" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round"/><path d="M23 18C27 4 40-1 41 9c1 8-8 12-17 12 12-5 17 3 11 9-4 4-10-2-12-9" fill="#ff9b6c" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round"/><path d="m19 7 3 6 3-6M22 13v16" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/><path d="m10 9 8 8M34 9l-8 8M11 26l7-3m15 3-7-3" stroke="#faf7ed" strokeWidth="2" strokeLinecap="round"/></svg>
-}

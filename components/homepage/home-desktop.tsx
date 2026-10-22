@@ -4,7 +4,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { ArrowRight, ArrowUpRight, Clock3, FileText, Mail, Menu, Search, X } from "lucide-react"
-import { ButterflyMark } from "./butterfly-mark"
+import { ProfileMark } from "./profile-mark"
 import { BootScreen } from "./boot-screen"
 import { contactEmail, contactHref } from "./contact-config"
 import { signupForms } from "./signup-config"
@@ -54,7 +54,7 @@ export function HomeHeader() {
   return <>
     <div ref={chrome} className={styles.siteChrome}>
       <header className={styles.header}>
-        <Link href="/" className={styles.brand} aria-label="Michelle’s Computer home"><ButterflyMark/><span className={styles.srOnly}>Michelle’s Computer</span></Link>
+        <Link href="/" className={styles.brand} aria-label="Michelle’s Computer home"><ProfileMark/><span className={styles.srOnly}>Michelle’s Computer</span></Link>
         <nav className={styles.desktopNav} aria-label="Main navigation">{mainLinks.map(item=><a key={item.href} href={item.href} aria-current={pathname===item.href?"page":undefined}>{item.label}</a>)}</nav>
         <div className={styles.headerActions}>
           <a className={styles.emailShortcut} href={contactHref} aria-label={`Email Michelle at ${contactEmail}`} title="Email Michelle"><Mail size={19} aria-hidden="true"/></a>
@@ -133,7 +133,6 @@ export default function HomeDesktop() {
             <a href={signupForms.penpals.pagePath}><span><strong>Pen pals</strong><small>Want a handwritten letter from me?</small></span><ArrowUpRight size={20} aria-hidden="true" /></a>
           </div>
         </section>}
-        <nav className={styles.moreLinks} aria-label="More from Michelle"><a href="/projects">Projects <ArrowUpRight size={13} aria-hidden="true" /></a><a href="/research">Research <ArrowUpRight size={13} aria-hidden="true" /></a><a href="/talks">Talks <ArrowUpRight size={13} aria-hidden="true" /></a><a href="/posts">Posts <ArrowUpRight size={13} aria-hidden="true" /></a></nav>
       </div>
     </main>
     <div className={styles.taskbar} role="toolbar" aria-label="Desktop controls"><button type="button" className={styles.startButton} onClick={() => window.dispatchEvent(new Event("michelle:search"))}><Search size={19} aria-hidden="true" /><span>Explore</span></button><button type="button" className={styles.taskButton} aria-pressed={welcomeOpen && activeWindow === "welcome"} onClick={restoreWelcome}><FileText size={16} aria-hidden="true" /><span>Dear Internet,</span></button><button type="button" className={styles.taskButton} aria-pressed={contactOpen && activeWindow === "contact"} onClick={() => { setContactOpen(true); setActiveWindow("contact") }}><Mail size={16} aria-hidden="true" /><span>Keep in touch</span></button><span className={styles.clock}><Clock3 size={13} aria-hidden="true" />{time || "—"}</span></div>

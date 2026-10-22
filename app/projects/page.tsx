@@ -102,7 +102,6 @@ export default function Projects() {
               <div key={index} className="project-catalog-row border-t border-gray-800 pt-8">
                 <div className="grid md:grid-cols-[1fr_2fr] gap-8">
                   <div>
-                    <span className="project-file-number" aria-hidden="true">{String(index + 1).padStart(2, "0")} / PROJECT</span>
                     <h2 className="text-xl font-bold text-white mb-2">
                       {project.title}
                       {project.status && (
