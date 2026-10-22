@@ -6,7 +6,7 @@ import { ArrowLeft, ArrowUpRight, Clock3 } from "lucide-react";
 import { stegaClean } from "@sanity/client/stega";
 import { PortableArticle } from "@/components/learn/portable-article";
 import { ArticleDiscussion } from "@/components/learn/article-discussion";
-import { LearnMasthead } from "@/components/learn/learn-masthead";
+import { LearnThemeToggle } from "@/components/learn/learn-theme";
 import { NewsletterSignup } from "@/components/learn/newsletter-signup";
 import { RetroWindow } from "@/components/learn/retro-window";
 import { absoluteUrl } from "@/lib/seo";
@@ -135,11 +135,12 @@ export default async function ArticlePage({ params }: PageProps) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
         />
       )}
-      <LearnMasthead />
+
 
       <article>
         <header className="learn-border border-b-2 px-5 py-10 sm:px-8 sm:py-16">
-          <div className="mx-auto max-w-5xl">
+          <div className="mx-auto max-w-3xl">
+            <div className="article-reading-tools"><LearnThemeToggle /></div>
             <Link
               href="/learn"
               className="mb-9 inline-flex items-center gap-2 text-sm font-bold decoration-2 underline-offset-4 hover:underline"
@@ -155,10 +156,10 @@ export default async function ArticlePage({ params }: PageProps) {
                 {readingTime(article.estimatedWords)} min read
               </span>
             </div>
-            <h1 className="mt-7 max-w-5xl font-serif text-[clamp(3.4rem,8vw,7.5rem)] leading-[.88] tracking-[-.055em]">
+            <h1 className="mt-7 max-w-5xl font-serif text-[clamp(2rem,4.7vw,3.7rem)] leading-[.88] tracking-[-.055em]">
               {article.title}
             </h1>
-            <p className="learn-muted mt-8 max-w-3xl text-xl font-semibold leading-8 sm:text-2xl sm:leading-9">
+            <p className="learn-muted mt-8 max-w-3xl text-lg font-normal leading-8 sm:text-xl sm:leading-8">
               {article.dek}
             </p>
             <div className="mt-9 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
@@ -291,6 +292,7 @@ export default async function ArticlePage({ params }: PageProps) {
               Practical ideas for building with AI, figuring out your career,
               and making college work for you.
             </p>
+            <div className="article-reading-tools"><LearnThemeToggle /></div>
             <Link
               href="/learn"
               className="mt-5 inline-flex items-center gap-2 font-black decoration-2 underline underline-offset-4"

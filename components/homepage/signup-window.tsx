@@ -118,7 +118,7 @@ export function SignupWindow({ kind, onClose, onSwitch, startOpen = true, active
   const otherKind = magazine ? "penpals" : "magazine"
   const other = signupForms[otherKind]
 
-  return <section ref={windowRef} className={`${styles.formWindow} ${styles.signupWindow} ${maximized ? styles.formWindowMaximized : ""}`} aria-labelledby={headingId}>
+  return <section data-computer-window ref={windowRef} className={`${styles.formWindow} ${styles.signupWindow} ${maximized ? styles.formWindowMaximized : ""}`} aria-labelledby={headingId}>
     <WindowBar title={title} onMinimize={() => { setMinimized(true); setMaximized(false) }} onMaximize={() => { setMaximized(value => !value); setMinimized(false) }} onClose={onClose} maximized={maximized} />
     <h1 id={headingId} className={styles.srOnly}>{magazine ? "The magazine waitlist" : "Wanna be pen pals?"}</h1>
     {minimized && <button type="button" className={styles.formRestore} onClick={() => setMinimized(false)}><FileText size={19} aria-hidden="true" />Restore {title}</button>}
@@ -128,6 +128,7 @@ export function SignupWindow({ kind, onClose, onSwitch, startOpen = true, active
         <p>Form not loading? <button type="button" className={styles.formReload} onClick={() => setFormVersion(value => value + 1)}>Reload the form</button> or <a href={signupForms[kind].publicUrl} target="_blank" rel="noopener noreferrer" aria-label={`Open ${form.title.toLowerCase()} in a new tab`}>open it in a new tab</a>.</p>
       </div>}
       {formOpen ? <div className={styles.formEmbed}><TallyForm key={`${kind}:${formVersion}`} kind={kind} active={active && !minimized} recoveryId={recoveryId} /></div> : <div className={styles.formIntro}>
+        <span className={`${styles.sprite} ${magazine ? styles.sprite_magazine : styles.sprite_penpals} ${styles.invitationArt}`} aria-hidden="true"/>
         <h2>{magazine ? "the magazine waitlist" : "wanna be penpals?"}</h2>
         <p>{magazine ? "We’re putting together an artsy magazine about AI and learning — with comics, diary entries, and handwritten, junk-journal-style pages. Join the waitlist for updates as it comes together." : "Want a handwritten letter from me? Leave your mailing address below!!"}</p>
         <button type="button" className={styles.button} onClick={() => setFormOpen(true)}>{magazine ? "Join the magazine waitlist" : "Leave my mailing address"} →</button>

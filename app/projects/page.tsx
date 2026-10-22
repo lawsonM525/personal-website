@@ -12,6 +12,7 @@ interface Project {
 
 export default function Projects() {
   const projects: Project[] = [
+    { title: "I turned ChatGPT into a robot", description: "Watch the build on Instagram.", link: "https://www.instagram.com/p/DdWIPPFvV0X/" },
     {
       title: "10 Apps in 10 Weeks",
       subtitle: "Shipping one app every week.",
@@ -72,7 +73,7 @@ export default function Projects() {
       title: "Delta Airlines Award-Winning Stock Pitch",
       subtitle: "Taking flight with bold investments.",
       description: "This winning pitch highlighted Delta Airlines' resilience and strategic foresight during challenging market conditions. Blending financial acumen with storytelling, the analysis demonstrated Delta's potential to soar higher in a post-pandemic world, earning accolades and standing out among top competitors.",
-      link: "https://drive.google.com/file/d/1OW6sDup_4zfj5I3gpOxsL7V2M3F3iuuG/view?usp=sharing"
+      link: "/projects/delta-stock-pitch"
     },
     {
       title: "Cryptographic Algorithms Research",
@@ -98,9 +99,10 @@ export default function Projects() {
 
           <div className="grid gap-16">
             {projects.map((project, index) => (
-              <div key={index} className="border-t border-gray-800 pt-8">
+              <div key={index} className="project-catalog-row border-t border-gray-800 pt-8">
                 <div className="grid md:grid-cols-[1fr_2fr] gap-8">
                   <div>
+                    <span className="project-file-number" aria-hidden="true">{String(index + 1).padStart(2, "0")} / PROJECT</span>
                     <h2 className="text-xl font-bold text-white mb-2">
                       {project.title}
                       {project.status && (
@@ -120,7 +122,7 @@ export default function Projects() {
                         href={project.link}
                         className="inline-flex items-center text-white hover:text-gray-300 transition-colors"
                       >
-                        View Project
+                        {project.link.includes("instagram.com/p/DdWIPPFvV0X") ? "Watch the robot" : project.link === "/projects/delta-stock-pitch" ? "Read the pitch" : "View project"}
                         <ArrowUpRight className="ml-1 h-4 w-4" />
                       </Link>
                     )}
