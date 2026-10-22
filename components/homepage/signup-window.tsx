@@ -5,7 +5,7 @@ import { useEffect, useId, useRef, useState } from "react"
 import { FileText } from "lucide-react"
 import { isTallyReadyEvent, shouldRetryEmbed } from "@/lib/tally-embed"
 import { WindowBar } from "./window-bar"
-import { signupForms } from "./signup-config"
+import { penpalDeliveryNote, signupForms } from "./signup-config"
 import styles from "./home.module.css"
 
 type SignupKind = keyof typeof signupForms
@@ -125,13 +125,14 @@ export function SignupWindow({ kind, onClose, onSwitch, startOpen = true, active
     <div hidden={minimized}>
       <div className={styles.windowMenu}><a href="/" onClick={onSwitch ? event => { event.preventDefault(); onClose() } : undefined}>My computer</a><span>{magazine ? "Magazine waitlist" : "The little post office"}</span><a href={other.pagePath} onClick={onSwitch ? event => { event.preventDefault(); onSwitch(otherKind) } : undefined}>{magazine ? "Pen pals" : "Magazine"} →</a></div>
       {formOpen && <div id={recoveryId} className={`${styles.formFallback} ${styles.formRecovery}`}>
+        {!magazine && <p>{penpalDeliveryNote}</p>}
         <p>Form not loading? <button type="button" className={styles.formReload} onClick={() => setFormVersion(value => value + 1)}>Reload the form</button> or <a href={signupForms[kind].publicUrl} target="_blank" rel="noopener noreferrer" aria-label={`Open ${form.title.toLowerCase()} in a new tab`}>open it in a new tab</a>.</p>
       </div>}
       {formOpen ? <div className={styles.formEmbed}><TallyForm key={`${kind}:${formVersion}`} kind={kind} active={active && !minimized} recoveryId={recoveryId} /></div> : <div className={styles.formIntro}>
         <span className={`${styles.sprite} ${magazine ? styles.sprite_magazine : styles.sprite_penpals} ${styles.invitationArt}`} aria-hidden="true"/>
         <h2>{magazine ? "the magazine waitlist" : "wanna be penpals?"}</h2>
-        <p>{magazine ? "We’re putting together an artsy magazine about AI and learning — with comics, diary entries, and handwritten, junk-journal-style pages. Join the waitlist for updates as it comes together." : "Want a handwritten letter from me? Leave your mailing address below!!"}</p>
-        <button type="button" className={styles.button} onClick={() => setFormOpen(true)}>{magazine ? "Join the magazine waitlist" : "Leave my mailing address"} →</button>
+        <p>{magazine ? "We’re putting together an artsy magazine about AI and learning — with comics, diary entries, and handwritten, junk-journal-style pages. Join the waitlist for updates as it comes together." : penpalDeliveryNote}</p>
+        <button type="button" className={styles.button} onClick={() => setFormOpen(true)}>{magazine ? "Join the magazine waitlist" : "Sign up to be pen pals"} →</button>
       </div>}
       {formOpen && <div className={styles.formFallback}>
         <p>Magazine and pen pals are separate signups.</p>

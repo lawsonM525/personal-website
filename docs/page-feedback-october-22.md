@@ -21,6 +21,8 @@ Scope: review branch only. Pitch/proposal routes, production, DNS, nameservers a
 
 Magazine: https://tally.so/r/zxP9JM . Pen pals: https://tally.so/r/68alRY . No form destinations, storage integrations, emails or automations are changed. Checks wait for visible real form fields without entering or submitting data. Existing downstream persistence is not exercised.
 
+Pen-pal delivery copy now says: “If you’re in the United States, I might send you a physical letter. If you’re outside the US, I’ll send you an email.” This is shown on the invitation and retained above the embedded form. Homepage shortcuts/search use letter-or-email wording. The existing live Tally form was read in the browser: it collects name and postal address including country, but has no email field. Its original handwritten-letter introduction and submit label are unchanged. Updating that live form to collect email and conditionally request a US postal address remains pending approval; no signup or email has been sent.
+
 ## Validation
 
 Production build/type checks, route smoke checks, and existing Tally recovery tests. Browser checks cover desktop Learn layout/search, real mouse window movement, Home reset, first/return homepage visits, email target, dedicated signup navigation/fields, PDF page navigation/enlargement, project back links, and phone widths on Learn/article/Projects/RAG/Delta/About/Magazine/Pen pals. Hosted preview verification and screenshots are recorded in task evidence after deployment.

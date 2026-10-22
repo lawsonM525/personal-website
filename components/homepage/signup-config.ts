@@ -1,4 +1,6 @@
 // Reuse Michelle's verified existing Tally forms. No signup records or secrets live here.
+export const penpalDeliveryNote = "If you’re in the United States, I might send you a physical letter. If you’re outside the US, I’ll send you an email."
+
 export const signupForms = {
   magazine: {
     id: "zxP9JM",

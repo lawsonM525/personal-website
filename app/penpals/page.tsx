@@ -3,7 +3,7 @@ import SignupPage from "@/components/homepage/signup-page"
 
 export const metadata: Metadata = {
   title: { absolute: "Wanna be pen pals? | Michelle’s Computer" },
-  description: "Sign up for Michelle Lawson’s pen pal interest list. A little post office from Michelle’s Computer.",
+  description: "Sign up to be pen pals with Michelle Lawson. If you’re in the United States, Michelle might send you a physical letter. Outside the US, she’ll send you an email.",
   alternates: { canonical: "https://michellescomputer.com/penpals" },
 }
 

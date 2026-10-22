@@ -15,7 +15,7 @@ const pages = [
   { label: "Learn", description: "Practical guides for using AI and building projects", href: "/learn", keywords: "guides tutorials ai college career" },
 
   { label: "Magazine waitlist", description: "Join the waitlist for magazine updates", href: signupForms.magazine.pagePath, keywords: "magazine email signup waitlist" },
-  { label: "Pen pals", description: "Leave your mailing details for a handwritten letter", href: signupForms.penpals.pagePath, keywords: "pen pals letter mail address signup" },
+  { label: "Pen pals", description: "Stay in touch by letter or email", href: signupForms.penpals.pagePath, keywords: "pen pals letter mail email address signup" },
   { label: "My story", description: "About Michelle Lawson", href: "/about", keywords: "bio about story michelle" },
   { label: "Projects", description: "What can we build today?", href: "/projects", keywords: "build apps work projects" },
   { label: "Research", description: "Michelle’s published research", href: "/research", keywords: "papers publications research" },
@@ -90,7 +90,7 @@ const folders = [
   { kind: "learn" as const, title: "Learn", description: "Practical guides for using AI and building projects.", action: "Read the guides", href: "/learn" },
   { kind: "resources" as const, title: "Projects", description: "What can we build today?", action: "Explore the projects", href: "/projects" },
   { kind: "magazine" as const, title: "Magazine", description: "An artsy magazine about AI and learning.", action: "Join the waitlist", href: signupForms.magazine.pagePath },
-  { kind: "penpals" as const, title: "Pen pals", description: "Want a handwritten letter from me?", action: "Sign up to be pen pals", href: signupForms.penpals.pagePath },
+  { kind: "penpals" as const, title: "Pen pals", description: "Want to be pen pals?", action: "Sign up to be pen pals", href: signupForms.penpals.pagePath },
 ]
 
 export default function HomeDesktop() {
@@ -110,7 +110,7 @@ export default function HomeDesktop() {
       <nav className={styles.desktopShortcuts} aria-label="Desktop shortcuts">{folders.map(folder => <a key={folder.kind} href={folder.href} aria-label={`${folder.title}: ${folder.action}`}>
         <SpriteIcon kind={folder.kind} />
         <span className={styles.shortcutLabel}>{folder.title}</span>
-        <span className={styles.shortcutHint}>{folder.kind === "magazine" ? "Join the waitlist" : folder.kind === "penpals" ? "Get a handwritten letter" : folder.kind === "learn" ? "Guides & tutorials" : "Things I’m building"}</span>
+        <span className={styles.shortcutHint}>{folder.kind === "magazine" ? "Join the waitlist" : folder.kind === "penpals" ? "Letters & emails" : folder.kind === "learn" ? "Guides & tutorials" : "Things I’m building"}</span>
       </a>)}</nav>
       <div className={`${styles.workspace} ${maximized ? styles.workspaceMaximized : ""}`}>
         {welcomeOpen ? <section data-computer-window className={`${styles.window} ${styles.welcomeWindow} ${activeWindow === "welcome" ? styles.activeWindow : ""}`} aria-labelledby="home-title" onPointerDown={() => setActiveWindow("welcome")} onFocusCapture={() => setActiveWindow("welcome")}>
@@ -130,7 +130,7 @@ export default function HomeDesktop() {
             <h2 id="contact-title">Keep in touch</h2>
             <a href={contactHref}><Mail size={21} aria-hidden="true"/><span><strong>Email me</strong><small>{contactEmail}</small></span><ArrowUpRight size={20} aria-hidden="true" /></a>
             <a href={signupForms.magazine.pagePath}><span><strong>Magazine</strong><small>Join the magazine waitlist</small></span><ArrowUpRight size={20} aria-hidden="true" /></a>
-            <a href={signupForms.penpals.pagePath}><span><strong>Pen pals</strong><small>Want a handwritten letter from me?</small></span><ArrowUpRight size={20} aria-hidden="true" /></a>
+            <a href={signupForms.penpals.pagePath}><span><strong>Pen pals</strong><small>Stay in touch by letter or email</small></span><ArrowUpRight size={20} aria-hidden="true" /></a>
           </div>
         </section>}
       </div>
