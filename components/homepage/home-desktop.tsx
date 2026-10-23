@@ -3,9 +3,9 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useEffect, useMemo, useRef, useState } from "react"
-import { ArrowRight, ArrowUpRight, Clock3, FileText, Mail, Menu, Search, X } from "lucide-react"
+import { ArrowRight, ArrowUpRight, Clock3, FileText, Mail, Menu, Power, Search, X } from "lucide-react"
 import { ProfileMark } from "./profile-mark"
-import { BootScreen } from "./boot-screen"
+import { BootScreen, powerOffComputer } from "./boot-screen"
 import { contactEmail, contactHref } from "./contact-config"
 import { signupForms } from "./signup-config"
 import { WindowBar } from "./window-bar"
@@ -57,6 +57,7 @@ export function HomeHeader() {
         <Link href="/" className={styles.brand} aria-label="Michelle’s Computer home"><ProfileMark/><span className={styles.srOnly}>Michelle’s Computer</span></Link>
         <nav className={styles.desktopNav} aria-label="Main navigation">{mainLinks.map(item=><a key={item.href} href={item.href} aria-current={pathname===item.href?"page":undefined}>{item.label}</a>)}</nav>
         <div className={styles.headerActions}>
+          <button type="button" className={styles.powerOffButton} aria-label="Turn off the computer" title="Power off" onClick={powerOffComputer}><Power size={19} aria-hidden="true"/><span>Power off</span></button>
           <a className={styles.emailShortcut} href={contactHref} aria-label={`Email Michelle at ${contactEmail}`} title="Email Michelle"><Mail size={19} aria-hidden="true"/></a>
           <button type="button" className={styles.searchButton} aria-label="Search pages" onClick={()=>{setQuery("");setSearchOpen(true)}}><Search size={17} aria-hidden="true"/><span>Search</span><kbd>⌘ K</kbd></button>
           <button type="button" className={styles.mobileMenuButton} aria-label={menuOpen?"Close navigation":"Open navigation"} aria-expanded={menuOpen} aria-controls="mobile-site-navigation" onClick={()=>setMenuOpen(value=>!value)}>{menuOpen?<X size={22}/>:<Menu size={22}/>}</button>
