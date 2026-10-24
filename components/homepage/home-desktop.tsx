@@ -57,7 +57,7 @@ export function HomeHeader() {
         <Link href="/" className={styles.brand} aria-label="Michelle’s Computer home"><ProfileMark/><span className={styles.srOnly}>Michelle’s Computer</span></Link>
         <nav className={styles.desktopNav} aria-label="Main navigation">{mainLinks.map(item=><a key={item.href} href={item.href} aria-current={pathname===item.href?"page":undefined}>{item.label}</a>)}</nav>
         <div className={styles.headerActions}>
-          <button type="button" className={styles.restartButton} aria-label="Restart the computer" title="Restart" onClick={restartComputer}><RotateCcw size={19} aria-hidden="true"/><span>Restart</span></button>
+          <button type="button" className={styles.restartButton} aria-label="Restart the computer" title="Restart" onClick={restartComputer}><RotateCcw size={19} aria-hidden="true"/></button>
           <a className={styles.emailShortcut} href={contactHref} aria-label={`Email Michelle at ${contactEmail}`} title="Email Michelle"><Mail size={19} aria-hidden="true"/></a>
           <button type="button" className={styles.searchButton} aria-label="Search pages" onClick={()=>{setQuery("");setSearchOpen(true)}}><Search size={17} aria-hidden="true"/><span>Search</span><kbd>⌘ K</kbd></button>
           <button type="button" className={styles.mobileMenuButton} aria-label={menuOpen?"Close navigation":"Open navigation"} aria-expanded={menuOpen} aria-controls="mobile-site-navigation" onClick={()=>setMenuOpen(value=>!value)}>{menuOpen?<X size={22}/>:<Menu size={22}/>}</button>
