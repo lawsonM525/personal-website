@@ -1,6 +1,6 @@
 # Current iteration
 
-Michelle’s October 22 page-by-page feedback supersedes the interaction and route descriptions below. See [page-feedback-october-22.md](page-feedback-october-22.md) for the current behavior: dedicated signup pages, revised Learn feed, archived Resources, draggable windows, first-visit power-on, email shortcut and in-site Delta PDF reader. All proposal exclusions remain in force.
+Michelle’s October 22 page-by-page feedback supersedes the interaction and route descriptions below. See [page-feedback-october-22.md](page-feedback-october-22.md) for the current behavior: dedicated signup pages, revised Learn feed, archived Resources, draggable windows, automatic terminal startup, email shortcut and in-site Delta PDF reader. All proposal exclusions remain in force.
 
 ---
 
