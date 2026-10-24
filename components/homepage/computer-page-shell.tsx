@@ -37,13 +37,13 @@ export function ComputerPageShell({ children }: { children: React.ReactNode }) {
     <a className="computer-skip" href="#computer-page-content">Skip to content</a>
     <HomeHeader />
     <div className="computer-page-workspace">
-      {minimized && <button type="button" className="computer-restore" onClick={restore}><FileText size={19} />Open {title}</button>}
+      {minimized && <button type="button" className="computer-restore" data-computer-sound="open" onClick={restore}><FileText size={19} />Open {title}</button>}
       <section data-computer-window hidden={minimized} className={`computer-page-window${maximized ? " computer-page-window-maximized" : ""}`} aria-label={`${title} window`}>
         <WindowBar title={title} onMinimize={() => setMinimized(true)} onMaximize={() => setMaximized(value => !value)} onClose={() => router.push(parent.href)} maximized={maximized} />
-        {!path.startsWith("/learn") && <nav className="computer-page-toolbar" aria-label="Window navigation"><Link href={parent.href}><ArrowLeft size={13} />{parent.label}</Link><span>{title}</span><button type="button" onClick={search}><Search size={13} />Find a page</button></nav>}
+        {!path.startsWith("/learn") && <nav className="computer-page-toolbar" aria-label="Window navigation"><Link href={parent.href}><ArrowLeft size={13} />{parent.label}</Link><span>{title}</span><button type="button" data-computer-sound="open" onClick={search}><Search size={13} />Find a page</button></nav>}
         <div id="computer-page-content" className="computer-page-content" data-page={path}>{children}</div>
       </section>
     </div>
-    <div className="computer-page-taskbar" role="toolbar" aria-label="Desktop controls"><button type="button" onClick={search}><Search size={17} /><span>Explore</span></button><button type="button" aria-pressed={!minimized} onClick={restore}><FileText size={16} /><span>{title}</span></button><time>{time || "—"}</time></div>
+    <div className="computer-page-taskbar" role="toolbar" aria-label="Desktop controls"><button type="button" data-computer-sound="open" onClick={search}><Search size={17} /><span>Explore</span></button><button type="button" data-computer-sound="open" aria-pressed={!minimized} onClick={restore}><FileText size={16} /><span>{title}</span></button><time>{time || "—"}</time></div>
   </div>
 }

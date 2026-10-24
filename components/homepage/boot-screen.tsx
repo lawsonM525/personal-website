@@ -43,9 +43,10 @@ const bootOutput: [number, string][] = [
   [2710, "[####################] ready"],
 ]
 
-export function restartComputer() {
+export function restartComputer(navigate?: (href: string) => void) {
   try { localStorage.removeItem(key) } catch {}
   if (window.location.pathname === "/") window.dispatchEvent(new Event(restartEvent))
+  else if (navigate) navigate("/")
   else window.location.assign("/")
 }
 

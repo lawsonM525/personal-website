@@ -1,10 +1,11 @@
 "use client"
 
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { ArrowRight, ArrowUpRight, Clock3, FileText, Mail, Menu, RotateCcw, Search, X } from "lucide-react"
 import { ProfileMark } from "./profile-mark"
+import { ComputerSoundToggle } from "./computer-sounds"
 import { BootScreen, restartComputer } from "./boot-screen"
 import { contactEmail, contactHref } from "./contact-config"
 import { signupForms } from "./signup-config"
@@ -28,6 +29,7 @@ const mainLinks = ["/learn", "/projects", "/magazine", "/penpals", "/about"].map
 
 export function HomeHeader() {
   const pathname = usePathname()
+  const router = useRouter()
   const [menuOpen, setMenuOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const [query, setQuery] = useState("")
@@ -55,22 +57,23 @@ export function HomeHeader() {
     <div ref={chrome} className={styles.siteChrome}>
       <header className={styles.header}>
         <Link href="/" className={styles.brand} aria-label="Michelle’s Computer home"><ProfileMark/><span className={styles.srOnly}>Michelle’s Computer</span></Link>
-        <nav className={styles.desktopNav} aria-label="Main navigation">{mainLinks.map(item=><a key={item.href} href={item.href} aria-current={pathname===item.href?"page":undefined}>{item.label}</a>)}</nav>
+        <nav className={styles.desktopNav} aria-label="Main navigation">{mainLinks.map(item=><Link key={item.href} href={item.href} aria-current={pathname===item.href?"page":undefined}>{item.label}</Link>)}</nav>
         <div className={styles.headerActions}>
-          <button type="button" className={styles.restartButton} aria-label="Restart the computer" title="Restart" onClick={restartComputer}><RotateCcw size={19} aria-hidden="true"/></button>
+          <ComputerSoundToggle/>
+          <button type="button" className={styles.restartButton} aria-label="Restart the computer" title="Restart" data-computer-sound="startup" onClick={()=>restartComputer(router.push)}><RotateCcw size={19} aria-hidden="true"/></button>
           <a className={styles.emailShortcut} href={contactHref} aria-label={`Email Michelle at ${contactEmail}`} title="Email Michelle"><Mail size={19} aria-hidden="true"/></a>
-          <button type="button" className={styles.searchButton} aria-label="Search pages" onClick={()=>{setQuery("");setSearchOpen(true)}}><Search size={17} aria-hidden="true"/><span>Search</span><kbd>⌘ K</kbd></button>
+          <button type="button" className={styles.searchButton} aria-label="Search pages" data-computer-sound="open" onClick={()=>{setQuery("");setSearchOpen(true)}}><Search size={17} aria-hidden="true"/><span>Search</span><kbd>⌘ K</kbd></button>
           <button type="button" className={styles.mobileMenuButton} aria-label={menuOpen?"Close navigation":"Open navigation"} aria-expanded={menuOpen} aria-controls="mobile-site-navigation" onClick={()=>setMenuOpen(value=>!value)}>{menuOpen?<X size={22}/>:<Menu size={22}/>}</button>
         </div>
-        {menuOpen&&<nav id="mobile-site-navigation" className={styles.mobileNav} aria-label="Mobile navigation">{mainLinks.map(item=><a key={item.href} href={item.href} onClick={()=>setMenuOpen(false)}><span>{item.label}</span><ArrowUpRight size={17} aria-hidden="true"/></a>)}<a href="/research">Research</a><a href="/talks">Talks</a><a href="/posts">Posts</a></nav>}
+        {menuOpen&&<nav id="mobile-site-navigation" className={styles.mobileNav} aria-label="Mobile navigation">{mainLinks.map(item=><Link key={item.href} href={item.href} onClick={()=>setMenuOpen(false)}><span>{item.label}</span><ArrowUpRight size={17} aria-hidden="true"/></Link>)}<Link href="/research">Research</Link><Link href="/talks">Talks</Link><Link href="/posts">Posts</Link></nav>}
       </header>
-      <nav className={styles.mobileQuickLinks} aria-label="Quick navigation">{mainLinks.filter(item=>item.href!=="/about").map(item=><a key={item.href} href={item.href} aria-current={pathname===item.href?"page":undefined}>{item.label}</a>)}</nav>
+      <nav className={styles.mobileQuickLinks} aria-label="Quick navigation">{mainLinks.filter(item=>item.href!=="/about").map(item=><Link key={item.href} href={item.href} aria-current={pathname===item.href?"page":undefined}>{item.label}</Link>)}</nav>
     </div>
     <dialog ref={dialog} className={styles.commandDialog} aria-labelledby="command-title" onClose={()=>setSearchOpen(false)} onClick={event=>{if(event.target===event.currentTarget)setSearchOpen(false)}}>
       <div className={styles.commandInner}>
         <div className={styles.windowBar}><Search size={15} aria-hidden="true"/><h2 id="command-title">Find a page or guide</h2><button type="button" aria-label="Close search" onClick={()=>setSearchOpen(false)}><X size={16}/></button></div>
-        <label className={styles.searchField}><Search size={20} aria-hidden="true"/><input ref={input} value={query} onChange={event=>setQuery(event.target.value)} placeholder="Try articles, projects, magazine…" aria-label="Search pages and guides" onKeyDown={event=>{if(event.key==="Enter"&&matches[0])window.location.assign(matches[0].href)}}/></label>
-        <div className={styles.searchResults} aria-live="polite">{matches.length?matches.map(page=><a href={page.href} key={page.href}><span><strong>{page.label}</strong><small>{page.description}</small></span><ArrowUpRight size={18} aria-hidden="true"/></a>):<p>No matching pages. Try “learn”, “projects”, or “pen pals”.</p>}</div>
+        <label className={styles.searchField}><Search size={20} aria-hidden="true"/><input ref={input} value={query} onChange={event=>setQuery(event.target.value)} placeholder="Try articles, projects, magazine…" aria-label="Search pages and guides" onKeyDown={event=>{if(event.key==="Enter"&&matches[0])router.push(matches[0].href)}}/></label>
+        <div className={styles.searchResults} aria-live="polite">{matches.length?matches.map(page=><Link href={page.href} key={page.href}><span><strong>{page.label}</strong><small>{page.description}</small></span><ArrowUpRight size={18} aria-hidden="true"/></Link>):<p>No matching pages. Try “learn”, “projects”, or “pen pals”.</p>}</div>
         <div className={styles.commandHint}><span>Enter opens the first result · Tab to choose</span><kbd>esc</kbd></div>
       </div>
     </dialog>
@@ -108,11 +111,11 @@ export default function HomeDesktop() {
     <a href="#main" className={styles.skip}>Skip to content</a>
     <HomeHeader />
     <main id="main" className={styles.desktop}>
-      <nav className={styles.desktopShortcuts} aria-label="Desktop shortcuts">{folders.map(folder => <a key={folder.kind} href={folder.href} aria-label={`${folder.title}: ${folder.action}`}>
+      <nav className={styles.desktopShortcuts} aria-label="Desktop shortcuts">{folders.map(folder => <Link key={folder.kind} href={folder.href} aria-label={`${folder.title}: ${folder.action}`}>
         <SpriteIcon kind={folder.kind} />
         <span className={styles.shortcutLabel}>{folder.title}</span>
         <span className={styles.shortcutHint}>{folder.kind === "magazine" ? "Join the waitlist" : folder.kind === "penpals" ? "Letters & emails" : folder.kind === "learn" ? "Guides & tutorials" : "Things I’m building"}</span>
-      </a>)}</nav>
+      </Link>)}</nav>
       <div className={`${styles.workspace} ${maximized ? styles.workspaceMaximized : ""}`}>
         {welcomeOpen ? <section data-computer-window className={`${styles.window} ${styles.welcomeWindow} ${activeWindow === "welcome" ? styles.activeWindow : ""}`} aria-labelledby="home-title" onPointerDown={() => setActiveWindow("welcome")} onFocusCapture={() => setActiveWindow("welcome")}>
           <WindowBar title="Dear Internet," onMinimize={() => { setWelcomeOpen(false); setMaximized(false) }} onMaximize={() => setMaximized(value => !value)} onClose={() => { setWelcomeOpen(false); setMaximized(false) }} maximized={maximized} />
@@ -120,22 +123,22 @@ export default function HomeDesktop() {
             <div className={styles.heroCopy}>
               <h1 id="home-title" tabIndex={-1}>Welcome<br />to Michelle’s<br />Computer.</h1>
               <p className={styles.tagline}>Turning my ideas, and yours,<br className={styles.desktopBreak} /> into reality.</p>
-              <div className={styles.heroActions}><a href="/learn" className={styles.button}>Explore the guides <ArrowRight size={24} aria-hidden="true" /></a><a href="/about" className={styles.textLink}>My story <ArrowUpRight size={16} aria-hidden="true" /></a></div>
+              <div className={styles.heroActions}><Link href="/learn" className={styles.button}>Explore the guides <ArrowRight size={24} aria-hidden="true" /></Link><Link href="/about" className={styles.textLink}>My story <ArrowUpRight size={16} aria-hidden="true" /></Link></div>
             </div>
             <img className={styles.heroLetter} src="/homepage/welcome-letter-d.webp" width="1024" height="1024" alt="An open ivory envelope with blank paper and a blue botanical postage stamp." fetchPriority="high" />
           </div>
-        </section> : <button className={`${styles.window} ${styles.restoreWelcome}`} type="button" onClick={restoreWelcome}><FileText size={19} aria-hidden="true" /><span>Open Dear Internet,</span><ArrowUpRight size={18} aria-hidden="true" /></button>}
+        </section> : <button className={`${styles.window} ${styles.restoreWelcome}`} type="button" data-computer-sound="open" onClick={restoreWelcome}><FileText size={19} aria-hidden="true" /><span>Open Dear Internet,</span><ArrowUpRight size={18} aria-hidden="true" /></button>}
         {contactOpen && <section data-computer-window className={`${styles.window} ${styles.contactWindow} ${activeWindow === "contact" ? styles.activeWindow : ""}`} aria-labelledby="contact-title" onPointerDown={() => setActiveWindow("contact")} onFocusCapture={() => setActiveWindow("contact")}>
           <WindowBar title="Keep in touch" warm onMinimize={() => setContactOpen(false)} onClose={() => setContactOpen(false)} />
           <div className={styles.contactBody}>
             <h2 id="contact-title">Keep in touch</h2>
             <a href={contactHref}><Mail size={21} aria-hidden="true"/><span><strong>Email me</strong><small>{contactEmail}</small></span><ArrowUpRight size={20} aria-hidden="true" /></a>
-            <a href={signupForms.magazine.pagePath}><span><strong>Magazine</strong><small>Join the magazine waitlist</small></span><ArrowUpRight size={20} aria-hidden="true" /></a>
-            <a href={signupForms.penpals.pagePath}><span><strong>Pen pals</strong><small>Stay in touch by letter or email</small></span><ArrowUpRight size={20} aria-hidden="true" /></a>
+            <Link href={signupForms.magazine.pagePath}><span><strong>Magazine</strong><small>Join the magazine waitlist</small></span><ArrowUpRight size={20} aria-hidden="true" /></Link>
+            <Link href={signupForms.penpals.pagePath}><span><strong>Pen pals</strong><small>Stay in touch by letter or email</small></span><ArrowUpRight size={20} aria-hidden="true" /></Link>
           </div>
         </section>}
       </div>
     </main>
-    <div className={styles.taskbar} role="toolbar" aria-label="Desktop controls"><button type="button" className={styles.startButton} onClick={() => window.dispatchEvent(new Event("michelle:search"))}><Search size={19} aria-hidden="true" /><span>Explore</span></button><button type="button" className={styles.taskButton} aria-pressed={welcomeOpen && activeWindow === "welcome"} onClick={restoreWelcome}><FileText size={16} aria-hidden="true" /><span>Dear Internet,</span></button><button type="button" className={styles.taskButton} aria-pressed={contactOpen && activeWindow === "contact"} onClick={() => { setContactOpen(true); setActiveWindow("contact") }}><Mail size={16} aria-hidden="true" /><span>Keep in touch</span></button><span className={styles.clock}><Clock3 size={13} aria-hidden="true" />{time || "—"}</span></div>
+    <div className={styles.taskbar} role="toolbar" aria-label="Desktop controls"><button type="button" className={styles.startButton} data-computer-sound="open" onClick={() => window.dispatchEvent(new Event("michelle:search"))}><Search size={19} aria-hidden="true" /><span>Explore</span></button><button type="button" className={styles.taskButton} data-computer-sound="open" aria-pressed={welcomeOpen && activeWindow === "welcome"} onClick={restoreWelcome}><FileText size={16} aria-hidden="true" /><span>Dear Internet,</span></button><button type="button" className={styles.taskButton} data-computer-sound="open" aria-pressed={contactOpen && activeWindow === "contact"} onClick={() => { setContactOpen(true); setActiveWindow("contact") }}><Mail size={16} aria-hidden="true" /><span>Keep in touch</span></button><span className={styles.clock}><Clock3 size={13} aria-hidden="true" />{time || "—"}</span></div>
   </div></BootScreen>
 }

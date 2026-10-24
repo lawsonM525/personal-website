@@ -42,9 +42,9 @@ export function WindowBar({ title, warm = false, onMinimize, onMaximize, onClose
   return <div ref={bar} className={`${styles.windowBar} ${warm ? styles.warmBar : ""}`} data-window-drag-handle tabIndex={maximized?-1:0} role="group" aria-label={`${title} title bar`} title="Drag to move · Arrow keys to move · Home to reset" onPointerDown={start} onPointerMove={drag} onPointerUp={end} onPointerCancel={end} onLostPointerCapture={end} onKeyDown={keyboard}>
     <FileText size={14} aria-hidden="true" /><span>{title}</span><span className={styles.barLines} aria-hidden="true" />
     {(onMinimize || onMaximize || onClose) && <span className={styles.windowControls}>
-      {onMinimize && <button type="button" onClick={onMinimize} aria-label={`Minimize ${title}`}><Minus size={13} aria-hidden="true" /></button>}
-      {onMaximize && <button type="button" onClick={event=>{const target=targetFor(event.currentTarget);if(target){target.style.removeProperty("translate");delete target.dataset.windowX;delete target.dataset.windowY}maximize()}} aria-label={`${maximized ? "Restore" : "Maximize"} ${title}`}><Square size={11} aria-hidden="true" /></button>}
-      {onClose && <button type="button" onClick={onClose} aria-label={`Close ${title}`}><X size={13} aria-hidden="true" /></button>}
+      {onMinimize && <button type="button" data-computer-sound="minimize" onClick={onMinimize} aria-label={`Minimize ${title}`}><Minus size={13} aria-hidden="true" /></button>}
+      {onMaximize && <button type="button" data-computer-sound={maximized?"open":"maximize"} onClick={event=>{const target=targetFor(event.currentTarget);if(target){target.style.removeProperty("translate");delete target.dataset.windowX;delete target.dataset.windowY}maximize()}} aria-label={`${maximized ? "Restore" : "Maximize"} ${title}`}><Square size={11} aria-hidden="true" /></button>}
+      {onClose && <button type="button" data-computer-sound="close" onClick={onClose} aria-label={`Close ${title}`}><X size={13} aria-hidden="true" /></button>}
     </span>}
   </div>
 }

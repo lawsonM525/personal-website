@@ -21,8 +21,14 @@ for (let i=0;i<routes.length;i+=4) {
       if(["/", "/learn", "/projects"].includes(route))assert.equal(/href="\/resources(?:["/])/.test(html),false,`${route}: archived resources link remains`)
       const proposal=route.startsWith('/begin')||route==='/openaibeta'
       const shared=/<section[^>]+class="computer-page-window/.test(html)
-      if(proposal) assert.equal(shared,false,`${route}: proposal must remain outside the new layout`)
-      else assert.ok(['/','/magazine','/penpals'].includes(route)||shared,`${route}: shared window absent`)
+      if(proposal) {
+        assert.equal(shared,false,`${route}: proposal must remain outside the new layout`)
+        assert.equal(html.includes('aria-label="Sound effects"'),false,`${route}: proposal must remain outside computer sounds`)
+      }
+      else {
+        assert.ok(['/','/magazine','/penpals'].includes(route)||shared,`${route}: shared window absent`)
+        assert.ok(html.includes('aria-label="Sound effects"'),`${route}: sound control absent`)
+      }
     }
     results.push({route,status:response.status,...(redirect?{location:response.headers.get('location')}:{} )})
   }))

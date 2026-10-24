@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import Script from "next/script"
 import { useEffect, useId, useRef, useState } from "react"
 import { FileText } from "lucide-react"
@@ -121,9 +122,9 @@ export function SignupWindow({ kind, onClose, onSwitch, startOpen = true, active
   return <section data-computer-window ref={windowRef} className={`${styles.formWindow} ${styles.signupWindow} ${maximized ? styles.formWindowMaximized : ""}`} aria-labelledby={headingId}>
     <WindowBar title={title} onMinimize={() => { setMinimized(true); setMaximized(false) }} onMaximize={() => { setMaximized(value => !value); setMinimized(false) }} onClose={onClose} maximized={maximized} />
     <h1 id={headingId} className={styles.srOnly}>{magazine ? "The magazine waitlist" : "Wanna be pen pals?"}</h1>
-    {minimized && <button type="button" className={styles.formRestore} onClick={() => setMinimized(false)}><FileText size={19} aria-hidden="true" />Restore {title}</button>}
+    {minimized && <button type="button" className={styles.formRestore} data-computer-sound="open" onClick={() => setMinimized(false)}><FileText size={19} aria-hidden="true" />Restore {title}</button>}
     <div hidden={minimized}>
-      <div className={styles.windowMenu}><a href="/" onClick={onSwitch ? event => { event.preventDefault(); onClose() } : undefined}>My computer</a><span>{magazine ? "Magazine waitlist" : "The little post office"}</span><a href={other.pagePath} onClick={onSwitch ? event => { event.preventDefault(); onSwitch(otherKind) } : undefined}>{magazine ? "Pen pals" : "Magazine"} →</a></div>
+      <div className={styles.windowMenu}><Link href="/" onClick={onSwitch ? event => { event.preventDefault(); onClose() } : undefined}>My computer</Link><span>{magazine ? "Magazine waitlist" : "The little post office"}</span><Link href={other.pagePath} onClick={onSwitch ? event => { event.preventDefault(); onSwitch(otherKind) } : undefined}>{magazine ? "Pen pals" : "Magazine"} →</Link></div>
       {formOpen && <div id={recoveryId} className={`${styles.formFallback} ${styles.formRecovery}`}>
         {!magazine && <p>{penpalDeliveryNote}</p>}
         <p>Form not loading? <button type="button" className={styles.formReload} onClick={() => setFormVersion(value => value + 1)}>Reload the form</button> or <a href={signupForms[kind].publicUrl} target="_blank" rel="noopener noreferrer" aria-label={`Open ${form.title.toLowerCase()} in a new tab`}>open it in a new tab</a>.</p>
@@ -132,7 +133,7 @@ export function SignupWindow({ kind, onClose, onSwitch, startOpen = true, active
         <span className={`${styles.sprite} ${magazine ? styles.sprite_magazine : styles.sprite_penpals} ${styles.invitationArt}`} aria-hidden="true"/>
         <h2>{magazine ? "the magazine waitlist" : "wanna be penpals?"}</h2>
         <p>{magazine ? "We’re putting together an artsy magazine about AI and learning — with comics, diary entries, and handwritten, junk-journal-style pages. Join the waitlist for updates as it comes together." : penpalDeliveryNote}</p>
-        <button type="button" className={styles.button} onClick={() => setFormOpen(true)}>{magazine ? "Join the magazine waitlist" : "Sign up to be pen pals"} →</button>
+        <button type="button" className={styles.button} data-computer-sound="open" onClick={() => setFormOpen(true)}>{magazine ? "Join the magazine waitlist" : "Sign up to be pen pals"} →</button>
       </div>}
       {formOpen && <div className={styles.formFallback}>
         <p>Magazine and pen pals are separate signups.</p>
