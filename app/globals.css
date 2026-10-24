@@ -229,8 +229,8 @@
 }
 
 :root {
-  --computer-cursor: url("/cursors/retro-arrow-v3.png") 3 2, default;
-  --computer-link-cursor: url("/cursors/retro-link-v3.png") 3 2, pointer;
+  --computer-cursor: default;
+  --computer-link-cursor: pointer;
 }
 
 @media (hover: hover) and (pointer: fine) {
