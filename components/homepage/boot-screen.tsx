@@ -3,8 +3,10 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 import styles from "./home.module.css"
 
-const key = "michelle-computer-booted-v1"
 const restartEvent = "michelle:restart"
+// Remember startup only while navigating this loaded site. A fresh visit or
+// reload should boot again, including browsers with the old localStorage flag.
+let hasBooted = false
 
 // Short bursts and pauses give the console the rhythm of an old computer boot.
 // This visual bootstrap transcript uses the app’s real module and route names.
@@ -44,7 +46,7 @@ const bootOutput: [number, string][] = [
 ]
 
 export function restartComputer(navigate?: (href: string) => void) {
-  try { localStorage.removeItem(key) } catch {}
+  hasBooted = false
   if (window.location.pathname === "/") window.dispatchEvent(new Event(restartEvent))
   else if (navigate) navigate("/")
   else window.location.assign("/")
@@ -57,13 +59,12 @@ export function BootScreen({ children }: { children: React.ReactNode }) {
   const skip = useRef<HTMLButtonElement>(null)
 
   const enter = useCallback(() => {
-    try { localStorage.setItem(key, "1") } catch {}
+    hasBooted = true
     setStage("ready")
   }, [])
 
   useEffect(() => {
-    try { setStage(localStorage.getItem(key) ? "ready" : "booting") }
-    catch { setStage("booting") }
+    setStage(hasBooted ? "ready" : "booting")
     const restart = () => { setLineCount(0); setStage("booting") }
     window.addEventListener(restartEvent, restart)
     return () => window.removeEventListener(restartEvent, restart)
@@ -71,12 +72,13 @@ export function BootScreen({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (stage !== "booting") return
-    setLineCount(0)
     const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches
+    // Reduced motion removes typing/blinking, not the whole startup screen.
+    setLineCount(reducedMotion ? bootOutput.length : 0)
     const timers = reducedMotion ? [] : bootOutput.map(([delay], index) =>
       setTimeout(() => setLineCount(index + 1), delay)
     )
-    timers.push(setTimeout(enter, reducedMotion ? 120 : 3100))
+    timers.push(setTimeout(enter, 3100))
     skip.current?.focus({ preventScroll: true })
     const keyboard = (event: KeyboardEvent) => {
       if (event.key === "Escape") { event.preventDefault(); enter() }
