@@ -3,13 +3,14 @@
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import { usePathname, useRouter } from "next/navigation"
-import { ArrowLeft, FileText, Search } from "lucide-react"
+import { ArrowLeft, FileText, FolderOpen, Search } from "lucide-react"
 import { HomeHeader, WindowBar } from "./home-desktop"
 
 const routeTitles: Record<string, string> = {
   "/about": "About Michelle", "/resources": "Resources", "/projects": "Projects",
   "/research": "Research", "/talks": "Talks", "/posts": "Posts", "/reminder": "Reminder",
   "/learn": "Learn", "/learn/how-to-build-ai-wardrobe-digital-closet": "How to Build Your Own AI Wardrobe",
+  "/learn/submit": "Submit an article",
   "/projects/rag-in-practice": "RAG in Practice", "/projects/delta-stock-pitch": "Delta stock pitch", "/10apps": "10 Apps in 10 Weeks",
   "/10apps/pagez/updates": "Challenge updates", "/day2tools": "Day 2 Tools",
   "/resources/computer": "Resource desktop", "/resources/computer/toolkit": "Toolkit",
@@ -44,6 +45,6 @@ export function ComputerPageShell({ children }: { children: React.ReactNode }) {
         <div id="computer-page-content" className="computer-page-content" data-page={path}>{children}</div>
       </section>
     </div>
-    <div className="computer-page-taskbar" role="toolbar" aria-label="Desktop controls"><button type="button" data-computer-sound="open" onClick={search}><Search size={17} /><span>Explore</span></button><button type="button" data-computer-sound="open" aria-pressed={!minimized} onClick={restore}><FileText size={16} /><span>{title}</span></button><time>{time || "—"}</time></div>
+    <div className="computer-page-taskbar" role="toolbar" aria-label="Desktop controls"><button type="button" aria-label="Open Explorer" data-computer-sound="open" onClick={() => router.push("/explore")}><FolderOpen size={17} /><span>Explore</span></button><button type="button" data-computer-sound="open" aria-pressed={!minimized} onClick={restore}><FileText size={16} /><span>{title}</span></button><time>{time || "—"}</time></div>
   </div>
 }

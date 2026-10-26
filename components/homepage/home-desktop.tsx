@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { useEffect, useMemo, useRef, useState } from "react"
-import { ArrowRight, ArrowUpRight, Clock3, FileText, Mail, Menu, RotateCcw, Search, X } from "lucide-react"
+import { ArrowRight, ArrowUpRight, Clock3, FileText, FolderOpen, Mail, Menu, RotateCcw, Search, X } from "lucide-react"
 import { ProfileMark } from "./profile-mark"
 import { ComputerSoundToggle } from "./computer-sounds"
 import { BootScreen, restartComputer } from "./boot-screen"
@@ -13,6 +13,11 @@ import { WindowBar } from "./window-bar"
 import styles from "./home.module.css"
 
 const pages = [
+  { label: "Explorer", description: "Open the computer’s folders and programs", href: "/explore", keywords: "explore apps programs games files desktop" },
+  { label: "Paint", description: "Draw and save a PNG", href: "/explore?app=paint", keywords: "draw paint art sketch" },
+  { label: "Minesweeper", description: "Play a small game of logic", href: "/explore?app=minesweeper", keywords: "minesweeper game play mines" },
+  { label: "Terminal", description: "Explore with commands", href: "/explore?app=terminal", keywords: "terminal commands coding" },
+  { label: "Submit an article", description: "Send an article or draft for Learn", href: "/learn/submit", keywords: "submit article contribute write draft" },
   { label: "Learn", description: "Practical guides for using AI and building projects", href: "/learn", keywords: "guides tutorials ai college career" },
 
   { label: "Magazine waitlist", description: "Join the waitlist for magazine updates", href: signupForms.magazine.pagePath, keywords: "magazine email signup waitlist" },
@@ -98,6 +103,7 @@ const folders = [
 ]
 
 export default function HomeDesktop() {
+  const router = useRouter()
   const [welcomeOpen, setWelcomeOpen] = useState(true)
   const [contactOpen, setContactOpen] = useState(false)
   const [maximized, setMaximized] = useState(false)
@@ -139,6 +145,6 @@ export default function HomeDesktop() {
         </section>}
       </div>
     </main>
-    <div className={styles.taskbar} role="toolbar" aria-label="Desktop controls"><button type="button" className={styles.startButton} data-computer-sound="open" onClick={() => window.dispatchEvent(new Event("michelle:search"))}><Search size={19} aria-hidden="true" /><span>Explore</span></button><button type="button" className={styles.taskButton} data-computer-sound="open" aria-pressed={welcomeOpen && activeWindow === "welcome"} onClick={restoreWelcome}><FileText size={16} aria-hidden="true" /><span>Dear Internet,</span></button><button type="button" className={styles.taskButton} data-computer-sound="open" aria-pressed={contactOpen && activeWindow === "contact"} onClick={() => { setContactOpen(true); setActiveWindow("contact") }}><Mail size={16} aria-hidden="true" /><span>Keep in touch</span></button><span className={styles.clock}><Clock3 size={13} aria-hidden="true" />{time || "—"}</span></div>
+    <div className={styles.taskbar} role="toolbar" aria-label="Desktop controls"><button type="button" className={styles.startButton} aria-label="Open Explorer" data-computer-sound="open" onClick={() => router.push("/explore")}><FolderOpen size={19} aria-hidden="true" /><span>Explore</span></button><button type="button" className={styles.taskButton} data-computer-sound="open" aria-pressed={welcomeOpen && activeWindow === "welcome"} onClick={restoreWelcome}><FileText size={16} aria-hidden="true" /><span>Dear Internet,</span></button><button type="button" className={styles.taskButton} data-computer-sound="open" aria-pressed={contactOpen && activeWindow === "contact"} onClick={() => { setContactOpen(true); setActiveWindow("contact") }}><Mail size={16} aria-hidden="true" /><span>Keep in touch</span></button><span className={styles.clock}><Clock3 size={13} aria-hidden="true" />{time || "—"}</span></div>
   </div></BootScreen>
 }

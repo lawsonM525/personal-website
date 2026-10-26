@@ -83,3 +83,6 @@
 .bootContent{min-width:0}
 
 .profileMark{display:block;flex-shrink:0;width:34px;height:34px;border-radius:50%;overflow:hidden}.profileMark img{display:block;width:100%;height:100%;max-width:none;object-fit:cover;transform:scale(1.9);transform-origin:56% 33%}
+
+/* Keep the actual Explorer launcher discoverable on phones. */
+@media(max-width:760px){.startButton span{display:inline}.taskbar .clock{display:none}}

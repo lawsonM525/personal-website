@@ -1,0 +1,8 @@
+export function PixelIcon({ kind }: { kind: "paint" | "minesweeper" | "terminal" | "folder" | "paper" }) {
+  return <svg width="48" height="48" viewBox="0 0 32 32" shapeRendering="crispEdges" aria-hidden="true">
+    {kind === "terminal" ? <><path fill="#14293e" d="M2 5h28v23H2z"/><path fill="#f8f3e4" d="M3 6h26v4H3z"/><path fill="#00ff79" d="m6 14 5 4-5 4v-3l2-1-2-1zm8 7h9v2h-9z"/><path fill="#ff8959" d="M25 7h2v2h-2z"/></> :
+    kind === "paint" ? <><path fill="#102b4d" d="M9 4h13v2h5v5h3v12h-4v5H9v-3H4V10h5z"/><path fill="#f8f1dc" d="M10 6h11v2h5v5h2v9h-5v4H10v-3H6V11h4z"/><path fill="#235bd1" d="M9 11h5v5H9z"/><path fill="#ec7651" d="M17 9h5v5h-5z"/><path fill="#29a8ad" d="M20 17h5v5h-5z"/><path fill="#e8bd49" d="M9 19h5v4H9z"/><path fill="#333d51" d="m25 1 3 2-11 18-3-2z"/><path fill="#fffdf4" d="m15 19 3 2-2 5-5 2 1-5z"/></> :
+    kind === "minesweeper" ? <><path fill="#92a9b5" d="M3 3h26v26H3z"/><path fill="#faf5e6" d="M5 5h22v22H5z"/><path fill="#1c3852" d="M7 7h8v8H7zm10 10h8v8h-8z"/><path fill="#ec7651" d="M19 7h5v4h-5z"/><path fill="#1c3852" d="M17 6h2v9h-2zM7 22h2v2H7zm2-3h2v6H9zm2-2h2v8h-2z"/><path fill="#6e919d" d="M4 16h24v2H4zM15 4h2v24h-2z"/></> :
+    kind === "paper" ? <><path fill="#173254" d="M7 2h15l5 5v23H7z"/><path fill="#fff9e9" d="M9 4h12v5h4v19H9z"/><path fill="#225ad0" d="M12 12h10v2H12zm0 5h10v2H12zm0 5h7v2h-7z"/><path fill="#e87550" d="M21 4h2v4h-2z"/></> : <><path fill="#183653" d="M2 8h12l3 4h13v16H2z"/><path fill="#f0c86a" d="M4 10h9l3 4h12v12H4z"/><path fill="#fff0bd" d="M3 15h26v3H3z"/><path fill="#df9b43" d="M4 18h24v8H4z"/><path fill="#225ad0" d="M19 20h6v3h-6z"/></>}
+  </svg>
+}
