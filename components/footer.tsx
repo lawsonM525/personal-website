@@ -59,10 +59,12 @@ export function Footer({ fixed = true }: FooterProps) {
             className="text-gray-400 hover:text-white transition-colors text-sm group flex items-center gap-2"
             onMouseEnter={() => setHoveredLink(link.label)}
             onMouseLeave={() => setHoveredLink(null)}
+            onFocus={() => setHoveredLink(link.label)}
+            onBlur={() => setHoveredLink(null)}
           >
             {link.label}
             {hoveredLink === link.label && (
-              <div className="w-4 h-4 transition-opacity duration-200">
+              <div className="flex w-6 h-6 items-center justify-center transition-opacity duration-200">
                 <link.icon />
               </div>
             )}
