@@ -126,13 +126,16 @@
 @media(min-width:761px){
  .desktopSite{height:var(--computer-viewport-height,100dvh);min-height:0;display:flex;flex-direction:column;overflow:hidden;padding-bottom:var(--computer-dock-height,48px)}
  .desktopSite>.siteChrome{flex-shrink:0}
- .desktop{flex:1;min-height:0;max-height:100%;padding-bottom:20px;overflow:hidden}
- .desktop .workspace{height:100%;min-height:0;padding-top:clamp(0px,calc(100dvh - 800px),92px)}
- .desktop .desktopDocuments{position:absolute;top:calc(clamp(0px,calc(100dvh - 800px),92px) - 40px);left:0;z-index:0}
+ /* Share the top inset between the desktop and window: icons align while the window stays in place. */
+ .desktop{--desktop-top-inset:38px;--desktop-window-offset:clamp(0px,calc(100dvh - 800px),92px);flex:1;min-height:0;max-height:100%;padding-top:min(var(--desktop-top-inset),var(--desktop-window-offset));padding-bottom:20px;overflow:hidden}
+ .desktop .workspace{height:100%;min-height:0;padding-top:max(var(--desktop-top-inset),var(--desktop-window-offset))}
+ .desktop .desktopDocuments{position:absolute;top:-9px;left:0;z-index:0}
  .desktop .welcomeWindow{height:100%;max-height:100%;min-height:0;display:flex;flex-direction:column}
  .desktop .workspaceMaximized .welcomeWindow{height:auto;max-height:none}
  .desktopShortcuts{min-height:0;max-height:100%;overflow-y:auto;scrollbar-width:thin}
  .desktopShortcuts .sprite{width:clamp(72px,11.5vh,115px)}
 }
+@media(min-width:761px) and (max-width:1150px){.desktop{--desktop-top-inset:30px}}
+@media(min-width:1500px){.desktop{--desktop-top-inset:45px}}
 @media(max-width:760px){.desktop .welcomeScroll .heroBody{min-height:calc(var(--computer-viewport-height,100dvh) - var(--computer-header-height,56px) - var(--computer-dock-height,64px) - 116px)}.welcomeStatus{min-height:44px;padding:0 10px}.welcomeStatus button{min-height:44px}.welcomeStatus>span{font-size:10px}}
 @media(max-width:500px){.welcomeStatus>span{display:none}.welcomeStatus button{margin-left:auto}}
