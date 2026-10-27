@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowUpRight, Clock3 } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { stegaClean } from "@sanity/client/stega";
 import { PortableArticle } from "@/components/learn/portable-article";
 import { ArticleDiscussion } from "@/components/learn/article-discussion";
 import { LearnThemeToggle } from "@/components/learn/learn-theme";
 import { NewsletterSignup } from "@/components/learn/newsletter-signup";
 import { RetroWindow } from "@/components/learn/retro-window";
+import { ArticleHeader } from "@/components/learn/article-header";
 import { absoluteUrl } from "@/lib/seo";
 import { sanityClient, sanityFetchOptions } from "@/sanity/lib/client";
 import { sanityFetch } from "@/sanity/lib/live";
@@ -138,43 +139,7 @@ export default async function ArticlePage({ params }: PageProps) {
 
 
       <article>
-        <header className="learn-border border-b-2 px-5 py-10 sm:px-8 sm:py-16">
-          <div className="mx-auto max-w-3xl">
-            <div className="article-reading-tools"><LearnThemeToggle /></div>
-            <Link
-              href="/learn"
-              className="mb-9 inline-flex items-center gap-2 text-sm font-bold decoration-2 underline-offset-4 hover:underline"
-            >
-              <ArrowLeft className="h-4 w-4" aria-hidden="true" /> Back to Learn
-            </Link>
-            <div className="flex flex-wrap items-center gap-3 text-xs font-black uppercase tracking-[.17em]">
-              <span className="learn-contrast px-3 py-1.5">
-                {categoryLabels[category] || article.category}
-              </span>
-              <span className="inline-flex items-center gap-1.5">
-                <Clock3 className="h-4 w-4" />{" "}
-                {readingTime(article.estimatedWords)} min read
-              </span>
-            </div>
-            <h1 className="mt-7 max-w-5xl font-serif text-[clamp(2rem,4.7vw,3.7rem)] leading-[.88] tracking-[-.055em]">
-              {article.title}
-            </h1>
-            <p className="learn-muted mt-8 max-w-3xl text-lg font-normal leading-8 sm:text-xl sm:leading-8">
-              {article.dek}
-            </p>
-            <div className="mt-9 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
-              <span className="font-black">
-                By {article.author?.name || "Michelle Lawson"}
-              </span>
-              <span aria-hidden="true">•</span>
-              <time dateTime={publishedAt}>
-                {new Intl.DateTimeFormat("en-US", { dateStyle: "long" }).format(
-                  new Date(publishedAt),
-                )}
-              </time>
-            </div>
-          </div>
-        </header>
+        <ArticleHeader category={categoryLabels[category] || article.category} title={article.title} description={article.dek} authorName={article.author?.name || "Michelle Lawson"} publishedAt={publishedAt} readingMinutes={readingTime(article.estimatedWords)} />
 
         {coverImageUrl && (
           <div className="px-5 pt-10 sm:px-8 sm:pt-14">

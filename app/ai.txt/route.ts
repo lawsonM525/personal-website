@@ -8,6 +8,7 @@ A website by Michelle Lawson with practical AI guides, hands-on projects, resear
 - Home: ${absoluteUrl()}
 - About Michelle: ${absoluteUrl('/about')}
 - Learn: ${absoluteUrl('/learn')}
+- Michelle’s favorite AI projects: ${absoluteUrl('/learn/you-wont-believe-this-was-made-with-ai')}
 - The Girly Guide to AI: ${absoluteUrl('/girly-guide-to-ai')}
 - Projects: ${absoluteUrl('/projects')}
 - Research: ${absoluteUrl('/research')}
