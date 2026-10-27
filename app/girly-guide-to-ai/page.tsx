@@ -4,10 +4,10 @@ import { ArrowDown, ArrowUpRight, BookOpen, FileText } from "lucide-react"
 import { GuideReader } from "@/components/books/guide-reader"
 import { aiGuidePath, aiGuidePurchaseUrl, aiGuideRecoveryUrl, type GuidePage } from "@/lib/ai-guide"
 import { getAiGuide } from "@/lib/ai-guide.server"
-import { buildPageMetadata } from "@/lib/seo"
+import { buildPageMetadata, absoluteUrl, personId, serializeStructuredData } from "@/lib/seo"
 import styles from "@/components/books/guide.module.css"
 
-export const metadata = buildPageMetadata({ title: "The Girly Guide to Artificial Intelligence", description: "Read a preview of Michelle Lawson’s 267-page illustrated guide to AI. Learn with Mia and Mai, from the foundations to building your own AI project.", path: aiGuidePath })
+export const metadata = buildPageMetadata({ title: "The Girly Guide to Artificial Intelligence", description: "Read a preview of Michelle Lawson’s 267-page illustrated guide to AI. Learn with Mia and Mai, from the foundations to building your own AI project.", path: aiGuidePath, images: ["/books/girly-guide-to-ai/cover.webp"] })
 
 type BookFigure = { src: string; width: number; height: number; displayWidth: number; beforeBlock: number; alt: string; sourcePage: number }
 const pageArt = artwork as Record<string, BookFigure[]>
@@ -24,7 +24,15 @@ export default async function AiGuidePage({ searchParams }: { searchParams: Prom
   const query = await searchParams
   const { book, fullText } = await getAiGuide(query.preview)
   const chapters = book.chapters.map(({ id, number, title, part }) => ({ id, number, title, part }))
+  const bookStructuredData = {
+    "@context": "https://schema.org", "@type": "Book", "@id": absoluteUrl(`${aiGuidePath}#book`),
+    name: book.title, author: { "@id": personId }, inLanguage: "en", bookFormat: "https://schema.org/EBook",
+    numberOfPages: book.pageCount, url: absoluteUrl(aiGuidePath), image: absoluteUrl("/books/girly-guide-to-ai/cover.webp"),
+    sameAs: aiGuidePurchaseUrl, mainEntityOfPage: absoluteUrl(aiGuidePath),
+    description: "An illustrated guide to artificial intelligence by Michelle Lawson, from foundations to building an AI project. This page includes a reading preview.",
+  }
   return <main className={styles.book} id="guide-top">
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeStructuredData(bookStructuredData) }} />
     <section className={styles.coverPage} aria-labelledby="guide-title">
       <h1 id="guide-title" className={styles.screenReaderOnly}>The Girly Guide to Artificial Intelligence</h1>
       <figure className={styles.bookCover}>

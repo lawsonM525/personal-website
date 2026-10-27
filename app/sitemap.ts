@@ -4,17 +4,17 @@ import { sanityClient } from "@/sanity/lib/client"
 import { SITEMAP_ARTICLES_QUERY } from "@/sanity/lib/queries"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const lastModified = new Date()
   const routes = [
     "/",
     "/magazine",
     "/penpals",
     "/about",
     "/learn",
-    "/learn/submit",
     "/girly-guide-to-ai",
     "/explore",
     "/projects",
+    "/projects/rag-in-practice",
+    "/projects/delta-stock-pitch",
     "/research",
     "/talks",
     "/posts",
@@ -25,7 +25,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const staticRoutes: MetadataRoute.Sitemap = routes.map((route) => ({
     url: absoluteUrl(route),
-    lastModified,
     changeFrequency: "weekly",
     priority: route === "/" ? 1 : 0.7,
   }))
@@ -36,7 +35,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       ...staticRoutes,
       ...articles.map((article) => ({
         url: absoluteUrl(`/learn/${article.slug}`),
-        lastModified: article.lastModified ? new Date(article.lastModified) : lastModified,
+        ...(article.lastModified && !Number.isNaN(Date.parse(article.lastModified)) ? { lastModified: new Date(article.lastModified) } : {}),
         changeFrequency: "monthly" as const,
         priority: 0.8,
       })),

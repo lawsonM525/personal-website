@@ -9,9 +9,9 @@ export const metadata: Metadata = {
     title: "Michelle’s Computer",
     description: "Turning my ideas, and yours, into reality. Learn, explore resources, join the magazine waitlist, or sign up to be pen pals.",
     url: "https://michellescomputer.com/",
-    images: [{ url: "https://michellescomputer.com/homepage/magazine-banner.webp", width: 1200, height: 400, alt: "Michelle’s Computer — the magazine" }],
+    images: [{ url: "https://michellescomputer.com/opengraph-image", width: 1200, height: 630, alt: "Michelle’s Computer" }],
   },
-  twitter: { card: "summary_large_image", title: "Michelle’s Computer", images: ["https://michellescomputer.com/homepage/magazine-banner.webp"] },
+  twitter: { card: "summary_large_image", title: "Michelle’s Computer", images: ["https://michellescomputer.com/opengraph-image"] },
 }
 
 export default async function Home({ searchParams }: { searchParams: Promise<{ desktop?: string | string[] }> }) {

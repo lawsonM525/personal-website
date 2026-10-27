@@ -5,7 +5,7 @@ import { buildPageMetadata, absoluteUrl } from "@/lib/seo"
 export const metadata: Metadata = buildPageMetadata({
   title: "About — Michelle Lawson",
   description:
-    "About Michelle Lawson — AI educator and Smith College CS student. Founder of Computer Science Girlies. Bio, headshot, and media resources.",
+    "Meet Michelle Lawson, AI educator, author, and founder of Computer Science Girlies. Explore her work, biography, headshot, and media resources.",
   path: "/about",
   keywords: [
     "women in tech educator",

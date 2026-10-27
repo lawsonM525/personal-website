@@ -1,138 +1,47 @@
 import type { Metadata } from "next"
 
-const DEFAULT_SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://michellescomputer.com"
+const configuredUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://michellescomputer.com"
 
 export const siteConfig = {
   name: "Michelle’s Computer",
-  url: DEFAULT_SITE_URL,
-  description:
-    "Figuring out life in the age of AI with Michelle Lawson. Experiments, stories, a magazine in the making, and handwritten letters.",
-  ogImage: "/placeholder.jpg",
-  keywords: [
-    // Branded
-    "Michelle Lawson",
-    "Michelle Lawson computer science",
-    "Michelle Lawson AI",
-    "Michelle Lawson Smith College",
-    "Michelle Lawson projects",
-    "Michelle Lawson research",
-    "Michelle Lawson AI educator",
-    "Michelle Lawson finance tech",
-    "Michelle Lawson blog",
-    "Michelle Lawson portfolio",
-    "Michelle Lawson website",
-    "Michelle Lawson Future U",
-    "Michelle Lawson Computer Science Girlies",
-    "Michelle Lawson content creator",
-    "Michelle Lawson AI projects",
-
-    // Community/Handle
-    "michellescomputer",
-    "@michellescomputer",
-    "michellescomputer Instagram",
-    "michellescomputer TikTok",
-    "michellescomputer Discord",
-    "michellescomputer community",
-    "michellescomputer tutorials",
-    "michellescomputer resources",
-    "michellescomputer projects",
-    "michellescomputer AI",
-    "michellexcomputer",
-    "@michellexcomputer",
-
-    // AI & Gen Z
-    "AI educator",
-    "AI for Gen Z",
-    "Gen Z and AI",
-    "AI education platform",
-    "AI tools for students",
-    "Gen Z career tools",
-    "AI for young people",
-    "AI career guidance",
-    "AI coding tutorials",
-    "AI learning projects",
-    "AI for beginners",
-    "AI study tools",
-    "AI coding educator",
-    "machine learning for Gen Z",
-    "AI resources for students",
-
-    // CS Education
-    "computer science girlies",
-    "women in computer science",
-    "CS education resources",
-    "beginner coding tutorials",
-    "intro to algorithms",
-    "data structures for beginners",
-    "coding resources for students",
-    "Python tutorials for Gen Z",
-    "R programming tutorials",
-    "machine learning resources",
-    "beginner-friendly coding guides",
-    "computer science mentor",
-    "computer science inspiration",
-    "how to get into computer science",
-    "computer science study tips",
-    "college CS projects",
-    "coding education platform",
-    "computational thinking resources",
-    "learn computer science online",
-    "coding projects for beginners",
-
-    // Projects/Portfolio
-    "AI projects portfolio",
-    "coding portfolio examples",
-    "student research projects",
-    "undergraduate research in CS",
-    "machine learning projects",
-    "database project ideas",
-    "search engine project",
-    "compiler project",
-    "AI agent project",
-    "neural network project",
-    "stock pitch competition project",
-    "educational content projects",
-    "portfolio for computer science student",
-    "GitHub projects showcase",
-    "CS hackathon projects",
-    "building AI from scratch",
-    "coding side projects",
-    "AI product management projects",
-    "finance + CS projects",
-    "personal CS portfolio site",
-
-    // Career & Future U
-    "career planning app",
-    "Future U app",
-    "Future U career quiz",
-    "Future U goal tracking",
-    "life planning for students",
-    "Gen Z career roadmap",
-    "how to plan your career in college",
-    "dream life planning tool",
-    "glow up tracker app",
-    "accountability system for students",
-
-    // Thought leadership / inspiration
-    "women in tech educator",
-    "inspiring Gen Z coders",
-    "student entrepreneur AI",
-    "building with AI as a student",
-    "how to succeed in computer science",
-    "motivational computer science educator",
-    "confidence in coding",
-    "how to get into AI",
-    "CS + finance future careers",
-    "empowering Gen Z through AI",
-  ],
+  url: new URL(configuredUrl).origin,
+  description: "AI guides, hands-on projects, and creative experiments by Michelle Lawson. Explore Michelle’s Computer, the Girly Guide to AI, magazine, and pen pals.",
+  ogImage: "/opengraph-image",
+  keywords: ["Michelle Lawson", "Michelle’s Computer", "michellescomputer", "AI education", "The Girly Guide to AI"],
 }
 
 export function absoluteUrl(path = "/"): string {
-  try {
-    return new URL(path, siteConfig.url).toString()
-  } catch {
-    return `${siteConfig.url}${path}`
-  }
+  return new URL(path, `${siteConfig.url}/`).toString()
+}
+
+export const personId = absoluteUrl("/#michelle")
+export const websiteId = absoluteUrl("/#website")
+
+export const personStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "@id": personId,
+  name: "Michelle Lawson",
+  alternateName: ["Michelle’s Computer", "michellescomputer"],
+  url: absoluteUrl("/about"),
+  image: absoluteUrl("/begin/michelle-photos/michelle-yellow-sweater-portrait.jpeg"),
+  jobTitle: "AI educator and creator",
+  sameAs: ["https://www.instagram.com/michellescomputer/", "https://github.com/lawsonM525"],
+}
+
+export const websiteStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": websiteId,
+  name: siteConfig.name,
+  url: absoluteUrl(),
+  description: siteConfig.description,
+  inLanguage: "en-US",
+  publisher: { "@id": personId },
+}
+
+export function serializeStructuredData(value: unknown): string {
+  return JSON.stringify(value).replace(/</g, "\\u003c")
 }
 
 export function buildPageMetadata(params: {
@@ -141,31 +50,23 @@ export function buildPageMetadata(params: {
   path: string
   keywords?: string[]
   images?: string[]
+  robots?: Metadata["robots"]
 }): Metadata {
-  const images = params.images && params.images.length > 0 ? params.images : [siteConfig.ogImage]
-  const keywords = Array.from(new Set([...(params.keywords || []), ...siteConfig.keywords]))
-
+  const images = params.images?.length ? params.images : [siteConfig.ogImage]
   return {
     title: params.title,
     description: params.description,
-    keywords,
-    alternates: {
-      canonical: params.path,
-    },
+    keywords: Array.from(new Set([...(params.keywords || []), ...siteConfig.keywords])),
+    alternates: { canonical: absoluteUrl(params.path) },
+    ...(params.robots ? { robots: params.robots } : {}),
     openGraph: {
       type: "website",
       url: absoluteUrl(params.path),
       title: params.title,
       description: params.description,
       siteName: siteConfig.name,
-      images,
+      images: images.map(image => absoluteUrl(image)),
     },
-    twitter: {
-      card: "summary_large_image",
-      title: params.title,
-      description: params.description,
-      images,
-      creator: "@michellextech",
-    },
+    twitter: { card: "summary_large_image", title: params.title, description: params.description, images: images.map(image => absoluteUrl(image)) },
   }
 }
