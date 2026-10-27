@@ -238,7 +238,11 @@ export function Paint() {
       <button type="button" aria-label="Undo" disabled={!history.current.length} onClick={undo}><Undo2 size={16} /><span>Undo</span></button>
       <button type="button" aria-label="Redo" disabled={!future.current.length} onClick={redo}><Redo2 size={16} /><span>Redo</span></button>
       <button type="button" aria-label="Clear canvas" disabled={!hasMarks} onClick={clear}><Trash2 size={16} /><span>Clear</span></button>
-      <button type="button" className={styles.mobileSurprise} disabled={!loaded} onClick={() => collage(true)}><WandSparkles size={16}/>Surprise!</button>
+      <button type="button" className={styles.stickerBomb} aria-label="Sticker bomb!" disabled={!loaded} onClick={() => { setMobilePanel(null); collage(false) }}>
+        <span className={styles.bombArt} aria-hidden="true"><img src="/explorer/paint/desk-junk/6.webp" alt="" width="32" height="32" /><img src="/explorer/paint/little-guys/0.webp" alt="" width="32" height="32" /><img src="/explorer/paint/little-guys/8.webp" alt="" width="32" height="32" /></span>
+        <span className={styles.bombLabel}>Sticker bomb!</span>
+      </button>
+      <button type="button" className={styles.surpriseAction} disabled={!loaded} onClick={() => collage(true)}><WandSparkles size={16}/>Surprise me</button>
       <button type="button" className={styles.save} onClick={save}><Download size={14} />Save PNG</button>
     </div>
     <div className={styles.studio}>
@@ -262,7 +266,6 @@ export function Paint() {
           <label className={styles.customColor} title="Choose any color"><input aria-label="Custom paint color" type="color" value={color} onChange={event => { setMobilePanel(null); setColor(event.target.value); setTool("brush") }} /><span>any color</span></label>
         </div>
         <div className={styles.paperRow}>{sheetHeading("Choose your paper")}<span>Paper</span>{paintPapers.map(item => <button key={item.id} type="button" aria-label={item.name} title={item.name} aria-pressed={paper === item.id} onClick={() => changePaper(item.id)} style={{ background: item.preview }}><span>{item.name}</span></button>)}</div>
-        <div className={styles.toys}><button type="button" disabled={!loaded} onClick={() => collage(false)}><Sticker size={16} />Sticker bomb!</button><button type="button" disabled={!loaded} className={styles.surprise} onClick={() => collage(true)}><WandSparkles size={16} />Surprise me</button></div>
       </div>
       <aside id="paint-sticker-drawer" className={styles.drawer} aria-label="Sticker drawer">
         {sheetHeading(mobilePanel === "more" ? "Size & little extras" : "39 stickers. Go wild.")}
@@ -273,7 +276,7 @@ export function Paint() {
           <label>{stampTool ? "Sticker size" : "Brush size"}<span>{stampTool ? stickerSize : brushSize}px</span><input aria-label={stampTool ? "Sticker size" : "Brush size"} type="range" min={stampTool ? 32 : 2} max={stampTool ? 180 : 42} step={2} value={stampTool ? stickerSize : brushSize} onChange={event => stampTool ? setStickerSize(Number(event.target.value)) : setBrushSize(Number(event.target.value))} /></label>
           {tool === "sticker" && <><div className={styles.stickerTransforms}><button type="button" aria-label="Rotate sticker" onClick={() => { setAngle(value => (value + 30) % 360); sound?.play("click") }}><RotateCcw size={14} />Turn</button><button type="button" aria-pressed={flipped} onClick={() => { setFlipped(value => !value); sound?.play("click") }}><FlipHorizontal2 size={14} />Flip</button></div><button type="button" className={styles.stampCenter} disabled={!loaded} aria-label={`Stamp ${selected.name} in center`} onClick={stampCenter}>Stamp in center</button></>}
         </div>
-        <div className={styles.mobileExtras}><button type="button" disabled={!loaded} onClick={() => { collage(false); setMobilePanel(null) }}><Sticker size={17}/>Sticker bomb!</button><button type="button" disabled={!loaded} onClick={() => { collage(true); setMobilePanel(null) }}><WandSparkles size={17}/>Surprise me</button></div>
+        <div className={styles.mobileExtras}><button type="button" disabled={!loaded} onClick={() => { collage(true); setMobilePanel(null) }}><WandSparkles size={17}/>Surprise me</button></div>
         <p className={styles.drawerHint}>{loaded < paintStickers.length ? `${loaded}/${paintStickers.length} stickers loaded…` : "Click to place. Drag for a parade."}</p>
       </aside>
     </div>
