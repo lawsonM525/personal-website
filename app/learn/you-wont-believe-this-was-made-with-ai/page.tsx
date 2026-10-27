@@ -47,10 +47,9 @@ export default function MichellesFindsPage() {
         <figcaption>A look inside {find.name}. Project and visuals by {find.creator}.</figcaption>
       </figure>
       <div className={styles.story}>
-        <div className={styles.commentary}><p className={styles.eyebrow}><Sparkles size={14} aria-hidden="true" />The “whoa” part</p><p className={styles.reaction}>{find.reaction}</p><p>{find.description}</p></div>
+        <div className={styles.commentary}><p className={styles.eyebrow}><Sparkles size={14} aria-hidden="true" />My thoughts</p>{find.reaction.map((paragraph, paragraphIndex) => <p className={styles.reaction} key={paragraphIndex}>{paragraph}</p>)}</div>
         <aside className={styles.details} aria-label={`${find.name} build details`}><p className={styles.eyebrow}>Behind the build</p><dl><div><dt>Made with</dt><dd>{find.tools}</dd></div><div><dt>The process</dt><dd>{find.process}</dd></div></dl><p>Tools and process as described by the creator.</p><a href={find.processUrl} target="_blank" rel="noopener noreferrer">Read the build notes <ArrowUpRight size={13} aria-hidden="true" /></a></aside>
       </div>
-      <div className={styles.takeaway}><h3>A little perspective</h3><p>{find.takeaway}</p></div>
       <div className={styles.links}><a href={find.projectUrl} target="_blank" rel="noopener noreferrer">Play with {find.name} <ArrowUpRight size={16} aria-hidden="true" /></a><a href={find.sourceUrl} target="_blank" rel="noopener noreferrer">See the original post <ArrowUpRight size={15} aria-hidden="true" /></a></div>
     </article>)}</div>
     <footer className={styles.footer}><Bookmark size={20} aria-hidden="true" /><h2>Keeping the good stuff.</h2><p>This collection grows whenever I find another project that makes me go “whoa.” Every pick links back to its creator, so you can explore the work and the story behind it.</p><Link href="/learn">Find something to build next <ArrowUpRight size={15} aria-hidden="true" /></Link></footer>

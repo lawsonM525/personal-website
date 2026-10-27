@@ -18,9 +18,12 @@ export const michellesFinds = [
     imageAlt: "Random-eyes: a detailed golden iris, eyelashes, and skin rendered in an interactive browser experiment",
     tools: "Three.js + Claude Opus 5.5",
     process: "7 days · 161 commits",
-    reaction: "The lashes. The tiny movements. The light moving through the iris. This is the kind of project that makes me stop scrolling and go: wait, you can build THAT?",
-    description: "Random-eyes lets you explore a procedural human eye in your browser. Change the skin tone, zoom in, or generate another eye. Press Space to freeze it in photo mode and get a closer look.",
-    takeaway: "Gianluca describes building it with Claude Code and Three.js over seven days, with 161 commits and thousands of lines of shader code. The eye is generated rather than assembled from photos or a premade 3D model. There’s a lot of creative direction and iteration behind that result.",
+    reaction: [
+      "The first thing I noticed about this is that it’s naturally beautiful. And I don’t mean in the generic sense, like, ‘Oh, this is a beautiful thing.’ It has so well replicated nature’s way of making beauty in the human body, and here, in the eye.",
+      "It reminds me of Leonardo da Vinci’s ability to draw a human or animal body really well after studying it for days and days.",
+      "If there were any such thing as AI art, this is what I would call it. I would give this that stamp. It feels like the eye is actually looking at me, with the blinking and the eye movements. It’s just wow.",
+      "He says he took 7 days to make it, which, in the world of AI tools, is like 2 to 3 years maybe. LOL. All I can say for this is beautiful.",
+    ],
   },
 ]
 
