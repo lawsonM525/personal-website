@@ -30,7 +30,7 @@ Local verification passed: 24 unit tests, TypeScript/build checks, 30 route resp
 
 Check existing ownership in Google Search Console and Bing Webmaster Tools, submit the canonical sitemap, inspect important URLs, and record baseline queries, clicks, impressions, CTR, indexed pages, and crawl problems. Owner access has not been verified. No new account or DNS verification has been created.
 
-Verify the existing GA4 and DataFast properties before relying on their reports. The current DataFast tag still names the legacy `michellelawson.me` domain; its account configuration needs checking. Measure organic landing pages and outbound guide/signup clicks, then confirm completed conversions only where the destination supplies reliable data. Separate human referrals from crawler requests.
+Verify the existing GA4 and DataFast properties before relying on their reports. The DataFast tag now uses `michellescomputer.com` and Michelle's supplied website ID; confirm incoming pageviews in the DataFast dashboard. Measure organic landing pages and outbound guide/signup clicks, then confirm completed conversions only where the destination supplies reliable data. Separate human referrals from crawler requests.
 
 ### 2. Improve indexable content and the book preview
 
