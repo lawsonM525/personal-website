@@ -1,7 +1,7 @@
 export const paintWidth = 720
 export const paintHeight = 480
 export type PaintPoint = { x: number; y: number }
-export type PaintTool = "brush" | "rainbow" | "spray" | "sparkle" | "sticker" | "eraser"
+export type PaintTool = "random" | "brush" | "rainbow" | "spray" | "sparkle" | "sticker" | "eraser"
 export type PaintPaper = "dots" | "plain" | "checker" | "sky" | "pink"
 export const paintPapers: { id: PaintPaper; name: string; preview: string }[] = [
   { id: "dots", name: "Dot paper", preview: "radial-gradient(#b0b7dc 1px,transparent 1px) 0 0 / 7px 7px,#fffdf5" },
@@ -48,7 +48,7 @@ export function drawSparkle(context: CanvasRenderingContext2D, at: PaintPoint, r
   context.closePath(); context.fill()
 }
 
-export function drawPaintStroke(context: CanvasRenderingContext2D, from: PaintPoint, to: PaintPoint, tool: Exclude<PaintTool, "sticker">, color: string, size: number, hue: number) {
+export function drawPaintStroke(context: CanvasRenderingContext2D, from: PaintPoint, to: PaintPoint, tool: Exclude<PaintTool, "sticker" | "random">, color: string, size: number, hue: number) {
   context.save()
   context.lineCap = "round"; context.lineJoin = "round"
   context.strokeStyle = tool === "rainbow" ? `hsl(${hue % 360} 94% 60%)` : color

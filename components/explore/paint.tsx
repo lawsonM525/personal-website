@@ -10,6 +10,7 @@ import styles from "./paint.module.css"
 
 const colors = ["#14293e", "#fffdf5", "#0848d5", "#348eff", "#7c39e9", "#bd70ef", "#ed478c", "#ff9cca", "#ef4b3e", "#ff8f44", "#ffd642", "#bde048", "#2b9667", "#60cdaa", "#4bcddd", "#b29377"]
 const tools = [
+  { id: "random", label: "Random", icon: <WandSparkles size={19} /> },
   { id: "sticker", label: "Stickers", icon: <Sticker size={19} /> },
   { id: "brush", label: "Brush", icon: <Paintbrush size={19} /> },
   { id: "rainbow", label: "Rainbow", icon: <Rainbow size={19} /> },
@@ -30,13 +31,14 @@ export function Paint() {
   const history = useRef<Snapshot[]>([])
   const future = useRef<Snapshot[]>([])
   const images = useRef(new Map<string, HTMLImageElement>())
+  const lastRandomSticker = useRef<string | null>(null)
   const gesture = useRef<Gesture | null>(null)
   const marked = useRef(false)
   const paperRef = useRef<PaintPaper>("dots")
   const lastSound = useRef(-Infinity)
   const sound = useComputerSound()
   const [mobilePanel, setMobilePanel] = useState<"stickers" | "colors" | "paper" | "more" | null>(null)
-  const [tool, setTool] = useState<PaintTool>("sticker")
+  const [tool, setTool] = useState<PaintTool>("random")
   const [color, setColor] = useState("#0848d5")
   const [brushSize, setBrushSize] = useState(14)
   const [stickerSize, setStickerSize] = useState(96)
@@ -49,9 +51,10 @@ export function Paint() {
   const [hasMarks, setHasMarks] = useState(false)
   const [cursor, setCursor] = useState({ ...center, visible: false })
   const [pulse, setPulse] = useState({ ...center, id: 0 })
-  const [message, setMessage] = useState("Pick a sticker, then click or drag on the page. Go a little overboard.")
+  const [message, setMessage] = useState("Random brush.")
   const [, refreshHistory] = useState(0)
   const available = paintStickers.filter(item => item.pack === pack)
+  const stampTool = tool === "sticker" || tool === "random"
 
   useEffect(() => {
     let disposed = false
@@ -128,7 +131,15 @@ export function Paint() {
   function position(event: PointerEvent<HTMLCanvasElement>) { return paintPoint({ x: event.clientX, y: event.clientY }, event.currentTarget.getBoundingClientRect()) }
   function dab(at: PaintPoint, from = at, hue = 0) {
     const context = canvas.current?.getContext("2d"); if (!context) return
-    if (tool === "sticker") {
+    if (tool === "random") {
+      const pool = paintStickers.filter(item => images.current.has(item.id))
+      if (!pool.length) return
+      const choices = pool.length > 1 ? pool.filter(item => item.id !== lastRandomSticker.current) : pool
+      const item = choices[Math.floor(Math.random() * choices.length)]
+      lastRandomSticker.current = item.id
+      drawPaintSticker(context, images.current.get(item.id)!, at, stickerSize * (.8 + Math.random() * .4), Math.random() * 60 - 30, Math.random() > .8)
+      setPulse({ ...at, id: Date.now() }); playDrawing("paintStamp")
+    } else if (tool === "sticker") {
       const image = images.current.get(selected.id); if (!image) return
       drawPaintSticker(context, image, at, stickerSize, angle, flipped)
       setPulse({ ...at, id: Date.now() }); playDrawing("paintStamp")
@@ -140,17 +151,26 @@ export function Paint() {
   }
   function start(event: PointerEvent<HTMLCanvasElement>) {
     if (event.button !== 0 || !event.isPrimary) return
-    if (tool === "sticker" && !images.current.has(selected.id)) { setMessage("This sticker is still loading. Try a brush while it arrives."); return }
+    if ((tool === "random" && !images.current.size) || (tool === "sticker" && !images.current.has(selected.id))) { setMessage("Stickers are still loading. Try another brush while they arrive."); return }
     const at = position(event)
     remember(); gesture.current = { last: at, hue: 0 }
     event.currentTarget.setPointerCapture(event.pointerId)
     setCursor({ ...at, visible: event.pointerType !== "touch" }); dab(at)
-    setMessage(tool === "sticker" ? `${selected.name} stamped. Drag for a whole parade.` : "A little mess is a good thing.")
+    setMessage(tool === "random" ? "Random brush." : tool === "sticker" ? `${selected.name} stamped. Drag for a whole parade.` : "A little mess is a good thing.")
   }
   function move(event: PointerEvent<HTMLCanvasElement>) {
     const at = position(event); setCursor({ ...at, visible: event.pointerType !== "touch" })
     const stroke = gesture.current; if (!stroke) return
     const distance = Math.hypot(at.x - stroke.last.x, at.y - stroke.last.y)
+    if (tool === "random") {
+      const spacing = Math.max(18, stickerSize * .45)
+      const from = stroke.last
+      for (let step = 1; step <= Math.floor(distance / spacing); step++) {
+        const point = { x: from.x + (at.x - from.x) * spacing * step / distance, y: from.y + (at.y - from.y) * spacing * step / distance }
+        dab(point); stroke.last = point
+      }
+      return
+    }
     if (tool === "sticker" && distance < stickerSize * .65 || tool === "sparkle" && distance < brushSize * .8) return
     stroke.hue += distance * 1.3
     dab(at, stroke.last, stroke.hue); stroke.last = at
@@ -197,7 +217,7 @@ export function Paint() {
   function keyboard(event: KeyboardEvent<HTMLCanvasElement>) {
     const deltas: Record<string, PaintPoint> = { ArrowLeft: { x: -12, y: 0 }, ArrowRight: { x: 12, y: 0 }, ArrowUp: { x: 0, y: -12 }, ArrowDown: { x: 0, y: 12 } }
     if (deltas[event.key]) { event.preventDefault(); const delta = deltas[event.key]; setCursor(previous => ({ x: Math.max(0, Math.min(paintWidth, previous.x + delta.x)), y: Math.max(0, Math.min(paintHeight, previous.y + delta.y)), visible: true })) }
-    if (event.key === "Enter" || event.key === " ") { event.preventDefault(); if (tool === "sticker" && !images.current.has(selected.id)) return; remember(); dab(cursor); setMessage("Placed at the keyboard cursor. Arrow keys move it.") }
+    if (event.key === "Enter" || event.key === " ") { event.preventDefault(); if ((tool === "random" && !images.current.size) || (tool === "sticker" && !images.current.has(selected.id))) return; remember(); dab(cursor); setMessage("Placed at the keyboard cursor. Arrow keys move it.") }
   }
   function shortcuts(event: KeyboardEvent<HTMLDivElement>) {
     if (!(event.metaKey || event.ctrlKey)) return
@@ -232,14 +252,13 @@ export function Paint() {
         <div className={styles.canvasViewport}><div className={styles.stage}>
           <canvas ref={backdrop} className={styles.backdrop} width={paintWidth} height={paintHeight} aria-hidden="true" />
           <canvas ref={canvas} className={`${styles.canvas} ${tool === "sticker" && loaded ? styles.stampCursor : ""}`} width={paintWidth} height={paintHeight} tabIndex={0} aria-label="Drawing canvas. Click or drag to draw or stamp. Arrow keys move the cursor; Enter or Space places a mark." onPointerDown={start} onPointerMove={move} onPointerUp={finish} onPointerCancel={finish} onLostPointerCapture={() => { gesture.current = null }} onPointerLeave={() => { if (!gesture.current) setCursor(previous => ({ ...previous, visible: false })) }} onKeyDown={keyboard} />
-          {!hasMarks && <div className={styles.invitation} aria-hidden="true"><img src="/explorer/paint/little-guys/0.webp" alt="" width="68" height="68" /><strong>Your next <em>masterpiece.</em></strong><span>Stamp something. Scribble something.<br />There are no rules here.</span></div>}
           {tool === "sticker" && cursor.visible && <img className={styles.cursor} src={selected.src} alt="" aria-hidden="true" style={{ left: `${cursor.x / paintWidth * 100}%`, top: `${cursor.y / paintHeight * 100}%`, width: `${stickerSize / paintWidth * 100}%`, transform: `translate(-50%,-50%) rotate(${angle}deg) scaleX(${flipped ? -1 : 1})` }} />}
           {!!pulse.id && <span key={pulse.id} className={styles.ping} aria-hidden="true" style={{ left: `${pulse.x / paintWidth * 100}%`, top: `${pulse.y / paintHeight * 100}%` }}>✦</span>}
         </div>
         </div>
         <div className={styles.paletteBar}>
           {sheetHeading("Choose a color")}
-          <div className={styles.palette} role="group" aria-label="Paint colors">{colors.map(value => <button type="button" key={value} title={value} aria-label={`Color ${value}`} aria-pressed={color === value && tool !== "eraser"} style={{ background: value }} onClick={() => { setMobilePanel(null); setColor(value); if (tool === "eraser" || tool === "sticker") setTool("brush"); sound?.play("paintStamp") }} />)}</div>
+          <div className={styles.palette} role="group" aria-label="Paint colors">{colors.map(value => <button type="button" key={value} title={value} aria-label={`Color ${value}`} aria-pressed={color === value && tool !== "eraser"} style={{ background: value }} onClick={() => { setMobilePanel(null); setColor(value); if (tool === "eraser" || stampTool) setTool("brush"); sound?.play("paintStamp") }} />)}</div>
           <label className={styles.customColor} title="Choose any color"><input aria-label="Custom paint color" type="color" value={color} onChange={event => { setMobilePanel(null); setColor(event.target.value); setTool("brush") }} /><span>any color</span></label>
         </div>
         <div className={styles.paperRow}>{sheetHeading("Choose your paper")}<span>Paper</span>{paintPapers.map(item => <button key={item.id} type="button" aria-label={item.name} title={item.name} aria-pressed={paper === item.id} onClick={() => changePaper(item.id)} style={{ background: item.preview }}><span>{item.name}</span></button>)}</div>
@@ -251,7 +270,7 @@ export function Paint() {
         <div className={styles.packs} aria-label="Sticker packs">{(["Little guys", "Desk junk", "Computer"] as StickerPack[]).map(item => <button type="button" key={item} aria-pressed={pack === item} onClick={() => { setPack(item); sound?.play("click") }}>{item}</button>)}</div>
         <div className={styles.stickerGrid}>{available.map(item => <button type="button" key={item.id} aria-label={`Choose ${item.name} sticker`} aria-pressed={tool === "sticker" && selected.id === item.id} title={item.name} onClick={() => chooseSticker(item)}><img src={item.src} alt="" width="42" height="42" draggable={false} /></button>)}</div>
         <div className={styles.settings}>
-          <label>{tool === "sticker" ? "Sticker size" : "Brush size"}<span>{tool === "sticker" ? stickerSize : brushSize}px</span><input aria-label={tool === "sticker" ? "Sticker size" : "Brush size"} type="range" min={tool === "sticker" ? 32 : 2} max={tool === "sticker" ? 180 : 42} step={2} value={tool === "sticker" ? stickerSize : brushSize} onChange={event => tool === "sticker" ? setStickerSize(Number(event.target.value)) : setBrushSize(Number(event.target.value))} /></label>
+          <label>{stampTool ? "Sticker size" : "Brush size"}<span>{stampTool ? stickerSize : brushSize}px</span><input aria-label={stampTool ? "Sticker size" : "Brush size"} type="range" min={stampTool ? 32 : 2} max={stampTool ? 180 : 42} step={2} value={stampTool ? stickerSize : brushSize} onChange={event => stampTool ? setStickerSize(Number(event.target.value)) : setBrushSize(Number(event.target.value))} /></label>
           {tool === "sticker" && <><div className={styles.stickerTransforms}><button type="button" aria-label="Rotate sticker" onClick={() => { setAngle(value => (value + 30) % 360); sound?.play("click") }}><RotateCcw size={14} />Turn</button><button type="button" aria-pressed={flipped} onClick={() => { setFlipped(value => !value); sound?.play("click") }}><FlipHorizontal2 size={14} />Flip</button></div><button type="button" className={styles.stampCenter} disabled={!loaded} aria-label={`Stamp ${selected.name} in center`} onClick={stampCenter}>Stamp in center</button></>}
         </div>
         <div className={styles.mobileExtras}><button type="button" disabled={!loaded} onClick={() => { collage(false); setMobilePanel(null) }}><Sticker size={17}/>Sticker bomb!</button><button type="button" disabled={!loaded} onClick={() => { collage(true); setMobilePanel(null) }}><WandSparkles size={17}/>Surprise me</button></div>
