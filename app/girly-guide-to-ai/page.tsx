@@ -12,6 +12,13 @@ export const metadata = buildPageMetadata({ title: "The Girly Guide to Artificia
 type BookFigure = { src: string; width: number; height: number; displayWidth: number; beforeBlock: number; alt: string; sourcePage: number }
 const pageArt = artwork as Record<string, BookFigure[]>
 
+function GuidePurchaseBanner({ id }: { id: string }) {
+  return <aside id={id} className={styles.chapterCta} aria-label="Read without scrambled text" data-guide-purchase-banner>
+    <div><strong>Want to read this without scrambled text?</strong><p>Get the full guide for all 267 illustrated pages, exercises, and projects.</p></div>
+    <a className={styles.readButton} href={aiGuidePurchaseUrl} target="_blank" rel="noopener noreferrer">Get the full guide <ArrowUpRight size={15} /></a>
+  </aside>
+}
+
 function renderBlock(page: GuidePage, index: number, fullText: boolean) {
   const block = page.blocks[index]
   if (page.number === 10 && ["meet Mai", "and Mia"].includes(block.text)) return null
@@ -43,13 +50,13 @@ export default async function AiGuidePage({ searchParams }: { searchParams: Prom
         <div className={styles.heroActions}><a className={styles.readButton} href="#guide-introduction"><BookOpen size={17} />Start reading <ArrowDown size={16} /></a><a className={styles.getButton} href={aiGuidePurchaseUrl} target="_blank" rel="noopener noreferrer">Get the full guide <ArrowUpRight size={15} /></a></div>
       </div>
     </section>
-    {!fullText && <aside className={styles.previewNote} aria-label="About this reading preview"><FileText size={20} aria-hidden="true" /><div><strong>A little look inside.</strong><p>The opening is yours to read. Farther into the book, the words gradually turn into nonsense. Get the full guide for the readable copy, illustrations, and exercises.</p></div><a href={aiGuidePurchaseUrl} target="_blank" rel="noopener noreferrer">Get your copy <ArrowUpRight size={14} /></a></aside>}
+    {!fullText && <aside className={styles.previewNote} aria-label="About this reading preview"><FileText size={20} aria-hidden="true" /><div><strong>A little look inside.</strong><p>The opening is yours to read. From section 1.3 onward, the preview gradually turns into scrambled text. Get the full guide to read every page without the scrambling.</p></div><a href={aiGuidePurchaseUrl} target="_blank" rel="noopener noreferrer">Get the full guide <ArrowUpRight size={14} /></a></aside>}
     <GuideReader chapters={chapters} fullText={fullText}>
       {book.chapters.map(chapter => <section id={`guide-${chapter.id}`} key={chapter.id} className={styles.chapter} data-guide-chapter={chapter.id}>
+        {!fullText && chapter.number >= 2 && chapter.number <= 12 && chapter.number % 2 === 0 && <GuidePurchaseBanner id={`guide-preview-${chapter.id}`} />}
         <header className={styles.chapterHeading}>
           <p className={styles.eyebrow}>{chapter.number > 0 && chapter.number <= 12 ? `Chapter ${String(chapter.number).padStart(2, "0")} · ${chapter.part}` : chapter.part}</p>
           <h2>{chapter.title}</h2>
-          {!fullText && chapter.pages.some(page => !!page.obscured) && <p className={styles.chapterNotice}>This chapter is part of the scrambled preview. <a href={aiGuidePurchaseUrl} target="_blank" rel="noopener noreferrer">Read the full guide <ArrowUpRight size={11} /></a></p>}
         </header>
         {chapter.pages.filter(page => page.blocks.length || pageArt[String(page.number)]?.length).map(page => <div key={page.number} className={styles.bookPage} data-guide-page={page.number} data-obscured={fullText ? 0 : Math.round((page.obscured || 0) * 100)}>
           {!fullText && !!page.obscured && <span className={styles.screenReaderOnly}>The text on this page is obscured in the free preview. The complete readable guide is available through Gumroad.</span>}
@@ -57,12 +64,12 @@ export default async function AiGuidePage({ searchParams }: { searchParams: Prom
             {(pageArt[String(page.number)] || []).filter(figure => figure.beforeBlock === index).map(figure => <figure key={figure.src} className={styles.originalFigure} style={{ width: `${figure.displayWidth}%` }} data-source-page={figure.sourcePage}>
               <a href={figure.src} target="_blank" rel="noopener noreferrer" aria-label={`Open full-size illustration: ${figure.alt}`} title="Open illustration at full size"><img src={figure.src} alt={figure.alt} width={figure.width} height={figure.height} loading="lazy" decoding="async" /></a>
             </figure>)}
+            {!fullText && page.number === book.freeThroughPage + 1 && index === 0 && <GuidePurchaseBanner id="guide-preview-start" />}
             {page.blocks[index] && renderBlock(page, index, fullText)}
           </Fragment>)}
         </div>)}
-        {!fullText && chapter.number > 0 && chapter.number % 3 === 0 && <aside className={styles.chapterCta}><span>Keep the ideas. Lose the gibberish.</span><a href={aiGuidePurchaseUrl} target="_blank" rel="noopener noreferrer">Get the full guide <ArrowUpRight size={13} /></a></aside>}
       </section>)}
-      <footer className={styles.bookEnd}><BookOpen size={26} /><h2>Your turn to build something.</h2><p>Get the illustrated guide, keep it on your computer, and work through it at your own pace.</p><a className={styles.readButton} href={aiGuidePurchaseUrl} target="_blank" rel="noopener noreferrer">Get the full guide <ArrowUpRight size={16} /></a><a className={styles.recovery} href={aiGuideRecoveryUrl} target="_blank" rel="noopener noreferrer">Find a previous download</a></footer>
+      <footer className={styles.bookEnd}><BookOpen size={26} /><h2>{fullText ? "Your turn to build something." : "Want to read this without scrambled text?"}</h2><p>Get the full illustrated guide, keep it on your computer, and work through every page at your own pace.</p><a className={styles.readButton} href={aiGuidePurchaseUrl} target="_blank" rel="noopener noreferrer">Get the full guide <ArrowUpRight size={16} /></a><a className={styles.recovery} href={aiGuideRecoveryUrl} target="_blank" rel="noopener noreferrer">Find a previous download</a></footer>
     </GuideReader>
   </main>
 }
