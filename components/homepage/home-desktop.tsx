@@ -162,7 +162,6 @@ export default function HomeDesktop({ startOnDesktop = false, openLetter = false
       <nav className={styles.desktopShortcuts} aria-label="Desktop shortcuts">{folders.map(folder => <Link key={folder.kind} href={folder.href} aria-label={`${folder.title}: ${folder.action}`}>
         <SpriteIcon kind={folder.kind} />
         <span className={styles.shortcutLabel}>{folder.title}</span>
-        <span className={styles.shortcutHint}>{folder.kind === "magazine" ? "Join the waitlist" : folder.kind === "penpals" ? "Letters & emails" : folder.kind === "learn" ? "Guides & tutorials" : "Things I’m building"}</span>
       </Link>)}</nav>
       <div className={`${styles.workspace} ${maximized ? styles.workspaceMaximized : ""}`}>
         <nav className={styles.desktopDocuments} aria-label="Desktop documents and programs">
