@@ -1,20 +1,21 @@
 "use client"
 
-import { useEffect, useRef, type KeyboardEvent, type PointerEvent } from "react"
+import { useEffect, useRef, useState, type KeyboardEvent, type PointerEvent, type ReactNode } from "react"
 import { FileText, Minus, Square, X } from "lucide-react"
 import styles from "./home.module.css"
 
 type Move = { x:number; y:number }
-export function WindowBar({ title, warm = false, onMinimize, onMaximize, onClose, maximized = false }: { title: string; warm?: boolean; onMinimize?: () => void; onMaximize?: () => void; onClose?: () => void; maximized?: boolean }) {
+export function WindowBar({ title, icon, warm = false, onMinimize, onMaximize, onClose, maximized = false }: { title: string; icon?: ReactNode; warm?: boolean; onMinimize?: () => void; onMaximize?: () => void; onClose?: () => void; maximized?: boolean }) {
+  const [compact, setCompact] = useState(false)
   const bar=useRef<HTMLDivElement>(null)
-  useEffect(()=>{function reset(){const target=bar.current?.closest<HTMLElement>("[data-computer-window]");if(target){target.style.removeProperty("translate");delete target.dataset.windowX;delete target.dataset.windowY}}reset();window.addEventListener("resize",reset);return()=>window.removeEventListener("resize",reset)},[title,maximized])
+  useEffect(()=>{function reset(){setCompact(innerWidth<=760);const target=bar.current?.closest<HTMLElement>("[data-computer-window]");if(target){target.style.removeProperty("translate");delete target.dataset.windowX;delete target.dataset.windowY}}reset();window.addEventListener("resize",reset);return()=>window.removeEventListener("resize",reset)},[title,maximized])
   const gesture = useRef<{pointer:number;startX:number;startY:number;origin:Move;target:HTMLElement} | null>(null)
   function targetFor(element:HTMLElement) { return element.closest<HTMLElement>("[data-computer-window]") }
   function position(target:HTMLElement):Move { return {x:Number(target.dataset.windowX || 0),y:Number(target.dataset.windowY || 0)} }
   function move(target:HTMLElement, next:Move) {
     const old=position(target), box=target.getBoundingClientRect()
     const top=Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--computer-header-height")) || 52
-    const dock=document.querySelector('[aria-label="Desktop controls"]')?.getBoundingClientRect().top ?? innerHeight - 12
+    const dock=Array.from(document.querySelectorAll('[aria-label="Desktop controls"]')).map(element => element.getBoundingClientRect()).find(rect => rect.height > 0)?.top ?? innerHeight - 12
     const left=box.left-old.x, y=box.top-old.y
     const x=Math.max(8-left,Math.min(next.x,innerWidth-8-left-box.width))
     // Keep a fitting window above the dock. Tall documents retain a reachable title bar.
@@ -39,11 +40,11 @@ export function WindowBar({ title, warm = false, onMinimize, onMaximize, onClose
     if(!delta[event.key])return;event.preventDefault();const old=position(target);move(target,{x:old.x+delta[event.key].x,y:old.y+delta[event.key].y})
   }
   function maximize() { const target=gesture.current?.target; if(target){target.style.removeProperty("translate");delete target.dataset.windowX;delete target.dataset.windowY} onMaximize?.() }
-  return <div ref={bar} className={`${styles.windowBar} ${warm ? styles.warmBar : ""}`} data-window-drag-handle tabIndex={maximized?-1:0} role="group" aria-label={`${title} title bar`} title="Drag to move · Arrow keys to move · Home to reset" onPointerDown={start} onPointerMove={drag} onPointerUp={end} onPointerCancel={end} onLostPointerCapture={end} onKeyDown={keyboard}>
-    <FileText size={14} aria-hidden="true" /><span>{title}</span><span className={styles.barLines} aria-hidden="true" />
+  return <div ref={bar} className={`${styles.windowBar} ${warm ? styles.warmBar : ""}`} data-window-drag-handle tabIndex={maximized||compact?-1:0} role="group" aria-label={`${title} title bar`} title={compact ? "Window controls" : "Drag to move · Arrow keys to move · Home to reset"} onPointerDown={start} onPointerMove={drag} onPointerUp={end} onPointerCancel={end} onLostPointerCapture={end} onKeyDown={keyboard}>
+    {icon ?? <FileText size={14} aria-hidden="true" />}<span className={styles.windowTitle}>{title}</span><span className={styles.barLines} aria-hidden="true" />
     {(onMinimize || onMaximize || onClose) && <span className={styles.windowControls}>
       {onMinimize && <button type="button" data-computer-sound="minimize" onClick={onMinimize} aria-label={`Minimize ${title}`}><Minus size={13} aria-hidden="true" /></button>}
-      {onMaximize && <button type="button" data-computer-sound={maximized?"open":"maximize"} onClick={event=>{const target=targetFor(event.currentTarget);if(target){target.style.removeProperty("translate");delete target.dataset.windowX;delete target.dataset.windowY}maximize()}} aria-label={`${maximized ? "Restore" : "Maximize"} ${title}`}><Square size={11} aria-hidden="true" /></button>}
+      {onMaximize && <button type="button" className={styles.maximizeButton} data-computer-sound={maximized?"open":"maximize"} onClick={event=>{const target=targetFor(event.currentTarget);if(target){target.style.removeProperty("translate");delete target.dataset.windowX;delete target.dataset.windowY}maximize()}} aria-label={`${maximized ? "Restore" : "Maximize"} ${title}`}><Square size={11} aria-hidden="true" /></button>}
       {onClose && <button type="button" data-computer-sound="close" onClick={onClose} aria-label={`Close ${title}`}><X size={13} aria-hidden="true" /></button>}
     </span>}
   </div>

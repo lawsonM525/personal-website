@@ -14,7 +14,8 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image", title: "Michelle’s Computer", images: ["https://michellescomputer.com/homepage/magazine-banner.webp"] },
 }
 
-export default function Home() {
-  return <HomeDesktop />
+export default async function Home({ searchParams }: { searchParams: Promise<{ desktop?: string | string[] }> }) {
+  const query = await searchParams
+  return <HomeDesktop startOnDesktop={query.desktop === "1"} />
 }
 

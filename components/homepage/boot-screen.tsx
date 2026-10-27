@@ -52,8 +52,8 @@ export function restartComputer(navigate?: (href: string) => void) {
   else window.location.assign("/")
 }
 
-export function BootScreen({ children }: { children: React.ReactNode }) {
-  const [stage, setStage] = useState<"checking" | "booting" | "ready">("checking")
+export function BootScreen({ children, skipStartup = false }: { children: React.ReactNode; skipStartup?: boolean }) {
+  const [stage, setStage] = useState<"checking" | "booting" | "ready">(skipStartup ? "ready" : "checking")
   const [lineCount, setLineCount] = useState(0)
   const output = useRef<HTMLDivElement>(null)
   const skip = useRef<HTMLButtonElement>(null)
@@ -64,11 +64,12 @@ export function BootScreen({ children }: { children: React.ReactNode }) {
   }, [])
 
   useEffect(() => {
-    setStage(hasBooted ? "ready" : "booting")
+    if (skipStartup || hasBooted) enter()
+    else setStage("booting")
     const restart = () => { setLineCount(0); setStage("booting") }
     window.addEventListener(restartEvent, restart)
     return () => window.removeEventListener(restartEvent, restart)
-  }, [])
+  }, [enter, skipStartup])
 
   useEffect(() => {
     if (stage !== "booting") return

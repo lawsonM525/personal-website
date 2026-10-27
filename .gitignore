@@ -5,6 +5,8 @@ out/
 .turbo/
 
 # Local testing and generated work files
+generated_images/
+_private/
 .playwright-cli/
 output/
 tmp/
