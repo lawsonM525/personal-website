@@ -3,17 +3,24 @@
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { useEffect, useMemo, useRef, useState } from "react"
-import { ArrowRight, ArrowUpRight, Clock3, FileText, Mail, Menu, RotateCcw, Search, X } from "lucide-react"
+import { ArrowRight, ArrowUpRight, Clock3, FileText, FolderOpen, Grid2X2, Mail, Menu, RotateCcw, Search, X } from "lucide-react"
 import { ProfileMark } from "./profile-mark"
 import { ComputerSoundToggle } from "./computer-sounds"
 import { BootScreen, restartComputer } from "./boot-screen"
 import { contactEmail, contactHref } from "./contact-config"
 import { signupForms } from "./signup-config"
 import { WindowBar } from "./window-bar"
+import { ExplorerIcon } from "@/components/explore/explorer-icon"
 import styles from "./home.module.css"
 
 const pages = [
+  { label: "Explorer", description: "Open the computer’s folders and programs", href: "/explore", keywords: "explore apps programs games files desktop" },
+  { label: "Paint", description: "Stickers, glitter, rainbow brushes, and tiny masterpieces", href: "/explore?app=paint", keywords: "draw paint art sketch stickers collage rainbow glitter" },
+  { label: "Minesweeper", description: "Play a small game of logic", href: "/explore?app=minesweeper", keywords: "minesweeper game play mines" },
+  { label: "Terminal", description: "Explore with commands", href: "/explore?app=terminal", keywords: "terminal commands coding" },
+  { label: "Submit an article", description: "Send an article or draft for Learn", href: "/learn/submit", keywords: "submit article contribute write draft" },
   { label: "Learn", description: "Practical guides for using AI and building projects", href: "/learn", keywords: "guides tutorials ai college career" },
+  { label: "The Girly Guide to AI", description: "Michelle’s illustrated book, from AI foundations to building your own project", href: "/girly-guide-to-ai", keywords: "girly guide artificial intelligence book textbook mia mai machine learning neural networks" },
 
   { label: "Magazine waitlist", description: "Join the waitlist for magazine updates", href: signupForms.magazine.pagePath, keywords: "magazine email signup waitlist" },
   { label: "Pen pals", description: "Stay in touch by letter or email", href: signupForms.penpals.pagePath, keywords: "pen pals letter mail email address signup" },
@@ -53,10 +60,15 @@ export function HomeHeader() {
     function measure(){document.documentElement.style.setProperty("--computer-header-height",`${element!.getBoundingClientRect().height}px`)}
     measure();const observer=new ResizeObserver(measure);observer.observe(element);return()=>observer.disconnect()
   },[])
+  useEffect(() => {
+    function measureViewport() { document.documentElement.style.setProperty("--computer-viewport-height", `${window.visualViewport?.height ?? window.innerHeight}px`) }
+    measureViewport(); window.addEventListener("resize", measureViewport); window.visualViewport?.addEventListener("resize", measureViewport)
+    return () => { window.removeEventListener("resize", measureViewport); window.visualViewport?.removeEventListener("resize", measureViewport) }
+  }, [])
   return <>
     <div ref={chrome} className={styles.siteChrome}>
       <header className={styles.header}>
-        <Link href="/" className={styles.brand} aria-label="Michelle’s Computer home"><ProfileMark/><span className={styles.srOnly}>Michelle’s Computer</span></Link>
+        <Link href="/?desktop=1" className={styles.brand} aria-label="Michelle’s Computer home"><ProfileMark/><span className={styles.brandText}>Michelle’s Computer</span></Link>
         <nav className={styles.desktopNav} aria-label="Main navigation">{mainLinks.map(item=><Link key={item.href} href={item.href} aria-current={pathname===item.href?"page":undefined}>{item.label}</Link>)}</nav>
         <div className={styles.headerActions}>
           <ComputerSoundToggle/>
@@ -65,7 +77,7 @@ export function HomeHeader() {
           <button type="button" className={styles.searchButton} aria-label="Search pages" data-computer-sound="open" onClick={()=>{setQuery("");setSearchOpen(true)}}><Search size={17} aria-hidden="true"/><span>Search</span><kbd>⌘ K</kbd></button>
           <button type="button" className={styles.mobileMenuButton} aria-label={menuOpen?"Close navigation":"Open navigation"} aria-expanded={menuOpen} aria-controls="mobile-site-navigation" onClick={()=>setMenuOpen(value=>!value)}>{menuOpen?<X size={22}/>:<Menu size={22}/>}</button>
         </div>
-        {menuOpen&&<nav id="mobile-site-navigation" className={styles.mobileNav} aria-label="Mobile navigation">{mainLinks.map(item=><Link key={item.href} href={item.href} onClick={()=>setMenuOpen(false)}><span>{item.label}</span><ArrowUpRight size={17} aria-hidden="true"/></Link>)}<Link href="/research">Research</Link><Link href="/talks">Talks</Link><Link href="/posts">Posts</Link></nav>}
+        {menuOpen&&<nav id="mobile-site-navigation" className={styles.mobileNav} aria-label="Mobile navigation">{mainLinks.map(item=><Link key={item.href} href={item.href} onClick={()=>setMenuOpen(false)}><span>{item.label}</span><ArrowUpRight size={17} aria-hidden="true"/></Link>)}<Link href="/research">Research</Link><Link href="/talks">Talks</Link><Link href="/posts">Posts</Link><a href={contactHref}>Email Michelle</a><button type="button" onClick={()=>{setMenuOpen(false);restartComputer(router.push)}}>Restart computer</button></nav>}
       </header>
       <nav className={styles.mobileQuickLinks} aria-label="Quick navigation">{mainLinks.filter(item=>item.href!=="/about").map(item=><Link key={item.href} href={item.href} aria-current={pathname===item.href?"page":undefined}>{item.label}</Link>)}</nav>
     </div>
@@ -97,28 +109,61 @@ const folders = [
   { kind: "penpals" as const, title: "Pen pals", description: "Want to be pen pals?", action: "Sign up to be pen pals", href: signupForms.penpals.pagePath },
 ]
 
-export default function HomeDesktop() {
-  const [welcomeOpen, setWelcomeOpen] = useState(true)
+export default function HomeDesktop({ startOnDesktop = false }: { startOnDesktop?: boolean }) {
+  const router = useRouter()
+  const [welcomeState, setWelcomeState] = useState<"open" | "minimized" | "closed">(startOnDesktop ? "minimized" : "open")
   const [contactOpen, setContactOpen] = useState(false)
   const [maximized, setMaximized] = useState(false)
   const [activeWindow, setActiveWindow] = useState<"welcome" | "contact">("welcome")
   const [time, setTime] = useState("")
+  const letterShortcut = useRef<HTMLButtonElement>(null)
+  const letterTask = useRef<HTMLButtonElement>(null)
+  const welcomeOpen = welcomeState === "open"
   useEffect(() => { function tick() { setTime(new Intl.DateTimeFormat(undefined, { hour: "numeric", minute: "2-digit" }).format(new Date())) }; tick(); const timer = setInterval(tick, 60000); return () => clearInterval(timer) }, [])
 
-  function restoreWelcome() { setWelcomeOpen(true); setMaximized(false); setActiveWindow("welcome") }
+  useEffect(() => {
+    if (startOnDesktop) { setWelcomeState("minimized"); setContactOpen(false); setMaximized(false) }
+  }, [startOnDesktop])
+  function showDesktop() {
+    if (welcomeState !== "closed") setWelcomeState("minimized")
+    setContactOpen(false); setMaximized(false)
+  }
+  function restoreWelcome() {
+    setWelcomeState("open"); setMaximized(false); setActiveWindow("welcome")
+    requestAnimationFrame(() => document.getElementById("home-title")?.focus({ preventScroll: true }))
+  }
+  function hideWelcome(state: "minimized" | "closed") {
+    setWelcomeState(state); setMaximized(false)
+    if (contactOpen) setActiveWindow("contact")
+    requestAnimationFrame(() => (state === "closed" ? letterShortcut : letterTask).current?.focus({ preventScroll: true }))
+  }
 
-  return <BootScreen><div className={`${styles.site} ${styles.desktopSite}`}>
+  return <BootScreen skipStartup={startOnDesktop}><div className={`${styles.site} ${styles.desktopSite}`}>
     <a href="#main" className={styles.skip}>Skip to content</a>
     <HomeHeader />
-    <main id="main" className={styles.desktop}>
+    <main id="main" className={styles.desktop} data-mobile-view={contactOpen && activeWindow === "contact" ? "contact" : welcomeOpen ? "welcome" : "desktop"}>
       <nav className={styles.desktopShortcuts} aria-label="Desktop shortcuts">{folders.map(folder => <Link key={folder.kind} href={folder.href} aria-label={`${folder.title}: ${folder.action}`}>
         <SpriteIcon kind={folder.kind} />
         <span className={styles.shortcutLabel}>{folder.title}</span>
         <span className={styles.shortcutHint}>{folder.kind === "magazine" ? "Join the waitlist" : folder.kind === "penpals" ? "Letters & emails" : folder.kind === "learn" ? "Guides & tutorials" : "Things I’m building"}</span>
       </Link>)}</nav>
       <div className={`${styles.workspace} ${maximized ? styles.workspaceMaximized : ""}`}>
+        {!welcomeOpen && <nav className={styles.desktopDocuments} aria-label="Desktop documents and programs">
+          <button ref={letterShortcut} type="button" data-computer-sound="open" onClick={restoreWelcome} aria-label="Open Dear Internet,">
+            <ExplorerIcon kind="penpals" size={80} />
+            <span className={styles.shortcutLabel}>Dear Internet,</span>
+          </button>
+          <Link href="/explore" aria-label="Explore: Open the computer’s folders and programs">
+            <ExplorerIcon kind="folder" size={80} />
+            <span className={styles.shortcutLabel}>Explore</span>
+          </Link>
+          <Link href="/about" aria-label="My story: About Michelle Lawson">
+            <ExplorerIcon kind="paper" size={80} />
+            <span className={styles.shortcutLabel}>My story</span>
+          </Link>
+        </nav>}
         {welcomeOpen ? <section data-computer-window className={`${styles.window} ${styles.welcomeWindow} ${activeWindow === "welcome" ? styles.activeWindow : ""}`} aria-labelledby="home-title" onPointerDown={() => setActiveWindow("welcome")} onFocusCapture={() => setActiveWindow("welcome")}>
-          <WindowBar title="Dear Internet," onMinimize={() => { setWelcomeOpen(false); setMaximized(false) }} onMaximize={() => setMaximized(value => !value)} onClose={() => { setWelcomeOpen(false); setMaximized(false) }} maximized={maximized} />
+          <WindowBar title="Dear Internet," onMinimize={() => hideWelcome("minimized")} onMaximize={() => setMaximized(value => !value)} onClose={() => hideWelcome("closed")} maximized={maximized} />
           <div className={styles.heroBody}>
             <div className={styles.heroCopy}>
               <h1 id="home-title" tabIndex={-1}>Welcome<br />to Michelle’s<br />Computer.</h1>
@@ -127,7 +172,7 @@ export default function HomeDesktop() {
             </div>
             <img className={styles.heroLetter} src="/homepage/welcome-letter-d.webp" width="1024" height="1024" alt="An open ivory envelope with blank paper and a blue botanical postage stamp." fetchPriority="high" />
           </div>
-        </section> : <button className={`${styles.window} ${styles.restoreWelcome}`} type="button" data-computer-sound="open" onClick={restoreWelcome}><FileText size={19} aria-hidden="true" /><span>Open Dear Internet,</span><ArrowUpRight size={18} aria-hidden="true" /></button>}
+        </section> : null}
         {contactOpen && <section data-computer-window className={`${styles.window} ${styles.contactWindow} ${activeWindow === "contact" ? styles.activeWindow : ""}`} aria-labelledby="contact-title" onPointerDown={() => setActiveWindow("contact")} onFocusCapture={() => setActiveWindow("contact")}>
           <WindowBar title="Keep in touch" warm onMinimize={() => setContactOpen(false)} onClose={() => setContactOpen(false)} />
           <div className={styles.contactBody}>
@@ -139,6 +184,6 @@ export default function HomeDesktop() {
         </section>}
       </div>
     </main>
-    <div className={styles.taskbar} role="toolbar" aria-label="Desktop controls"><button type="button" className={styles.startButton} data-computer-sound="open" onClick={() => window.dispatchEvent(new Event("michelle:search"))}><Search size={19} aria-hidden="true" /><span>Explore</span></button><button type="button" className={styles.taskButton} data-computer-sound="open" aria-pressed={welcomeOpen && activeWindow === "welcome"} onClick={restoreWelcome}><FileText size={16} aria-hidden="true" /><span>Dear Internet,</span></button><button type="button" className={styles.taskButton} data-computer-sound="open" aria-pressed={contactOpen && activeWindow === "contact"} onClick={() => { setContactOpen(true); setActiveWindow("contact") }}><Mail size={16} aria-hidden="true" /><span>Keep in touch</span></button><span className={styles.clock}><Clock3 size={13} aria-hidden="true" />{time || "—"}</span></div>
+    <div className={styles.taskbar} role="toolbar" aria-label="Desktop controls"><button type="button" className={styles.mobileDesktopButton} onClick={showDesktop} aria-label="Show desktop"><Grid2X2 size={19} aria-hidden="true"/><span>Desktop</span></button><button type="button" className={styles.startButton} aria-label="Open Explorer" data-computer-sound="open" onClick={() => router.push("/explore")}><FolderOpen size={19} aria-hidden="true" /><span>Explore</span></button>{welcomeState !== "closed" && <button ref={letterTask} type="button" className={styles.taskButton} data-computer-sound="open" aria-pressed={welcomeOpen && activeWindow === "welcome"} onClick={restoreWelcome}><FileText size={16} aria-hidden="true" /><span>Dear Internet,</span></button>}<button type="button" className={styles.taskButton} data-computer-sound="open" aria-pressed={contactOpen && activeWindow === "contact"} onClick={() => { setContactOpen(true); setActiveWindow("contact") }}><Mail size={16} aria-hidden="true" /><span>Keep in touch</span></button><span className={styles.clock}><Clock3 size={13} aria-hidden="true" />{time || "—"}</span></div>
   </div></BootScreen>
 }

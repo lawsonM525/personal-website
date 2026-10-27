@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation"
 
 export function LayoutClient({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
-  const ownsDesktop = pathname === "/" || pathname === "/magazine" || pathname === "/penpals"
+  const ownsDesktop = pathname === "/" || pathname === "/explore" || pathname === "/magazine" || pathname === "/penpals"
   const isProposal = pathname.startsWith("/begin") || pathname === "/openaibeta"
   const content = ownsDesktop || isProposal ? children : <ComputerPageShell>{children}</ComputerPageShell>
   return <>{isProposal ? content : <ComputerSoundProvider>{content}</ComputerSoundProvider>}<Toaster /></>

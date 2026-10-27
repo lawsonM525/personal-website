@@ -1,9 +1,28 @@
-export const computerSoundCues = ["click", "open", "close", "minimize", "maximize", "startup"] as const
+export const computerSoundCues = ["click", "open", "close", "minimize", "maximize", "startup", "paintStamp", "paintSparkle", "paintSpray", "paintMagic"] as const
 export type ComputerSoundCue = typeof computerSoundCues[number]
 type Note = { frequency: number; end?: number; at: number; duration: number; level: number; triangle?: boolean }
 
 // Original short OS-style sounds, synthesized locally. No sampled system audio.
 const notes: Record<ComputerSoundCue, readonly Note[]> = {
+  paintStamp: [
+    { frequency: 760, end: 260, at: 0, duration: .09, level: .23, triangle: true },
+    { frequency: 1100, at: .035, duration: .07, level: .06 },
+  ],
+  paintSparkle: [
+    { frequency: 1046.5, at: 0, duration: .1, level: .13 },
+    { frequency: 1318.5, at: .035, duration: .11, level: .12 },
+    { frequency: 1568, at: .075, duration: .13, level: .09 },
+  ],
+  paintSpray: [
+    { frequency: 180, end: 820, at: 0, duration: .07, level: .11, triangle: true },
+    { frequency: 620, end: 240, at: .025, duration: .08, level: .07, triangle: true },
+  ],
+  paintMagic: [
+    { frequency: 261.63, end: 523.25, at: 0, duration: .13, level: .14 },
+    { frequency: 659.25, at: .09, duration: .14, level: .12 },
+    { frequency: 783.99, at: .17, duration: .16, level: .1 },
+    { frequency: 1046.5, at: .25, duration: .18, level: .1 },
+  ],
   click: [{ frequency: 1050, end: 870, at: 0, duration: .032, level: .12, triangle: true }],
   open: [
     { frequency: 523.25, at: 0, duration: .16, level: .16 },

@@ -3,7 +3,7 @@
 import Link from "next/link"
 import Script from "next/script"
 import { useEffect, useId, useRef, useState } from "react"
-import { FileText } from "lucide-react"
+import { FileText, FolderOpen, Grid2X2 } from "lucide-react"
 import { isTallyReadyEvent, shouldRetryEmbed } from "@/lib/tally-embed"
 import { WindowBar } from "./window-bar"
 import { penpalDeliveryNote, signupForms } from "./signup-config"
@@ -16,8 +16,9 @@ function loadEmbeds() {
   (window as Window & { Tally?: TallyRuntime }).Tally?.loadEmbeds()
 }
 
-function TallyForm({ kind, active, recoveryId }: { kind: SignupKind; active: boolean; recoveryId: string }) {
-  const form = signupForms[kind]
+type FormDestination = { id: string; title: string; embedUrl: string; height: number }
+
+export function TallyForm({ form, active, recoveryId }: { form: FormDestination; active: boolean; recoveryId: string }) {
   const frame = useRef<HTMLIFrameElement>(null)
   const [frameVersion, setFrameVersion] = useState(0)
   const [widgetReady, setWidgetReady] = useState(false)
@@ -124,12 +125,12 @@ export function SignupWindow({ kind, onClose, onSwitch, startOpen = true, active
     <h1 id={headingId} className={styles.srOnly}>{magazine ? "The magazine waitlist" : "Wanna be pen pals?"}</h1>
     {minimized && <button type="button" className={styles.formRestore} data-computer-sound="open" onClick={() => setMinimized(false)}><FileText size={19} aria-hidden="true" />Restore {title}</button>}
     <div hidden={minimized}>
-      <div className={styles.windowMenu}><Link href="/" onClick={onSwitch ? event => { event.preventDefault(); onClose() } : undefined}>My computer</Link><span>{magazine ? "Magazine waitlist" : "The little post office"}</span><Link href={other.pagePath} onClick={onSwitch ? event => { event.preventDefault(); onSwitch(otherKind) } : undefined}>{magazine ? "Pen pals" : "Magazine"} →</Link></div>
+      <div className={styles.windowMenu}><Link href="/?desktop=1" onClick={onSwitch ? event => { event.preventDefault(); onClose() } : undefined}>My computer</Link><span>{magazine ? "Magazine waitlist" : "The little post office"}</span><Link href={other.pagePath} onClick={onSwitch ? event => { event.preventDefault(); onSwitch(otherKind) } : undefined}>{magazine ? "Pen pals" : "Magazine"} →</Link></div>
       {formOpen && <div id={recoveryId} className={`${styles.formFallback} ${styles.formRecovery}`}>
         {!magazine && <p>{penpalDeliveryNote}</p>}
         <p>Form not loading? <button type="button" className={styles.formReload} onClick={() => setFormVersion(value => value + 1)}>Reload the form</button> or <a href={signupForms[kind].publicUrl} target="_blank" rel="noopener noreferrer" aria-label={`Open ${form.title.toLowerCase()} in a new tab`}>open it in a new tab</a>.</p>
       </div>}
-      {formOpen ? <div className={styles.formEmbed}><TallyForm key={`${kind}:${formVersion}`} kind={kind} active={active && !minimized} recoveryId={recoveryId} /></div> : <div className={styles.formIntro}>
+      {formOpen ? <div className={styles.formEmbed}><TallyForm key={`${kind}:${formVersion}`} form={form} active={active && !minimized} recoveryId={recoveryId} /></div> : <div className={styles.formIntro}>
         <span className={`${styles.sprite} ${magazine ? styles.sprite_magazine : styles.sprite_penpals} ${styles.invitationArt}`} aria-hidden="true"/>
         <h2>{magazine ? "the magazine waitlist" : "wanna be penpals?"}</h2>
         <p>{magazine ? "We’re putting together an artsy magazine about AI and learning — with comics, diary entries, and handwritten, junk-journal-style pages. Join the waitlist for updates as it comes together." : penpalDeliveryNote}</p>
@@ -140,5 +141,6 @@ export function SignupWindow({ kind, onClose, onSwitch, startOpen = true, active
       </div>}
       <div className={styles.statusBar}><span>{magazine ? "The magazine waitlist" : "Pen pal interest signup"}</span><span className={styles.resizeGrip} aria-hidden="true" /></div>
     </div>
+    <nav className={styles.signupDock} aria-label="Desktop controls"><Link href="/?desktop=1"><Grid2X2 size={19}/><span>Desktop</span></Link><Link href="/explore"><FolderOpen size={20}/><span>Explore</span></Link><button type="button" aria-pressed={!minimized} onClick={() => setMinimized(false)}><FileText size={19}/><span>{magazine ? "Magazine" : "Pen pals"}</span></button></nav>
   </section>
 }

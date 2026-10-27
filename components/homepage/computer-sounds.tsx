@@ -6,7 +6,9 @@ import { ComputerSoundPlayer, computerSoundCues, type ComputerPlayback, type Com
 import styles from "./home.module.css"
 
 const preferenceKey = "michelle-computer-sound-v1"
-const SoundContext = createContext<{ enabled: boolean; toggle: () => void; playback: ComputerPlayback } | null>(null)
+const SoundContext = createContext<{ enabled: boolean; toggle: () => void; play: (cue: ComputerSoundCue) => void; playback: ComputerPlayback } | null>(null)
+
+export function useComputerSound() { return useContext(SoundContext) }
 
 export function ComputerSoundProvider({ children }: { children: React.ReactNode }) {
   const [enabled, setEnabled] = useState(true)
@@ -61,7 +63,7 @@ export function ComputerSoundProvider({ children }: { children: React.ReactNode 
     if (next) play("open")
   }, [applyPreference, play])
 
-  const value = useMemo(() => ({ enabled, toggle, playback }), [enabled, toggle, playback])
+  const value = useMemo(() => ({ enabled, toggle, play, playback }), [enabled, toggle, play, playback])
   return <SoundContext.Provider value={value}>{children}</SoundContext.Provider>
 }
 

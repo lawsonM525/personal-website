@@ -26,7 +26,7 @@ for (let i=0;i<routes.length;i+=4) {
         assert.equal(html.includes('aria-label="Sound effects"'),false,`${route}: proposal must remain outside computer sounds`)
       }
       else {
-        assert.ok(['/','/magazine','/penpals'].includes(route)||shared,`${route}: shared window absent`)
+        assert.ok(['/','/explore','/magazine','/penpals'].includes(route)||shared,`${route}: shared window absent`)
         assert.ok(html.includes('aria-label="Sound effects"'),`${route}: sound control absent`)
       }
     }
