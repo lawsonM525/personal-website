@@ -59,6 +59,7 @@ export type LearnArticle = LearnArticleCard & {
 };
 
 export const categoryLabels: Record<string, string> = {
+  finds: "Michelle’s finds",
   ai: "AI, explained",
   career: "Career",
   college: "College",

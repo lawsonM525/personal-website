@@ -20,6 +20,7 @@ const pages = [
   { label: "Terminal", description: "Explore with commands", href: "/explore?app=terminal", keywords: "terminal commands coding" },
   { label: "Submit an article", description: "Send an article or draft for Learn", href: "/learn/submit", keywords: "submit article contribute write draft" },
   { label: "Learn", description: "Practical guides for using AI and building projects", href: "/learn", keywords: "guides tutorials ai college career" },
+  { label: "Michelle’s finds", description: "You won’t believe this was made with AI", href: "/learn/you-wont-believe-this-was-made-with-ai", keywords: "favorites favourite favorite tweets posts projects ai claude inspiration random eyes rockbiter" },
   { label: "The Girly Guide to AI", description: "Michelle’s illustrated book, from AI foundations to building your own project", href: "/girly-guide-to-ai", keywords: "girly guide artificial intelligence book textbook mia mai machine learning neural networks" },
 
   { label: "Magazine waitlist", description: "Join the waitlist for magazine updates", href: signupForms.magazine.pagePath, keywords: "magazine email signup waitlist" },
