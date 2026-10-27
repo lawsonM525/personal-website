@@ -22,6 +22,8 @@ const routeTitles: Record<string, string> = {
 export function ComputerPageShell({ children }: { children: React.ReactNode }) {
   const path = usePathname()
   const router = useRouter()
+  const isGuide = path === "/girly-guide-to-ai"
+  const content = useRef<HTMLDivElement>(null)
   const title = routeTitles[path] || (path.startsWith("/learn/") ? "Learn" : "Page")
   const parent = path.startsWith("/10apps/") ? { href:"/10apps", label:"Back to 10 Apps" } : path.startsWith("/projects/") || path === "/10apps" ? { href:"/projects", label:"Back to projects" } : path.startsWith("/learn/") || path === "/girly-guide-to-ai" ? { href:"/learn", label:"Back to Learn" } : { href:"/?desktop=1", label:"Michelle’s Computer" }
   const [minimized, setMinimized] = useState(false)
@@ -33,11 +35,11 @@ export function ComputerPageShell({ children }: { children: React.ReactNode }) {
     tick(); const timer = setInterval(tick, 60000); return () => clearInterval(timer)
   }, [])
   const readingPosition = useRef(0)
-  function minimize() { readingPosition.current = window.scrollY; setMinimized(true) }
-  function restore() { if (minimized) { setMinimized(false); requestAnimationFrame(() => window.scrollTo({ top: readingPosition.current, behavior: "instant" })) } }
+  function minimize() { readingPosition.current = isGuide ? content.current?.scrollTop || 0 : window.scrollY; setMinimized(true) }
+  function restore() { if (minimized) { setMinimized(false); requestAnimationFrame(() => { const viewport = isGuide ? content.current : window; viewport?.scrollTo({ top: readingPosition.current, behavior: "instant" }) }) } }
   function search() { window.dispatchEvent(new Event("michelle:search")) }
 
-  return <div className="computer-desktop-page">
+  return <div className="computer-desktop-page" data-contained-reader={isGuide ? "guide" : undefined}>
     <a className="computer-skip" href="#computer-page-content">Skip to content</a>
     <HomeHeader />
     <div className="computer-page-workspace">
@@ -45,7 +47,7 @@ export function ComputerPageShell({ children }: { children: React.ReactNode }) {
       <section data-computer-window hidden={minimized} className={`computer-page-window${maximized ? " computer-page-window-maximized" : ""}`} aria-label={`${title} window`}>
         <WindowBar title={title} onMinimize={minimize} onMaximize={() => setMaximized(value => !value)} onClose={() => router.push("/?desktop=1")} maximized={maximized} />
         {!path.startsWith("/learn") && path !== "/girly-guide-to-ai" && <nav className="computer-page-toolbar" aria-label="Window navigation"><Link href={parent.href}><ArrowLeft size={13} />{parent.label}</Link><span>{title}</span><button type="button" data-computer-sound="open" onClick={search}><Search size={13} />Find a page</button></nav>}
-        <div id="computer-page-content" className="computer-page-content" data-page={path}>{children}</div>
+        <div ref={content} id="computer-page-content" className="computer-page-content" data-page={path} data-guide-scroll-viewport={isGuide ? "" : undefined} tabIndex={isGuide ? 0 : undefined} role={isGuide ? "region" : undefined} aria-label={isGuide ? "Book reading area" : undefined}>{children}</div>
       </section>
     </div>
     <div className="computer-page-taskbar" role="toolbar" aria-label="Desktop controls"><button type="button" className="computer-mobile-desktop" onClick={() => router.push("/?desktop=1")} aria-label="Show desktop"><Grid2X2 size={18}/><span>Desktop</span></button><button type="button" className="computer-page-explore" aria-label="Open Explorer" data-computer-sound="open" onClick={() => router.push("/explore")}><FolderOpen size={17} /><span>Explore</span></button><button type="button" className="computer-page-task" data-computer-sound="open" aria-pressed={!minimized} onClick={restore}><FileText size={16} /><span>{title}</span></button><time>{time || "—"}</time></div>

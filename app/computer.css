@@ -76,3 +76,16 @@
 .computer-page-taskbar button.computer-page-explore{min-width:0;max-width:none;border:0;box-shadow:none}.computer-page-taskbar .computer-page-task{min-width:170px;max-width:65vw}
 @media(max-width:760px){.computer-page-taskbar .computer-page-task{min-width:0;max-width:none;flex:1.6}}
 @media(min-width:761px) and (pointer:coarse){:root{--computer-window-bar-height:52px}.computer-page-toolbar a,.computer-page-toolbar button,.computer-page-taskbar button{min-height:44px}.computer-page-content :where(input,textarea,select){font-size:16px}}
+
+/* The book scrolls inside its window; the desktop and window chrome stay still. */
+html:has([data-contained-reader="guide"]),body:has([data-contained-reader="guide"]){overflow:hidden;overscroll-behavior:none}
+.computer-desktop-page[data-contained-reader="guide"]{height:var(--computer-viewport-height,100dvh);min-height:0;display:flex;flex-direction:column;overflow:hidden;padding-bottom:var(--computer-dock-height)}
+[data-contained-reader="guide"]>div:first-of-type{flex-shrink:0}
+[data-contained-reader="guide"] .computer-page-workspace{flex:1;min-height:0;display:flex;flex-direction:column;margin:0 auto;padding:18px 30px}
+[data-contained-reader="guide"] .computer-page-window{flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden}
+[data-contained-reader="guide"] .computer-page-window[hidden]{display:none}
+[data-contained-reader="guide"] .computer-page-window>:first-child{position:relative;top:auto;flex-shrink:0}
+[data-guide-scroll-viewport]{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-gutter:stable}
+[data-guide-scroll-viewport]:focus-visible{outline:2px solid #ee6e36;outline-offset:-2px}
+[data-contained-reader="guide"] .computer-page-window-maximized{position:fixed;inset:calc(var(--computer-header-height,52px) + 8px) 8px calc(var(--computer-dock-height) + 8px);overflow:hidden}
+@media(max-width:760px){[data-contained-reader="guide"] .computer-page-workspace{padding:8px 8px 12px}}

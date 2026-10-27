@@ -28,20 +28,21 @@ export function GuideReader({ chapters, fullText, children }: { chapters: Chapte
   }, [tocOpen])
 
   useEffect(() => {
+    const viewport = reader.current?.closest<HTMLElement>("[data-guide-scroll-viewport]")
+    if (!viewport) return
     let frame = 0
     function update() {
       frame = 0
-      const element = article.current; if (!element) return
+      const element = article.current; if (!element || !viewport?.clientHeight) return
       const rect = element.getBoundingClientRect()
-      const header = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--computer-header-height")) || 52
-      const windowBar = document.querySelector('[data-window-drag-handle]')?.getBoundingClientRect().height || 32
+      const viewportTop = viewport.getBoundingClientRect().top
       const toolbarHeight = toolbar.current?.getBoundingClientRect().height || 46
       reader.current?.style.setProperty("--guide-toolbar-height", `${toolbarHeight}px`)
-      reader.current?.style.setProperty("--guide-toolbar-bottom", `${Math.max(header + windowBar + toolbarHeight, toolbar.current?.getBoundingClientRect().bottom || 0)}px`)
-      const offset = header + windowBar + toolbarHeight + 20
-      const start = rect.top + window.scrollY - offset
-      const total = Math.max(1, rect.height - window.innerHeight + offset)
-      setProgress(Math.max(0, Math.min(100, Math.round((window.scrollY - start) / total * 100))))
+      viewport.style.setProperty("--guide-viewport-height", `${viewport.clientHeight}px`)
+      reader.current?.style.setProperty("--guide-toolbar-bottom", `${Math.max(viewportTop + toolbarHeight, toolbar.current?.getBoundingClientRect().bottom || 0)}px`)
+      const offset = viewportTop + toolbarHeight + 20
+      const total = Math.max(1, rect.height - viewport.clientHeight + toolbarHeight + 20)
+      setProgress(Math.max(0, Math.min(100, Math.round((offset - rect.top) / total * 100))))
       let chapter = chapters[0]?.id || "introduction"
       for (const item of chapters) {
         const top = document.getElementById(`guide-${item.id}`)?.getBoundingClientRect().top
@@ -51,16 +52,18 @@ export function GuideReader({ chapters, fullText, children }: { chapters: Chapte
     }
     function schedule() { if (!frame) frame = requestAnimationFrame(update) }
     update()
-    window.addEventListener("scroll", schedule, { passive: true })
+    viewport.addEventListener("scroll", schedule, { passive: true })
     window.addEventListener("resize", schedule)
+    window.addEventListener("hashchange", schedule)
     const observer = new ResizeObserver(schedule)
     if (article.current) observer.observe(article.current)
     if (toolbar.current) observer.observe(toolbar.current)
-    return () => { window.removeEventListener("scroll", schedule); window.removeEventListener("resize", schedule); observer.disconnect(); cancelAnimationFrame(frame) }
+    observer.observe(viewport)
+    return () => { viewport.removeEventListener("scroll", schedule); window.removeEventListener("resize", schedule); window.removeEventListener("hashchange", schedule); observer.disconnect(); cancelAnimationFrame(frame); viewport.style.removeProperty("--guide-viewport-height") }
   }, [chapters])
 
   return <div ref={reader} className={styles.reader} style={{ "--guide-type-size": `${size}px` } as React.CSSProperties}>
-    <div ref={toolbar} className={styles.readingBar}>
+    <div ref={toolbar} className={styles.readingBar} data-guide-toolbar>
       <span>{fullText ? "Full text" : "Reading preview"}<span className={styles.readingProgress}>{progress}%</span></span>
       <div className={styles.typeTools} aria-label="Reading text size"><button type="button" aria-label="Decrease text size" disabled={size <= 16} onClick={() => setSize(value => value - 1)}><Minus size={13} /></button><span>Aa</span><button type="button" aria-label="Increase text size" disabled={size >= 23} onClick={() => setSize(value => value + 1)}><Plus size={13} /></button></div>
       {!fullText && <a href={aiGuidePurchaseUrl} target="_blank" rel="noopener noreferrer">Get the full guide <ArrowUpRight size={13} /></a>}
