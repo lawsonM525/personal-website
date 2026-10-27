@@ -6,23 +6,103 @@ import { ArrowUpRight, Search } from "@/components/retro-icons"
 import { stegaClean } from "@sanity/client/stega"
 import { categoryLabels, readingTime, type LearnArticleCard } from "@/sanity/lib/types"
 import { LearnThemeToggle } from "./learn-theme"
+import styles from "./article-feed.module.css"
+
+type LibraryEntry = {
+  id: string
+  title: string
+  dek: string
+  category: string
+  topics: string[]
+  href: string
+  image?: string
+  imageAlt: string
+  article?: LearnArticleCard
+}
+
+const guideEntry: LibraryEntry = {
+  id: "girly-guide-to-ai",
+  title: "The Girly Guide to AI",
+  dek: "267 illustrated pages, 12 chapters, and your first AI project.",
+  category: "ai",
+  topics: ["book", "artificial intelligence", "beginner", "guide"],
+  href: "/girly-guide-to-ai",
+  image: "/homepage/learn-icon-v3.webp",
+  imageAlt: "An illustrated open book and pen",
+}
 
 export function ArticleFeed({ articles }: { articles: LearnArticleCard[] }) {
   const [query, setQuery] = useState("")
   const [category, setCategory] = useState("all")
-  const categories = Array.from(new Set(articles.map(article => stegaClean(article.category))))
-  const filtered = useMemo(() => articles.filter(article => (category === "all" || stegaClean(article.category) === category) && `${stegaClean(article.title)} ${stegaClean(article.dek)} ${(article.topics || []).join(" ")}`.toLowerCase().includes(query.trim().toLowerCase())), [articles, query, category])
+  const entries = useMemo(() => {
+    const items: LibraryEntry[] = articles.map(article => ({
+      id: article._id,
+      title: article.title,
+      dek: article.dek,
+      category: stegaClean(article.category),
+      topics: article.topics || [],
+      href: `/learn/${stegaClean(article.slug)}`,
+      image: article.coverImageUrl ? stegaClean(article.coverImageUrl) : undefined,
+      imageAlt: article.coverImageAlt || "",
+      article,
+    }))
+    items.splice(Math.min(1, items.length), 0, guideEntry)
+    return items
+  }, [articles])
+  const categories = Array.from(new Set(entries.map(entry => entry.category)))
+  const filtered = useMemo(() => entries.filter(entry =>
+    (category === "all" || entry.category === category) &&
+    stegaClean(`${entry.title} ${entry.dek} ${entry.topics.join(" ")}`).toLowerCase().includes(query.trim().toLowerCase())
+  ), [entries, query, category])
+  const isBrowsing = !query.trim() && category === "all"
 
-  return <main className="learn-bg article-library">
-    <header className="article-library-heading"><div><p className="article-eyebrow">Michelle’s Computer</p><h1>Learn</h1><p>Practical guides for using AI, building projects, and navigating college and your career.</p></div><img src="/homepage/learn-icon-v3.webp" alt="" width="132" height="132" /><LearnThemeToggle /></header>
-    <Link href="/girly-guide-to-ai" className="article-book-feature"><img src="/books/girly-guide-to-ai/cover.webp" alt="The Girly Guide to Artificial Intelligence book cover" width="56" height="87" /><div><p className="article-eyebrow">My book</p><h2>The Girly Guide to AI</h2><p>267 illustrated pages, 12 chapters, and your first AI project.</p></div><span>Start reading <ArrowUpRight size={15} aria-hidden="true" /></span></Link>
-    <div className="article-library-grid"><section aria-label="Articles">
-      <div className="article-feed-tools"><h2>Articles <span>{articles.length}</span></h2><div className="article-feed-actions"><Link href="/learn/submit" className="article-submit-link">Submit an article <ArrowUpRight size={14} aria-hidden="true" /></Link><label className="article-search"><Search size={16} aria-hidden="true"/><span className="sr-only">Search articles</span><input type="search" placeholder="Search articles…" value={query} onChange={event => setQuery(event.target.value)} /></label></div></div>
-      {categories.length > 1 && <div className="article-topics" aria-label="Article topics"><button type="button" aria-pressed={category === "all"} onClick={() => setCategory("all")}>All</button>{categories.map(topic => <button key={topic} type="button" aria-pressed={category === topic} onClick={() => setCategory(topic)}>{categoryLabels[topic] || topic}</button>)}</div>}
-      <div className="article-feed" aria-live="polite">{filtered.map((article, index) => {
-        const slug = stegaClean(article.slug), topic = stegaClean(article.category), date = stegaClean(article.publishedAt)
-        return <article className="article-feed-card" key={article._id}><div><p className="article-eyebrow">{categoryLabels[topic] || topic}{index === 0 && !query && category === "all" && <span>Latest</span>}</p><h2><Link href={`/learn/${slug}`}>{article.title}</Link></h2><p className="article-dek">{article.dek}</p><p className="article-byline"><span>{article.author?.name || "Michelle Lawson"}</span><span aria-hidden="true">·</span><time dateTime={date}>{new Intl.DateTimeFormat("en-US", {month:"short",day:"numeric",year:"numeric"}).format(new Date(date))}</time><span aria-hidden="true">·</span><span>{readingTime(article.estimatedWords)} min read</span></p><Link className="article-read" href={`/learn/${slug}`}>Read article <ArrowUpRight size={15} aria-hidden="true"/></Link></div>{article.coverImageUrl && <Link className="article-thumbnail" href={`/learn/${slug}`} aria-label={`Read ${stegaClean(article.title)}`}><img src={stegaClean(article.coverImageUrl)} alt={article.coverImageAlt || ""} width="480" height="320" /></Link>}</article>
-      })}{!filtered.length && <div className="article-empty"><p>{articles.length ? "No articles match your search." : "The first guide is almost ready."}</p>{articles.length > 0 && <button type="button" onClick={() => {setQuery("");setCategory("all")}}>Show all articles</button>}</div>}</div>
-    </section><aside className="article-library-aside"><div className="article-magazine"><div className="article-magazine-art" aria-hidden="true"/><p className="article-eyebrow">Michelle’s Computer</p><h2>The magazine</h2><p>An artsy magazine about AI and learning—with comics, diary entries, and handwritten pages.</p><Link href="/magazine">Join the waitlist <ArrowUpRight size={15} aria-hidden="true"/></Link></div></aside></div>
+  return <main className={`learn-bg ${styles.library}`}>
+    <header className={styles.header}>
+      <div className={styles.heading}><p className={styles.eyebrow}>Michelle’s Computer</p><h1>Learn</h1></div>
+      <div className={styles.topics} role="group" aria-label="Article topics">
+        <button type="button" aria-pressed={category === "all"} onClick={() => setCategory("all")}>All</button>
+        {categories.map(topic => <button key={topic} type="button" aria-pressed={category === topic} onClick={() => setCategory(topic)}>{categoryLabels[topic] || topic}</button>)}
+      </div>
+      <label className={styles.search}><Search size={18} aria-hidden="true"/><span className="sr-only">Search articles</span><input type="search" placeholder="Search articles…" value={query} onChange={event => setQuery(event.target.value)} /></label>
+    </header>
+
+    <div className={styles.columns}>
+      <section aria-label="Articles" className={styles.feed}>
+        <div aria-live="polite" aria-atomic="true" className="sr-only">{!isBrowsing && `${filtered.length} ${filtered.length === 1 ? "result" : "results"}`}</div>
+        {filtered.map((entry, index) => {
+          const featured = isBrowsing && index === 0 && !!entry.article
+          const date = entry.article ? stegaClean(entry.article.publishedAt) : undefined
+          return <article className={`${styles.entry}${featured ? ` ${styles.featured}` : ""}${!entry.article ? ` ${styles.guideEntry}` : ""}${!entry.image ? ` ${styles.textOnly}` : ""}`} key={entry.id}>
+            {entry.image && <Link className={styles.image} href={entry.href} aria-label={`Read ${stegaClean(entry.title)}`}><img src={entry.image} alt={entry.imageAlt} width={featured ? 1280 : 480} height={featured ? 720 : 320} loading={featured ? "eager" : "lazy"} /></Link>}
+            <div className={styles.copy}>
+              <p className={styles.eyebrow}>{categoryLabels[entry.category] || entry.category}{featured && <span>Latest</span>}</p>
+              <h2><Link href={entry.href}>{entry.title}</Link></h2>
+              <p className={styles.dek}>{entry.dek}</p>
+              {entry.article && date && <p className={styles.byline}><span>{entry.article.author?.name || "Michelle Lawson"}</span><span aria-hidden="true">·</span><time dateTime={date}>{new Intl.DateTimeFormat("en-US", {month:"short",day:"numeric",year:"numeric"}).format(new Date(date))}</time><span aria-hidden="true">·</span><span>{readingTime(entry.article.estimatedWords)} min read</span></p>}
+              <Link className={styles.read} href={entry.href}>{entry.article ? "Read article" : "Read preview"} <ArrowUpRight size={16} aria-hidden="true"/></Link>
+            </div>
+          </article>
+        })}
+        {!filtered.length && <div className={styles.empty}><p>No articles match your search.</p><button type="button" onClick={() => {setQuery("");setCategory("all")}}>Show everything</button></div>}
+        <footer className={styles.tools}><Link href="/learn/submit" className={styles.read}>Submit an article <ArrowUpRight size={15} aria-hidden="true" /></Link><LearnThemeToggle /></footer>
+      </section>
+
+      <aside className={styles.aside} aria-label="More from Michelle">
+        <section className={styles.book}>
+          <p className={styles.eyebrow}>My book</p>
+          <h2><Link href="/girly-guide-to-ai">The Girly Guide to AI</Link></h2>
+          <Link href="/girly-guide-to-ai" className={styles.bookCover} aria-label="Preview The Girly Guide to AI"><img src="/books/girly-guide-to-ai/cover.webp" alt="The Girly Guide to Artificial Intelligence book cover" width="1025" height="1600" /></Link>
+          <p className={styles.asideDescription}>{guideEntry.dek}</p>
+          <Link href="/girly-guide-to-ai" className={styles.read}>Read preview <ArrowUpRight size={16} aria-hidden="true" /></Link>
+        </section>
+        <section className={styles.magazine}>
+          <p className={styles.eyebrow}>Michelle’s Computer</p>
+          <h2><Link href="/magazine">The magazine</Link></h2>
+          <Link href="/magazine" className={styles.magazineArt} aria-label="Discover the magazine"><span aria-hidden="true" /></Link>
+          <p className={styles.asideDescription}>An artsy magazine about AI and learning—with comics, diary entries, and handwritten pages.</p>
+          <Link href="/magazine" className={styles.read}>Join the waitlist <ArrowUpRight size={16} aria-hidden="true" /></Link>
+        </section>
+      </aside>
+    </div>
   </main>
 }
