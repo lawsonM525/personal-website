@@ -1,6 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
-import { ArrowUpRight, Bookmark, Sparkles } from "lucide-react"
+import { ArrowUpRight, Bookmark, Sparkles } from "@/components/retro-icons"
 import { ArticleHeader } from "@/components/learn/article-header"
 import { RetroWindow } from "@/components/learn/retro-window"
 import { findsArticle, findsPath, michellesFinds } from "@/lib/michelles-finds"

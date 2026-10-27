@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Mouse_Memoirs } from "next/font/google";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink } from "@/components/retro-icons";
 import { ChalkTrail } from "../openai/chalk-trail";
 import { ReleaseWordMap } from "../openai/release-word-map";
 import { featuredReelSections, type FeaturedReel } from "../openai/reels";

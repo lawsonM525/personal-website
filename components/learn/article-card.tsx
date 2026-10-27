@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { ArrowUpRight, Clock3 } from "lucide-react"
+import { ArrowUpRight, Clock3 } from "@/components/retro-icons"
 import { stegaClean } from "@sanity/client/stega"
 import { categoryLabels, type LearnArticleCard, readingTime } from "@/sanity/lib/types"
 

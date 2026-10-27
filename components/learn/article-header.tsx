@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { ArrowLeft, Clock3 } from "lucide-react"
+import { ArrowLeft, Clock3 } from "@/components/retro-icons"
 import { LearnThemeToggle } from "./learn-theme"
 
 type ArticleHeaderProps = {

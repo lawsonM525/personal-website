@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { useEffect, useRef, useState } from "react"
 import { usePathname, useRouter } from "next/navigation"
-import { ArrowLeft, FileText, FolderOpen, Grid2X2, Search } from "lucide-react"
+import { ArrowLeft, BookOpen, Briefcase, FileText, FolderOpen, Grid2X2, MessageSquare, Search } from "@/components/retro-icons"
 import { HomeHeader, WindowBar } from "./home-desktop"
 
 const routeTitles: Record<string, string> = {
@@ -24,6 +24,7 @@ export function ComputerPageShell({ children }: { children: React.ReactNode }) {
   const path = usePathname()
   const router = useRouter()
   const isGuide = path === "/girly-guide-to-ai"
+  const PageIcon = isGuide || path.startsWith("/learn") ? BookOpen : path.startsWith("/projects") ? Briefcase : path === "/feedback" ? MessageSquare : FileText
   const content = useRef<HTMLDivElement>(null)
   const title = routeTitles[path] || (path.startsWith("/learn/") ? "Learn" : "Page")
   const parent = path.startsWith("/10apps/") ? { href:"/10apps", label:"Back to 10 Apps" } : path.startsWith("/projects/") || path === "/10apps" ? { href:"/projects", label:"Back to projects" } : path.startsWith("/learn/") || path === "/girly-guide-to-ai" ? { href:"/learn", label:"Back to Learn" } : { href:"/?desktop=1", label:"Michelle’s Computer" }
@@ -44,13 +45,13 @@ export function ComputerPageShell({ children }: { children: React.ReactNode }) {
     <a className="computer-skip" href="#computer-page-content">Skip to content</a>
     <HomeHeader />
     <div className="computer-page-workspace">
-      {minimized && <button type="button" className="computer-restore" data-computer-sound="open" onClick={restore}><FileText size={19} />Open {title}</button>}
+      {minimized && <button type="button" className="computer-restore" data-computer-sound="open" onClick={restore}><PageIcon size={32} />Open {title}</button>}
       <section data-computer-window hidden={minimized} className={`computer-page-window${maximized ? " computer-page-window-maximized" : ""}`} aria-label={`${title} window`}>
-        <WindowBar title={title} onMinimize={minimize} onMaximize={() => setMaximized(value => !value)} onClose={() => router.push("/?desktop=1")} maximized={maximized} />
+        <WindowBar title={title} icon={<PageIcon size={24} />} onMinimize={minimize} onMaximize={() => setMaximized(value => !value)} onClose={() => router.push("/?desktop=1")} maximized={maximized} />
         {!path.startsWith("/learn") && path !== "/girly-guide-to-ai" && <nav className="computer-page-toolbar" aria-label="Window navigation"><Link href={parent.href}><ArrowLeft size={13} />{parent.label}</Link><span>{title}</span><button type="button" data-computer-sound="open" onClick={search}><Search size={13} />Find a page</button></nav>}
         <div ref={content} id="computer-page-content" className="computer-page-content" data-page={path} data-guide-scroll-viewport={isGuide ? "" : undefined} tabIndex={isGuide ? 0 : undefined} role={isGuide ? "region" : undefined} aria-label={isGuide ? "Book reading area" : undefined}>{children}</div>
       </section>
     </div>
-    <div className="computer-page-taskbar" role="toolbar" aria-label="Desktop controls"><button type="button" className="computer-mobile-desktop" onClick={() => router.push("/?desktop=1")} aria-label="Show desktop"><Grid2X2 size={18}/><span>Desktop</span></button><button type="button" className="computer-page-explore" aria-label="Open Explorer" data-computer-sound="open" onClick={() => router.push("/explore")}><FolderOpen size={17} /><span>Explore</span></button><button type="button" className="computer-page-task" data-computer-sound="open" aria-pressed={!minimized} onClick={restore}><FileText size={16} /><span>{title}</span></button><time>{time || "—"}</time></div>
+    <div className="computer-page-taskbar" role="toolbar" aria-label="Desktop controls"><button type="button" className="computer-mobile-desktop" onClick={() => router.push("/?desktop=1")} aria-label="Show desktop"><Grid2X2 size={26}/><span>Desktop</span></button><button type="button" className="computer-page-explore" aria-label="Open Explorer" data-computer-sound="open" onClick={() => router.push("/explore")}><FolderOpen size={26} /><span>Explore</span></button><button type="button" className="computer-page-task" data-computer-sound="open" aria-pressed={!minimized} onClick={restore}><PageIcon size={26} /><span>{title}</span></button><time>{time || "—"}</time></div>
   </div>
 }

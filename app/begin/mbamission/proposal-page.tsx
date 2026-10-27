@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { ArrowRight, Check, ExternalLink } from "lucide-react";
+import { ArrowRight, Check, ExternalLink } from "@/components/retro-icons";
 import { ChalkTrail } from "../cursor/chalk-trail";
 import { PlayableReelCard } from "../cursor/playable-reel-card";
 import { ProposalSectionNav } from "../cursor/proposal-section-nav";

@@ -3,35 +3,35 @@
 .explorerWindow,.appWindow { padding:4px; border:1px solid #14293e; background:#d4d0c8; box-shadow:inset 1px 1px #fff,inset -1px -1px #827f72,4px 5px 0 #081b3638; }
 .explorerWindow { position:relative; max-width:1040px; min-height:540px; }
 .explorerWindow[hidden],.appWindow[hidden] { display:none!important; }
-.explorerWindow>[data-window-drag-handle],.appWindow>[data-window-drag-handle] { background:linear-gradient(90deg,#000080,#1084d0); font:700 13px/1.2 Tahoma,Arial,sans-serif; letter-spacing:0; }
-.addressBar { display:flex; align-items:center; gap:18px; padding:7px 9px; background:#d4d0c8; border-bottom:1px solid #a6a6a0; font:12px/1.4 Tahoma,Arial,sans-serif; }
+.explorerWindow>[data-window-drag-handle],.appWindow>[data-window-drag-handle] { background:linear-gradient(90deg,#000080,#1084d0); font:700 12px/16px sserife,Tahoma,Arial,sans-serif; letter-spacing:0; }
+.addressBar { display:flex; align-items:center; gap:18px; padding:7px 9px; background:#d4d0c8; border-bottom:1px solid #a6a6a0; font:12px/1.4 sserife,Tahoma,Arial,sans-serif; }
 .addressBar a { display:flex; align-items:center; gap:7px; white-space:nowrap; }
 .addressBar a:hover { text-decoration:underline; }
 .addressBar>span { flex:1; padding:5px 10px; border:1px solid #808080; box-shadow:inset 1px 1px #b8b8b8,1px 1px #fff; background:#fff; }
 .fileBrowser { display:grid; grid-template-columns:175px minmax(0,1fr); min-height:460px; background:#fff; border:1px solid #808080; box-shadow:inset 1px 1px #b8b8b8; }
 .sidebar { padding:16px 8px; border-right:1px solid #c2c2bd; background:#f2f1e9; }
-.sidebar button { display:flex; align-items:center; gap:7px; width:100%; min-height:40px; border:1px solid transparent; background:none; padding:6px 5px; text-align:left; font:12px/1.35 Tahoma,Arial,sans-serif!important; }
+.sidebar button { display:flex; align-items:center; gap:7px; width:100%; min-height:40px; border:1px solid transparent; background:none; padding:6px 5px; text-align:left; font:12px/1.35 sserife,Tahoma,Arial,sans-serif!important; }
 .sidebar button[aria-current=page] { border-color:#b3bfd2; background:#e1e8f2; color:#000080; font-weight:700!important; }
 .sidebar button:hover { background:#e8e8df; }
 .files { padding:21px 22px 25px; min-width:0; }
 .fileHeading { display:flex; justify-content:space-between; align-items:center; gap:18px; margin-bottom:25px; }
-.fileHeading h1 { font:700 23px/1.2 Tahoma,Arial,sans-serif; letter-spacing:-.5px!important; }
+.fileHeading h1 { font:700 24px/1 sserife,Tahoma,Arial,sans-serif; letter-spacing:-.5px!important; }
 .fileHeading label { display:flex; align-items:center; gap:7px; border:1px solid #999; box-shadow:inset 1px 1px #ddd; background:#fff; padding:7px 9px; max-width:210px; }
-.fileHeading input { width:100%; min-width:0; background:none; border:0; outline:none; font:12px Tahoma,Arial,sans-serif; color:#14293e; }
+.fileHeading input { width:100%; min-width:0; background:none; border:0; outline:none; font:12px sserife,Tahoma,Arial,sans-serif; color:#14293e; }
 .fileHeading label:focus-within { outline:2px solid #0848d5; outline-offset:2px; }
 .fileGroup { margin-bottom:24px; }
 .fileGroup:last-child { margin-bottom:0; }
-.fileGroup h2 { display:flex; align-items:center; gap:12px; font:11px/1.4 Tahoma,Arial,sans-serif!important; color:#5a6370; margin:0 0 11px!important; }
+.fileGroup h2 { display:flex; align-items:center; gap:12px; font:12px/16px sserife,Tahoma,Arial,sans-serif!important; color:#5a6370; margin:0 0 11px!important; }
 .fileGroup h2::after { content:""; flex:1; border-top:1px solid #e2e2dd; }
 .fileGrid { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:12px 10px; align-items:start; }
 .fileGrid>a,.fileGrid>button { display:flex; flex-direction:column; align-items:center; justify-content:flex-start; gap:7px; min-height:105px; padding:7px 3px; border:0!important; background:none!important; box-shadow:none!important; text-align:center; color:#14293e; font:inherit; min-width:0; }
-.fileGrid strong { display:block; max-width:100%; padding:2px 4px; font:400 13px/1.3 Tahoma,Arial,sans-serif; overflow-wrap:anywhere; }
+.fileGrid strong { display:block; max-width:100%; padding:2px 4px; font:400 12px/16px sserife,Tahoma,Arial,sans-serif; overflow-wrap:anywhere; }
 .fileGrid img { margin:0; }
 .fileGrid :is(a,button):hover strong { background:#000080; color:#fff; }
 .fileGrid :is(a,button):focus-visible { outline:1px dotted #000!important; outline-offset:-2px; }
 .fileGrid :is(a,button):focus-visible strong { background:#000080; color:#fff; }
-.statusBar { display:flex; justify-content:space-between; gap:12px; background:#d4d0c8; border-top:1px solid #fff; box-shadow:inset 0 1px #aaa; padding:7px 10px; font:11px/1.3 Tahoma,Arial,sans-serif; color:#42474d; }
-.noResults { font:13px/1.7 Tahoma,Arial,sans-serif; }
+.statusBar { display:flex; justify-content:space-between; gap:12px; background:#d4d0c8; border-top:1px solid #fff; box-shadow:inset 0 1px #aaa; padding:7px 10px; font:12px/16px sserife,Tahoma,Arial,sans-serif; color:#42474d; }
+.noResults { font:13px/1.7 sserife,Tahoma,Arial,sans-serif; }
 .noResults button { border:0; background:none; color:#0848d5; text-decoration:underline; }
 
 .appWindow{position:absolute;top:62px;right:35px;width:min(650px,calc(100% - 64px));max-height:calc(100dvh - var(--computer-header-height,52px) - 125px);display:flex;flex-direction:column}.appWindow>:first-child{flex-shrink:0}.appBody{min-height:0;overflow:auto;overscroll-behavior:contain;background:#faf7ed}.backToExplorer{display:none}.maximized{position:absolute;inset:12px 14px 20px!important;max-width:none!important;width:auto!important;max-height:none!important;min-height:0!important;display:flex;flex-direction:column;}.maximized .fileBrowser{min-height:0;overflow:auto;flex:1}.maximized .appBody{flex:1}.restore{display:flex;align-items:center;gap:9px;background:#faf7ed;border:1px solid #14293e;padding:15px;font:17px Georgia,serif!important}
@@ -46,9 +46,9 @@
 @media(min-width:761px){.paintWindow{top:36px;right:24px;width:min(940px,calc(100% - 48px))}}
 @media(min-width:761px){.paintWindow{max-height:calc(100dvh - var(--computer-header-height,52px) - 88px)}}
 
-.mobileDesktopButton{display:none!important}
+.mobileDesktopButton{display:flex!important}
 @media(max-width:760px){
- .desktop{height:var(--computer-viewport-height,100dvh);min-height:0;padding-bottom:var(--computer-dock-height);display:flex;flex-direction:column;overflow:hidden}.desktop>div:first-of-type{flex-shrink:0}.workspace{flex:1;min-height:0;width:100%;margin:0;padding:8px;overflow:hidden}.explorerWindow,.appWindow.activeApp:not([hidden]),.explorerWindow.maximized,.appWindow.maximized{position:absolute!important;inset:8px!important;width:auto!important;height:auto;max-height:none;padding:3px;display:flex;flex-direction:column;overflow:hidden}.explorerWindow.inactiveExplorer{display:none}.explorerWindow>[data-window-drag-handle],.appWindow>[data-window-drag-handle]{flex-shrink:0;font-size:15px}.appBody{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain}.paintWindow .appBody{overflow:hidden}.backToExplorer{display:none}.fileBrowser{display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden}.sidebar{flex-shrink:0;flex-wrap:nowrap;overflow-x:auto;padding:4px 6px;gap:4px}.sidebar button{flex-shrink:0;min-height:44px;font-size:11px!important;padding:6px;white-space:nowrap}.sidebar button img{width:18px;height:18px}.files{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:15px 12px}.fileHeading{display:flex;flex-direction:column;align-items:stretch;gap:10px;margin-bottom:20px}.fileHeading h1{font-size:22px;margin:0}.fileHeading label{min-height:44px;padding:8px}.fileGrid{gap:12px 3px}.fileGrid>a,.fileGrid>button{min-height:100px;padding:4px 1px}.fileGrid strong{font-size:12px}.addressBar{min-height:44px;flex-shrink:0;padding:4px 8px;font-size:10px;gap:8px}.addressBar a{min-height:36px}.statusBar{flex-shrink:0;padding:6px 8px}.statusBar>span{font-size:10px}.taskbar{height:var(--computer-dock-height);padding:4px 6px calc(4px + env(safe-area-inset-bottom));gap:4px}.taskbar .mobileDesktopButton{display:flex!important}.taskbar button,.taskbar button:not(:first-child){flex:1;min-width:0;min-height:48px;padding:4px 2px;gap:3px;flex-direction:column;font:11px/1.2 Arial,sans-serif!important}.taskbar .exploreButton{padding:4px 2px}.taskbar button>span{max-width:100%}.terminal{height:100%;min-height:0;display:flex;flex-direction:column}.terminalOutput{height:auto;min-height:90px;flex:1}.terminal form button,.terminalHints button{min-height:44px}.gameToolbar button,.appActions button{min-height:44px}.mineBoard{width:min(100%,290px);margin-top:12px}.mineBoard button{min-height:40px}.minesweeper .gameStatus{min-height:30px;margin:8px auto!important}.minesweeper>p{font-size:12px;margin:10px auto!important}
+ .desktop{height:var(--computer-viewport-height,100dvh);min-height:0;padding-bottom:var(--computer-dock-height);display:flex;flex-direction:column;overflow:hidden}.desktop>div:first-of-type{flex-shrink:0}.workspace{flex:1;min-height:0;width:100%;margin:0;padding:8px;overflow:hidden}.explorerWindow,.appWindow.activeApp:not([hidden]),.explorerWindow.maximized,.appWindow.maximized{position:absolute!important;inset:8px!important;width:auto!important;height:auto;max-height:none;padding:3px;display:flex;flex-direction:column;overflow:hidden}.explorerWindow.inactiveExplorer{display:none}.explorerWindow>[data-window-drag-handle],.appWindow>[data-window-drag-handle]{flex-shrink:0;font-size:12px}.appBody{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain}.paintWindow .appBody{overflow:hidden}.backToExplorer{display:none}.fileBrowser{display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden}.sidebar{flex-shrink:0;flex-wrap:nowrap;overflow-x:auto;padding:4px 6px;gap:4px}.sidebar button{flex-shrink:0;min-height:44px;font-size:11px!important;padding:6px;white-space:nowrap}.sidebar button img{width:18px;height:18px}.files{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:15px 12px}.fileHeading{display:flex;flex-direction:column;align-items:stretch;gap:10px;margin-bottom:20px}.fileHeading h1{font-size:24px;margin:0}.fileHeading label{min-height:44px;padding:8px}.fileGrid{gap:12px 3px}.fileGrid>a,.fileGrid>button{min-height:100px;padding:4px 1px}.fileGrid strong{font-size:12px}.addressBar{min-height:44px;flex-shrink:0;padding:4px 8px;font-size:10px;gap:8px}.addressBar a{min-height:36px}.statusBar{flex-shrink:0;padding:6px 8px}.statusBar>span{font-size:10px}.taskbar{height:var(--computer-dock-height);padding:4px 6px calc(4px + env(safe-area-inset-bottom));gap:4px}.taskbar .mobileDesktopButton{display:flex!important}.taskbar button,.taskbar button:not(:first-child){flex:1;min-width:0;min-height:48px;padding:4px 2px;gap:3px;flex-direction:column;font:11px/1.2 Arial,sans-serif!important}.taskbar .exploreButton{padding:4px 2px}.taskbar button>span{max-width:100%}.terminal{height:100%;min-height:0;display:flex;flex-direction:column}.terminalOutput{height:auto;min-height:90px;flex:1}.terminal form button,.terminalHints button{min-height:44px}.gameToolbar button,.appActions button{min-height:44px}.mineBoard{width:min(100%,290px);margin-top:12px}.mineBoard button{min-height:40px}.minesweeper .gameStatus{min-height:30px;margin:8px auto!important}.minesweeper>p{font-size:12px;margin:10px auto!important}
 }
 
 .mobileFolderLabel{display:none}
@@ -64,3 +64,6 @@
  .minesweeper{grid-template-columns:minmax(180px,1fr) auto;gap:8px 18px;align-items:center}.minesweeper .gameToolbar{display:flex;grid-column:1;grid-row:1;justify-content:flex-start;gap:18px}.minesweeper .appActions{display:flex;grid-column:1;grid-row:2;justify-content:flex-start;margin:0}.mineBoard{grid-column:2;grid-row:1 / span 3;width:calc(var(--computer-viewport-height,100dvh) - var(--computer-dock-height) - 88px)}.mineBoard button{min-height:0}.minesweeper .gameStatus{grid-column:1;grid-row:3;text-align:left;max-width:350px}
 }
 @media(max-width:760px){.terminal input{min-height:44px}}
+
+/* Leave the desktop shortcuts in place while Explorer and programs are open. */
+@media(min-width:761px){.explorerWindow:not(.maximized){margin-left:160px;max-width:calc(100% - 160px)}}

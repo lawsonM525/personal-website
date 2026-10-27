@@ -14,8 +14,8 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image", title: "Michelle’s Computer", images: ["https://michellescomputer.com/opengraph-image"] },
 }
 
-export default async function Home({ searchParams }: { searchParams: Promise<{ desktop?: string | string[] }> }) {
+export default async function Home({ searchParams }: { searchParams: Promise<{ desktop?: string | string[]; letter?: string | string[] }> }) {
   const query = await searchParams
-  return <HomeDesktop startOnDesktop={query.desktop === "1"} />
+  return <HomeDesktop startOnDesktop={query.desktop === "1"} openLetter={query.letter === "1"} />
 }
 

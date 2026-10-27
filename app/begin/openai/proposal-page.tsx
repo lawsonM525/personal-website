@@ -8,7 +8,7 @@ import {
   Plus,
   Repeat2,
   TrendingUp,
-} from "lucide-react";
+} from "@/components/retro-icons";
 import { ChalkTrail } from "./chalk-trail";
 import { ProposalSectionNav } from "./proposal-section-nav";
 import { ReleaseWordMap } from "./release-word-map";

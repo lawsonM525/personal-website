@@ -1,6 +1,6 @@
 import { Fragment } from "react"
 import artwork from "@/data/books/girly-guide-ai.art.json"
-import { ArrowDown, ArrowUpRight, BookOpen, FileText } from "lucide-react"
+import { ArrowDown, ArrowUpRight, BookOpen, FileText } from "@/components/retro-icons"
 import { GuideReader } from "@/components/books/guide-reader"
 import { aiGuidePath, aiGuidePurchaseUrl, aiGuideRecoveryUrl, type GuidePage } from "@/lib/ai-guide"
 import { getAiGuide } from "@/lib/ai-guide.server"
@@ -47,10 +47,10 @@ export default async function AiGuidePage({ searchParams }: { searchParams: Prom
       </figure>
       <div className={styles.coverControls}>
         <p className={styles.bookFacts}>{book.pageCount} illustrated pages <span>·</span> 12 chapters</p>
-        <div className={styles.heroActions}><a className={styles.readButton} href="#guide-introduction"><BookOpen size={17} />Start reading <ArrowDown size={16} /></a><a className={styles.getButton} href={aiGuidePurchaseUrl} target="_blank" rel="noopener noreferrer">Get the full guide <ArrowUpRight size={15} /></a></div>
+        <div className={styles.heroActions}><a className={styles.readButton} href="#guide-introduction"><BookOpen size={26} />Start reading <ArrowDown size={16} /></a><a className={styles.getButton} href={aiGuidePurchaseUrl} target="_blank" rel="noopener noreferrer">Get the full guide <ArrowUpRight size={15} /></a></div>
       </div>
     </section>
-    {!fullText && <aside className={styles.previewNote} aria-label="About this reading preview"><FileText size={20} aria-hidden="true" /><div><strong>A little look inside.</strong><p>The opening is yours to read. From section 1.3 onward, the preview gradually turns into scrambled text. Get the full guide to read every page without the scrambling.</p></div><a href={aiGuidePurchaseUrl} target="_blank" rel="noopener noreferrer">Get the full guide <ArrowUpRight size={14} /></a></aside>}
+    {!fullText && <aside className={styles.previewNote} aria-label="About this reading preview"><FileText size={28} aria-hidden="true" /><div><strong>A little look inside.</strong><p>The opening is yours to read. From section 1.3 onward, the preview gradually turns into scrambled text. Get the full guide to read every page without the scrambling.</p></div><a href={aiGuidePurchaseUrl} target="_blank" rel="noopener noreferrer">Get the full guide <ArrowUpRight size={14} /></a></aside>}
     <GuideReader chapters={chapters} fullText={fullText}>
       {book.chapters.map(chapter => <section id={`guide-${chapter.id}`} key={chapter.id} className={styles.chapter} data-guide-chapter={chapter.id}>
         {!fullText && chapter.number >= 2 && chapter.number <= 12 && chapter.number % 2 === 0 && <GuidePurchaseBanner id={`guide-preview-${chapter.id}`} />}

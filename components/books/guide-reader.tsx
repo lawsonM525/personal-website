@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
-import { ArrowUp, ArrowUpRight, ChevronDown, List, Maximize2, Minimize2, Minus, Plus } from "lucide-react"
+import { ArrowUp, ArrowUpRight, ChevronDown, List, Maximize2, Minimize2, Minus, Plus } from "@/components/retro-icons"
 import { aiGuidePurchaseUrl } from "@/lib/ai-guide"
 import styles from "./guide.module.css"
 

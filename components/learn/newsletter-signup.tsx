@@ -1,6 +1,6 @@
 "use client"
 
-import { ArrowUpRight } from "lucide-react"
+import { ArrowUpRight } from "@/components/retro-icons"
 import { signupForms } from "@/components/homepage/signup-config"
 
 export function NewsletterSignup() {

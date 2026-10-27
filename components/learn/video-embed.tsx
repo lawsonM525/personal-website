@@ -1,4 +1,4 @@
-import { ExternalLink } from "lucide-react";
+import { ExternalLink } from "@/components/retro-icons";
 import { stegaClean } from "@sanity/client/stega";
 import { RetroWindow } from "@/components/learn/retro-window";
 

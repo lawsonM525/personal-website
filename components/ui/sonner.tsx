@@ -2,6 +2,7 @@
 
 import { useTheme } from "next-themes"
 import { Toaster as Sonner } from "sonner"
+import { Check, Clock3, Flag, Info, X } from "@/components/retro-icons"
 
 type ToasterProps = React.ComponentProps<typeof Sonner>
 
@@ -12,6 +13,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
     <Sonner
       theme={theme as ToasterProps["theme"]}
       className="toaster group"
+      icons={{ success: <Check size={20} />, info: <Info size={20} />, warning: <Flag size={20} />, error: <X size={18} />, loading: <Clock3 size={20} /> }}
       toastOptions={{
         classNames: {
           toast:

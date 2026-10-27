@@ -3,7 +3,7 @@
 import Link from "next/link"
 import Script from "next/script"
 import { useEffect, useId, useRef, useState } from "react"
-import { FileText, FolderOpen, Grid2X2 } from "lucide-react"
+import { FileText, FolderOpen, Grid2X2 } from "@/components/retro-icons"
 import { isTallyReadyEvent, shouldRetryEmbed } from "@/lib/tally-embed"
 import { WindowBar } from "./window-bar"
 import { penpalDeliveryNote, signupForms } from "./signup-config"
@@ -123,7 +123,7 @@ export function SignupWindow({ kind, onClose, onSwitch, startOpen = true, active
   return <section data-computer-window ref={windowRef} className={`${styles.formWindow} ${styles.signupWindow} ${maximized ? styles.formWindowMaximized : ""}`} aria-labelledby={headingId}>
     <WindowBar title={title} onMinimize={() => { setMinimized(true); setMaximized(false) }} onMaximize={() => { setMaximized(value => !value); setMinimized(false) }} onClose={onClose} maximized={maximized} />
     <h1 id={headingId} className={styles.srOnly}>{magazine ? "The magazine waitlist" : "Wanna be pen pals?"}</h1>
-    {minimized && <button type="button" className={styles.formRestore} data-computer-sound="open" onClick={() => setMinimized(false)}><FileText size={19} aria-hidden="true" />Restore {title}</button>}
+    {minimized && <button type="button" className={styles.formRestore} data-computer-sound="open" onClick={() => setMinimized(false)}><FileText size={24} aria-hidden="true" />Restore {title}</button>}
     <div hidden={minimized}>
       <div className={styles.windowMenu}><Link href="/?desktop=1" onClick={onSwitch ? event => { event.preventDefault(); onClose() } : undefined}>My computer</Link><span>{magazine ? "Magazine waitlist" : "The little post office"}</span><Link href={other.pagePath} onClick={onSwitch ? event => { event.preventDefault(); onSwitch(otherKind) } : undefined}>{magazine ? "Pen pals" : "Magazine"} →</Link></div>
       {formOpen && <div id={recoveryId} className={`${styles.formFallback} ${styles.formRecovery}`}>
@@ -141,6 +141,6 @@ export function SignupWindow({ kind, onClose, onSwitch, startOpen = true, active
       </div>}
       <div className={styles.statusBar}><span>{magazine ? "The magazine waitlist" : "Pen pal interest signup"}</span><span className={styles.resizeGrip} aria-hidden="true" /></div>
     </div>
-    <nav className={styles.signupDock} aria-label="Desktop controls"><Link href="/?desktop=1"><Grid2X2 size={19}/><span>Desktop</span></Link><Link href="/explore"><FolderOpen size={20}/><span>Explore</span></Link><button type="button" aria-pressed={!minimized} onClick={() => setMinimized(false)}><FileText size={19}/><span>{magazine ? "Magazine" : "Pen pals"}</span></button></nav>
+    <nav className={styles.signupDock} aria-label="Desktop controls"><Link href="/?desktop=1"><Grid2X2 size={24}/><span>Desktop</span></Link><Link href="/explore"><FolderOpen size={24}/><span>Explore</span></Link><button type="button" aria-pressed={!minimized} onClick={() => setMinimized(false)}><FileText size={24}/><span>{magazine ? "Magazine" : "Pen pals"}</span></button></nav>
   </section>
 }

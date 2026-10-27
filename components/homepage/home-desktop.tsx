@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { useEffect, useMemo, useRef, useState } from "react"
-import { ArrowRight, ArrowUpRight, Clock3, FileText, FolderOpen, Grid2X2, Mail, Menu, RotateCcw, Search, X } from "lucide-react"
+import { ArrowRight, ArrowUpRight, Clock3, FileText, FolderOpen, Grid2X2, Mail, Menu, RotateCcw, Search, X } from "@/components/retro-icons"
 import { ProfileMark } from "./profile-mark"
 import { ComputerSoundToggle } from "./computer-sounds"
 import { BootScreen, restartComputer } from "./boot-screen"
@@ -74,9 +74,9 @@ export function HomeHeader() {
         <div className={styles.headerActions}>
           <ComputerSoundToggle/>
           <button type="button" className={styles.restartButton} aria-label="Restart the computer" title="Restart" data-computer-sound="startup" onClick={()=>restartComputer(router.push)}><RotateCcw size={19} aria-hidden="true"/></button>
-          <a className={styles.emailShortcut} href={contactHref} aria-label={`Email Michelle at ${contactEmail}`} title="Email Michelle"><Mail size={19} aria-hidden="true"/></a>
-          <button type="button" className={styles.searchButton} aria-label="Search pages" data-computer-sound="open" onClick={()=>{setQuery("");setSearchOpen(true)}}><Search size={17} aria-hidden="true"/><span>Search</span><kbd>⌘ K</kbd></button>
-          <button type="button" className={styles.mobileMenuButton} aria-label={menuOpen?"Close navigation":"Open navigation"} aria-expanded={menuOpen} aria-controls="mobile-site-navigation" onClick={()=>setMenuOpen(value=>!value)}>{menuOpen?<X size={22}/>:<Menu size={22}/>}</button>
+          <a className={styles.emailShortcut} href={contactHref} aria-label={`Email Michelle at ${contactEmail}`} title="Email Michelle"><Mail size={24} aria-hidden="true"/></a>
+          <button type="button" className={styles.searchButton} aria-label="Search pages" data-computer-sound="open" onClick={()=>{setQuery("");setSearchOpen(true)}}><Search size={26} aria-hidden="true"/><span>Search</span><kbd>⌘ K</kbd></button>
+          <button type="button" className={styles.mobileMenuButton} aria-label={menuOpen?"Close navigation":"Open navigation"} aria-expanded={menuOpen} aria-controls="mobile-site-navigation" onClick={()=>setMenuOpen(value=>!value)}>{menuOpen?<X size={22}/>:<Menu size={26}/>}</button>
         </div>
         {menuOpen&&<nav id="mobile-site-navigation" className={styles.mobileNav} aria-label="Mobile navigation">{mainLinks.map(item=><Link key={item.href} href={item.href} onClick={()=>setMenuOpen(false)}><span>{item.label}</span><ArrowUpRight size={17} aria-hidden="true"/></Link>)}<Link href="/research">Research</Link><Link href="/talks">Talks</Link><Link href="/posts">Posts</Link><a href={contactHref}>Email Michelle</a><button type="button" onClick={()=>{setMenuOpen(false);restartComputer(router.push)}}>Restart computer</button></nav>}
       </header>
@@ -110,9 +110,9 @@ const folders = [
   { kind: "penpals" as const, title: "Pen pals", description: "Want to be pen pals?", action: "Sign up to be pen pals", href: signupForms.penpals.pagePath },
 ]
 
-export default function HomeDesktop({ startOnDesktop = false }: { startOnDesktop?: boolean }) {
+export default function HomeDesktop({ startOnDesktop = false, openLetter = false }: { startOnDesktop?: boolean; openLetter?: boolean }) {
   const router = useRouter()
-  const [welcomeState, setWelcomeState] = useState<"open" | "minimized" | "closed">(startOnDesktop ? "minimized" : "open")
+  const [welcomeState, setWelcomeState] = useState<"open" | "minimized" | "closed">(startOnDesktop && !openLetter ? "minimized" : "open")
   const [contactOpen, setContactOpen] = useState(false)
   const [maximized, setMaximized] = useState(false)
   const [activeWindow, setActiveWindow] = useState<"welcome" | "contact">("welcome")
@@ -123,8 +123,8 @@ export default function HomeDesktop({ startOnDesktop = false }: { startOnDesktop
   useEffect(() => { function tick() { setTime(new Intl.DateTimeFormat(undefined, { hour: "numeric", minute: "2-digit" }).format(new Date())) }; tick(); const timer = setInterval(tick, 60000); return () => clearInterval(timer) }, [])
 
   useEffect(() => {
-    if (startOnDesktop) { setWelcomeState("minimized"); setContactOpen(false); setMaximized(false) }
-  }, [startOnDesktop])
+    if (startOnDesktop) { setWelcomeState(openLetter ? "open" : "minimized"); setContactOpen(false); setMaximized(false) }
+  }, [startOnDesktop, openLetter])
   function showDesktop() {
     if (welcomeState !== "closed") setWelcomeState("minimized")
     setContactOpen(false); setMaximized(false)
@@ -185,6 +185,6 @@ export default function HomeDesktop({ startOnDesktop = false }: { startOnDesktop
         </section>}
       </div>
     </main>
-    <div className={styles.taskbar} role="toolbar" aria-label="Desktop controls"><button type="button" className={styles.mobileDesktopButton} onClick={showDesktop} aria-label="Show desktop"><Grid2X2 size={19} aria-hidden="true"/><span>Desktop</span></button><button type="button" className={styles.startButton} aria-label="Open Explorer" data-computer-sound="open" onClick={() => router.push("/explore")}><FolderOpen size={19} aria-hidden="true" /><span>Explore</span></button>{welcomeState !== "closed" && <button ref={letterTask} type="button" className={styles.taskButton} data-computer-sound="open" aria-pressed={welcomeOpen && activeWindow === "welcome"} onClick={restoreWelcome}><FileText size={16} aria-hidden="true" /><span>Dear Internet,</span></button>}<button type="button" className={styles.taskButton} data-computer-sound="open" aria-pressed={contactOpen && activeWindow === "contact"} onClick={() => { setContactOpen(true); setActiveWindow("contact") }}><Mail size={16} aria-hidden="true" /><span>Keep in touch</span></button><span className={styles.clock}><Clock3 size={13} aria-hidden="true" />{time || "—"}</span></div>
+    <div className={styles.taskbar} role="toolbar" aria-label="Desktop controls"><button type="button" className={styles.mobileDesktopButton} onClick={showDesktop} aria-label="Show desktop"><Grid2X2 size={24} aria-hidden="true"/><span>Desktop</span></button><button type="button" className={styles.startButton} aria-label="Open Explorer" data-computer-sound="open" onClick={() => router.push("/explore")}><FolderOpen size={24} aria-hidden="true" /><span>Explore</span></button>{welcomeState !== "closed" && <button ref={letterTask} type="button" className={styles.taskButton} data-computer-sound="open" aria-pressed={welcomeOpen && activeWindow === "welcome"} onClick={restoreWelcome}><FileText size={24} aria-hidden="true" /><span>Dear Internet,</span></button>}<button type="button" className={styles.taskButton} data-computer-sound="open" aria-pressed={contactOpen && activeWindow === "contact"} onClick={() => { setContactOpen(true); setActiveWindow("contact") }}><Mail size={24} aria-hidden="true" /><span>Keep in touch</span></button><span className={styles.clock}><Clock3 size={13} aria-hidden="true" />{time || "—"}</span></div>
   </div></BootScreen>
 }

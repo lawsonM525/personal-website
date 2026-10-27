@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { Settings } from 'lucide-react'
+import { Settings } from '@/components/retro-icons'
 import profileImage from "@/assets/michelle-pink.jpeg"
 import {
   Tooltip,

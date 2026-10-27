@@ -1,7 +1,7 @@
 "use client"
 
 import { createContext, useContext, useEffect, useState } from "react"
-import { Moon, Sun } from "lucide-react"
+import { Moon, Sun } from "@/components/retro-icons"
 
 type LearnTheme = "light" | "dark"
 

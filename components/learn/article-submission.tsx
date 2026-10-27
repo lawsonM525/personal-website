@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { useId, useState } from "react"
-import { ArrowLeft, ArrowUpRight } from "lucide-react"
+import { ArrowLeft, ArrowUpRight } from "@/components/retro-icons"
 import { TallyForm } from "@/components/homepage/signup-window"
 import styles from "@/components/homepage/home.module.css"
 

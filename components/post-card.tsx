@@ -1,7 +1,7 @@
 import Image from "next/image"
 import { Badge } from "@/components/ui/badge"
 import { Card } from "@/components/ui/card"
-import { Eye, MessageSquare } from 'lucide-react'
+import { Eye, MessageSquare } from '@/components/retro-icons'
 
 interface PostCardProps {
   title: string

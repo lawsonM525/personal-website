@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { useRouter } from "next/navigation"
-import { FileText, Mail, Home, User, Briefcase, BookOpen, Mic, Book } from 'lucide-react'
+import { FileText, Mail, Home, User, Briefcase, BookOpen, Mic, Book } from '@/components/retro-icons'
 import {
   CommandDialog,
   CommandEmpty,

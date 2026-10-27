@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { useMemo, useState } from "react"
-import { ArrowUpRight, Search } from "lucide-react"
+import { ArrowUpRight, Search } from "@/components/retro-icons"
 import { stegaClean } from "@sanity/client/stega"
 import { categoryLabels, readingTime, type LearnArticleCard } from "@/sanity/lib/types"
 import { LearnThemeToggle } from "./learn-theme"

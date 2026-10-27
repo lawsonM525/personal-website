@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Check, Copy } from "lucide-react";
+import { Check, Copy } from "@/components/retro-icons";
 
 export function CopyCodeButton({ value }: { value: string }) {
   const [copied, setCopied] = useState(false);

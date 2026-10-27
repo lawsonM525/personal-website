@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { Mail, Github, Linkedin, Instagram } from 'lucide-react'
+import { Mail, Github, Linkedin, Instagram } from '@/components/retro-icons'
 import { useState } from "react"
 import { links, LinkNames } from "@/data/links"
 import { EmailPopup } from "@/components/email-popup"

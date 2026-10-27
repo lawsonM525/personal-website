@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { ChevronLeft, ChevronRight, ZoomIn, ZoomOut } from "lucide-react"
+import { ChevronLeft, ChevronRight, ZoomIn, ZoomOut } from "@/components/retro-icons"
 
 export function ProjectPdfReader() {
   const [page,setPage]=useState(1)
