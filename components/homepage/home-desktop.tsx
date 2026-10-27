@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { useEffect, useMemo, useRef, useState } from "react"
-import { ArrowRight, ArrowUpRight, Clock3, FileText, FolderOpen, Grid2X2, Mail, Menu, RotateCcw, Search, X } from "@/components/retro-icons"
+import { ArrowDown, ArrowRight, ArrowUpRight, Clock3, FileText, FolderOpen, Grid2X2, Mail, Menu, RotateCcw, Search, X } from "@/components/retro-icons"
 import { ProfileMark } from "./profile-mark"
 import { ComputerSoundToggle } from "./computer-sounds"
 import { BootScreen, restartComputer } from "./boot-screen"
@@ -11,6 +11,7 @@ import { contactEmail, contactHref } from "./contact-config"
 import { signupForms } from "./signup-config"
 import { WindowBar } from "./window-bar"
 import { ExplorerIcon } from "@/components/explore/explorer-icon"
+import { WelcomeStory } from "./welcome-story"
 import styles from "./home.module.css"
 
 const pages = [
@@ -119,6 +120,8 @@ export default function HomeDesktop({ startOnDesktop = false, openLetter = false
   const [time, setTime] = useState("")
   const letterShortcut = useRef<HTMLButtonElement>(null)
   const letterTask = useRef<HTMLButtonElement>(null)
+  const welcomeScroll = useRef<HTMLDivElement>(null)
+  const welcomePosition = useRef(0)
   const welcomeOpen = welcomeState === "open"
   useEffect(() => { function tick() { setTime(new Intl.DateTimeFormat(undefined, { hour: "numeric", minute: "2-digit" }).format(new Date())) }; tick(); const timer = setInterval(tick, 60000); return () => clearInterval(timer) }, [])
 
@@ -126,17 +129,30 @@ export default function HomeDesktop({ startOnDesktop = false, openLetter = false
     if (startOnDesktop) { setWelcomeState(openLetter ? "open" : "minimized"); setContactOpen(false); setMaximized(false) }
   }, [startOnDesktop, openLetter])
   function showDesktop() {
+    if (welcomeScroll.current) welcomePosition.current = welcomeScroll.current.scrollTop
     if (welcomeState !== "closed") setWelcomeState("minimized")
     setContactOpen(false); setMaximized(false)
   }
   function restoreWelcome() {
     setWelcomeState("open"); setMaximized(false); setActiveWindow("welcome")
-    requestAnimationFrame(() => document.getElementById("home-title")?.focus({ preventScroll: true }))
+    requestAnimationFrame(() => {
+      welcomeScroll.current?.scrollTo({ top: welcomePosition.current, behavior: "instant" })
+      const target = welcomePosition.current ? welcomeScroll.current : document.getElementById("home-title")
+      target?.focus({ preventScroll: true })
+    })
   }
   function hideWelcome(state: "minimized" | "closed") {
+    welcomePosition.current = state === "closed" ? 0 : welcomeScroll.current?.scrollTop || 0
     setWelcomeState(state); setMaximized(false)
     if (contactOpen) setActiveWindow("contact")
     requestAnimationFrame(() => (state === "closed" ? letterShortcut : letterTask).current?.focus({ preventScroll: true }))
+  }
+  function readLetter() {
+    const viewport = welcomeScroll.current, story = document.getElementById("welcome-story")
+    if (viewport && story) {
+      viewport.scrollTo({ top: viewport.scrollTop + story.getBoundingClientRect().top - viewport.getBoundingClientRect().top, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" })
+      viewport.focus({ preventScroll: true })
+    }
   }
 
   return <BootScreen skipStartup={startOnDesktop}><div className={`${styles.site} ${styles.desktopSite}`}>
@@ -149,7 +165,7 @@ export default function HomeDesktop({ startOnDesktop = false, openLetter = false
         <span className={styles.shortcutHint}>{folder.kind === "magazine" ? "Join the waitlist" : folder.kind === "penpals" ? "Letters & emails" : folder.kind === "learn" ? "Guides & tutorials" : "Things I’m building"}</span>
       </Link>)}</nav>
       <div className={`${styles.workspace} ${maximized ? styles.workspaceMaximized : ""}`}>
-        {!welcomeOpen && <nav className={styles.desktopDocuments} aria-label="Desktop documents and programs">
+        <nav className={styles.desktopDocuments} aria-label="Desktop documents and programs">
           <button ref={letterShortcut} type="button" data-computer-sound="open" onClick={restoreWelcome} aria-label="Open Dear Internet,">
             <ExplorerIcon kind="penpals" size={80} />
             <span className={styles.shortcutLabel}>Dear Internet,</span>
@@ -162,9 +178,10 @@ export default function HomeDesktop({ startOnDesktop = false, openLetter = false
             <ExplorerIcon kind="paper" size={80} />
             <span className={styles.shortcutLabel}>My story</span>
           </Link>
-        </nav>}
+        </nav>
         {welcomeOpen ? <section data-computer-window className={`${styles.window} ${styles.welcomeWindow} ${activeWindow === "welcome" ? styles.activeWindow : ""}`} aria-labelledby="home-title" onPointerDown={() => setActiveWindow("welcome")} onFocusCapture={() => setActiveWindow("welcome")}>
           <WindowBar title="Dear Internet," onMinimize={() => hideWelcome("minimized")} onMaximize={() => setMaximized(value => !value)} onClose={() => hideWelcome("closed")} maximized={maximized} />
+          <div ref={welcomeScroll} className={styles.welcomeScroll} role="region" aria-label="Welcome and Michelle’s story" tabIndex={0}>
           <div className={styles.heroBody}>
             <div className={styles.heroCopy}>
               <h1 id="home-title" tabIndex={-1}>Welcome<br />to Michelle’s<br />Computer.</h1>
@@ -173,6 +190,9 @@ export default function HomeDesktop({ startOnDesktop = false, openLetter = false
             </div>
             <img className={styles.heroLetter} src="/homepage/welcome-letter-d.webp" width="1024" height="1024" alt="An open ivory envelope with blank paper and a blue botanical postage stamp." fetchPriority="high" />
           </div>
+          <WelcomeStory />
+          </div>
+          <div className={styles.welcomeStatus}><span>A little more about this corner of the internet</span><button type="button" onClick={readLetter}>Read my letter <ArrowDown size={12} /></button></div>
         </section> : null}
         {contactOpen && <section data-computer-window className={`${styles.window} ${styles.contactWindow} ${activeWindow === "contact" ? styles.activeWindow : ""}`} aria-labelledby="contact-title" onPointerDown={() => setActiveWindow("contact")} onFocusCapture={() => setActiveWindow("contact")}>
           <WindowBar title="Keep in touch" warm onMinimize={() => setContactOpen(false)} onClose={() => setContactOpen(false)} />

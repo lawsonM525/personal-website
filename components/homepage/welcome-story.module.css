@@ -1,0 +1,21 @@
+.story{position:relative;background:#faf7ed;padding:40px 38px 48px;border-top:1px solid #c3b9a5;color:#26374b}
+.letter{max-width:620px;margin:auto;font:16px/1.9 Arial,Helvetica,sans-serif}
+.story .letter .salutation{margin:0 0 18px;font:12px/16px sserife,Tahoma,Arial,sans-serif;color:#657080}
+.story .letter>h2{margin:0 0 28px;font:400 clamp(30px,3.2vw,40px)/1.15 'Times New Roman',Times,serif;letter-spacing:-1.2px;color:#121b2a}
+.story .letter>h3{margin:36px 0 20px;font:400 30px/1.15 'Times New Roman',Times,serif;letter-spacing:-.7px;color:#121b2a}
+.story .letter p{margin:0 0 22px}
+.story .letter a{color:#174d99;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px}
+.story .letter a:hover{color:#b54725}
+.story .letter a:focus-visible{outline:2px solid #ee591f;outline-offset:4px}
+.turn{display:flex;align-items:flex-start;gap:15px;padding:22px 0 5px;margin-top:6px;border-top:1px solid #d5cfc0}
+.turn img{margin-top:2px}
+.turn p{font-size:18px;line-height:1.75;color:#172e4c}
+.play{display:flex;align-items:flex-start;gap:17px;padding:23px 0 5px;margin:30px 0;border-top:1px dashed #a1a9ab;border-bottom:1px dashed #a1a9ab}
+.play>img{margin-top:1px}
+.play p:first-child{font-weight:700;margin-bottom:10px}
+.story .letter .invitation{margin-top:30px;color:#121b2a}
+.story .letter .signoff{margin:26px 0 0;font-size:14px}
+.signoff span{display:block;margin-top:9px;color:#1b527f;font:40px/1.3 'Michelle Hand Web',cursive}
+@media(max-width:760px){.story{padding:30px 23px 36px}.letter{font-size:16px;line-height:1.85}.story .letter>h2{font-size:31px;letter-spacing:-.7px}.story .letter>h3{font-size:28px}.turn{gap:10px}.turn img{width:36px;height:36px}.turn p{font-size:17px}.play{gap:12px}.play>img{width:40px;height:40px}.story .letter p{margin-bottom:20px}}
+
+@media(max-width:760px){.play{display:block}.play>img{float:left;margin:0 12px 8px 0}.play>div>p:first-child{min-height:54px;padding-top:2px;margin-bottom:12px}.play>div>p+p{clear:both}}

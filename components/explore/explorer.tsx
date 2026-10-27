@@ -50,7 +50,9 @@ export default function Explorer() {
     setMinimized(previous => previous.filter(value => value !== id)); setActive(id)
   }
   useEffect(() => {
-    const id = new URLSearchParams(window.location.search).get("app")
+    const params = new URLSearchParams(window.location.search)
+    const id = params.get("app")
+    if (params.get("folder") === "programs") setGroup("Programs")
     if (apps.includes(id as AppId)) openApp(id as AppId)
     function tick() { setTime(new Intl.DateTimeFormat(undefined, { hour: "numeric", minute: "2-digit" }).format(new Date())) }
     tick(); const timer = setInterval(tick, 60000); return () => clearInterval(timer)
