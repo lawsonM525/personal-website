@@ -1,4 +1,5 @@
 import { Fragment } from "react"
+import Link from "next/link"
 import artwork from "@/data/books/girly-guide-ai.art.json"
 import { ArrowDown, ArrowUpRight, BookOpen, FileText } from "@/components/retro-icons"
 import { GuideReader } from "@/components/books/guide-reader"
@@ -58,6 +59,11 @@ export default async function AiGuidePage({ searchParams }: { searchParams: Prom
           <p className={styles.eyebrow}>{chapter.number > 0 && chapter.number <= 12 ? `Chapter ${String(chapter.number).padStart(2, "0")} · ${chapter.part}` : chapter.part}</p>
           <h2>{chapter.title}</h2>
         </header>
+        {chapter.id === "introduction" && <aside className={styles.authorNote} aria-label="A note from Michelle">
+          <strong>A note from Michelle</strong>
+          <p>I wrote this book in 2023. A lot has changed in AI since then, so you can definitely expect more updates to this guide.</p>
+          <p>For more recent AI updates, <Link href="/magazine">join the magazine waitlist</Link>. We’ll be covering what’s happening in AI there.</p>
+        </aside>}
         {chapter.pages.filter(page => page.blocks.length || pageArt[String(page.number)]?.length).map(page => <div key={page.number} className={styles.bookPage} data-guide-page={page.number} data-obscured={fullText ? 0 : Math.round((page.obscured || 0) * 100)}>
           {!fullText && !!page.obscured && <span className={styles.screenReaderOnly}>The text on this page is obscured in the free preview. The complete readable guide is available through Gumroad.</span>}
           {Array.from({ length: page.blocks.length + 1 }, (_, index) => <Fragment key={index}>
