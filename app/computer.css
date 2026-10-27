@@ -89,3 +89,11 @@ html:has([data-contained-reader="guide"]),body:has([data-contained-reader="guide
 [data-guide-scroll-viewport]:focus-visible{outline:2px solid #ee6e36;outline-offset:-2px}
 [data-contained-reader="guide"] .computer-page-window-maximized{position:fixed;inset:calc(var(--computer-header-height,52px) + 8px) 8px calc(var(--computer-dock-height) + 8px);overflow:hidden}
 @media(max-width:760px){[data-contained-reader="guide"] .computer-page-workspace{padding:8px 8px 12px}}
+
+/* Focus mode gives the reading window the screen while keeping its exit reachable. */
+.computer-desktop-page[data-reader-focus="true"]{padding:0;background:#faf7ed}
+[data-reader-focus="true"]>div:first-of-type{position:absolute;inset:0 0 auto;visibility:hidden;pointer-events:none}
+[data-reader-focus="true"]>.computer-page-taskbar{display:none}
+[data-reader-focus="true"] .computer-page-workspace{max-width:none;padding:0}
+[data-reader-focus="true"] .computer-page-window{position:relative;inset:auto;translate:none!important;padding:0;border:0;box-shadow:none}
+[data-reader-focus="true"] .computer-page-window>[data-window-drag-handle]{display:none}
