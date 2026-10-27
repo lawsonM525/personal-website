@@ -1,3 +1,4 @@
+import { Fragment } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { ArrowUpRight, Bookmark, Sparkles } from "@/components/retro-icons"
@@ -48,7 +49,7 @@ export default function MichellesFindsPage() {
       </figure>
       <div className={styles.story}>
         <div className={styles.commentary}><p className={styles.eyebrow}><Sparkles size={14} aria-hidden="true" />My thoughts</p>{find.reaction.map((paragraph, paragraphIndex) => <p className={styles.reaction} key={paragraphIndex}>{paragraph}</p>)}</div>
-        <aside className={styles.details} aria-label={`${find.name} build details`}><p className={styles.eyebrow}>Behind the build</p><dl><div><dt>Made with</dt><dd>{find.tools}</dd></div><div><dt>The process</dt><dd>{find.process}</dd></div></dl><p>Tools and process as described by the creator.</p><a href={find.processUrl} target="_blank" rel="noopener noreferrer">Read the build notes <ArrowUpRight size={13} aria-hidden="true" /></a></aside>
+        <aside className={styles.details} aria-label={`${find.name} build details`}><p className={styles.eyebrow}>Behind the build</p><dl><div><dt>Made with</dt><dd>{find.tools.map((tool, toolIndex) => <Fragment key={tool.url}>{toolIndex > 0 && " + "}<a href={tool.url} target="_blank" rel="noopener noreferrer">{tool.name}</a></Fragment>)}</dd></div><div><dt>The process</dt><dd>{find.process}</dd></div></dl><p>Tools and process as described by the creator.</p><a href={find.processUrl} target="_blank" rel="noopener noreferrer">Read the build notes <ArrowUpRight size={13} aria-hidden="true" /></a></aside>
       </div>
       <div className={styles.links}><a href={find.projectUrl} target="_blank" rel="noopener noreferrer">Play with {find.name} <ArrowUpRight size={16} aria-hidden="true" /></a><a href={find.sourceUrl} target="_blank" rel="noopener noreferrer">See the original post <ArrowUpRight size={15} aria-hidden="true" /></a></div>
     </article>)}</div>
