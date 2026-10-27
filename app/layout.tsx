@@ -84,10 +84,11 @@ export default async function RootLayout({
               `}
             </Script>
             <Script
+              defer
               src="https://datafa.st/js/script.js"
               strategy="afterInteractive"
-              data-website-id="68b655f869db4035eb9dde6a"
-              data-domain="michellelawson.me"
+              data-website-id="dfid_gnPpnmddrlFsxJ4e9ZBvm"
+              data-domain="michellescomputer.com"
             />
           </>
         )}
