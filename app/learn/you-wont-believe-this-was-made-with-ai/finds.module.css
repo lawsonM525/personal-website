@@ -18,6 +18,7 @@
 .details{align-self:start;padding:24px;background:var(--learn-paper);border:2px solid var(--learn-faint);box-shadow:3px 3px 0 var(--learn-shadow)}
 .details dl{margin-top:22px}.details dl>div+div{margin-top:20px}.details dt{font:900 11px/1.6 Arial,Helvetica,sans-serif;text-transform:uppercase;letter-spacing:.12em;color:var(--learn-muted)}
 .details dd{margin-top:7px;font:16px/1.7 Arial,Helvetica,sans-serif}.details>p:not(.eyebrow){margin-top:22px;font:12px/1.7 Arial,Helvetica,sans-serif;color:var(--learn-muted)}
+.details dd a{text-decoration:underline;text-underline-offset:4px}.details dd a:hover{text-decoration-thickness:2px}
 .details>a{display:inline-flex;align-items:center;gap:6px;min-height:44px;margin-top:7px;font:700 12px/1.5 Arial,Helvetica,sans-serif;text-decoration:underline;text-underline-offset:4px}
 .links{display:flex;align-items:center;flex-wrap:wrap;gap:15px 25px;margin:32px 0 0}
 .links>a{display:inline-flex;align-items:center;gap:9px;min-height:44px;font:700 14px/1.5 Arial,Helvetica,sans-serif;text-decoration:underline;text-underline-offset:4px}

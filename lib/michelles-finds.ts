@@ -16,7 +16,10 @@ export const michellesFinds = [
     processUrl: "https://x.com/__rockbiter/status/2114728309661851962",
     image: "/finds/random-eyes.png",
     imageAlt: "Random-eyes: a detailed golden iris, eyelashes, and skin rendered in an interactive browser experiment",
-    tools: "Three.js + Claude Opus 5.5",
+    tools: [
+      { name: "Three.js", url: "https://threejs.org/" },
+      { name: "Claude Opus 5.5", url: "https://claude.ai/" },
+    ],
     process: "7 days · 161 commits",
     reaction: [
       "The first thing I noticed about this is that it’s naturally beautiful. And I don’t mean in the generic sense, like, ‘Oh, this is a beautiful thing.’ It has so well replicated nature’s way of making beauty in the human body, and here, in the eye.",
@@ -33,7 +36,7 @@ export const findsArticle: LearnArticleCard = {
   title: "You won’t believe this was made with AI",
   dek: "The projects that made me stop scrolling and go ‘whoa.’ A growing collection of Michelle’s favorite AI builds, with links to try them yourself.",
   category: "finds",
-  topics: ["AI projects", "Michelle’s favorites", "tweets", "creative coding", "inspiration", ...michellesFinds.flatMap(find => [find.name, find.creator, find.handle, find.tools])],
+  topics: ["AI projects", "Michelle’s favorites", "tweets", "creative coding", "inspiration", ...michellesFinds.flatMap(find => [find.name, find.creator, find.handle, ...find.tools.map(tool => tool.name)])],
   publishedAt: "2026-10-27T00:00:00Z",
   author: { name: "Michelle Lawson" },
   coverImageUrl: michellesFinds[0].image,
