@@ -27,8 +27,8 @@ const guideEntry: LibraryEntry = {
   category: "ai",
   topics: ["book", "artificial intelligence", "beginner", "guide"],
   href: "/girly-guide-to-ai",
-  image: "/homepage/learn-icon-v3.webp",
-  imageAlt: "An illustrated open book and pen",
+  image: "/books/girly-guide-to-ai/illustrations/art-d4df0c3d2d14ec99.webp",
+  imageAlt: "Mia and her robot friend Mai wave hello, from The Girly Guide to AI.",
 }
 
 export function ArticleFeed({ articles }: { articles: LearnArticleCard[] }) {
