@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { Search } from "lucide-react"
+import { Search } from "@/components/retro-icons"
 import { useMemo, useState } from "react"
 import { computerCategories } from "./computer-data"
 import styles from "./computer.module.css"

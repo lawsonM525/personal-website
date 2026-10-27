@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Flag, RotateCcw } from "lucide-react"
+import { Flag, RotateCcw } from "@/components/retro-icons"
 import { boardSize, mineCount, makeBoard, reveal, hasWon, type Square } from "@/lib/minesweeper"
 import styles from "./explore.module.css"
 

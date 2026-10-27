@@ -1,6 +1,6 @@
 "use client"
 
-import { ExternalLink, Instagram } from "lucide-react"
+import { ExternalLink, Instagram } from "@/components/retro-icons"
 
 interface InstagramEmbedProps {
   url: string

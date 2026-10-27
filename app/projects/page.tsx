@@ -1,6 +1,6 @@
 import { Footer } from "@/components/footer"
 import Link from "next/link"
-import { ArrowUpRight } from 'lucide-react'
+import { ArrowUpRight } from '@/components/retro-icons'
 
 interface Project {
   title: string

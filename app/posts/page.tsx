@@ -6,7 +6,7 @@ import { ProfileHeader } from "@/components/profile-header"
 import { PostGrid } from "@/components/post-grid"
 import { InstagramEmbed } from "@/components/instagram-embed"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Grid, Bookmark, Clapperboard, Video } from 'lucide-react'
+import { Grid, Bookmark, Clapperboard, Video } from '@/components/retro-icons'
 import posts from "@/data/posts.json"
 
 const favoriteInstagramPosts = posts.filter((post) => post.type === "instagram")

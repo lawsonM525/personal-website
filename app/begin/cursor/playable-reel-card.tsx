@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import Image from "next/image";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink } from "@/components/retro-icons";
 import type { FeaturedReel } from "./reels";
 
 export function PlayableReelCard({ reel }: { reel: FeaturedReel }) {

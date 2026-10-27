@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { X, Copy, Send } from 'lucide-react'
+import { X, Copy, Send } from '@/components/retro-icons'
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { toast } from "@/components/ui/use-toast"

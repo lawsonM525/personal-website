@@ -8,7 +8,7 @@ import profilePhoto from '@/assets/michelle pink scarf icon.png'
 import headshot from '@/assets/Michelle.Lawson.png'
 import Image from 'next/image' 
 import { Button } from '@/components/ui/button'
-import { ClipboardCopy, Download } from 'lucide-react'
+import { ClipboardCopy, Download } from '@/components/retro-icons'
 import Link from 'next/link'
 
 

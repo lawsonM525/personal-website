@@ -1,7 +1,7 @@
 "use client"
 
 import Image, { StaticImageData } from "next/image"
-import { Heart, MessageCircle, Play, ExternalLink } from 'lucide-react'
+import { Heart, MessageCircle, Play, ExternalLink } from '@/components/retro-icons'
 import { useState } from "react"
 import { PostPopup } from "./post-popup"
 

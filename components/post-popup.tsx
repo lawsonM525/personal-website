@@ -3,7 +3,7 @@
 import Image, { StaticImageData } from "next/image"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
-import { Eye, Heart, MessageCircle, ExternalLink, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Eye, Heart, MessageCircle, ExternalLink, ChevronLeft, ChevronRight } from '@/components/retro-icons'
 import { Badge } from "@/components/ui/badge"
 import { useState } from "react"
 

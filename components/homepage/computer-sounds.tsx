@@ -1,7 +1,7 @@
 "use client"
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react"
-import { Volume2, VolumeX } from "lucide-react"
+import { Volume2, VolumeX } from "@/components/retro-icons"
 import { ComputerSoundPlayer, computerSoundCues, type ComputerPlayback, type ComputerSoundCue } from "@/lib/computer-sounds"
 import styles from "./home.module.css"
 
@@ -75,6 +75,6 @@ export function ComputerSoundToggle() {
     title={sound.enabled ? "Mute sound effects" : "Enable sound effects"}
     data-audio-state={sound.playback.context} data-sound-playing={sound.playback.playing} data-sound-last={sound.playback.lastCue ?? ""}
     onClick={sound.toggle}>
-    {sound.enabled ? <Volume2 size={19} aria-hidden="true"/> : <VolumeX size={19} aria-hidden="true"/>}
+    {sound.enabled ? <Volume2 size={26} aria-hidden="true"/> : <VolumeX size={26} aria-hidden="true"/>}
   </button>
 }

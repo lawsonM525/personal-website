@@ -1,7 +1,7 @@
 "use client"
 
 import { FormEvent, useEffect, useState } from "react"
-import { Heart, MessageCircle } from "lucide-react"
+import { Heart, MessageCircle } from "@/components/retro-icons"
 import type { LearnComment } from "@/sanity/lib/types"
 
 export function ArticleDiscussion({

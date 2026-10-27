@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react"
-import { Download, Eraser, FlipHorizontal2, Paintbrush, Rainbow, Redo2, RotateCcw, Sparkles, SprayCan, Sticker, Trash2, Undo2, Volume2, VolumeX, WandSparkles, Palette, FileImage, SlidersHorizontal, X } from "lucide-react"
+import { Download, Eraser, FlipHorizontal2, Paintbrush, Rainbow, Redo2, RotateCcw, Sparkles, SprayCan, Sticker, Trash2, Undo2, Volume2, VolumeX, WandSparkles, Palette, FileImage, SlidersHorizontal, X } from "@/components/retro-icons"
 import { useComputerSound } from "@/components/homepage/computer-sounds"
 import { drawPaintPaper, drawPaintSticker, drawPaintStroke, drawSparkle, paintHeight, paintPapers, paintPoint, paintWidth, type PaintPaper, type PaintPoint, type PaintTool } from "@/lib/paint"
 import type { ComputerSoundCue } from "@/lib/computer-sounds"
@@ -232,7 +232,7 @@ export function Paint() {
         <div className={styles.canvasViewport}><div className={styles.stage}>
           <canvas ref={backdrop} className={styles.backdrop} width={paintWidth} height={paintHeight} aria-hidden="true" />
           <canvas ref={canvas} className={`${styles.canvas} ${tool === "sticker" && loaded ? styles.stampCursor : ""}`} width={paintWidth} height={paintHeight} tabIndex={0} aria-label="Drawing canvas. Click or drag to draw or stamp. Arrow keys move the cursor; Enter or Space places a mark." onPointerDown={start} onPointerMove={move} onPointerUp={finish} onPointerCancel={finish} onLostPointerCapture={() => { gesture.current = null }} onPointerLeave={() => { if (!gesture.current) setCursor(previous => ({ ...previous, visible: false })) }} onKeyDown={keyboard} />
-          {!hasMarks && <div className={styles.invitation} aria-hidden="true"><img src="/explorer/paint/little-guys/0.webp" alt="" width="68" height="68" /><strong>Your next<br /><em>masterpiece.</em></strong><span>Stamp something. Scribble something.<br />There are no rules here.</span></div>}
+          {!hasMarks && <div className={styles.invitation} aria-hidden="true"><img src="/explorer/paint/little-guys/0.webp" alt="" width="68" height="68" /><strong>Your next <em>masterpiece.</em></strong><span>Stamp something. Scribble something.<br />There are no rules here.</span></div>}
           {tool === "sticker" && cursor.visible && <img className={styles.cursor} src={selected.src} alt="" aria-hidden="true" style={{ left: `${cursor.x / paintWidth * 100}%`, top: `${cursor.y / paintHeight * 100}%`, width: `${stickerSize / paintWidth * 100}%`, transform: `translate(-50%,-50%) rotate(${angle}deg) scaleX(${flipped ? -1 : 1})` }} />}
           {!!pulse.id && <span key={pulse.id} className={styles.ping} aria-hidden="true" style={{ left: `${pulse.x / paintWidth * 100}%`, top: `${pulse.y / paintHeight * 100}%` }}>✦</span>}
         </div>

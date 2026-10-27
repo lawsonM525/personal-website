@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { ArrowUpRight } from "lucide-react"
+import { ArrowUpRight } from "@/components/retro-icons"
 import type { ReactNode } from "react"
 
 export function ResourceSection({ title, emoji, children, borderColor = "blue" }: { title: string; emoji: string; children: ReactNode; textColor?: string; borderColor?: string }) {

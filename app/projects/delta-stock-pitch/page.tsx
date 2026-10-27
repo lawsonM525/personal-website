@@ -1,6 +1,6 @@
 import { buildPageMetadata } from "@/lib/seo"
 import { ProjectPdfReader } from "@/components/project-pdf-reader"
-import { Download, ExternalLink } from "lucide-react"
+import { Download, ExternalLink } from "@/components/retro-icons"
 
 export const metadata = buildPageMetadata({ title:"Delta Air Lines stock pitch", description:"Michelle Lawson’s Delta Air Lines stock pitch from the Smith College Stock Pitch Competition, April 2023.", path:"/projects/delta-stock-pitch" })
 const pdf = "/projects/delta-stock-pitch/delta-stock-pitch.pdf"
