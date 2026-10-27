@@ -4,7 +4,7 @@ import "./computer.css"
 import { LayoutClient } from "./layout-client"
 import favicon from "@/assets/mia-icon-big.png"
 import Script from 'next/script';
-import { siteConfig } from "@/lib/seo"
+import { siteConfig, personStructuredData, websiteStructuredData, serializeStructuredData } from "@/lib/seo"
 import { Inter, Playfair_Display, Caveat } from "next/font/google"
 import { draftMode } from "next/headers"
 import { VisualEditing } from "next-sanity/visual-editing"
@@ -23,8 +23,8 @@ const caveat = Caveat({
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
-    default: "Michelle Lawson — AI Educator & Computer Science",
-    template: "%s | Michelle Lawson",
+    default: "Michelle’s Computer | Michelle Lawson",
+    template: "%s | Michelle’s Computer",
   },
   description: siteConfig.description,
   keywords: siteConfig.keywords,
@@ -34,17 +34,16 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: siteConfig.url,
-    title: "Michelle Lawson — AI Educator & Computer Science",
+    title: "Michelle’s Computer | Michelle Lawson",
     description: siteConfig.description,
     siteName: siteConfig.name,
     images: [siteConfig.ogImage],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Michelle Lawson — AI Educator & Computer Science",
+    title: "Michelle’s Computer | Michelle Lawson",
     description: siteConfig.description,
     images: [siteConfig.ogImage],
-    creator: "@michellextech",
   },
   robots: {
     index: true,
@@ -92,54 +91,8 @@ export default async function RootLayout({
             />
           </>
         )}
-        {/* JSON-LD: Person */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Person",
-              name: "Michelle Lawson",
-              alternateName: [
-                "michellescomputer",
-                "@michellescomputer",
-                "@michellexcomputer"
-              ],
-              jobTitle: ["AI Educator", "Computer Science Student"],
-              alumniOf: {
-                "@type": "CollegeOrUniversity",
-                name: "Smith College"
-              },
-              url: siteConfig.url,
-              sameAs: [
-                "https://www.linkedin.com/in/michelle-o-lawson/",
-                "https://twitter.com/michellextech",
-                "https://www.instagram.com/michellexcomputer/",
-                "https://www.tiktok.com/@michellexcomputer",
-                "https://github.com/lawsonm525",
-                siteConfig.url
-              ]
-            })
-          }}
-        />
-        {/* JSON-LD: Website */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Website",
-              name: siteConfig.name,
-              url: siteConfig.url,
-              description: siteConfig.description,
-              inLanguage: "en-US",
-              publisher: {
-                "@type": "Person",
-                name: "Michelle Lawson"
-              }
-            })
-          }}
-        />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeStructuredData(personStructuredData) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeStructuredData(websiteStructuredData) }} />
       </head>
       <body className={`${inter.className} bg-black text-white min-h-screen`}>
         <LayoutClient>{children}</LayoutClient>

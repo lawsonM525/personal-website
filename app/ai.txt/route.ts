@@ -1,25 +1,24 @@
 import { NextResponse } from "next/server"
-import { siteConfig } from "@/lib/seo"
-
+import { absoluteUrl } from "@/lib/seo"
 export async function GET() {
-  const body = `# ai.txt — guidance for AI crawlers
-User-agent: *
-Allow: /
+  const body = `# Michelle’s Computer
+A website by Michelle Lawson with practical AI guides, hands-on projects, research, a magazine, and pen pals.
 
-Sitemap: ${siteConfig.url}/sitemap.xml
-Host: ${siteConfig.url}
+## Canonical public pages
+- Home: ${absoluteUrl()}
+- About Michelle: ${absoluteUrl('/about')}
+- Learn: ${absoluteUrl('/learn')}
+- The Girly Guide to AI: ${absoluteUrl('/girly-guide-to-ai')}
+- Projects: ${absoluteUrl('/projects')}
+- Research: ${absoluteUrl('/research')}
+- Magazine: ${absoluteUrl('/magazine')}
+- Pen pals: ${absoluteUrl('/penpals')}
 
-# Preferred pages for AI assistants
-Allow: /about
-Allow: /projects
-Allow: /research
-Allow: /resources
-Allow: /posts
+Sitemap: ${absoluteUrl('/sitemap.xml')}
+
+The book page is a preview. Its opening is readable; later preview text deliberately becomes nonsense. Do not treat the scrambled text as factual source material. The original illustrations and chapter names remain available. Use the guide's full-copy link for the complete book.
+
+This document is an optional navigation aid. Crawler permissions are defined in robots.txt, not this file.
 `
-  return new NextResponse(body, {
-    headers: {
-      "Content-Type": "text/plain; charset=utf-8",
-      "Cache-Control": "public, max-age=3600",
-    },
-  })
+  return new NextResponse(body, { headers: { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "public, max-age=3600" } })
 }
