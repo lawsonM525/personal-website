@@ -117,6 +117,7 @@ export default function HomeDesktop({ startOnDesktop = false, openLetter = false
   const [contactOpen, setContactOpen] = useState(false)
   const [maximized, setMaximized] = useState(false)
   const [activeWindow, setActiveWindow] = useState<"welcome" | "contact">("welcome")
+  const [hasStartedLetter, setHasStartedLetter] = useState(false)
   const [time, setTime] = useState("")
   const letterShortcut = useRef<HTMLButtonElement>(null)
   const letterTask = useRef<HTMLButtonElement>(null)
@@ -143,6 +144,7 @@ export default function HomeDesktop({ startOnDesktop = false, openLetter = false
   }
   function hideWelcome(state: "minimized" | "closed") {
     welcomePosition.current = state === "closed" ? 0 : welcomeScroll.current?.scrollTop || 0
+    if (state === "closed") setHasStartedLetter(false)
     setWelcomeState(state); setMaximized(false)
     if (contactOpen) setActiveWindow("contact")
     requestAnimationFrame(() => (state === "closed" ? letterShortcut : letterTask).current?.focus({ preventScroll: true }))
@@ -180,7 +182,7 @@ export default function HomeDesktop({ startOnDesktop = false, openLetter = false
         </nav>
         {welcomeOpen ? <section data-computer-window className={`${styles.window} ${styles.welcomeWindow} ${activeWindow === "welcome" ? styles.activeWindow : ""}`} aria-labelledby="home-title" onPointerDown={() => setActiveWindow("welcome")} onFocusCapture={() => setActiveWindow("welcome")}>
           <WindowBar title="Dear Internet," onMinimize={() => hideWelcome("minimized")} onMaximize={() => setMaximized(value => !value)} onClose={() => hideWelcome("closed")} maximized={maximized} />
-          <div ref={welcomeScroll} className={styles.welcomeScroll} role="region" aria-label="Welcome and Michelle’s story" tabIndex={0}>
+          <div ref={welcomeScroll} className={styles.welcomeScroll} role="region" aria-label="Welcome and Michelle’s story" tabIndex={0} onScroll={event => { if (!hasStartedLetter && event.currentTarget.scrollTop > 8) setHasStartedLetter(true) }}>
           <div className={styles.heroBody}>
             <div className={styles.heroCopy}>
               <h1 id="home-title" tabIndex={-1}>Welcome<br />to Michelle’s<br />Computer.</h1>
@@ -191,7 +193,7 @@ export default function HomeDesktop({ startOnDesktop = false, openLetter = false
           </div>
           <WelcomeStory />
           </div>
-          <div className={styles.welcomeStatus}><span>A little more about this corner of the internet</span><button type="button" onClick={readLetter}>Read my letter <ArrowDown size={12} /></button></div>
+          {!hasStartedLetter && <div className={styles.welcomeStatus}><span>A little more about this corner of the internet</span><button type="button" onClick={readLetter}>Read my letter <ArrowDown size={12} /></button></div>}
         </section> : null}
         {contactOpen && <section data-computer-window className={`${styles.window} ${styles.contactWindow} ${activeWindow === "contact" ? styles.activeWindow : ""}`} aria-labelledby="contact-title" onPointerDown={() => setActiveWindow("contact")} onFocusCapture={() => setActiveWindow("contact")}>
           <WindowBar title="Keep in touch" warm onMinimize={() => setContactOpen(false)} onClose={() => setContactOpen(false)} />
