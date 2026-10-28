@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server"
 import { z } from "zod"
-import { feedbackProjectSchema, feedbackReviewSchema, feedbackSummarySchema, type FeedbackBoard, type FeedbackViewer } from "@/lib/feedback"
+import { feedbackProjectSchema, feedbackReviewSchema, feedbackSummarySchema, feedbackCommentSchema, type FeedbackBoard, type FeedbackViewer } from "@/lib/feedback"
 import { FeedbackError, feedbackIsOpen, feedbackResponse, feedbackRpc, feedbackSession, supabaseFeedback, type FeedbackSession } from "@/lib/feedback/server"
 import { feedbackPkce } from "@/lib/feedback/pkce"
 import { feedbackRequestOrigin } from "@/lib/feedback/request-origin"
@@ -85,7 +85,7 @@ export async function POST(request: NextRequest) {
         result = await feedbackRpc("feedback_review_observations", token, { p_project_id: data.projectId, p_purpose: data.purpose, p_observations: data.observations, p_design_score: data.designScore, p_outcome: data.outcome }); break
       }
       case "comment": {
-        const data = parse(z.object({ projectId: uuid, body: z.string().trim().min(20).max(2000) }), body)
+        const data = parse(feedbackCommentSchema, body)
         result = await feedbackRpc("feedback_comment", token, { p_project_id: data.projectId, p_body: data.body }); break
       }
       case "report": {

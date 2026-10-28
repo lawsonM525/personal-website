@@ -2,6 +2,14 @@ import { z } from "zod"
 import type { AvatarConfig } from "./member/avatar"
 
 export const feedbackReviewCost = 3
+export const feedbackReplyMinLength = 500
+export const feedbackReplyMaxLength = 2000
+export function feedbackReplyLength(value: string) { return Array.from(value.trim()).length }
+export const feedbackReplyBodySchema = z.string().trim()
+  .refine(value => feedbackReplyLength(value) >= feedbackReplyMinLength, "Share at least 500 characters so the builder has something useful to work with.")
+  .refine(value => feedbackReplyLength(value) <= feedbackReplyMaxLength, "Keep your reply under 2,000 characters.")
+
+export const feedbackCommentSchema = z.object({ projectId: z.string().uuid(), body: feedbackReplyBodySchema })
 export const feedbackCategories = ["Web app", "Website", "Mobile app", "Creative experiment"] as const
 export const feedbackOutcomes = ["Completed it", "Partly completed it", "Got stuck"] as const
 

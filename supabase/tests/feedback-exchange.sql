@@ -42,7 +42,7 @@ begin
  perform public.feedback_report('project',pa,'Other','A second test report should not add another report.');
  if (select count(*) from public.feedback_reports where reporter_id=c and target_id=pa)<>1 then raise exception 'TEST FAILED: duplicate reports accepted'; end if;
  if not exists(select 1 from jsonb_array_elements(public.feedback_board()->'projects') p where p->>'id'=pa::text) then raise exception 'TEST FAILED: report auto-hid a project'; end if;
- cid:=public.feedback_comment(pa,'A helpful follow-up that is long enough for the discussion.');
+ cid:=public.feedback_comment(pa,repeat('A specific observation about the design and first-use experience. ',9));
  perform public.feedback_report('review',rid,'Other','A test report with specific context for a moderator.');
  perform public.feedback_report('comment',cid,'Other','A test report about a reply with enough useful detail.');
  begin perform public.feedback_moderation(); raise exception 'TEST FAILED: member got moderator access'; exception when others then if sqlerrm<>'feedback_admin_only' then raise; end if; end;
