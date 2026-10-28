@@ -19,8 +19,11 @@ export function isPublicAppUrl(value: string): boolean {
   } catch { return false }
 }
 
+export const feedbackSummarySchema = z.string().trim().min(15, "Describe your project in at least 15 characters.").max(180, "Keep the project summary under 180 characters.").refine(value => !/[\r\n]/.test(value), "Keep the project summary to one line.")
+
 export const feedbackProjectSchema = z.object({
   title: z.string().trim().min(3).max(80),
+  summary: feedbackSummarySchema,
   url: z.string().trim().max(2048).refine(isPublicAppUrl, "Use a public HTTPS link, without a password or access token."),
   category: z.enum(feedbackCategories),
   audience: z.string().trim().min(12).max(250),
@@ -40,7 +43,7 @@ export const feedbackReviewSchema = z.object({
   if (new Set(answers).size !== 3) context.addIssue({ code: z.ZodIssueCode.custom, message: "Give each question its own specific answer.", path: ["improvement"] })
 })
 
-export type FeedbackProject = z.output<typeof feedbackProjectSchema> & { id: string; owner_id: string; builder_name: string; avatar?: AvatarConfig | null; cover_id?: string | null; created_at: string; status: "pending" | "approved" | "rejected"; featured: boolean; review_count: number }
+export type FeedbackProject = Omit<z.output<typeof feedbackProjectSchema>, "summary"> & { summary?: string | null; id: string; owner_id: string; builder_name: string; avatar?: AvatarConfig | null; cover_id?: string | null; created_at: string; status: "pending" | "approved" | "rejected"; featured: boolean; review_count: number }
 export type FeedbackReview = { id: string; project_id: string; reviewer_id: string; reviewer_name: string; avatar?: AvatarConfig | null; purpose: string; confusion: string; improvement: string; design_score: number; outcome: string; created_at: string }
 export type FeedbackComment = { id: string; project_id: string; author_id: string; author_name: string; avatar?: AvatarConfig | null; body: string; created_at: string }
 export type FeedbackReport = { id: string; target_kind: "project" | "review" | "comment"; target_id: string; reason: string; detail: string; created_at: string; target?: { project_id: string; project_title: string; project_url: string; author_name: string; status: string; body: string } }
@@ -56,6 +59,6 @@ export function prioritizeFeedback(projects: FeedbackProject[]) {
 
 export const feedbackExample: FeedbackProject = {
   id: "00000000-0000-4000-8000-000000000001", owner_id: "example", title: "Michelle’s Computer", url: "https://michellescomputer.com/", category: "Website",
-  audience: "Curious people learning to build with AI.", task: "Find Learn, open an article, and tell me whether it’s comfortable to read on your phone.",
+  summary: "A playful desktop full of AI guides, projects and creative experiments.", audience: "Curious people learning to build with AI.", task: "Find Learn, open an article, and tell me whether it’s comfortable to read on your phone.",
   focus: "Does the desktop idea still feel easy to use on a small screen?", builder_name: "Example request", created_at: "2026-10-26T12:00:00-07:00", status: "approved", featured: false, review_count: 0,
 }

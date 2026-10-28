@@ -23,3 +23,5 @@
 @media(prefers-reduced-motion:reduce){.page *{scroll-behavior:auto}}
 
 .moderationSearch{display:grid;gap:7px;margin:15px 0;font-size:13px;font-weight:700}.moderationSearch input{min-height:44px;padding:9px 12px;border:1px solid #8ba1b4;background:#fffdf6;max-width:480px;font-size:16px}.reportContext{padding:15px 17px;margin-top:14px;border:1px solid #b3bec4;background:#f0eee4}.reportContext p{white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px;line-height:1.75;margin-top:7px}.reportContext a{display:inline-flex;align-items:center;gap:6px;min-height:44px;color:#134cae;text-decoration:underline}.projectActions button+.projectActions button{margin-left:12px}
+
+.project>header .projectSummary{max-width:650px;margin:0 0 12px;font:16px/1.55 Tahoma,Arial,sans-serif;color:#536074;overflow-wrap:anywhere}

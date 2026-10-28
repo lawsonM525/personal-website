@@ -14,6 +14,10 @@ The filters use slimmer borders and shallow shadows, with strong blue reserved f
 
 The large yellow **Submit your project** button remains the prominent primary action at the top, including on mobile. The hero artwork, headline, and subtitle are preserved.
 
+New submissions include a required one-sentence project summary (15–180 characters). The gallery shows that summary under the preview; “Who is it for?” remains separate in the full project brief. Search includes both summary and audience. Older projects retain their original gallery text until their owner adds a summary through “Add project summary” in the full project view. Owners can edit the summary without submitting again or spending credits. Existing open forms remain compatible through the older submission RPC.
+
+The current review foundation includes three guided answers, minimum lengths, distinct-answer checks, task completion and design clarity ratings, review credits, and 45-minute assignments that prioritize under-reviewed projects. These largely predate the CollegeVine walkthrough. Ratings of review helpfulness, reviewer reputation/quality bonuses, and inline annotations have not been implemented.
+
 While the initial project list is fetched, a Windows-style folder panel shows documents moving into a stack of project cards and a looping segmented blue activity bar. It uses the same existing folder/document artwork and project colors. It ends as soon as the real request settles, with no simulated percentage or minimum wait. Reduced-motion visitors get the same readable status with stationary artwork. The gallery loader stays below the hero, so the yellow submission action remains available.
 
 ## Project images
