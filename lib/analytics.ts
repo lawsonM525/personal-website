@@ -1,4 +1,4 @@
-export const analyticsGoals = ["guide_preview_start", "guide_purchase_click", "magazine_waitlist_open", "magazine_waitlist_submitted", "penpal_form_open", "penpal_signup_submitted"] as const
+export const analyticsGoals = ["quiz_started", "quiz_completed", "guide_preview_start", "guide_purchase_click", "magazine_waitlist_open", "magazine_waitlist_submitted", "penpal_form_open", "penpal_signup_submitted"] as const
 export type AnalyticsGoal = typeof analyticsGoals[number]
 
 type AnalyticsWindow = Window & { datafast?: ((goal: string, properties?: Record<string, string>) => void); gtag?: (...args: unknown[]) => void }

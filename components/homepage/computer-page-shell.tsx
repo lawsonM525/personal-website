@@ -4,7 +4,10 @@ import Link from "next/link"
 import { useEffect, useRef, useState } from "react"
 import { usePathname, useRouter } from "next/navigation"
 import { ArrowLeft, BookOpen, Briefcase, FileText, FolderOpen, Grid2X2, MessageSquare, Search } from "@/components/retro-icons"
+import { ExplorerIcon } from "@/components/explore/explorer-icon"
 import { HomeHeader, WindowBar } from "./home-desktop"
+
+function TerminalIcon({ size = 24 }: { size?: number }) { return <ExplorerIcon kind="terminal" size={size} /> }
 
 const routeTitles: Record<string, string> = {
   "/about": "About Michelle", "/resources": "Resources", "/projects": "Projects",
@@ -25,11 +28,12 @@ const routeTitles: Record<string, string> = {
 export function ComputerPageShell({ children }: { children: React.ReactNode }) {
   const path = usePathname()
   const router = useRouter()
+  const isQuiz = path === "/quizzes" || path.startsWith("/quizzes/")
   const isGuide = path === "/girly-guide-to-ai" || path === "/girly-guide-to-ai/read"
-  const PageIcon = isGuide || path.startsWith("/learn") ? BookOpen : path.startsWith("/projects") ? Briefcase : path === "/feedback" ? MessageSquare : FileText
+  const PageIcon = isQuiz ? TerminalIcon : isGuide || path.startsWith("/learn") ? BookOpen : path.startsWith("/projects") ? Briefcase : path === "/feedback" ? MessageSquare : FileText
   const content = useRef<HTMLDivElement>(null)
   const task = useRef<HTMLButtonElement>(null)
-  const title = routeTitles[path] || (path.startsWith("/learn/") ? "Learn" : "Page")
+  const title = routeTitles[path] || (isQuiz ? "Terminal" : path.startsWith("/learn/") ? "Learn" : "Page")
   const parent = path.startsWith("/10apps/") ? { href:"/10apps", label:"Back to 10 Apps" } : path.startsWith("/projects/") || path === "/10apps" ? { href:"/projects", label:"Back to projects" } : path.startsWith("/learn/") || isGuide ? { href:"/learn", label:"Back to Learn" } : { href:"/?desktop=1", label:"Michelle’s Computer" }
   const [minimized, setMinimized] = useState(false)
   const [maximized, setMaximized] = useState(false)
@@ -44,14 +48,14 @@ export function ComputerPageShell({ children }: { children: React.ReactNode }) {
   function restore() { if (minimized) { setMinimized(false); requestAnimationFrame(() => { const viewport = isGuide ? content.current : window; viewport?.scrollTo({ top: readingPosition.current, behavior: "instant" }); content.current?.closest("section")?.querySelector<HTMLElement>("[data-window-drag-handle]")?.focus({ preventScroll: true }) }) } }
   function search() { window.dispatchEvent(new Event("michelle:search")) }
 
-  return <div className="computer-desktop-page" data-computer-section={path === "/feedback" ? "feedback" : undefined} data-contained-reader={isGuide ? "guide" : undefined}>
+  return <div className="computer-desktop-page" data-computer-section={isQuiz ? "quizzes" : path === "/feedback" ? "feedback" : undefined} data-contained-reader={isGuide ? "guide" : undefined}>
     <a className="computer-skip" href="#computer-page-content">Skip to content</a>
     <HomeHeader />
     <div className="computer-page-workspace">
       {minimized && <button type="button" className="computer-restore" data-computer-sound="open" onClick={restore}><PageIcon size={32} />Open {title}</button>}
       <section data-computer-window hidden={minimized} className={`computer-page-window${maximized ? " computer-page-window-maximized" : ""}`} aria-label={`${title} window`}>
         <WindowBar title={title} icon={<PageIcon size={24} />} onMinimize={minimize} onMaximize={() => setMaximized(value => !value)} onClose={() => router.push("/?desktop=1")} maximized={maximized} />
-        {!path.startsWith("/learn") && !isGuide && path !== "/feedback" && <nav className="computer-page-toolbar" aria-label="Window navigation"><Link href={parent.href}><ArrowLeft size={13} />{parent.label}</Link><span>{title}</span><button type="button" data-computer-sound="open" onClick={search}><Search size={13} />Find a page</button></nav>}
+        {!path.startsWith("/learn") && !isGuide && !isQuiz && path !== "/feedback" && <nav className="computer-page-toolbar" aria-label="Window navigation"><Link href={parent.href}><ArrowLeft size={13} />{parent.label}</Link><span>{title}</span><button type="button" data-computer-sound="open" onClick={search}><Search size={13} />Find a page</button></nav>}
         <div ref={content} id="computer-page-content" className="computer-page-content" data-page={path} data-guide-scroll-viewport={isGuide ? "" : undefined} tabIndex={isGuide ? 0 : undefined} role={isGuide ? "region" : undefined} aria-label={isGuide ? "Book reading area" : undefined}>{children}</div>
       </section>
     </div>

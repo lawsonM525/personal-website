@@ -104,3 +104,16 @@ html:has([data-contained-reader="guide"]),body:has([data-contained-reader="guide
 .computer-desktop-page[data-computer-section="feedback"] .computer-page-workspace{max-width:none;padding:12px 12px 24px}
 .computer-desktop-page[data-computer-section="feedback"] .computer-page-window>[data-window-drag-handle]{font:700 22px/1.1 sserife,Arial,sans-serif;letter-spacing:1px;min-height:36px;background:linear-gradient(90deg,#0037bd,#064bdc)}
 @media(max-width:760px){.computer-desktop-page[data-computer-section="feedback"] .computer-page-workspace{padding:8px 5px 16px}.computer-desktop-page[data-computer-section="feedback"] .computer-page-window>[data-window-drag-handle]{font-size:19px;min-height:52px;letter-spacing:.5px}}
+
+/* Quiz pages keep the transcript and prompt within one terminal window. */
+html:has([data-computer-section="quizzes"]),body:has([data-computer-section="quizzes"]){overflow:hidden;overscroll-behavior:none}
+.computer-desktop-page[data-computer-section="quizzes"]{height:var(--computer-viewport-height,100dvh);min-height:0;display:flex;flex-direction:column;overflow:hidden;padding-bottom:var(--computer-dock-height)}
+[data-computer-section="quizzes"]>div:first-of-type{flex-shrink:0}
+[data-computer-section="quizzes"] .computer-page-workspace{flex:1;min-height:0;display:flex;flex-direction:column;max-width:1120px;margin:0 auto;padding:18px 22px}
+[data-computer-section="quizzes"] .computer-page-window{flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden}
+[data-computer-section="quizzes"] .computer-page-window[hidden]{display:none}
+[data-computer-section="quizzes"] .computer-page-window>:first-child{position:relative;top:auto;flex-shrink:0}
+[data-computer-section="quizzes"] .computer-page-content{flex:1;min-height:0;display:flex;background:#07100c;color:#00ff79}
+[data-computer-section="quizzes"] .computer-page-content :is(h1,h2,h3){font-family:'Lucida Console','Courier New',monospace!important;font-weight:400!important;line-height:1.55!important;letter-spacing:0}
+[data-computer-section="quizzes"] .computer-page-window-maximized{position:fixed;inset:calc(var(--computer-header-height,52px) + 8px) 8px calc(var(--computer-dock-height) + 8px);overflow:hidden}
+@media(max-width:760px){[data-computer-section="quizzes"] .computer-page-workspace{padding:8px 6px 10px}}

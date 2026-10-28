@@ -1,0 +1,22 @@
+.transcript { white-space:normal; }
+.transcript h1,.transcript h2,.transcript h3 { color:inherit;margin:0 0 12px;font-size:16px; }
+.transcript h2,.transcript h3 { font-size:14px; }
+.transcript p { margin:0 0 14px;max-width:82ch; }
+.transcript a { color:#a4ffc2;text-decoration:underline;text-underline-offset:3px; }
+.transcript a:hover { color:white; }
+.transcript nav { display:flex;flex-wrap:wrap;gap:8px 24px;margin:0 0 18px; }
+.transcript ul { padding:0;list-style:none;margin:0 0 20px; }
+.transcript li { margin:0 0 14px; }
+.transcript li p { margin:2px 0 0; }
+.transcript details { margin:0 0 18px; }
+.transcript summary { color:#a4ffc2;cursor:pointer;width:fit-content; }
+.transcript details[open] summary { margin-bottom:12px; }
+.transcript details ul { padding-left:16px;list-style:disc; }
+.transcript details li { margin:4px 0; }
+.reference { padding:20px 0 0;white-space:pre-wrap; }
+.reference section { margin:0 0 28px; }
+.reference h2 { margin-bottom:18px; }
+.reference h3 { font-size:inherit;margin:0 0 8px; }
+.reference ol { padding:0;list-style:none;margin:0 0 10px; }
+.reference p { margin:0 0 8px; }
+.reference footer { margin-top:24px; }

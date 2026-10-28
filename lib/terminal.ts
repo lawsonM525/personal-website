@@ -1,7 +1,10 @@
 export type TerminalApp = "paint" | "minesweeper" | "terminal"
 type Category = "learn" | "play" | "explore" | "basics"
 type Command = { name: string; usage: string; description: string; category: Category }
-type Quiz = { order: number[]; at: number; score: number }
+export type TerminalQuestion = { question: string; options: readonly [string, string, string]; correct: 0 | 1 | 2; why: string }
+export type TerminalQuizTopic = { slug: string; title: string; questions: readonly TerminalQuestion[] }
+type Quiz = { order: number[]; at: number; score: number; topic?: string }
+type TerminalOptions = { random?: () => number; now?: Date; quizTopics?: readonly TerminalQuizTopic[]; activeTopic?: string; workingDirectory?: string }
 export type TerminalState = {
   commands: string[]
   learned: string[]
@@ -14,14 +17,17 @@ export type TerminalResult = {
   lines: string[]
   clear?: boolean
   feedback?: "correct" | "incorrect"
-  action?: { type: "app"; app: TerminalApp } | { type: "page"; href: string }
+  quizCompleted?: boolean
+  action?: { type: "app"; app: TerminalApp } | { type: "page"; href: string } | { type: "review" }
 }
 
 export const terminalCommands: Command[] = [
   { name: "help", usage: "help [category or command]", description: "browse commands or get an example", category: "basics" },
   { name: "tutorial", usage: "tutorial", description: "a first trip through the terminal", category: "learn" },
   { name: "learn", usage: "learn [topic]", description: "short lessons on computers and AI", category: "learn" },
-  { name: "quiz", usage: "quiz [ai|computers|stop]", description: "five questions, with explanations", category: "learn" },
+  { name: "quiz", usage: "quiz [topic|ai|computers|stop]", description: "multiple-choice questions, with explanations", category: "learn" },
+  { name: "topics", usage: "topics", description: "browse IGCSE and IB computer science quizzes", category: "learn" },
+  { name: "review", usage: "review [topic]", description: "read a topic's questions and worked answers", category: "learn" },
   { name: "answer", usage: "answer <a|b|c>", description: "answer the current quiz question", category: "learn" },
   { name: "binary", usage: "binary <text>", description: "encode your text as UTF-8 bits", category: "learn" },
   { name: "decode", usage: "decode <bits>", description: "turn UTF-8 bits back into text", category: "learn" },
@@ -79,6 +85,8 @@ export const terminalLessons: Record<string, Lesson> = {
 
 type Destination = { name: string; description: string; aliases?: string[] } & ({ app: TerminalApp; href?: never } | { href: string; app?: never })
 const destinations: Destination[] = [
+  { name: "quizzes", href: "/quizzes", description: "IGCSE and IB computer science quizzes" },
+  { name: "terminal", app: "terminal", description: "the computer and AI command line" },
   { name: "paint", app: "paint", description: "stickers, glitter, and drawing" },
   { name: "minesweeper", app: "minesweeper", description: "a small game of logic" },
   { name: "learn", href: "/learn", description: "articles and practical guides" },
@@ -111,7 +119,7 @@ const quizQuestions = [
 const aliases: Record<string, string> = { "?": "help", dir: "ls", cls: "clear", explain: "learn" }
 const categories: Category[] = ["learn", "play", "explore", "basics"]
 const usageExamples: Record<string, string> = {
-  help: "help learn", tutorial: "tutorial", learn: "learn tokens", quiz: "quiz ai", answer: "answer b", binary: "binary hello", decode: "decode 01001000 01101001", tokens: "tokens unhappy computers!", predict: "predict the", train: "train predict 4", sources: "sources", progress: "progress", ls: "ls programs", pwd: "pwd", tree: "tree", cat: "cat readme", open: "open paint", tour: "tour", inspect: "inspect", guess: "guess 10", roll: "roll 20", flip: "flip", fortune: "fortune", joke: "joke", surprise: "surprise", whoami: "whoami", date: "date", echo: "echo hello", history: "history", clear: "clear",
+  help: "help learn", tutorial: "tutorial", learn: "learn tokens", quiz: "quiz binary", topics: "topics", review: "review binary", answer: "answer b", binary: "binary hello", decode: "decode 01001000 01101001", tokens: "tokens unhappy computers!", predict: "predict the", train: "train predict 4", sources: "sources", progress: "progress", ls: "ls programs", pwd: "pwd", tree: "tree", cat: "cat readme", open: "open paint", tour: "tour", inspect: "inspect", guess: "guess 10", roll: "roll 20", flip: "flip", fortune: "fortune", joke: "joke", surprise: "surprise", whoami: "whoami", date: "date", echo: "echo hello", history: "history", clear: "clear",
 }
 
 export function createTerminalState(): TerminalState {
@@ -140,12 +148,12 @@ function suggest(value: string, choices: string[]) {
   return best && best.distance <= Math.min(2, Math.floor(value.length / 2)) ? best.name : null
 }
 
-export function completeTerminal(value: string): string[] {
+export function completeTerminal(value: string, topics: readonly TerminalQuizTopic[] = []): string[] {
   const normalized = value.trimStart().toLowerCase()
   const space = normalized.indexOf(" ")
   if (space < 0) return terminalCommands.map(command => command.name).filter(name => name.startsWith(normalized))
   const name = normalized.slice(0, space), prefix = normalized.slice(space + 1)
-  const choices = name === "learn" || name === "explain" ? Object.keys(terminalLessons) : name === "open" ? destinations.map(item => item.name) : name === "help" ? [...categories, ...terminalCommands.map(item => item.name)] : name === "cat" ? ["readme", "cheatsheet", "about", "corpus"] : name === "quiz" ? ["ai", "computers", "stop"] : []
+  const choices = name === "learn" || name === "explain" ? Object.keys(terminalLessons) : name === "open" ? destinations.map(item => item.name) : name === "help" ? [...categories, ...terminalCommands.map(item => item.name)] : name === "cat" ? ["readme", "cheatsheet", "about", "corpus"] : name === "quiz" ? ["ai", "computers", "stop", ...topics.map(item => item.slug)] : name === "review" ? topics.map(item => item.slug) : []
   return Array.from(new Set(choices)).filter(choice => choice.startsWith(prefix)).map(choice => `${name} ${choice}`)
 }
 
@@ -184,12 +192,15 @@ export function fitLine(examples: [number, number][]) {
 }
 function number(value: number) { return String(Number(value.toFixed(3))) }
 
-function questionLines(quiz: Quiz) {
-  const item = quizQuestions[quiz.order[quiz.at]]
+function quizBank(quiz: Quiz, topics: readonly TerminalQuizTopic[]) {
+  return quiz.topic ? topics.find(topic => topic.slug === quiz.topic)!.questions : quizQuestions
+}
+function questionLines(quiz: Quiz, topics: readonly TerminalQuizTopic[] = []) {
+  const item = quizBank(quiz, topics)[quiz.order[quiz.at]]
   return [`Question ${quiz.at + 1}/${quiz.order.length}: ${item.question}`, ...item.options.map((option, index) => `${"abc"[index]}) ${option}`), "Type answer a, answer b, or answer c. (A single letter works too.)"]
 }
 
-export function executeTerminal(value: string, state: TerminalState, options: { random?: () => number; now?: Date } = {}): TerminalResult {
+export function executeTerminal(value: string, state: TerminalState, options: TerminalOptions = {}): TerminalResult {
   const clean = value.trim()
   if (!clean) return { state, lines: [] }
   const first = clean.split(/\s+/, 1)[0].toLowerCase()
@@ -199,6 +210,7 @@ export function executeTerminal(value: string, state: TerminalState, options: { 
   const next: TerminalState = { ...state, commands: [...state.commands, clean].slice(-100) }
   const result = (lines: string[], extra: Omit<Partial<TerminalResult>, "state" | "lines"> = {}): TerminalResult => ({ state: next, lines, ...extra })
   const random = options.random || Math.random
+  const topics = options.quizTopics || []
   const pick = <T,>(items: T[]): T => items[Math.max(0, Math.min(items.length - 1, Math.floor(random() * items.length)))]
   const usage = (command: string) => result([`Usage: ${terminalCommands.find(item => item.name === command)?.usage}`, `Try: ${usageExamples[command]}`])
 
@@ -268,8 +280,14 @@ export function executeTerminal(value: string, state: TerminalState, options: { 
     return result(["TRAINING LAB — linear regression", `Examples (x -> y): ${next.examples.map(([x, y]) => `${number(x)} -> ${number(y)}`).join(", ")}`, `Fitted model: y = ${number(line.slope)}x ${line.intercept < 0 ? "-" : "+"} ${number(Math.abs(line.intercept))}`, "", "The line is fitted to minimize squared error on these examples.", "Try: train predict 4", "Then: train add 4 2", "Predict again. How did the changed example affect the answer?", "Start over: train reset", `Source: ${terminalSources.training.url}`])
   }
   if (name === "quiz") {
-    const topic = argument.toLowerCase()
+    const topic = argument.toLowerCase() || options.activeTopic || ""
     if (topic === "stop") { next.quiz = null; return result(["Quiz stopped. Try learn to explore at your own pace."]) }
+    const shared = topics.find(item => item.slug === topic)
+    if (shared) {
+      if (options.activeTopic !== shared.slug) return result([`[open] ${shared.title}`], { action: { type: "page", href: `/quizzes/${shared.slug}` } })
+      next.quiz = { topic, order: shared.questions.map((_, index) => index), at: 0, score: 0 }
+      return result([`${shared.title.toUpperCase()} QUIZ`, `${shared.questions.length} questions. Type a, b, or c, then Enter. Explanations follow each answer.`, "Type review for all worked answers; quiz to restart; topics to switch.", "", ...questionLines(next.quiz, topics)])
+    }
     if (topic && topic !== "ai" && topic !== "computers") return usage(name)
     const available = quizQuestions.flatMap((item, index) => !topic || item.topic === topic ? [index] : [])
     for (let i = available.length - 1; i > 0; i--) { const j = Math.max(0, Math.min(i, Math.floor(random() * (i + 1)))); [available[i], available[j]] = [available[j], available[i]] }
@@ -277,22 +295,28 @@ export function executeTerminal(value: string, state: TerminalState, options: { 
     return result([`${topic === "computers" ? "COMPUTER" : topic === "ai" ? "AI" : "COMPUTERS + AI"} QUIZ`, "Type quiz stop to leave. Explanations follow every answer.", "", ...questionLines(next.quiz)])
   }
   if (name === "answer") {
-    if (!state.quiz) return result(["No quiz is running. Start one with quiz ai or quiz computers."])
+    if (!state.quiz) return result(["No quiz is running. Type quiz to start, or topics to choose a subject."])
     const chosen = "abc".indexOf(argument.toLowerCase())
     if (argument.length !== 1 || chosen < 0) return usage(name)
-    const item = quizQuestions[state.quiz.order[state.quiz.at]], correct = chosen === item.correct
+    const item = quizBank(state.quiz, topics)[state.quiz.order[state.quiz.at]], correct = chosen === item.correct
     const quiz = { ...state.quiz, at: state.quiz.at + 1, score: state.quiz.score + Number(correct) }
     const feedback = [correct ? "Correct!" : `Not quite. The answer is ${"abc"[item.correct]}) ${item.options[item.correct]}.`, item.why, ""]
-    if (quiz.at === quiz.order.length) { next.quiz = null; return result([...feedback, `Quiz complete: ${quiz.score}/${quiz.order.length}.`, "Revisit a topic with learn, or start another round with quiz."], { feedback: correct ? "correct" : "incorrect" }) }
+    if (quiz.at === quiz.order.length) { next.quiz = null; return result([...feedback, `Quiz complete: ${quiz.score}/${quiz.order.length}.`, quiz.topic ? "Type review for worked answers, quiz to retry, or topics for another topic." : "Revisit a topic with learn, or start another round with quiz."], { feedback: correct ? "correct" : "incorrect", quizCompleted: true }) }
     next.quiz = quiz
-    return result([...feedback, ...questionLines(quiz)], { feedback: correct ? "correct" : "incorrect" })
+    return result([...feedback, ...questionLines(quiz, topics)], { feedback: correct ? "correct" : "incorrect" })
+  }
+  if (name === "topics") return result(["[open] CS quiz topics"], { action: { type: "page", href: "/quizzes" } })
+  if (name === "review") {
+    const topic = topics.find(item => item.slug === (argument.toLowerCase() || options.activeTopic))
+    if (!topic) return result(["Choose a topic: " + (topics.map(item => `review ${item.slug}`).join(", ") || "open quizzes")])
+    return result([`[read] ${topic.slug}/answers.txt`], { action: options.activeTopic === topic.slug ? { type: "review" } : { type: "page", href: `/quizzes/${topic.slug}#reference` } })
   }
   if (name === "ls") {
     const filter = argument.toLowerCase()
     if (filter && filter !== "programs" && filter !== "pages") return usage(name)
     return result([...destinations.filter(item => !filter || (filter === "programs" ? item.app : item.href)).map(item => `[${item.app ? "APP" : "PAGE"}] ${item.name} — ${item.description}`), ...(!filter ? ["[TEXT] readme, cheatsheet, about, corpus (use cat)"] : [])])
   }
-  if (name === "pwd") return result(["C:\\MICHELLE", "A virtual location inside this website."])
+  if (name === "pwd") return result([options.workingDirectory || "C:\\MICHELLE", "A virtual location inside this website."])
   if (name === "tree") return result(["C:\\MICHELLE", "+-- Programs", ...destinations.filter(item => item.app).map(item => `|   +-- ${item.name}`), "+-- Pages", ...destinations.filter(item => item.href).map(item => `|   +-- ${item.name}`), "+-- Text files", "    +-- readme", "    +-- cheatsheet", "    +-- about", "    +-- corpus"])
   if (name === "cat") {
     const file = argument.toLowerCase().replace(/\.txt$/, "")

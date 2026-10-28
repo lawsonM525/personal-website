@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next"
+import { quizTopics, quizCurricula } from "@/lib/quiz-topics"
 import { absoluteUrl } from "@/lib/seo"
 import { sanityClient } from "@/sanity/lib/client"
 import { SITEMAP_ARTICLES_QUERY, SITEMAP_AUTHORS_QUERY } from "@/sanity/lib/queries"
@@ -13,6 +14,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/learn/you-wont-believe-this-was-made-with-ai",
     "/girly-guide-to-ai",
     "/explore",
+    "/quizzes",
+    ...quizTopics.map(topic => `/quizzes/${topic.slug}`),
+    ...Object.values(quizCurricula).map(course => `/quizzes/${course.slug}`),
     "/projects",
     ...(process.env.FEEDBACK_EXCHANGE_OPEN === "true" ? ["/feedback"] : []),
     "/projects/rag-in-practice",
