@@ -15,6 +15,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/girly-guide-to-ai",
     "/explore",
     "/quizzes",
+    "/text-to-binary",
     ...quizTopics.map(topic => `/quizzes/${topic.slug}`),
     ...Object.values(quizCurricula).map(course => `/quizzes/${course.slug}`),
     "/projects",

@@ -32,6 +32,7 @@ export function QuizTopicPage({ topic }: { topic: QuizTopic }) {
     <h1>{topic.title} quiz</h1>
     <p>{topic.description}</p>
     <nav aria-label="Quiz navigation"><Link href="/quizzes">topics</Link><Link href="/quizzes/igcse-computer-science">IGCSE</Link><Link href="/quizzes/ib-computer-science">IB</Link></nav>
+    {topic.slug === "binary" && <p>Try the command: <Link href="/text-to-binary">free text to binary converter</Link>.</p>}
     <details><summary>syllabus — topic scope &amp; references</summary>
       <ul>{topic.objectives.map(objective => <li key={objective}>{objective}</li>)}</ul>
       <p><a href={quizCurricula.igcse.source} target="_blank" rel="noopener noreferrer">Cambridge IGCSE 0478 (2026–2028)</a>: {topic.igcse.section} {topic.igcse.label}.</p>
