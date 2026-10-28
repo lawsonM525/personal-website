@@ -19,6 +19,7 @@ const errors: Record<string, string> = {
   feedback_submit_limit: "You can submit one app every 24 hours.", feedback_public_url: "Use a public HTTPS link.", feedback_duplicate_url: "That app already has an active feedback request.",
   feedback_not_reviewable: "This app is no longer in the review queue, or it belongs to you.", feedback_assignment_expired: "Your review slot expired. Choose ‘Review next app’ to get a fresh assignment.",
   feedback_distinct_answers: "Give each question its own specific answer.", feedback_review_limit: "You’ve completed ten reviews today. Come back tomorrow.", feedback_already_reviewed: "You’ve already reviewed this app.",
+  feedback_comment_length: "Share between 500 and 2,000 characters in your reply.",
   feedback_missing_project: "This app or comment is no longer available.", feedback_comment_limit: "Give other people a moment before posting another reply.", feedback_report_limit: "You’ve sent several reports. Please try again later.",
   feedback_admin_only: "Only Michelle’s moderation team can do that.", feedback_invalid_action: "That moderation action is not available.", feedback_member_not_found: "That builder needs to sign in once before receiving pilot credits.",
 }

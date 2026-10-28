@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { isPublicAppUrl, feedbackProjectSchema, feedbackReviewSchema, feedbackExample, prioritizeFeedback } from '../lib/feedback.ts'
+import { isPublicAppUrl, feedbackCommentSchema, feedbackReplyLength, feedbackProjectSchema, feedbackReviewSchema, feedbackExample, prioritizeFeedback } from '../lib/feedback.ts'
 
 test('app links allow public HTTPS demos and app-store pages',()=>{
  for(const url of ['https://my-app.vercel.app','https://apps.apple.com/us/app/example/id1234','https://example.com/demo?view=public']) assert.equal(isPublicAppUrl(url),true,url)
@@ -28,4 +28,17 @@ test('queue puts unreviewed apps ahead of older apps that already have feedback'
  const projects=[{...feedbackExample,id:'one',review_count:2,created_at:'2026-01-01'},{...feedbackExample,id:'two',review_count:0,created_at:'2026-10-25'},{...feedbackExample,id:'three',review_count:0,created_at:'2026-10-20'}]
  assert.deepEqual(prioritizeFeedback(projects).map(p=>p.id),['three','two','one'])
  assert.equal(projects[0].id,'one')
+})
+
+test('project replies require 500–2000 meaningful characters and trim surrounding whitespace',()=>{
+ const reply={projectId:feedbackExample.id,body:'a'.repeat(500)}
+ assert.equal(feedbackCommentSchema.safeParse(reply).success,true)
+ assert.equal(feedbackCommentSchema.safeParse({...reply,body:'a'.repeat(499)}).success,false)
+ assert.equal(feedbackCommentSchema.safeParse({...reply,body:'  '+reply.body+' \n'}).data.body,reply.body)
+ assert.equal(feedbackCommentSchema.safeParse({...reply,body:' '.repeat(500)}).success,false)
+ assert.equal(feedbackCommentSchema.safeParse({...reply,body:'a'.repeat(2000)}).success,true)
+ assert.equal(feedbackCommentSchema.safeParse({...reply,body:'a'.repeat(2001)}).success,false)
+ assert.equal(feedbackReplyLength('😀'.repeat(250)),250)
+ assert.equal(feedbackCommentSchema.safeParse({...reply,body:'😀'.repeat(250)}).success,false)
+ assert.equal(feedbackCommentSchema.safeParse({...reply,projectId:'not-a-project'}).success,false)
 })

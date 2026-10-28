@@ -32,3 +32,11 @@
 .signInStatus{color:#17385e;font-size:13px;font-weight:400;line-height:1.6}
 @media(max-width:639px){.notification.notification{margin-top:calc(var(--computer-header-height,52px) + 12px);margin-bottom:0}}
 @media(prefers-reduced-motion:reduce){.notification.notification{animation:none!important;transition:none!important}}
+
+/* Writing prompts stay beside the reply field without introducing another banner. */
+.replyIdeas{color:#536074;font:13px/1.65 Arial,sans-serif;margin-top:-6px}
+.replyIdeas p{margin:0}
+.replyIdeas ul{display:grid;gap:5px;list-style:disc;padding-left:18px;margin:8px 0}
+.replyIdeas strong{color:#17385e}
+.replyCount{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-top:-7px;color:#536074;font:12px/1.5 Arial,sans-serif;font-variant-numeric:tabular-nums}
+.replyCount[data-ready=true]{color:#244c32}
