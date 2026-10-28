@@ -11,6 +11,7 @@ const routeTitles: Record<string, string> = {
   "/research": "Research", "/talks": "Talks", "/posts": "Posts", "/reminder": "Reminder",
   "/learn": "Learn", "/learn/how-to-build-ai-wardrobe-digital-closet": "How to Build Your Own AI Wardrobe",
   "/learn/submit": "Submit an article",
+  "/feedback": "Feedback exchange",
   "/learn/you-wont-believe-this-was-made-with-ai": "Michelle’s finds",
   "/girly-guide-to-ai": "The Girly Guide to AI",
   "/girly-guide-to-ai/read": "The Girly Guide to AI",

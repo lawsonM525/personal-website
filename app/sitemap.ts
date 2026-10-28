@@ -14,6 +14,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/girly-guide-to-ai",
     "/explore",
     "/projects",
+    ...(process.env.FEEDBACK_EXCHANGE_OPEN === "true" ? ["/feedback"] : []),
     "/projects/rag-in-practice",
     "/projects/delta-stock-pitch",
     "/research",
