@@ -14,7 +14,7 @@ Supabase Auth's Site URL is `https://michellescomputer.com`; the production call
 
 The confirmed `michelle@michellescomputer.com` account was added to `feedback_admins` and verified on 2026-10-28. This role gives access to the website's **Moderation** button after sign-in. Ordinary builders cannot call moderation functions or write directly to tables.
 
-New app links wait for approval. Moderators can approve or decline them, handle reports, hide reported reviews and replies, and grant invited builders two starter credits. Invited builders must sign in before receiving starter credits. The first pilot builders need starter credits because the initial review queue is empty.
+Projects, reviews, and replies publish immediately. The publish-first migration `202610280001_feedback_publish_first.sql` removes the approval queue and releases previously pending projects. Moderators can remove or restore projects, reviews, and replies, inspect reported content with its context, dismiss reports, and grant invited builders two starter credits. Reports do not automatically hide content. Existing two-review credits, daily submission limits, verified accounts, RLS, and direct-table restrictions remain in place. Removed projects return their request credits; removed reviews stop earning review credits, and restoring them reverses those changes. Invited builders must sign in before receiving starter credits. The first pilot builders need starter credits because the initial review queue is empty.
 
 ## Release checks
 

@@ -7,3 +7,5 @@ On smaller screens the project windows stack. Selecting **Take a look** opens a 
 When there are no real public submissions, four explicitly fictional examples demonstrate the layout. They are not inserted into Supabase, have no external project links, and cannot earn credits, receive public replies, be reported, or be featured by a moderator. Once real submissions exist, those replace the example board. Real projects without preview artwork show their actual title, description, and domain rather than an invented screenshot.
 
 The built-in image generation tool produced the transparent eyes and four fictional interface previews. Optimized WebP files live in `public/feedback/`; the full prompt set is in [feedback-image-prompts.json](./feedback-image-prompts.json). The handshake extends the site's original pixel artwork as an SVG. Existing homepage artwork and shared fonts are preserved.
+
+Moderation gives new submissions the benefit of the doubt: they publish immediately. Signed-in members can report projects, reviews, and replies; moderators can remove or restore them afterward. The visual design and review-credit rules are unchanged.
