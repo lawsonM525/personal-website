@@ -5,7 +5,7 @@ declare a uuid:='ea000000-0000-4000-8000-000000000001'; b uuid:='eb000000-0000-4
 begin
  insert into auth.users(id,email,email_confirmed_at,raw_app_meta_data,raw_user_meta_data,created_at,updated_at) values
  (a,'portrait-test-a@example.invalid',now(),'{}','{}',now(),now()),(b,'portrait-test-b@example.invalid',now(),'{}','{}',now(),now());
- insert into public.feedback_members(user_id,display_name,starter_credits) values(a,'Portrait A',2),(b,'Portrait B',2);
+ insert into public.feedback_members(user_id,display_name,starter_credits) values(a,'Portrait A',3),(b,'Portrait B',3);
  perform set_config('request.jwt.claim.sub',a::text,true);
  result:=public.member_profile_save('Portrait A',avatar);
  if result->'avatar'<>avatar then raise exception 'TEST FAILED: saved portrait missing from profile'; end if;
