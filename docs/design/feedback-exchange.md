@@ -13,3 +13,13 @@ Moderation gives new submissions the benefit of the doubt: they publish immediat
 The filters use slimmer borders and shallow shadows, with strong blue reserved for the selected filter. Cards have wider gaps and more padding. The closer-look pane contains the maker’s task as a personal note, the requested focus as an unboxed paragraph, one Try it & leave feedback button, and a quiet credit note. The duplicated image and Focus/Your task table are removed from that pane. Mobile selection preserves the focused view and returns keyboard focus to the selected card when going back.
 
 The large yellow **Submit your project** button remains the prominent primary action at the top, including on mobile. The hero artwork, headline, and subtitle are preserved.
+
+## Project images
+
+New submissions require one screenshot or cover image. JPG, PNG and still WebP originals up to 10 MB are resized in the browser before upload; the server decodes them again, strips metadata and stores a WebP up to 1600 pixels on its longest edge and 1 MB. The form previews the gallery’s top-aligned crop; a wide 16:9 image is recommended.
+
+Existing projects remain valid without an image. Their owners can use “Add or change project image” in their full project view. Cover changes do not create a new request or charge credits.
+
+The private `feedback-covers` bucket has owner-scoped, one-hour upload tickets and a ten-upload daily cap. Only covers attached to published projects are readable anonymously. Replaced, unattached and removed-project covers stay private. The same-origin delivery endpoint uses a 60-second cache, so moderation changes can take up to a minute to reach cached copies. No service-role key is used. Unattached files are retained privately; a future retention job may remove those after a grace period.
+
+Apply `202610280005_feedback_covers.sql` with the matching release: its seven-argument submission RPC requires a cover and revokes authenticated access to the legacy six-argument RPC. `supabase/tests/feedback-covers.sql` is rollback-only and checks ownership, storage RLS, visibility, replacement, moderation, expiry and rate limits.

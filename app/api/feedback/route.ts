@@ -62,8 +62,13 @@ export async function POST(request: NextRequest) {
     switch (body.action) {
       case "assign": result = await feedbackRpc("feedback_assign", token); break
       case "submit": {
+        const coverId = parse(uuid, body.coverId)
         const data = parse(feedbackProjectSchema, body)
-        result = await feedbackRpc("feedback_submit", token, { p_title: data.title, p_url: data.url, p_category: data.category, p_audience: data.audience, p_task: data.task, p_focus: data.focus }); break
+        result = await feedbackRpc("feedback_submit", token, { p_title: data.title, p_url: data.url, p_category: data.category, p_audience: data.audience, p_task: data.task, p_focus: data.focus, p_cover_id: coverId }); break
+      }
+      case "cover": {
+        const data = parse(z.object({ projectId: uuid, coverId: uuid }), body)
+        result = await feedbackRpc("feedback_set_cover", token, { p_project_id: data.projectId, p_cover_id: data.coverId }); break
       }
       case "review": {
         const data = parse(feedbackReviewSchema, body)

@@ -10,6 +10,7 @@ export function feedbackConfig() {
 export function feedbackIsOpen() { return Boolean(feedbackConfig()) && process.env.FEEDBACK_EXCHANGE_OPEN === "true" }
 
 const errors: Record<string, string> = {
+  feedback_cover_limit: "You’ve uploaded ten images today. Try again tomorrow.", feedback_cover_owner: "Only the project’s owner can change its image.", feedback_cover_missing: "Add a screenshot or cover image before submitting.",
   member_invalid_avatar: "Choose one of the portrait options.", learn_comment_limit: "Give it a few minutes before commenting again.",
   feedback_sign_in: "Sign in with your email to take part.", feedback_blocked: "This account cannot post. Contact Michelle if you think this is a mistake.", feedback_name: "Use a public name between 2 and 60 characters.",
   feedback_empty_queue: "You’ve reached the end of the review queue. Come back when another builder shares an app.", feedback_need_reviews: "Complete three reviews to earn a feedback request.",
