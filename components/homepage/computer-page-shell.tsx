@@ -44,14 +44,14 @@ export function ComputerPageShell({ children }: { children: React.ReactNode }) {
   function restore() { if (minimized) { setMinimized(false); requestAnimationFrame(() => { const viewport = isGuide ? content.current : window; viewport?.scrollTo({ top: readingPosition.current, behavior: "instant" }); content.current?.closest("section")?.querySelector<HTMLElement>("[data-window-drag-handle]")?.focus({ preventScroll: true }) }) } }
   function search() { window.dispatchEvent(new Event("michelle:search")) }
 
-  return <div className="computer-desktop-page" data-contained-reader={isGuide ? "guide" : undefined}>
+  return <div className="computer-desktop-page" data-computer-section={path === "/feedback" ? "feedback" : undefined} data-contained-reader={isGuide ? "guide" : undefined}>
     <a className="computer-skip" href="#computer-page-content">Skip to content</a>
     <HomeHeader />
     <div className="computer-page-workspace">
       {minimized && <button type="button" className="computer-restore" data-computer-sound="open" onClick={restore}><PageIcon size={32} />Open {title}</button>}
       <section data-computer-window hidden={minimized} className={`computer-page-window${maximized ? " computer-page-window-maximized" : ""}`} aria-label={`${title} window`}>
         <WindowBar title={title} icon={<PageIcon size={24} />} onMinimize={minimize} onMaximize={() => setMaximized(value => !value)} onClose={() => router.push("/?desktop=1")} maximized={maximized} />
-        {!path.startsWith("/learn") && !isGuide && <nav className="computer-page-toolbar" aria-label="Window navigation"><Link href={parent.href}><ArrowLeft size={13} />{parent.label}</Link><span>{title}</span><button type="button" data-computer-sound="open" onClick={search}><Search size={13} />Find a page</button></nav>}
+        {!path.startsWith("/learn") && !isGuide && path !== "/feedback" && <nav className="computer-page-toolbar" aria-label="Window navigation"><Link href={parent.href}><ArrowLeft size={13} />{parent.label}</Link><span>{title}</span><button type="button" data-computer-sound="open" onClick={search}><Search size={13} />Find a page</button></nav>}
         <div ref={content} id="computer-page-content" className="computer-page-content" data-page={path} data-guide-scroll-viewport={isGuide ? "" : undefined} tabIndex={isGuide ? 0 : undefined} role={isGuide ? "region" : undefined} aria-label={isGuide ? "Book reading area" : undefined}>{children}</div>
       </section>
     </div>

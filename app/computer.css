@@ -99,3 +99,8 @@ html:has([data-contained-reader="guide"]),body:has([data-contained-reader="guide
 [data-reader-focus="true"] .computer-page-workspace{max-width:none;padding:0}
 [data-reader-focus="true"] .computer-page-window{position:relative;inset:auto;translate:none!important;padding:0;border:0;box-shadow:none}
 [data-reader-focus="true"] .computer-page-window>[data-window-drag-handle]{display:none}
+
+/* The exchange uses the compact project-browser frame from its reference. */
+.computer-desktop-page[data-computer-section="feedback"] .computer-page-workspace{max-width:none;padding:12px 12px 24px}
+.computer-desktop-page[data-computer-section="feedback"] .computer-page-window>[data-window-drag-handle]{font:700 22px/1.1 sserife,Arial,sans-serif;letter-spacing:1px;min-height:36px;background:linear-gradient(90deg,#0037bd,#064bdc)}
+@media(max-width:760px){.computer-desktop-page[data-computer-section="feedback"] .computer-page-workspace{padding:8px 5px 16px}.computer-desktop-page[data-computer-section="feedback"] .computer-page-window>[data-window-drag-handle]{font-size:19px;min-height:52px;letter-spacing:.5px}}
