@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@datafast/ai-crawl": "1.0.9",
+    "@dicebear/core": "9.2.2",
+    "@dicebear/pixel-art": "9.2.2",
     "@hookform/resolvers": "^3.3.1",
     "@portabletext/react": "^3.2.1",
     "@portabletext/types": "^2.0.15",

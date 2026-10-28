@@ -4,6 +4,7 @@ import { feedbackProjectSchema, feedbackReviewSchema, type FeedbackBoard, type F
 import { FeedbackError, feedbackIsOpen, feedbackResponse, feedbackRpc, feedbackSession, supabaseFeedback, type FeedbackSession } from "@/lib/feedback/server"
 import { feedbackPkce } from "@/lib/feedback/pkce"
 import { feedbackRequestOrigin } from "@/lib/feedback/request-origin"
+import { memberReturnPath } from "@/lib/member/avatar"
 
 export const dynamic = "force-dynamic"
 const uuid = z.string().uuid()
@@ -21,9 +22,10 @@ export async function GET(request: NextRequest) {
   let session: FeedbackSession | null = null
   try {
     session = await feedbackSession(request)
-    const board = await feedbackRpc<Pick<FeedbackBoard, "projects" | "reviews" | "comments">>("feedback_board")
+    const board = await feedbackRpc<Pick<FeedbackBoard, "projects" | "reviews" | "comments" | "submission_cost" | "launch_remaining">>("feedback_board")
     const viewer = session ? await feedbackRpc<FeedbackViewer>("feedback_member", session.access_token) : null
     const moderation = viewer?.is_admin ? await feedbackRpc<FeedbackBoard["moderation"]>("feedback_moderation", session!.access_token) : undefined
+    if (moderation) moderation.discussion = await feedbackRpc("learn_moderation", session!.access_token)
     return feedbackResponse({ ...board, configured: true, viewer, moderation }, 200, session)
   } catch (error) { return failure(error, session) }
 }
@@ -46,6 +48,7 @@ export async function POST(request: NextRequest) {
       const cookie = { httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "lax" as const, path: "/", maxAge: 3600 }
       response.cookies.set("mc-feedback-verifier", pkce.verifier, cookie)
       response.cookies.set("mc-feedback-name", data.name, cookie)
+      response.cookies.set("mc-feedback-return", memberReturnPath(body.returnTo), cookie)
       return response
     }
     session = await feedbackSession(request)
@@ -79,6 +82,10 @@ export async function POST(request: NextRequest) {
         result = await feedbackRpc("feedback_moderate", token, { p_kind: data.kind, p_id: data.id, p_decision: data.decision }); break
       }
       case "seed": result = await feedbackRpc("feedback_seed", token, { p_email: parse(email, body.email) }); break
+      case "moderate-article": {
+        const data = parse(z.object({ id: uuid, decision: z.enum(["hide", "restore", "resolve"]) }), body)
+        result = await feedbackRpc("learn_moderate", token, { p_id: data.id, p_decision: data.decision }); break
+      }
       default: throw new FeedbackError(400, "Choose an action from the feedback exchange.")
     }
     return feedbackResponse({ ok: true, result }, 200, session)

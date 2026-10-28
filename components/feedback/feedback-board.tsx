@@ -4,6 +4,7 @@ import { useRef, useState } from "react"
 import { ArrowRight, ArrowUpRight, ChevronLeft, FileText, FolderOpen, Minus, Search, Sparkles, Square, X } from "@/components/retro-icons"
 import { feedbackExampleArtwork, isFeedbackExample } from "@/lib/feedback-examples"
 import type { FeedbackProject } from "@/lib/feedback"
+import { MemberAvatar } from "@/components/member/member-avatar"
 import styles from "./feedback-board.module.css"
 
 export function ProjectPreview({ project, large = false }: { project: FeedbackProject; large?: boolean }) {
@@ -41,7 +42,7 @@ export function FeedbackBoard({ projects, loading, filter, query, samples, onFil
       <label className={styles.search}><Search size={21} /><span className="sr-only">Search projects</span><input type="search" placeholder="Find a project…" value={query} onChange={event => onQuery(event.target.value)} /></label>
       <p className={styles.previewLabel}>{samples ? "Example projects · fictional builds" : "Fresh eyes go where they’re needed"}</p>
     </div>
-    {loading ? <p className={styles.empty} role="status">Opening the project folders…</p> : !projects.length ? <div className={styles.empty}><FolderOpen size={48} /><h2>{query ? "No projects match that search." : filter === "Michelle’s picks" ? "Michelle’s picks will go here." : filter === "My requests" ? "Your next build belongs here." : "The first fresh eyes are yours."}</h2><p>{query ? "Try another name or clear the search." : "Give two thoughtful reviews to earn a feedback request."}</p><button type="button" onClick={onNextReview}>Review next project <ArrowRight size={17} /></button></div> : <div className={styles.layout} data-detail-open={mobileDetail}>
+    {loading ? <p className={styles.empty} role="status">Opening the project folders…</p> : !projects.length ? <div className={styles.empty}><FolderOpen size={48} /><h2>{query ? "No projects match that search." : filter === "Michelle’s picks" ? "Michelle’s picks will go here." : filter === "My requests" ? "Your next build belongs here." : "The first fresh eyes are yours."}</h2><p>{query ? "Try another name or clear the search." : "Share a project or give another builder fresh eyes."}</p><button type="button" onClick={onNextReview}>Review next project <ArrowRight size={17} /></button></div> : <div className={styles.layout} data-detail-open={mobileDetail}>
       <div className={styles.cards}>{projects.map((project, index) => <article className={styles.card} data-selected={active?.id === project.id} data-color={index % 4} key={project.id}>
         <div className={styles.cardBar}><FolderOpen size={23} /><span>{project.title}</span><WindowDecoration /></div>
         <button className={styles.previewButton} type="button" onClick={() => select(project)} aria-label={`Take a look at ${project.title}`}><ProjectPreview project={project} /></button>
@@ -51,7 +52,7 @@ export function FeedbackBoard({ projects, loading, filter, query, samples, onFil
         <div className={styles.detailBar}><FolderOpen size={23} /><h2>A closer look — {active.title}</h2><WindowDecoration /></div>
         <div className={styles.detailBody}><button type="button" className={styles.mobileBack} onClick={() => { setMobileDetail(false); requestAnimationFrame(() => document.querySelector<HTMLElement>(`[aria-label="Take a look at ${CSS.escape(active.title)}"]`)?.focus()) }}><ChevronLeft size={16} />Back to projects</button>
           <ProjectPreview project={active} large />
-          <div className={styles.maker}><span className={styles.avatar} aria-hidden="true">{active.builder_name.slice(0, 1).toUpperCase()}</span><div><p><strong>From {active.builder_name}</strong>{isFeedbackExample(active) && <> · sample maker</>}</p><p>{active.title === "Study planner" && isFeedbackExample(active) ? "I’m making a calmer way to plan a busy week. Does the first step make sense?" : active.audience}</p></div></div>
+          <div className={styles.maker}><MemberAvatar name={active.builder_name} avatar={active.avatar} size={48} /><div><p><strong>From {active.builder_name}</strong>{isFeedbackExample(active) && <> · sample maker</>}</p><p>{active.title === "Study planner" && isFeedbackExample(active) ? "I’m making a calmer way to plan a busy week. Does the first step make sense?" : active.audience}</p></div></div>
           <dl className={styles.brief}><div><dt>Focus</dt><dd>{active.focus}</dd></div><div><dt>Your task</dt><dd>{active.task}</dd></div></dl>
           <button type="button" className={styles.reviewButton} onClick={() => onReview(active)}><FileText size={30} />Try it & leave feedback</button>
           <div className={styles.detailFoot}><p>{isFeedbackExample(active) ? "Example review · no credits or public posts." : "Earn 1 credit for a thoughtful review."}</p>{isFeedbackExample(active) ? <span>Preview only</span> : <a href={active.url} target="_blank" rel="noopener noreferrer">Open project <ArrowUpRight size={16} /></a>}</div>

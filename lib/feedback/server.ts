@@ -10,8 +10,9 @@ export function feedbackConfig() {
 export function feedbackIsOpen() { return Boolean(feedbackConfig()) && process.env.FEEDBACK_EXCHANGE_OPEN === "true" }
 
 const errors: Record<string, string> = {
+  member_invalid_avatar: "Choose one of the portrait options.", learn_comment_limit: "Give it a few minutes before commenting again.",
   feedback_sign_in: "Sign in with your email to take part.", feedback_blocked: "This account cannot post. Contact Michelle if you think this is a mistake.", feedback_name: "Use a public name between 2 and 60 characters.",
-  feedback_empty_queue: "You’ve reached the end of the review queue. Come back when another builder shares an app.", feedback_need_reviews: "Complete two reviews to earn a feedback request.",
+  feedback_empty_queue: "You’ve reached the end of the review queue. Come back when another builder shares an app.", feedback_need_reviews: "Complete three reviews to earn a feedback request.",
   feedback_submit_limit: "You can submit one app every 24 hours.", feedback_public_url: "Use a public HTTPS link.", feedback_duplicate_url: "That app already has an active feedback request.",
   feedback_not_reviewable: "This app is no longer in the review queue, or it belongs to you.", feedback_assignment_expired: "Your review slot expired. Choose ‘Review next app’ to get a fresh assignment.",
   feedback_distinct_answers: "Give each question its own specific answer.", feedback_review_limit: "You’ve completed ten reviews today. Come back tomorrow.", feedback_already_reviewed: "You’ve already reviewed this app.",

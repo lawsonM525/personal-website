@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { feedbackIsOpen, feedbackRpc, feedbackSessionCookies, supabaseFeedback, type FeedbackSession } from "@/lib/feedback/server"
 import { feedbackRequestOrigin } from "@/lib/feedback/request-origin"
+import { memberReturnPath } from "@/lib/member/avatar"
 
 export const dynamic = "force-dynamic"
 
@@ -20,10 +21,11 @@ export async function GET(request: NextRequest) {
     } catch { /* A failed/used link returns to sign-in without exposing auth details. */ }
   }
   const origin = feedbackRequestOrigin(request.headers.get("host"), process.env.NODE_ENV === "production")
-  const response = NextResponse.redirect(new URL(`/feedback?signin=${success ? "success" : "expired"}`, origin), 303)
+  const returnTo = memberReturnPath(request.cookies.get("mc-feedback-return")?.value)
+  const response = NextResponse.redirect(new URL(`${returnTo}?signin=${success ? "success" : "expired"}${returnTo.startsWith("/learn/") ? "#discussion-heading" : ""}`, origin), 303)
   response.headers.set("Cache-Control", "private, no-store")
   response.headers.set("Referrer-Policy", "no-referrer")
   if (success && session) feedbackSessionCookies(response, { ...session, refreshed: true })
-  for (const name of ["mc-feedback-verifier", "mc-feedback-name"]) response.cookies.set(name, "", { httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "lax", path: "/", maxAge: 0 })
+  for (const name of ["mc-feedback-verifier", "mc-feedback-name", "mc-feedback-return"]) response.cookies.set(name, "", { httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "lax", path: "/", maxAge: 0 })
   return response
 }
