@@ -106,7 +106,9 @@ export default async function ArticlePage({ params }: PageProps) {
     author: {
       "@type": "Person",
       name: article.author?.name || "Michelle Lawson",
-      url: absoluteUrl("/about"),
+      url: !article.author?.name || stegaClean(article.author.name) === "Michelle Lawson"
+        ? absoluteUrl("/about")
+        : undefined,
     },
     publisher: { "@type": "Person", name: "Michelle Lawson" },
     mainEntityOfPage: canonical,
