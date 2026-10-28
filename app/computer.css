@@ -2,7 +2,7 @@
 @font-face{font-family:sserife;src:url("/fonts/windows93/sserife-bold.woff2") format("woff2");font-weight:700;font-style:normal;font-display:swap}
 /* Shared Michelle's Computer surfaces. Content, media and application state stay in their routes. */
 .computer-desktop-page{--background:44 57% 96%;--foreground:216 38% 12%;--card:44 57% 96%;--card-foreground:216 38% 12%;--popover:44 57% 96%;--popover-foreground:216 38% 12%;--primary:222 93% 43%;--primary-foreground:44 57% 96%;--secondary:45 22% 89%;--secondary-foreground:216 38% 12%;--muted:45 22% 89%;--muted-foreground:215 15% 38%;--accent:17 100% 66%;--accent-foreground:216 38% 12%;--border:210 13% 72%;--input:210 13% 72%;--ring:222 93% 43%;--radius:0rem;color-scheme:light}
-.computer-desktop-page{min-height:100svh;padding-bottom:54px;background:#1b527f url('/homepage/denim-wallpaper-d.webp') repeat;background-size:700px;color:#121b2a;font:15px/1.6 Arial,Helvetica,sans-serif;overflow-x:clip}
+.computer-desktop-page{min-height:100svh;padding-bottom:54px;background:#1b527f url('/homepage/denim-wallpaper-d.webp') repeat;background-image:image-set(url('/_next/image?url=%2Fhomepage%2Fdenim-wallpaper-d.webp&w=750&q=75') 1x,url('/_next/image?url=%2Fhomepage%2Fdenim-wallpaper-d.webp&w=1080&q=75') 2x);background-size:700px;color:#121b2a;font:15px/1.6 Arial,Helvetica,sans-serif;overflow-x:clip}
 .computer-page-workspace{width:100%;max-width:1370px;margin:auto;padding:28px 30px 42px}
 .computer-page-window{min-width:0;padding:4px;border:1px solid #121b2a;background:#f4f0e5;box-shadow:inset 1px 1px #fff,inset -1px -1px #827f72,4px 5px 0 #081b3638}
 .computer-page-window>:first-child{position:sticky;top:var(--computer-header-height,52px);z-index:25}

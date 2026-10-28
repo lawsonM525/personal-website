@@ -22,7 +22,7 @@ Search Console is now verified and the sitemap has been submitted. Google's curr
 
 Acceptance: production metadata matches each tested route; sharing images load; Person/WebSite/Book JSON-LD parses; utility pages are noindex; sitemap URLs are canonical and indexable; the release features remain intact. `tests/seo.test.mjs`, `tests/seo-smoke.mjs`, the route suite, and the reusable audit script cover this pass.
 
-Local verification passed: 24 unit tests, TypeScript/build checks, 30 route responses, and a 13-page SEO crawl. The crawl also checked the 1200×630 sharing PNG, all 230 original book figures, proposal/form noindex rules, and the production-only lock on the author proof. Search Console ownership and actual indexing remain unverified.
+Initial local verification passed: 24 unit tests, TypeScript/build checks, 30 route responses, and a 13-page SEO crawl. The crawl also checked the 1200×630 sharing PNG, all 230 original book figures, proposal/form noindex rules, and the production-only lock on the author proof. Search Console ownership was unverified at that stage; the follow-through below records its subsequent verification.
 
 ## October 2026 follow-through
 
@@ -56,7 +56,9 @@ Tally submission events must match the origin, iframe window, form ID, and event
 
 The official DataFast AI crawler tracker runs in background middleware on Vercel production only. It filters human/API/static requests locally, excludes feedback and proposal routes, removes URL queries/fragments and unrelated request headers, and does not make a page wait for analytics. It can record requested public paths and crawler identity; real crawler verification/classification is performed by DataFast. No synthetic production crawler counts should be treated as real activity.
 
-The installed GA4 tag is `G-JDSM0Q7X0G`. Neither the initial Gmail account nor `michelle@michellescomputer.com` has an Analytics property. Michelle identified `michelle@michellelawson.me` as the likely owner; verify that account before changing property settings or claiming events are visible. DataFast goals appear when events arrive; the Add goals panel supplies instrumentation instructions rather than a manual goal-creation form.
+The installed GA4 tag is `G-JDSM0Q7X0G`. Access is confirmed under `michelle@michellelawson.me`: account **MichelleLawson** (`350055167`), property **michellelawson.mr** (`495715772`), web stream **Michelle Lawson** (`11446907667`). Its legacy stream URL is `https://michellelawson.me`, but the matching measurement ID and Realtime page titles confirm that Michelle's Computer is sending data here. Enhanced history-change page measurement was already enabled, so no duplicate manual pageview tracking was added.
+
+Both `magazine_waitlist_submitted` and `penpal_signup_submitted` are registered as GA4 key events, counted once per event, with no invented default monetary value. They use the existing client events, not URL-derived duplicates. No fake form submissions were sent. One real internal QA click on the live Start reading link appeared as **`guide_preview_start: 1`** in both DataFast and GA4 Realtime. This verifies delivery of that click event, not submission or purchase completion. DataFast goals appear when events arrive; its Add goals panel supplies instrumentation instructions rather than a manual goal-creation form. Bot counts remain empty pending real verified requests.
 
 Recommended DataFast funnels after events arrive: preview start → purchase-link click, magazine open → submitted, and pen-pal open → submitted. Select completed magazine signups as the primary KPI when reliable submissions appear. Segment organic/search and AI human referrals separately from bot requests. Avoid interpreting the current empty funnel as a zero conversion rate.
 
@@ -89,13 +91,22 @@ The public PageSpeed UI supplied Lighthouse 13.5.0 lab reports. Field data was *
 
 Home intentionally includes the skippable 3.1-second startup animation, which contributes to first-visit lab timing. Preserve the animation and its no-JavaScript fallback; distinguish its presentation delay from slow downloads. Compare the book and Learn after deployment, then check an article and Explorer on mobile and desktop. Record actual reports, avoid a blanket perfect-score claim, and use Search Console field data when sufficient traffic exists.
 
+The first follow-through release is live through [PR 27](https://github.com/lawsonM525/personal-website/pull/27), production commit `d07e25c1afa489c86798b7b436c5948d0b774897`. The public SEO/privacy/image smoke suite passed after deployment. PageSpeed reports captured October 27 at about 8:02 PM Pacific show:
+
+| After PR 27 | Mobile performance / LCP | Desktop performance / LCP |
+| --- | --- | --- |
+| [Learn](https://pagespeed.web.dev/analysis/https-michellescomputer-com-learn/hkqfop7ooi?form_factor=mobile) | 65 / 8.5 s | 99 / 0.9 s |
+| [Book landing](https://pagespeed.web.dev/analysis/https-michellescomputer-com-girly-guide-to-ai/4tior0pz73?form_factor=mobile) | 67 / 7.6 s | 96 / 1.1 s |
+
+Both pages retained zero measured layout shift and a Lighthouse SEO score of 100. Mobile loading still needs work; these single lab runs are not ranking or field-experience guarantees. Learn's new author link triggered a mobile tap-target warning (accessibility 96), prompting a 28 px minimum linked-byline target. Follow-up delivery changes serve the same denim at 700 CSS pixels using optimized 750/1080 px variants (about 128/213 KB instead of 365 KB), resize the tiny profile portrait, optimize the landing illustration, and stop preloading two noncritical decorative fonts. Original source artwork and typography are preserved. The follow-up passed the production build, 22 focused tests, 35 route responses, the SEO/privacy/image smoke suite, and a 390 px phone check with no horizontal overflow. It is released separately from concurrent Explorer and feedback work.
+
 The exact staged release passed 22 focused unit tests, production build/type checks, 35 route responses, and the SEO/privacy/image smoke suite. Browser checks verified author search/profile links, chapter jumps through the glossary with all 230 figures, focus mode, mobile chapter controls, old preview links, and responsive image delivery. Concurrent Explorer and feedback work is excluded from this release. Evidence reports live under ignored `output/`; retain the exact deployed commit and public verification results there.
 
 ### Remaining external follow-up
 
 1. Let Search Console finish processing, then inspect the custom-domain canonical selection, indexed pages, organic queries, impressions, clicks, and CTR. The submitted sitemap will be fetched again as content changes; the new author profile adds another canonical URL.
-2. Verify GA4 access under the likely owner account. Check existing enhanced history measurement before adding any manual pageviews, then validate the new goals without double-counting route changes.
-3. Connect/import the verified site in Bing Webmaster Tools if the account/consent flow is available. Do not claim Bing submission until its UI confirms it.
+2. GA4 access, existing enhanced history measurement, signup key-event registration, and delivery of the preview-start goal are verified. Confirm real signup events when audience submissions arrive; purchase completion still needs a payment-provider integration.
+3. Bing is paused at its Google sign-in choice. Automatic approval review rejected that new OAuth connection because the user has not specifically authorized Bing access to the Google account. Obtain that authorization before sign-in, then inspect any subsequent Search Console import permissions at action time. No Bing submission has happened.
 4. Connect Search Console to DataFast only after reviewing the requested Google permissions and obtaining any required consent. Native Search Console already provides the underlying reports.
 5. Update this record with the actual production speed comparison and any account-specific blockers. No scheduled follow-up has been created; a future check needs an explicit scheduling request.
 

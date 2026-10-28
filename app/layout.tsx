@@ -14,10 +14,12 @@ import { SiteAnalytics } from "@/components/site-analytics"
 const inter = Inter({ subsets: ["latin"] })
 const playfair = Playfair_Display({
   subsets: ["latin"],
+  preload: false,
   variable: "--font-serif",
 })
 const caveat = Caveat({
   subsets: ["latin"],
+  preload: false,
   variable: "--font-handwriting",
 })
 
