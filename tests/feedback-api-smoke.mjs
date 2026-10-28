@@ -13,6 +13,8 @@ assert.ok(board.projects.every(project=>project.summary===null || typeof project
 const post=(action,origin=requestOrigin)=>fetch(root+'/api/feedback',{method:'POST',headers:{'Content-Type':'application/json',Origin:origin},body:JSON.stringify(action)})
 assert.equal((await post({action:'assign'},'https://unrelated.example')).status,403)
 assert.equal((await post({action:'assign'})).status,401)
+for(const action of [{action:'useful',reviewId:'00000000-0000-4000-8000-000000000001',observation:0,useful:true},{action:'release-assignment'},{action:'renew-assignment',projectId:'00000000-0000-4000-8000-000000000001'}]) assert.equal((await post(action)).status,401)
+assert.ok(Array.isArray(board.reviewers))
 assert.equal((await post({action:'submit',title:'Cannot publish anonymously'})).status,401)
 assert.equal((await post({action:'summary',projectId:'00000000-0000-4000-8000-000000000001',summary:'An anonymous summary edit should be blocked.'})).status,401)
 assert.equal((await post({action:'moderate',kind:'project',id:'00000000-0000-4000-8000-000000000001',decision:'hide'})).status,401)

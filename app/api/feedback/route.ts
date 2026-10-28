@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
   let session: FeedbackSession | null = null
   try {
     session = await feedbackSession(request)
-    const board = await feedbackRpc<Pick<FeedbackBoard, "projects" | "reviews" | "comments" | "submission_cost" | "launch_remaining">>("feedback_board")
+    const board = await feedbackRpc<Pick<FeedbackBoard, "projects" | "reviews" | "comments" | "submission_cost" | "launch_remaining" | "reviewers">>("feedback_board")
     const viewer = session ? await feedbackRpc<FeedbackViewer>("feedback_member", session.access_token) : null
     const moderation = viewer?.is_admin ? await feedbackRpc<FeedbackBoard["moderation"]>("feedback_moderation", session!.access_token) : undefined
     if (moderation) moderation.discussion = await feedbackRpc("learn_moderation", session!.access_token)
@@ -61,6 +61,12 @@ export async function POST(request: NextRequest) {
     let result: unknown
     switch (body.action) {
       case "assign": result = await feedbackRpc("feedback_assign", token); break
+      case "release-assignment": result = await feedbackRpc("feedback_release_assignment", token); break
+      case "renew-assignment": result = await feedbackRpc("feedback_renew_assignment", token, { p_project_id: parse(uuid, body.projectId) }); break
+      case "useful": {
+        const data = parse(z.object({ reviewId: uuid, observation: z.number().int().min(0).max(2), useful: z.boolean() }), body)
+        result = await feedbackRpc("feedback_mark_useful", token, { p_review_id: data.reviewId, p_observation: data.observation, p_useful: data.useful }); break
+      }
       case "submit": {
         const coverId = parse(uuid, body.coverId)
         const data = parse(feedbackProjectSchema, body)
@@ -76,7 +82,7 @@ export async function POST(request: NextRequest) {
       }
       case "review": {
         const data = parse(feedbackReviewSchema, body)
-        result = await feedbackRpc("feedback_review", token, { p_project_id: data.projectId, p_purpose: data.purpose, p_confusion: data.confusion, p_improvement: data.improvement, p_design_score: data.designScore, p_outcome: data.outcome }); break
+        result = await feedbackRpc("feedback_review_observations", token, { p_project_id: data.projectId, p_purpose: data.purpose, p_observations: data.observations, p_design_score: data.designScore, p_outcome: data.outcome }); break
       }
       case "comment": {
         const data = parse(z.object({ projectId: uuid, body: z.string().trim().min(20).max(2000) }), body)
