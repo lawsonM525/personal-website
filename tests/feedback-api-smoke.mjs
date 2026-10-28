@@ -20,3 +20,9 @@ const expired=await fetch(root+'/feedback/confirm?code=invalid',{redirect:'manua
 assert.equal(expired.status,303)
 assert.match(expired.headers.get('location'),/signin=expired/)
 console.log(JSON.stringify({connectedBoard:true,privateResponses:true,csrfBlocked:true,anonymousMutationsBlocked:true,anonymousModerationBlocked:true,invalidSignInRejected:true,malformedBodyRejected:true,missingPkceVerifierRejected:true,noSignInEmailsSent:true}))
+
+const coverPost=origin=>fetch(root+'/api/feedback/covers',{method:'POST',headers:{Origin:origin,'Content-Type':'image/webp'},body:'not-an-image'})
+assert.equal((await coverPost('https://unrelated.example')).status,403)
+assert.equal((await coverPost(requestOrigin)).status,401)
+assert.equal((await fetch(root+'/api/feedback/covers/not-a-uuid')).status,404)
+console.log('PASS: cover CSRF, anonymous uploads and invalid cover IDs blocked')

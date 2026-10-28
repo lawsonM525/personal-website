@@ -40,7 +40,7 @@ export const feedbackReviewSchema = z.object({
   if (new Set(answers).size !== 3) context.addIssue({ code: z.ZodIssueCode.custom, message: "Give each question its own specific answer.", path: ["improvement"] })
 })
 
-export type FeedbackProject = z.output<typeof feedbackProjectSchema> & { id: string; owner_id: string; builder_name: string; avatar?: AvatarConfig | null; created_at: string; status: "pending" | "approved" | "rejected"; featured: boolean; review_count: number }
+export type FeedbackProject = z.output<typeof feedbackProjectSchema> & { id: string; owner_id: string; builder_name: string; avatar?: AvatarConfig | null; cover_id?: string | null; created_at: string; status: "pending" | "approved" | "rejected"; featured: boolean; review_count: number }
 export type FeedbackReview = { id: string; project_id: string; reviewer_id: string; reviewer_name: string; avatar?: AvatarConfig | null; purpose: string; confusion: string; improvement: string; design_score: number; outcome: string; created_at: string }
 export type FeedbackComment = { id: string; project_id: string; author_id: string; author_name: string; avatar?: AvatarConfig | null; body: string; created_at: string }
 export type FeedbackReport = { id: string; target_kind: "project" | "review" | "comment"; target_id: string; reason: string; detail: string; created_at: string; target?: { project_id: string; project_title: string; project_url: string; author_name: string; status: string; body: string } }

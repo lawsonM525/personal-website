@@ -8,6 +8,7 @@ import { MemberAvatar } from "@/components/member/member-avatar"
 import styles from "./feedback-board.module.css"
 
 export function ProjectPreview({ project, large = false }: { project: FeedbackProject; large?: boolean }) {
+  if (project.cover_id) return <img className={`${styles.preview} ${large ? styles.largePreview : ""}`} src={`/api/feedback/covers/${project.cover_id}`} alt={`${project.title} — project screenshot or cover`} width="1600" height="900" loading="lazy" decoding="async" />
   const artwork = feedbackExampleArtwork(project)
   if (artwork) return <img className={`${styles.preview} ${large ? styles.largePreview : ""}`} src={artwork} alt={`${project.title} — fictional example interface`} width="900" height="600" />
   return <div className={`${styles.sitePreview} ${large ? styles.largePreview : ""}`}>

@@ -1,0 +1,61 @@
+begin;
+do $$
+declare a uuid:='fc000000-0000-4000-8000-000000000001'; b uuid:='fc000000-0000-4000-8000-000000000002'; c uuid; d uuid; p uuid; path text; ticket jsonb; n integer;
+begin
+ if has_function_privilege('authenticated','public.feedback_submit(text,text,text,text,text,text)','execute') then raise exception 'TEST FAILED: legacy image-free submit remains public'; end if;
+ if has_table_privilege('anon','public.feedback_covers','select') or has_table_privilege('authenticated','public.feedback_covers','insert') then raise exception 'TEST FAILED: direct cover metadata permissions'; end if;
+ if (select public from storage.buckets where id='feedback-covers') then raise exception 'TEST FAILED: bucket is public'; end if;
+ insert into auth.users(id,email,email_confirmed_at,raw_app_meta_data,raw_user_meta_data,created_at,updated_at) values
+ (a,'cover-test-a@example.invalid',now(),'{}','{}',now(),now()),(b,'cover-test-b@example.invalid',now(),'{}','{}',now(),now());
+ insert into public.feedback_members(user_id,display_name,starter_credits) values(a,'Cover A',3),(b,'Cover B',3);
+ perform set_config('request.jwt.claim.sub',a::text,true);
+ ticket:=public.feedback_cover_begin(); c:=(ticket->>'id')::uuid; path:=ticket->>'path';
+ if not public.feedback_cover_access(path,true) or public.feedback_cover_access(path,false) or public.feedback_cover_read(c) is not null then raise exception 'TEST FAILED: unpublished cover visibility'; end if;
+ begin perform public.feedback_submit('Missing image','https://cover-missing.vercel.app','Web app','People trying project screenshots.','Open the app and try the first step.','Can you tell what to do first?',c); raise exception 'TEST FAILED: missing object accepted'; exception when others then if sqlerrm<>'feedback_cover_missing' then raise; end if; end;
+ insert into storage.objects(bucket_id,name,metadata) values('feedback-covers',path,'{"size":12000,"mimetype":"image/webp"}');
+ perform set_config('request.jwt.claim.sub',b::text,true);
+ if public.feedback_cover_access(path,true) or public.feedback_cover_valid(c,b) then raise exception 'TEST FAILED: another member can write/use cover'; end if;
+ begin perform public.feedback_submit('Stolen image','https://cover-stolen.vercel.app','Web app','People trying project screenshots.','Open the app and try the first step.','Can you tell what to do first?',c); raise exception 'TEST FAILED: another owner cover accepted'; exception when others then if sqlerrm<>'feedback_cover_missing' then raise; end if; end;
+ perform set_config('request.jwt.claim.sub',a::text,true);
+ p:=public.feedback_submit('Screenshot project','https://cover-project.vercel.app','Web app','People trying project screenshots.','Open the app and try the first step.','Can you tell what to do first?',c);
+ if (select cover_id from public.feedback_projects where id=p)<>c or public.feedback_cover_read(c)<>path or not public.feedback_cover_access(path,false) then raise exception 'TEST FAILED: attached cover not readable'; end if;
+ if not exists(select 1 from jsonb_array_elements(public.feedback_board()->'projects') x where x->>'id'=p::text and x->>'cover_id'=c::text) then raise exception 'TEST FAILED: cover missing from board'; end if;
+ perform set_config('request.jwt.claim.sub',b::text,true);
+ ticket:=public.feedback_cover_begin(); d:=(ticket->>'id')::uuid;
+ insert into storage.objects(bucket_id,name,metadata) values('feedback-covers',ticket->>'path','{"size":12000,"mimetype":"image/webp"}');
+ begin perform public.feedback_set_cover(p,d); raise exception 'TEST FAILED: nonowner changed project'; exception when others then if sqlerrm<>'feedback_cover_owner' then raise; end if; end;
+ perform set_config('request.jwt.claim.sub',a::text,true);
+ begin perform public.feedback_set_cover(p,d); raise exception 'TEST FAILED: owner borrowed another image'; exception when others then if sqlerrm<>'feedback_cover_missing' then raise; end if; end;
+ ticket:=public.feedback_cover_begin(); d:=(ticket->>'id')::uuid;
+ insert into storage.objects(bucket_id,name,metadata) values('feedback-covers',ticket->>'path','{"size":12000,"mimetype":"image/webp"}');
+ perform public.feedback_set_cover(p,d);
+ if public.feedback_cover_read(c) is not null or public.feedback_cover_access(path,false) then raise exception 'TEST FAILED: replaced cover still public'; end if;
+ update public.feedback_projects set status='rejected' where id=p;
+ if public.feedback_cover_read(d) is not null or public.feedback_cover_access(ticket->>'path',false) then raise exception 'TEST FAILED: removed project cover still public'; end if;
+ update public.feedback_projects set status='approved' where id=p;
+ if public.feedback_cover_read(d) is null then raise exception 'TEST FAILED: restored project cover missing'; end if;
+ update public.feedback_covers set created_at=now()-interval '2 hours' where id=d;
+ if public.feedback_cover_access(ticket->>'path',true) then raise exception 'TEST FAILED: expired upload ticket accepted'; end if;
+ select count(*) into n from public.feedback_covers where owner_id=a;
+ for i in n+1..10 loop perform public.feedback_cover_begin(); end loop;
+ begin perform public.feedback_cover_begin(); raise exception 'TEST FAILED: daily upload cap bypassed'; exception when others then if sqlerrm<>'feedback_cover_limit' then raise; end if; end;
+ perform set_config('test.cover_public',ticket->>'path',true);
+ perform set_config('test.cover_private',path,true);
+ perform set_config('test.cover_foreign',(select owner_id::text||'/'||id::text||'.webp' from public.feedback_covers where owner_id=a and id not in (c,d) limit 1),true);
+ update public.feedback_members set blocked=true where user_id=b;
+ perform set_config('request.jwt.claim.sub',b::text,true);
+ begin perform public.feedback_cover_begin(); raise exception 'TEST FAILED: blocked builder uploaded'; exception when others then if sqlerrm<>'feedback_blocked' then raise; end if; end;
+end $$;
+set local role anon;
+do $$ begin
+ if (select count(*) from storage.objects where bucket_id='feedback-covers' and name=current_setting('test.cover_public'))<>1 then raise exception 'TEST FAILED: anonymous storage read denied for published cover'; end if;
+ if exists(select 1 from storage.objects where bucket_id='feedback-covers' and name=current_setting('test.cover_private')) then raise exception 'TEST FAILED: anonymous storage read allowed for old private cover'; end if;
+end $$;
+reset role;
+set local role authenticated;
+do $$ begin
+ begin insert into storage.objects(bucket_id,name,metadata) values('feedback-covers',current_setting('test.cover_foreign'),'{"size":1000,"mimetype":"image/webp"}'); raise exception 'TEST FAILED: foreign upload passed RLS'; exception when insufficient_privilege then null; end;
+end $$;
+reset role;
+select 'PASS: required image, ownership, private drafts, published covers, owner replacement, hide/restore, expiry and upload cap' as cover_checks;
+rollback;
