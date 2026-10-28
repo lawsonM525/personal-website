@@ -22,6 +22,7 @@ const items: Item[] = [
   { name: "Paint", description: "Make a mess with stickers, glitter, and rainbow brushes.", group: "Programs", icon: "paint", app: "paint" },
   { name: "Minesweeper", description: "A little game of logic. Six hidden mines.", group: "Programs", icon: "minesweeper", app: "minesweeper" },
   { name: "Terminal", description: "Type commands to explore the computer.", group: "Programs", icon: "terminal", app: "terminal" },
+  { name: "Text to binary", description: "Free UTF-8 text converter. Type binary and your text.", group: "Programs", icon: "terminal", href: "/text-to-binary" },
   { name: "CS quizzes", description: "Test your IGCSE and IB knowledge in a terminal.", group: "Programs", icon: "terminal", href: "/quizzes" },
   { name: "Learn", description: "Articles and practical guides.", group: "Files & folders", icon: "paper", href: "/learn" },
   { name: "Michelle’s finds", description: "Favorite AI projects and posts that made Michelle go whoa.", group: "Files & folders", icon: "folder", href: "/learn/you-wont-believe-this-was-made-with-ai" },

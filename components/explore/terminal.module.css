@@ -12,3 +12,16 @@
 .reference summary { width:fit-content;max-width:100%;color:#a4ffc2;cursor:pointer;text-decoration:underline;text-underline-offset:4px; }
 .reference summary:focus-visible { outline:2px solid #ee6e36;outline-offset:4px; }
 @media(max-width:760px) { .page { padding:14px 12px;font-size:13px; } .page form { flex-wrap:wrap;gap:0; } .page form label { width:100%;font-size:11px; } .page input { width:100%;flex-basis:100%; } }
+
+.document { white-space:normal; }
+.document :is(h1,h2,h3) { color:inherit;margin:0 0 12px;font-size:16px; }
+.document :is(h2,h3) { font-size:14px; }
+.document p { margin:0 0 14px;max-width:82ch; }
+.document a { color:#a4ffc2;text-decoration:underline;text-underline-offset:3px; }
+.document a:hover { color:white; }
+.document nav { display:flex;flex-wrap:wrap;gap:8px 24px;margin:0 0 18px; }
+.document details { margin:0 0 20px; }
+.document summary { color:#a4ffc2;cursor:pointer;width:fit-content; }
+.document details[open] summary { margin-bottom:18px; }
+.document section { margin:0 0 22px; }
+.document code { color:inherit;font:inherit;white-space:pre-wrap;overflow-wrap:anywhere; }

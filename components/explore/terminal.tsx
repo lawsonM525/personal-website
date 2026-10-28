@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, type FormEvent, type KeyboardEvent, type MouseEvent, type ReactNode } from "react"
 import { useRouter } from "next/navigation"
 import { useComputerSound } from "@/components/homepage/computer-sounds"
-import { completeTerminal, createTerminalState, executeTerminal, terminalSources, type TerminalApp } from "@/lib/terminal"
+import { completeTerminal, createTerminalState, executeTerminal, terminalSources, terminalInputLimit, type TerminalApp } from "@/lib/terminal"
 import { quizTopics, type QuizTopic } from "@/lib/quiz-topics"
 import { trackGoal } from "@/lib/analytics"
 import styles from "./explore.module.css"
@@ -11,13 +11,20 @@ import terminalStyles from "./terminal.module.css"
 
 const sources = Object.values(terminalSources)
 
-type TerminalProps = { openApp?: (id: TerminalApp) => void; topic?: QuizTopic; intro?: ReactNode; reference?: ReactNode; workingDirectory?: string }
+type TerminalProps = { openApp?: (id: TerminalApp) => void; topic?: QuizTopic; intro?: ReactNode; reference?: ReactNode; initialCommand?: string; workingDirectory?: string }
 
-export function Terminal({ openApp, topic, intro, reference, workingDirectory = "C:\\MICHELLE" }: TerminalProps) {
+export function Terminal({ openApp, topic, intro, reference, initialCommand, workingDirectory = "C:\\MICHELLE" }: TerminalProps) {
   const router = useRouter()
   const sound = useComputerSound()
   const options = { quizTopics, activeTopic: topic?.slug, workingDirectory }
-  const [initial] = useState(() => topic ? executeTerminal(`quiz ${topic.slug}`, createTerminalState(), options) : { state: createTerminalState(), lines: intro ? [] : ["Michelle’s Computer [interactive terminal]", "Type help to explore, or tutorial for your first commands."] })
+  const [initial] = useState(() => {
+    if (topic) return executeTerminal(`quiz ${topic.slug}`, createTerminalState(), options)
+    if (initialCommand) {
+      const result = executeTerminal(initialCommand, createTerminalState(), options)
+      return { ...result, lines: [`${workingDirectory}>${initialCommand}`, ...result.lines] }
+    }
+    return { state: createTerminalState(), lines: intro ? [] : ["Michelle’s Computer [interactive terminal]", "Type help to explore, or tutorial for your first commands."] }
+  })
   const [transcript, setTranscript] = useState({ lines: initial.lines, start: 0 })
   const [command, setCommand] = useState("")
   const session = useRef(initial.state)
@@ -101,7 +108,7 @@ export function Terminal({ openApp, topic, intro, reference, workingDirectory = 
     })}
     {reference && <details ref={referenceFile} id="reference" className={terminalStyles.reference}><summary>review — read all questions &amp; worked answers</summary>{reference}</details>}
     </div>
-    <form onSubmit={submit}><label htmlFor="explorer-terminal-command">{workingDirectory}&gt;</label><input ref={input} id="explorer-terminal-command" aria-label="Terminal command" aria-describedby="terminal-keyboard-hint" value={command} onChange={event => { setCommand(event.target.value); recall.current = -1 }} onKeyDown={keyboard} enterKeyHint="go" autoCapitalize="none" autoCorrect="off" spellCheck={false} maxLength={240}/></form>
+    <form onSubmit={submit}><label htmlFor="explorer-terminal-command">{workingDirectory}&gt;</label><input ref={input} id="explorer-terminal-command" aria-label="Terminal command" aria-describedby="terminal-keyboard-hint" value={command} onChange={event => { setCommand(event.target.value); recall.current = -1 }} onKeyDown={keyboard} enterKeyHint="go" autoCapitalize="none" autoCorrect="off" spellCheck={false} maxLength={terminalInputLimit}/></form>
     <p id="terminal-keyboard-hint" className={terminalStyles.keyboardHint}>↑ ↓ recall commands · Tab autocomplete · Enter run</p>
   </div>
 }

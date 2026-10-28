@@ -1,3 +1,7 @@
+export const binaryByteLimit = 4096
+// One space between each eight-bit byte, plus the "decode " command.
+export const terminalInputLimit = binaryByteLimit * 9 + 6
+
 export type TerminalApp = "paint" | "minesweeper" | "terminal"
 type Category = "learn" | "play" | "explore" | "basics"
 type Command = { name: string; usage: string; description: string; category: Category }
@@ -85,6 +89,7 @@ export const terminalLessons: Record<string, Lesson> = {
 
 type Destination = { name: string; description: string; aliases?: string[] } & ({ app: TerminalApp; href?: never } | { href: string; app?: never })
 const destinations: Destination[] = [
+  { name: "text-to-binary", href: "/text-to-binary", aliases: ["binary-converter", "converter"], description: "free text to binary converter" },
   { name: "quizzes", href: "/quizzes", description: "IGCSE and IB computer science quizzes" },
   { name: "terminal", app: "terminal", description: "the computer and AI command line" },
   { name: "paint", app: "paint", description: "stickers, glitter, and drawing" },
@@ -214,7 +219,8 @@ export function executeTerminal(value: string, state: TerminalState, options: Te
   const pick = <T,>(items: T[]): T => items[Math.max(0, Math.min(items.length - 1, Math.floor(random() * items.length)))]
   const usage = (command: string) => result([`Usage: ${terminalCommands.find(item => item.name === command)?.usage}`, `Try: ${usageExamples[command]}`])
 
-  if (clean.length > 240) return result(["Keep commands to 240 characters or fewer."])
+  const commandLimit = name === "binary" || name === "decode" ? terminalInputLimit : 240
+  if (clean.length > commandLimit) return result([`Keep ${name === "binary" || name === "decode" ? "binary/decode commands" : "commands"} to ${commandLimit} characters or fewer.`])
   if (name === "clear") return result([], { clear: true })
   if (name === "help") {
     const topic = argument.toLowerCase()
@@ -237,13 +243,14 @@ export function executeTerminal(value: string, state: TerminalState, options: Te
   if (name === "binary") {
     if (!argument) return usage(name)
     const bytes = new TextEncoder().encode(argument)
-    if (bytes.length > 24) return result(["Try a shorter phrase: this lab holds 24 UTF-8 bytes so you can paste the full result into decode.", "Try: binary hello"])
+    if (bytes.length > binaryByteLimit) return result([`This converter accepts up to ${binaryByteLimit.toLocaleString("en-US")} UTF-8 bytes per conversion. Try a shorter phrase.`, "A character can use more than one byte."])
     return result([`Text: ${JSON.stringify(argument)}`, `UTF-8 bytes: ${bytes.length} | Bits: ${bytes.length * 8}`, Array.from(bytes, byte => byte.toString(2).padStart(8, "0")).join(" "), "", "Each group is one byte. A character can need more than one byte.", "Copy the bits after decode to turn them back into text."])
   }
   if (name === "decode") {
     if (!argument) return usage(name)
     if (!/^[01\s]+$/.test(argument)) return result(["Use only 0s, 1s, and spaces. Try: decode 01001000 01101001"])
     const bits = argument.replace(/\s/g, "")
+    if (bits.length > binaryByteLimit * 8) return result([`This converter accepts up to ${binaryByteLimit.toLocaleString("en-US")} bytes (${binaryByteLimit * 8} bits) per conversion.`])
     if (bits.length % 8) return result(["A byte needs eight bits. The total number of bits must be a multiple of eight."])
     try {
       const bytes = Uint8Array.from(bits.match(/.{8}/g) || [], byte => parseInt(byte, 2))

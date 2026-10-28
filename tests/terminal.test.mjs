@@ -1,6 +1,6 @@
 import test from "node:test"
 import assert from "node:assert/strict"
-import { completeTerminal, createTerminalState, executeTerminal, fitLine, teachingTokens, terminalCommands, terminalLessons } from "../lib/terminal.ts"
+import { completeTerminal, createTerminalState, executeTerminal, fitLine, teachingTokens, binaryByteLimit, terminalInputLimit, terminalCommands, terminalLessons } from "../lib/terminal.ts"
 
 const run = (command, state = createTerminalState()) => executeTerminal(command, state, { random: () => .5 })
 const text = result => result.lines.join("\n")
@@ -24,13 +24,31 @@ test("UTF-8 experiments round-trip accented text and emoji, reject malformed byt
   for (const value of ["Hi", "café", "👋", "a b", "中文"]) {
     const encoded = run(`binary ${value}`).lines[2]
     assert.match(encoded, /^[01]{8}( [01]{8})*$/)
-    assert.ok(`decode ${encoded}`.length <= 240)
+    assert.ok(`decode ${encoded}`.length <= terminalInputLimit)
     assert.equal(run(`decode ${encoded}`).lines[0], `Decoded UTF-8: ${JSON.stringify(value)}`)
   }
   assert.match(text(run("decode 101")), /eight bits/)
   assert.match(text(run("decode 11111111")), /aren't valid UTF-8/)
   assert.match(text(run("decode banana")), /only 0s, 1s/)
-  assert.match(text(run(`binary ${"👋".repeat(7)}`)), /shorter phrase/)
+  assert.match(text(run(`binary ${"👋".repeat(binaryByteLimit / 4 + 1)}`)), /4,096 UTF-8 bytes/)
+  assert.match(text(run(`decode ${"01000001".repeat(binaryByteLimit + 1)}`)), /4,096 bytes/)
+  assert.match(text(run(`echo ${"x".repeat(241)}`)), /240 characters/)
+  assert.match(text(run(`decode ${"1".repeat(terminalInputLimit)}`)), /characters or fewer/)
+})
+
+test("binary accepts full-size UTF-8 input and every valid output fits a decode command", () => {
+  for (const value of ["a".repeat(binaryByteLimit), "👋".repeat(binaryByteLimit / 4), "café and 中文 text ".repeat(40)]) {
+    const result = run(`binary ${value}`)
+    const bits = result.lines[2]
+    assert.match(bits, /^[01]{8}( [01]{8})*$/)
+    const bytes = new TextEncoder().encode(value.trim())
+    assert.equal(bits.split(" ").length, bytes.length)
+    assert.ok(`decode ${bits}`.length <= terminalInputLimit)
+    assert.equal(run(`decode ${bits}`).lines[0], `Decoded UTF-8: ${JSON.stringify(value.trim())}`)
+  }
+  assert.equal(run('binary " hi "').lines[2], "00100000 01101000 01101001 00100000")
+  assert.equal(run("decode 0100100001101001").lines[0], 'Decoded UTF-8: "Hi"')
+  assert.deepEqual(run("open text-to-binary").action, { type: "page", href: "/text-to-binary" })
 })
 
 test("token lab preserves all text and keeps token IDs stable between inputs", () => {
