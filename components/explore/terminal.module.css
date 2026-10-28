@@ -1,0 +1,3 @@
+.source { color: #a4ffc2 !important; text-decoration: underline !important; text-underline-offset: 3px; }
+.source:hover { color: #fff !important; }
+.keyboardHint { flex-shrink: 0; margin: 8px 0 0 !important; color: #8cc4a2; font: 10px/1.5 'Lucida Console', 'Courier New', monospace; }
