@@ -6,7 +6,7 @@ import { ComputerSoundPlayer, computerSoundCues, type ComputerPlayback, type Com
 import styles from "./home.module.css"
 
 const preferenceKey = "michelle-computer-sound-v1"
-const SoundContext = createContext<{ enabled: boolean; toggle: () => void; play: (cue: ComputerSoundCue) => void; playback: ComputerPlayback } | null>(null)
+const SoundContext = createContext<{ enabled: boolean; toggle: () => void; play: (cue: ComputerSoundCue) => void; unlock: () => void; type: () => void; stopTyping: () => void; feedbackAllowed: () => boolean; playback: ComputerPlayback } | null>(null)
 
 export function useComputerSound() { return useContext(SoundContext) }
 
@@ -14,17 +14,31 @@ export function ComputerSoundProvider({ children }: { children: React.ReactNode 
   const [enabled, setEnabled] = useState(true)
   const [playback, setPlayback] = useState<ComputerPlayback>({ playing: false, lastCue: null, context: "locked" })
   const enabledRef = useRef(true)
+  const interacted = useRef(false)
   const player = useRef<ComputerSoundPlayer | null>(null)
 
-  const play = useCallback((cue: ComputerSoundCue) => {
-    if (!enabledRef.current || document.hidden) return
+  const getPlayer = useCallback(() => {
     if (!player.current) player.current = new ComputerSoundPlayer(() => {
       const Constructor = window.AudioContext || (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext
       if (!Constructor) throw new Error("Audio unavailable")
       return new Constructor({ latencyHint: "interactive" })
     }, setPlayback)
-    void player.current.play(cue)
+    return player.current
   }, [])
+
+  const feedbackAllowed = useCallback(() => enabledRef.current && interacted.current && !document.hidden, [])
+  const unlock = useCallback(() => {
+    interacted.current = true
+    if (enabledRef.current && !document.hidden) void getPlayer().unlock()
+  }, [getPlayer])
+  const type = useCallback(() => {
+    if (feedbackAllowed()) void player.current?.play("bootType", { onlyIfRunning: true })
+  }, [feedbackAllowed])
+  const stopTyping = useCallback(() => player.current?.stopCue("bootType"), [])
+  const play = useCallback((cue: ComputerSoundCue) => {
+    if (!enabledRef.current || document.hidden) return
+    void getPlayer().play(cue)
+  }, [getPlayer])
 
   const applyPreference = useCallback((value: boolean) => {
     enabledRef.current = value
@@ -38,6 +52,7 @@ export function ComputerSoundProvider({ children }: { children: React.ReactNode 
     function visibility() { if (document.hidden) player.current?.stop() }
     function action(event: MouseEvent) {
       if (!event.isTrusted || event.button !== 0 || event.ctrlKey || event.metaKey || event.altKey || event.shiftKey) return
+      interacted.current = true
       const target = event.target instanceof Element ? event.target.closest<HTMLElement>("[data-computer-sound],button,a[href]") : null
       if (!target || target.closest("[data-sound-ignore]") || target.hasAttribute("disabled") || target.getAttribute("aria-disabled") === "true") return
       const explicit = target.dataset.computerSound
@@ -63,7 +78,7 @@ export function ComputerSoundProvider({ children }: { children: React.ReactNode 
     if (next) play("open")
   }, [applyPreference, play])
 
-  const value = useMemo(() => ({ enabled, toggle, play, playback }), [enabled, toggle, play, playback])
+  const value = useMemo(() => ({ enabled, toggle, play, unlock, type, stopTyping, feedbackAllowed, playback }), [enabled, toggle, play, unlock, type, stopTyping, feedbackAllowed, playback])
   return <SoundContext.Provider value={value}>{children}</SoundContext.Provider>
 }
 
