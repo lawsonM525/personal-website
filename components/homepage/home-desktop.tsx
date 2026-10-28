@@ -23,6 +23,7 @@ const pages = [
   { label: "Terminal", description: "Explore with commands", href: "/explore?app=terminal", keywords: "terminal commands coding" },
   { label: "Submit an article", description: "Send an article or draft for Learn", href: "/learn/submit", keywords: "submit article contribute write draft" },
   { label: "Learn", description: "Practical guides for using AI and building projects", href: "/learn", keywords: "guides tutorials ai college career" },
+  { label: "Feedback", description: "Give two thoughtful app reviews to earn a feedback request", href: "/feedback", keywords: "feedback exchange review rate rating design web app website submit community forum" },
   { label: "Michelle’s finds", description: "You won’t believe this was made with AI", href: "/learn/you-wont-believe-this-was-made-with-ai", keywords: "favorites favourite favorite tweets posts projects ai claude inspiration random eyes rockbiter" },
   { label: "The Girly Guide to AI", description: "Michelle’s illustrated book, from AI foundations to building your own project", href: "/girly-guide-to-ai", keywords: "girly guide artificial intelligence book textbook mia mai machine learning neural networks" },
 
@@ -36,7 +37,7 @@ const pages = [
   { label: "Reminder", description: "A reminder from Michelle", href: "/reminder", keywords: "reminder" },
   { label: "How to Build Your Own AI Wardrobe", description: "No, you don’t need to know how to code", href: "/learn/how-to-build-ai-wardrobe-digital-closet", keywords: "wardrobe clothes closet ai guide" },
 ]
-const mainLinks = ["/learn", "/projects", "/magazine", "/penpals", "/about"].map(href => ({ ...pages.find(page => page.href === href)!, label: href === "/magazine" ? "Magazine" : href === "/about" ? "About" : pages.find(page => page.href === href)!.label }))
+const mainLinks = ["/learn", "/projects", "/feedback", "/magazine", "/penpals", "/about"].map(href => ({ ...pages.find(page => page.href === href)!, label: href === "/magazine" ? "Magazine" : href === "/about" ? "About" : pages.find(page => page.href === href)!.label }))
 
 export function HomeHeader() {
   const pathname = usePathname()
@@ -90,7 +91,7 @@ export function HomeHeader() {
         </div>
         {menuOpen&&<nav id="mobile-site-navigation" className={styles.mobileNav} aria-label="Mobile navigation">{mainLinks.map(item=><Link key={item.href} href={item.href} onClick={()=>setMenuOpen(false)}><span>{item.label}</span><ArrowUpRight size={17} aria-hidden="true"/></Link>)}<Link href="/research">Research</Link><Link href="/talks">Talks</Link><Link href="/posts">Posts</Link><a href={contactHref}>Email Michelle</a><button type="button" onClick={()=>{setMenuOpen(false);restartComputer(router.push)}}>Restart computer</button></nav>}
       </header>
-      <nav className={styles.mobileQuickLinks} aria-label="Quick navigation">{mainLinks.filter(item=>item.href!=="/about").map(item=><Link key={item.href} href={item.href} aria-current={pathname===item.href?"page":undefined}>{item.label}</Link>)}</nav>
+      <nav className={styles.mobileQuickLinks} aria-label="Quick navigation">{mainLinks.filter(item=>item.href!=="/about"&&item.href!=="/feedback").map(item=><Link key={item.href} href={item.href} aria-current={pathname===item.href?"page":undefined}>{item.label}</Link>)}</nav>
     </div>
     <dialog ref={dialog} className={styles.commandDialog} aria-labelledby="command-title" onClose={()=>setSearchOpen(false)} onClick={event=>{if(event.target===event.currentTarget)setSearchOpen(false)}}>
       <div className={styles.commandInner}>

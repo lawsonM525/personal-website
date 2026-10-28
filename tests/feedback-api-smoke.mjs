@@ -1,0 +1,22 @@
+// Checks the deployed exchange without posting content or sending sign-in email.
+import assert from 'node:assert/strict'
+const root=(process.argv[2] || 'http://127.0.0.1:3000').replace(/\/$/,'')
+const requestOrigin=process.env.FEEDBACK_TEST_ORIGIN || new URL(root).origin
+const response=await fetch(root+'/api/feedback')
+assert.equal(response.status,200)
+assert.match(response.headers.get('cache-control'),/private, no-store/)
+const board=await response.json()
+assert.equal(board.configured,true)
+assert.equal(board.viewer,null)
+assert.equal(board.moderation,undefined)
+const post=(action,origin=requestOrigin)=>fetch(root+'/api/feedback',{method:'POST',headers:{'Content-Type':'application/json',Origin:origin},body:JSON.stringify(action)})
+assert.equal((await post({action:'assign'},'https://unrelated.example')).status,403)
+assert.equal((await post({action:'assign'})).status,401)
+assert.equal((await post({action:'submit',title:'Cannot publish anonymously'})).status,401)
+assert.equal((await post({action:'moderate',kind:'project',id:'00000000-0000-4000-8000-000000000001',decision:'approve'})).status,401)
+assert.equal((await post({action:'signin',email:'not-an-email',name:'Tester'})).status,400)
+assert.equal((await post(null)).status,400)
+const expired=await fetch(root+'/feedback/confirm?code=invalid',{redirect:'manual'})
+assert.equal(expired.status,303)
+assert.match(expired.headers.get('location'),/signin=expired/)
+console.log(JSON.stringify({connectedBoard:true,privateResponses:true,csrfBlocked:true,anonymousMutationsBlocked:true,anonymousModerationBlocked:true,invalidSignInRejected:true,malformedBodyRejected:true,missingPkceVerifierRejected:true,noSignInEmailsSent:true}))
