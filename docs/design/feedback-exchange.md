@@ -1,6 +1,6 @@
 # Feedback exchange reference layout
 
-Matches Michelle's supplied reference: a pixel-font blue window title bar, the exact single headline **Good projects need fresh eyes.**, subtitle **Try something new. Help someone make it better.**, pixel eyes, yellow project submission button, live review-credit meter, folder tabs, a two-column set of project windows, and a right-hand closer-look panel. Uses the bundled Windows 93 `sserife` font for window chrome and Georgia bold for the main heading.
+Matches Michelle's supplied reference: a pixel-font blue window title bar, the exact single headline **Good projects need fresh eyes.**, subtitle **Make your ideas real. Get feedback & Help someone make their project better.**, pixel eyes, yellow project submission button, live review-credit meter, folder tabs, a two-column set of project windows, and a right-hand closer-look panel. Uses the bundled Windows 93 `sserife` font for window chrome and Georgia bold for the main heading.
 
 On smaller screens the project windows stack. Selecting **Take a look** opens a focused detail view with **Back to projects**, instead of hiding the detail below a long page. Forms, sign-in, credits, moderation, and database permissions keep their existing behavior.
 
