@@ -5,6 +5,7 @@ import { ArrowRight, ChevronLeft, FileText, FolderOpen, Search, Sparkles } from 
 import { feedbackExampleArtwork, isFeedbackExample } from "@/lib/feedback-examples"
 import type { FeedbackProject } from "@/lib/feedback"
 import { MemberAvatar } from "@/components/member/member-avatar"
+import { ProjectFoldersLoading } from "./project-folders-loading"
 import styles from "./feedback-board.module.css"
 
 export function ProjectPreview({ project, large = false }: { project: FeedbackProject; large?: boolean }) {
@@ -44,7 +45,7 @@ export function FeedbackBoard({ projects, loading, filter, query, samples, onFil
       <label className={styles.search}><Search size={19} /><span className="sr-only">Search projects</span><input type="search" placeholder="Find a project…" value={query} onChange={event => onQuery(event.target.value)} /></label>
       <p className={styles.previewLabel}>{samples ? "Example projects · fictional builds" : "Fresh eyes go where they’re needed"}</p>
     </div>
-    {loading ? <p className={styles.empty} role="status">Opening the project folders…</p> : !projects.length ? <div className={styles.empty}><FolderOpen size={48} /><h2>{query ? "No projects match that search." : filter === "Michelle’s picks" ? "Michelle’s picks will go here." : filter === "My requests" ? "Your next build belongs here." : "The first fresh eyes are yours."}</h2><p>{query ? "Try another name or clear the search." : "Share a project or give another builder fresh eyes."}</p><button type="button" onClick={onNextReview}>Review next project <ArrowRight size={17} /></button></div> : <div className={styles.layout} data-detail-open={mobileDetail}>
+    {loading ? <ProjectFoldersLoading /> : !projects.length ? <div className={styles.empty}><FolderOpen size={48} /><h2>{query ? "No projects match that search." : filter === "Michelle’s picks" ? "Michelle’s picks will go here." : filter === "My requests" ? "Your next build belongs here." : "The first fresh eyes are yours."}</h2><p>{query ? "Try another name or clear the search." : "Share a project or give another builder fresh eyes."}</p><button type="button" onClick={onNextReview}>Review next project <ArrowRight size={17} /></button></div> : <div className={styles.layout} data-detail-open={mobileDetail}>
       <div className={styles.cards}>{projects.map((project, index) => <article className={styles.card} data-selected={active?.id === project.id} data-color={index % 4} key={project.id}>
         <div className={styles.cardBar}><FolderOpen size={22} /><h2>{project.title}</h2></div>
         <div className={styles.previewFrame}><ProjectPreview project={project} /></div>

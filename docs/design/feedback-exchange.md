@@ -14,6 +14,8 @@ The filters use slimmer borders and shallow shadows, with strong blue reserved f
 
 The large yellow **Submit your project** button remains the prominent primary action at the top, including on mobile. The hero artwork, headline, and subtitle are preserved.
 
+While the initial project list is fetched, a Windows-style folder panel shows documents moving into a stack of project cards and a looping segmented blue activity bar. It uses the same existing folder/document artwork and project colors. It ends as soon as the real request settles, with no simulated percentage or minimum wait. Reduced-motion visitors get the same readable status with stationary artwork. The gallery loader stays below the hero, so the yellow submission action remains available.
+
 ## Project images
 
 New submissions require one screenshot or cover image. JPG, PNG and still WebP originals up to 10 MB are resized in the browser before upload; the server decodes them again, strips metadata and stores a WebP up to 1600 pixels on its longest edge and 1 MB. The form previews the gallery’s top-aligned crop; a wide 16:9 image is recommended.
