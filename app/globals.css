@@ -229,11 +229,30 @@
 }
 
 :root {
-  --computer-cursor: default;
-  --computer-link-cursor: pointer;
+  --computer-cursor: url("/cursors/retro-arrow-v3.png") 3 2, default;
+  --computer-link-cursor: url("/cursors/retro-hand-v3.png") 18 1, pointer;
 }
 
 @media (hover: hover) and (pointer: fine) {
+  html,
+  body {
+    cursor: var(--computer-cursor);
+  }
+
+  :root body :is(a, button, summary, select, [role="button"], [role="tab"], input:is([type="button"], [type="submit"], [type="reset"], [type="checkbox"], [type="radio"], [type="range"], [type="color"])),
+  :root body :is(a, button, summary, select, [role="button"], [role="tab"], input:is([type="button"], [type="submit"], [type="reset"], [type="checkbox"], [type="radio"], [type="range"], [type="color"])) * {
+    cursor: var(--computer-link-cursor) !important;
+  }
+
+  :root body :is(input:not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]), textarea, [contenteditable="true"]) {
+    cursor: text !important;
+  }
+
+  :root body :is(button:disabled, input:disabled, select:disabled, [aria-disabled="true"]),
+  :root body :is(button:disabled, input:disabled, select:disabled, [aria-disabled="true"]) * {
+    cursor: var(--computer-cursor) !important;
+  }
+
   .learn-shell {
     cursor: var(--computer-cursor);
   }
