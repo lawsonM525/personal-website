@@ -1,9 +1,10 @@
-export const computerSoundCues = ["click", "open", "close", "minimize", "maximize", "startup", "paintStamp", "paintSparkle", "paintSpray", "paintMagic"] as const
+export const computerSoundCues = ["click", "open", "close", "minimize", "maximize", "startup", "bootType", "paintStamp", "paintSparkle", "paintSpray", "paintMagic"] as const
 export type ComputerSoundCue = typeof computerSoundCues[number]
-type Note = { frequency: number; end?: number; at: number; duration: number; level: number; triangle?: boolean }
+type Note = { frequency: number; end?: number; at: number; duration: number; level: number; triangle?: boolean; keyNoise?: boolean }
 
 // Original short OS-style sounds, synthesized locally. No sampled system audio.
 const notes: Record<ComputerSoundCue, readonly Note[]> = {
+  bootType: [{ frequency: 210, end: 140, at: 0, duration: .028, level: .038, keyNoise: true }],
   paintStamp: [
     { frequency: 760, end: 260, at: 0, duration: .09, level: .23, triangle: true },
     { frequency: 1100, at: .035, duration: .07, level: .06 },
@@ -49,12 +50,21 @@ export function renderComputerSound(cue: ComputerSoundCue, sampleRate: number): 
   const duration = Math.max(...score.map(note => note.at + note.duration))
   const samples = new Float32Array(Math.ceil(duration * sampleRate) + 1)
   for (const note of score) {
+    let seed = 731
+    let filtered = 0
     const first = Math.round(note.at * sampleRate)
     const count = Math.floor(note.duration * sampleRate)
     for (let index = 0; index < count; index++) {
       const time = index / sampleRate
       const phase = 2 * Math.PI * (note.frequency * time + ((note.end ?? note.frequency) - note.frequency) * time * time / (2 * note.duration))
-      const wave = note.triangle ? 2 / Math.PI * Math.asin(Math.sin(phase)) : Math.sin(phase) + .12 * Math.sin(phase * 2)
+      let wave = note.triangle ? 2 / Math.PI * Math.asin(Math.sin(phase)) : Math.sin(phase) + .12 * Math.sin(phase * 2)
+      if (note.keyNoise) {
+        // A soft key mechanism: a tiny resonant thud with a short, dry noise attack.
+        seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0
+        const noise = seed / 0x80000000 - 1
+        filtered += .32 * (noise - filtered)
+        wave = .3 * Math.sin(phase) + .7 * (noise - filtered)
+      }
       const envelope = Math.min(1, time / .004) * Math.min(1, (note.duration - time) / .025) * Math.exp(-2.4 * time / note.duration)
       samples[first + index] += wave * envelope * note.level
     }
@@ -68,7 +78,7 @@ export class ComputerSoundPlayer {
   private context: AudioContext | null = null
   private master: GainNode | null = null
   private buffers = new Map<ComputerSoundCue, AudioBuffer>()
-  private sources = new Set<AudioBufferSourceNode>()
+  private sources = new Map<AudioBufferSourceNode, ComputerSoundCue>()
   private muted = false
   private lastStarted = -Infinity
   private lastCue: ComputerSoundCue | null = null
@@ -84,8 +94,8 @@ export class ComputerSoundPlayer {
     this.onPlayback?.({ playing: this.sources.size > 0, lastCue: this.lastCue, context: this.context?.state ?? "locked" })
   }
 
-  // Invoked from trusted clicks, never during initial page load.
-  async play(cue: ComputerSoundCue): Promise<boolean> {
+  // Called from a user gesture; passive boot ticks never create or resume audio.
+  async unlock(): Promise<boolean> {
     if (this.muted) return false
     try {
       if (!this.context || this.context.state === "closed") {
@@ -98,7 +108,20 @@ export class ComputerSoundPlayer {
       }
       const context = this.context
       if (context.state !== "running") await context.resume()
-      if (this.muted || this.context !== context || context.state !== "running") return false
+      const ready = !this.muted && this.context === context && context.state === "running"
+      this.report()
+      return ready
+    } catch { this.report(); return false }
+  }
+
+  async play(cue: ComputerSoundCue, options: { onlyIfRunning?: boolean } = {}): Promise<boolean> {
+    if (this.muted) return false
+    if (options.onlyIfRunning) {
+      if (this.context?.state !== "running") return false
+    } else if (!await this.unlock()) return false
+    try {
+      const context = this.context
+      if (!context || this.muted || context.state !== "running") return false
       if (context.currentTime - this.lastStarted < .045 || this.sources.size >= 6) return false
       let buffer = this.buffers.get(cue)
       if (!buffer) {
@@ -114,7 +137,7 @@ export class ComputerSoundPlayer {
       this.master!.gain.cancelScheduledValues(context.currentTime)
       this.master!.gain.setValueAtTime(.4, context.currentTime)
       try { source.start() } catch (error) { source.disconnect(); throw error }
-      this.sources.add(source)
+      this.sources.set(source, cue)
       this.lastStarted = context.currentTime
       this.lastCue = cue
       this.report()
@@ -126,11 +149,20 @@ export class ComputerSoundPlayer {
     }
   }
 
+  stopCue(cue: ComputerSoundCue) {
+    for (const [source, playingCue] of this.sources) {
+      if (playingCue !== cue) continue
+      try { source.stop() } catch {}
+      source.disconnect(); this.sources.delete(source)
+    }
+    this.report()
+  }
+
   stop() {
     if (this.context && this.master) {
       this.master.gain.cancelScheduledValues(this.context.currentTime)
       this.master.gain.setTargetAtTime(0, this.context.currentTime, .004)
-      for (const source of this.sources) { try { source.stop(this.context.currentTime + .015) } catch {} }
+      for (const source of this.sources.keys()) { try { source.stop(this.context.currentTime + .015) } catch {} }
     }
     this.sources.clear()
     this.report()

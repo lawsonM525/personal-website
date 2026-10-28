@@ -2,7 +2,9 @@
 
 import { useCallback, useEffect, useRef, useState } from "react"
 import styles from "./home.module.css"
-import { prefersLessMotion } from "@/lib/computer-experience"
+import { motionPreferenceEvent, prefersLessMotion } from "@/lib/computer-experience"
+import { useComputerSound } from "./computer-sounds"
+import { createBootHaptics } from "@/lib/boot-haptics"
 
 const restartEvent = "michelle:restart"
 // Remember startup only while navigating this loaded site. A fresh visit or
@@ -58,6 +60,9 @@ export function BootScreen({ children, skipStartup = false }: { children: React.
   const [lineCount, setLineCount] = useState(0)
   const output = useRef<HTMLDivElement>(null)
   const skip = useRef<HTMLButtonElement>(null)
+  const sound = useComputerSound()
+  const feedback = useRef(sound)
+  feedback.current = sound
 
   const enter = useCallback(() => {
     hasBooted = true
@@ -76,18 +81,31 @@ export function BootScreen({ children, skipStartup = false }: { children: React.
     if (stage !== "booting") return
     if (prefersLessMotion()) { enter(); return }
     setLineCount(0)
-    const timers = bootOutput.map(([delay], index) =>
-      setTimeout(() => setLineCount(index + 1), delay)
-    )
+    const haptics = createBootHaptics({
+      allowed: () => !!feedback.current?.feedbackAllowed() && !prefersLessMotion() && matchMedia("(pointer: coarse)").matches,
+      vibrate: typeof navigator.vibrate === "function" ? duration => navigator.vibrate(duration) : undefined,
+    })
+    const timers = bootOutput.map(([delay, text], index) => setTimeout(() => {
+      setLineCount(index + 1)
+      if (text && !prefersLessMotion()) { feedback.current?.type(); haptics.tick() }
+    }, delay))
     timers.push(setTimeout(enter, 3100))
     skip.current?.focus({ preventScroll: true })
     const keyboard = (event: KeyboardEvent) => {
       if (event.key === "Escape") { event.preventDefault(); enter() }
     }
     window.addEventListener("keydown", keyboard)
+    const media = matchMedia("(prefers-reduced-motion: reduce)")
+    function motionChanged() { if (prefersLessMotion()) enter() }
+    function visibility() { if (document.hidden) { feedback.current?.stopTyping(); haptics.stop() } }
+    window.addEventListener(motionPreferenceEvent, motionChanged); media.addEventListener("change", motionChanged)
+    document.addEventListener("visibilitychange", visibility)
     return () => {
       timers.forEach(clearTimeout)
+      feedback.current?.stopTyping(); haptics.stop()
       window.removeEventListener("keydown", keyboard)
+      window.removeEventListener(motionPreferenceEvent, motionChanged); media.removeEventListener("change", motionChanged)
+      document.removeEventListener("visibilitychange", visibility)
     }
   }, [stage, enter])
 
@@ -109,7 +127,7 @@ export function BootScreen({ children, skipStartup = false }: { children: React.
   return <>
     <div className={styles.bootContent} hidden={stage !== "ready"}>{children}</div>
     <noscript><style>{`.${styles.bootContent}[hidden]{display:block!important}.${styles.bootDesktop}{display:none!important}`}</style></noscript>
-    {stage !== "ready" && <main className={styles.bootDesktop} data-boot-stage={stage} aria-label="Michelle’s Computer startup">
+    {stage !== "ready" && <main className={styles.bootDesktop} data-boot-stage={stage} aria-label="Michelle’s Computer startup" onPointerDownCapture={event => { if (event.isTrusted) feedback.current?.unlock() }} onKeyDownCapture={event => { if (event.isTrusted && event.key !== "Escape") feedback.current?.unlock() }}>
       <p className={styles.srOnly} role="status">Starting Michelle’s Computer. You can skip startup with Escape.</p>
       <div ref={output} className={styles.bootTerminal} aria-hidden="true">
         <pre>{lines.join("\n")}{lineCount > 0 ? " " : ""}<span className={styles.bootCursor}>█</span></pre>

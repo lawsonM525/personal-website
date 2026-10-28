@@ -110,3 +110,37 @@ test("a disposed player cannot finish a late resume and start playback", async (
   assert.equal(await pending, false)
   assert.equal(fake.sources.length, 0)
 })
+
+test("boot typing stays quiet and never initializes or resumes locked audio", async () => {
+  const fake = context()
+  let created = 0, resumed = 0
+  fake.ctx.resume = async () => { resumed++; fake.ctx.state = "running" }
+  const player = new ComputerSoundPlayer(() => { created++; return fake.ctx })
+  assert.equal(await player.play("bootType", { onlyIfRunning: true }), false)
+  assert.equal(created, 0)
+  assert.equal(await player.unlock(), true)
+  assert.equal(resumed, 1)
+  assert.equal(await player.play("bootType", { onlyIfRunning: true }), true)
+  fake.ctx.state = "suspended"
+  assert.equal(await player.play("bootType", { onlyIfRunning: true }), false)
+  assert.equal(resumed, 1)
+  player.dispose()
+  const rms = samples => Math.sqrt(samples.reduce((sum, value) => sum + value * value, 0) / samples.length)
+  const typing = renderComputerSound("bootType", 48000)
+  assert.ok(typing.length / 48000 < .03)
+  assert.ok(rms(typing) < rms(renderComputerSound("click", 48000)) / 2)
+})
+
+test("stopping boot typing leaves other feedback alone", async () => {
+  const fake = context()
+  const player = new ComputerSoundPlayer(() => fake.ctx)
+  await player.play("startup")
+  fake.ctx.currentTime = .1
+  await player.play("bootType", { onlyIfRunning: true })
+  player.stopCue("bootType")
+  assert.equal(fake.sources[1].stopped, true)
+  assert.equal(fake.sources[0].stopped, false)
+  player.setMuted(true)
+  assert.equal(fake.sources[0].stopped, true)
+  player.dispose()
+})
