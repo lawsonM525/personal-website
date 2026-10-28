@@ -6,7 +6,7 @@ import { AvatarEditor } from "./avatar-editor"
 import { MemberAvatar } from "./member-avatar"
 import styles from "./member.module.css"
 
-export function MemberAccount({ viewer: suppliedViewer, onChange, compact = false }: { viewer?: FeedbackViewer | null; onChange?: (viewer: FeedbackViewer | null) => void; compact?: boolean }) {
+export function MemberAccount({ viewer: suppliedViewer, onChange, compact = false, variant = "default" }: { viewer?: FeedbackViewer | null; onChange?: (viewer: FeedbackViewer | null) => void; compact?: boolean; variant?: "default" | "builder-card" }) {
   const [viewer, setViewer] = useState<FeedbackViewer | null>(suppliedViewer || null)
   const [editor, setEditor] = useState(false)
   const [signin, setSignin] = useState(false)
@@ -29,7 +29,7 @@ export function MemberAccount({ viewer: suppliedViewer, onChange, compact = fals
     changed(data.viewer); setNote("Portrait saved. Looking very you.")
   }
   return <div>
-    {loading ? <p className={styles.note}>Opening your profile…</p> : viewer ? <div className={styles.account}><MemberAvatar name={viewer.display_name} avatar={viewer.avatar} size={40} /><strong>{viewer.display_name}</strong><button type="button" onClick={() => { setEditor(true); setNote("") }}>{viewer.avatar ? "Edit portrait" : "Make your portrait"}</button>{!compact && <button type="button" disabled={busy} onClick={async () => { setBusy(true); setError(""); try { const response = await fetch("/api/feedback", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "logout" }) }); if (!response.ok) throw new Error(); changed(null) } catch { setError("Sign-out didn’t finish. Try again.") } finally { setBusy(false) } }}>Sign out</button>}</div> : <div className={styles.account}><button type="button" onClick={() => setSignin(current => !current)}>Sign in to comment & make a portrait</button></div>}
+    {loading ? <p className={styles.note}>Opening your profile…</p> : viewer ? <div className={`${styles.account} ${variant === "builder-card" ? styles.cardAccount : ""}`}><MemberAvatar name={viewer.display_name} avatar={viewer.avatar} size={variant === "builder-card" ? 56 : 40} /><strong>{viewer.display_name}</strong><button type="button" onClick={() => { setEditor(true); setNote("") }}>{viewer.avatar ? "Edit portrait" : "Make your portrait"}</button>{!compact && <button type="button" disabled={busy} onClick={async () => { setBusy(true); setError(""); try { const response = await fetch("/api/feedback", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "logout" }) }); if (!response.ok) throw new Error(); changed(null) } catch { setError("Sign-out didn’t finish. Try again.") } finally { setBusy(false) } }}>Sign out</button>}</div> : <div className={styles.account}><button type="button" onClick={() => setSignin(current => !current)}>Sign in to comment & make a portrait</button></div>}
     {signin && !viewer && <form className={styles.signin} onSubmit={async event => {
       event.preventDefault(); setBusy(true); setError(""); const form = new FormData(event.currentTarget)
       try {
