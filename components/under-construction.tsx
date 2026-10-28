@@ -11,6 +11,7 @@ export function UnderConstruction() {
       <h1 className="text-4xl font-bold">Under Construction</h1>
       {!imageError ? (
         <Image
+          unoptimized
           src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNzJydnhwZWJtYmdrOGQ5OHg1cHgxcml3ZDVtcTNneTF0ajlvOHA4eSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/xZsLh7B3KMMyUptD9D/giphy.gif"
           alt="Under Construction"
           width={300}

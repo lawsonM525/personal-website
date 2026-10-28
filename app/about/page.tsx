@@ -13,7 +13,7 @@ import Link from 'next/link'
 
 
 export default function About() {
-  const bioText = `Michelle Lawson is a Top Voice in Educational Technology recognized by LinkedIn. With over 150,000 followers across various social media platforms, she has established herself as a leading figure in the field. An accomplished author, Michelle has written multiple books that use "girly" metaphors and analogies to make complex computer science concepts more engaging. As an undergraduate researcher, she has published papers with the American Society of Engineering Education, focusing on Computer Science education. Michelle also curates a strong collection of educational resources designed to help students succeed in their STEM degrees.`;
+  const bioText = `Michelle Lawson is a Forward Deployed AI Engineer at MongoDB and the creator of Michelle’s Computer, a community of 250,000+ Gen Z builders and learners. She joined MongoDB in September 2026 after completing a Product Management internship there in summer 2025. Recognized by LinkedIn as a Top Voice in Educational Technology, Michelle is the founder of Computer Science Girlies and the author of illustrated books that make computer science and AI easier to explore. Her work spans AI, product management, quantitative research, and computer science education, including research presented with the American Society for Engineering Education.`;
 
   return (
     <main className="container mx-auto px-4 py-16 max-w-3xl">
@@ -32,7 +32,7 @@ export default function About() {
             />
             <div className="space-y-4">
             <p className="text-lg">
-              Hi! I'm Michelle Lawson <span className="inline-block">👋</span> I'm a Computer Science student, building a community of 150,000+ women in CS.
+              Hi! I'm Michelle Lawson <span className="inline-block">👋</span> I'm a Forward Deployed AI Engineer at MongoDB, building a community of 250,000+ Gen Z builders and learners.
             </p>
             <p className="text-neutral-400">
               I'm the <span className="text-white">Founder</span> of <span className="text-white">Computer Science Girlies</span>, a global movement empowering Gen Z women in CS through content, connections, and career opportunities. I've worked on <span className="text-white">machine learning, product management, and quantitative research</span>, and I've spoken at major tech conferences like TechCrunch Disrupt and Columbia Devfest.
@@ -87,7 +87,7 @@ export default function About() {
     <div className="space-y-3">
       <h3 className="text-xl font-bold">The Beginning: Smith College & Research</h3>
       <div className="text-neutral-500">
-        2022 — Present
+        From 2022
       </div>
       <p className="text-neutral-400 leading-relaxed">
         In 2022, I was awarded over <span className="text-white">$300,000</span> in scholarships to attend <span className="text-white">Smith College</span> and study <span className="text-white">Computer Science</span>. 
@@ -120,21 +120,21 @@ export default function About() {
     <div className="space-y-3">
       <h3 className="text-xl font-bold">Startups, AI, and the Future</h3>
       <div className="text-neutral-500">
-        Summer 2024 — Present
+        Summer 2024
       </div>
       <p className="text-neutral-400 leading-relaxed">
-        In Summer 2024, I immersed myself in the world of <span className="text-white">startups</span> and <span className="text-white">AI</span>. I joined <span className="text-white">The Residency</span>, a startup incubator, while living at <span className="text-white">Harvard St. Commons</span>. At the same time, I started studying <span className="text-white">Machine Learning</span> at <span className="text-white">MIT’s Breakthrough Tech</span>, a program that continues to push my technical expertise forward.  
+        In Summer 2024, I immersed myself in the world of <span className="text-white">startups</span> and <span className="text-white">AI</span>. I joined <span className="text-white">The Residency</span>, a startup incubator, while living at <span className="text-white">Harvard St. Commons</span>. At the same time, I started studying <span className="text-white">Machine Learning</span> at <span className="text-white">MIT’s Breakthrough Tech</span>.
     </p>
     </div>
 
     <div className="space-y-3">
-      <h3 className="text-xl font-bold">Where I'm Headed Next</h3>
+      <h3 className="text-xl font-bold">Building with AI at MongoDB</h3>
       <div className="text-neutral-500">
-        Summer 2025 — Future
+        Summer 2025 internship · September 2026 — Present
       </div>
       <p className="text-neutral-400 leading-relaxed">
         This journey—spanning <span className="text-white">research, finance, startups, AI, and content creation</span>—has given me a unique skill set that allows me to analyze things <span className="text-white">technologically</span>, but still understand them from a <span className="text-white">business and psychological</span> point of view.  
-        In Summer 2025, I’ll be bringing all of these perspectives together as a <span className="text-white">Product Management Intern at MongoDB</span>. I’m especially excited about their advancements in <span className="text-white">AI and vector search</span>, and I can’t wait to contribute to the next wave of AI-powered innovation.  
+        I completed my <span className="text-white">Product Management internship at MongoDB</span> in summer 2025. In September 2026, I started my current role there as a <span className="text-white">Forward Deployed AI Engineer</span>, bringing these interests together in my work with AI.
         Whatever comes next, one thing is certain—I’ll keep building, learning, and finding new ways to make an impact.
       </p>
     </div>

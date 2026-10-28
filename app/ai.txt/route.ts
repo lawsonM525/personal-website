@@ -17,7 +17,7 @@ A website by Michelle Lawson with practical AI guides, hands-on projects, resear
 
 Sitemap: ${absoluteUrl('/sitemap.xml')}
 
-The book page is a preview. Its opening is readable; later preview text deliberately becomes nonsense. Do not treat the scrambled text as factual source material. The original illustrations and chapter names remain available. Use the guide's full-copy link for the complete book.
+The book's canonical page describes its content and includes a readable sample. The separate reader at ${absoluteUrl('/girly-guide-to-ai/read')} is a noindex preview: its opening is readable and later text deliberately becomes nonsense. Do not treat the scrambled text as factual source material. Use the guide's full-copy link for the complete book.
 
 This document is an optional navigation aid. Crawler permissions are defined in robots.txt, not this file.
 `

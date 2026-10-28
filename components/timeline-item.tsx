@@ -60,6 +60,7 @@ export function TimelineItem({
           <div className="relative aspect-video rounded-lg overflow-hidden">
             {media.type === "gif" ? (
               <Image
+                unoptimized
                 src={media.url}
                 alt={media.alt}
                 fill

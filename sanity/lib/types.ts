@@ -2,7 +2,9 @@ import type { PortableTextBlock } from "@portabletext/types";
 
 export type LearnAuthor = {
   name: string;
+  slug?: string;
   role?: string;
+  bio?: string;
   imageUrl?: string;
   imageAlt?: string;
 };
@@ -33,6 +35,7 @@ export type LearnArticleCard = {
   dek: string;
   slug: string;
   publishedAt: string;
+  updatedAt?: string;
   category: string;
   topics?: string[];
   featured?: boolean;

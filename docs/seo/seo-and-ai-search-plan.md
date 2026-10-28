@@ -2,9 +2,9 @@
 
 ## Current position
 
-The site has a working foundation, not a completed search program. The current visual/mobile/book release was published through PR #3 (production merge `ab62b79954908bc3f73083d596f8a97b1e087ced`). The live audit returned HTTP 200 for the main pages, robots file and sitemap, and confirmed 230 original book figures. The baseline report is generated locally with `node scripts/audit-site-seo.mjs https://michellescomputer.com output/seo-launch-baseline.json`.
+The custom-domain site has a working technical foundation and is being improved through the October 2026 follow-through below. Before this pass, all 20 canonical sitemap URLs returned HTTP 200. Titles, descriptions, canonical tags, sharing images, Person/WebSite/Book/Article data, utility-page noindex rules, and the 230 original book figures were verified. The source audit is generated with `node scripts/audit-site-seo.mjs https://michellescomputer.com output/seo-audit-current.json`.
 
-Existing strengths: server-rendered page content, canonical tags on primary pages, an XML sitemap, permissive crawling, article/FAQ markup, author bylines, descriptive article content, and original illustrations. All 20 release tests, TypeScript, the production build, and the 30-route production smoke test passed.
+Search Console is now verified and the sitemap has been submitted. Google's current indexed homepage record still reflects the old Lovable deployment; a successful live test and fresh indexing request address discovery of the current custom-domain site. This is not yet a completed search program: actual indexing, query performance, and conversions need ongoing evidence.
 
 ## First technical pass
 
@@ -24,33 +24,80 @@ Acceptance: production metadata matches each tested route; sharing images load; 
 
 Local verification passed: 24 unit tests, TypeScript/build checks, 30 route responses, and a 13-page SEO crawl. The crawl also checked the 1200×630 sharing PNG, all 230 original book figures, proposal/form noindex rules, and the production-only lock on the author proof. Search Console ownership and actual indexing remain unverified.
 
-## Next priorities
+## October 2026 follow-through
 
-### 1. Verify discovery and measurement
+Search Console ownership is verified for `michelle@michellescomputer.com` through the existing domain provider verification. The canonical sitemap was accepted with **Success** and 20 discovered pages on October 27. The homepage's previous indexed record still points to `michellescomputer.lovable.app`, based on a September 19 crawl. The current homepage declares the correct custom-domain canonical. Google's live test says **URL is available to Google**; a fresh homepage indexing request was accepted into its priority crawl queue. This is a crawl request, not confirmation of indexing or canonical selection. Performance, page-indexing, and field-experience reports are still processing.
 
-Check existing ownership in Google Search Console and Bing Webmaster Tools, submit the canonical sitemap, inspect important URLs, and record baseline queries, clicks, impressions, CTR, indexed pages, and crawl problems. Owner access has not been verified. No new account or DNS verification has been created.
+### Search and reader changes
 
-Verify the existing GA4 and DataFast properties before relying on their reports. The DataFast tag now uses `michellescomputer.com` and Michelle's supplied website ID; confirm incoming pageviews in the DataFast dashboard. Measure organic landing pages and outbound guide/signup clicks, then confirm completed conversions only where the destination supplies reliable data. Separate human referrals from crawler requests.
+- `/girly-guide-to-ai` becomes a clean, indexable book introduction with the original cover, a genuine readable excerpt, an original illustration, chapter links, visible FAQs, the 2023 author note, and related articles. Book and FAQ markup match visible content.
+- The continuous illustrated preview moves to `/girly-guide-to-ai/read`, with `noindex,follow` and a self-canonical. Old chapter/preview fragments redirect to the corresponding reader location. Chapters load as needed, with Contents, focus mode, text sizing, and retry controls. All 230 original figures remain available. The public chapter endpoint serves only prepared scrambled preview data, including when `?preview=full` is supplied.
+- Initial local production HTML is about 77 KB for the book landing and 168 KB for the first reader chapters, compared with 1.42 MB for the previous all-at-once reader. The image pipeline serves responsive copies of Learn artwork and the cover without replacing source assets.
+- Guest bylines link to truthful author profiles. Leesha Mogha's profile lists her two articles; it is included in the sitemap. Article schema and Open Graph carry real CMS publication/update timestamps, and visible update labels use the same dates. Dates render consistently in Michelle's Pacific time zone.
+- Michelle confirmed her current role and biography: Forward Deployed AI Engineer at MongoDB since September 2026, completed summer 2025 internship, and a community of 250,000+ Gen Z builders and learners. About, its metadata, and Person/ProfilePage data use those facts.
+- Reminder and Posts descriptions now describe their actual content. The Learn description includes guest writers. The two Leesha articles have concise search titles; their visible titles, prose, author credits, and original illustrations stay intact. The local Sanity client could not update CMS metadata (read-only permissions), so the frontend replaces only the two known legacy search titles and respects any subsequent Studio edit.
 
-### 2. Improve indexable content and the book preview
+### Measurement
 
-The large, scrambled reader needs a deliberate indexing boundary. `data-nosnippet` limits snippets; it does not establish a clean content index. Evaluate a clean, indexable book landing/sample page with the long scrambled reader on a separate noindex route. Preserve the original cover, illustrations, readable opening, buyer links, and desktop window experience.
+DataFast's `michellescomputer.com` property is accessible and was receiving human visits before this change (30 visitors in the dashboard's selected Today period). Keep this separate from AI crawler activity. A bot request does not prove an AI citation or a human referral.
 
-Check the startup overlay with JavaScript disabled and URL Inspection. Content already exists in the server HTML, but the welcome window is temporarily hidden during startup. Keep the animation while ensuring reliable progressive rendering. Test redirects and content parity across `/?desktop=1`, app queries, archived URLs, and custom-domain variants.
+The release instruments six production-domain-only goals:
 
-Review article authorship and update dates, complete truthful entity links, and keep schema synchronized with visible content. Guest authors must not inherit Michelle's author URL. Keep readable summaries, clear headings, citations, original screenshots, and useful image alternatives. Do not add invisible FAQ content for markup.
+| Goal | Meaning |
+| --- | --- |
+| `guide_preview_start` | A reader/sample start link was clicked. |
+| `guide_purchase_click` | A Gumroad purchase link was clicked; this is not a completed purchase. |
+| `magazine_waitlist_open` | A link to the magazine signup page was clicked. |
+| `magazine_waitlist_submitted` | The matching embedded Tally form sent its submitted event. |
+| `penpal_form_open` | A link to the pen-pal signup page was clicked. |
+| `penpal_signup_submitted` | The matching embedded Tally form sent its submitted event. |
 
-Review About's older student wording, follower counts, and future-tense 2025 internship copy against Michelle's current biography before changing those claims. The first pass keeps the search description evergreen without inventing a graduation or employment status.
+Tally submission events must match the origin, iframe window, form ID, and event type. Each form instance deduplicates submission events. No answers, email addresses, query strings, or fragments are added to goal properties. Standalone Tally submissions cannot be counted by this listener. Purchase completion needs a payment-provider integration and is not inferred from clicks.
 
-### 3. Build search demand around useful original work
+The official DataFast AI crawler tracker runs in background middleware on Vercel production only. It filters human/API/static requests locally, excludes feedback and proposal routes, removes URL queries/fragments and unrelated request headers, and does not make a page wait for analytics. It can record requested public paths and crawler identity; real crawler verification/classification is performed by DataFast. No synthetic production crawler counts should be treated as real activity.
 
-Validate seed themes against Search Console and actual audience questions: beginner AI, creative AI projects, building without a CS background, and AI for students. Choose a small number of topics with evidence, not invented keyword volumes. Expand the existing wardrobe project, book sample, RAG explanation, and research pages with original demonstrations and internal links before creating many thin pages.
+The installed GA4 tag is `G-JDSM0Q7X0G`. Neither the initial Gmail account nor `michelle@michellescomputer.com` has an Analytics property. Michelle identified `michelle@michellelawson.me` as the likely owner; verify that account before changing property settings or claiming events are visible. DataFast goals appear when events arrive; the Add goals panel supplies instrumentation instructions rather than a manual goal-creation form.
 
-### 4. Measure performance and iterate
+Recommended DataFast funnels after events arrive: preview start → purchase-link click, magazine open → submitted, and pen-pal open → submitted. Select completed magazine signups as the primary KPI when reliable submissions appear. Segment organic/search and AI human referrals separately from bot requests. Avoid interpreting the current empty funnel as a zero conversion rate.
 
-Run mobile and desktop lab checks on home, Learn, an article, the book and Explorer, then compare with field Core Web Vitals when enough data exists. Inspect font cost, image dimensions, lazy loading, and the long reader's DOM/payload. Record the actual results rather than claiming a perfect score.
+### Content map and next editorial work
 
-Track organic conversions and AI referral/citation samples against a repeatable set of real questions. Review failures in context; one sample response is not an AI ranking. Indexing and citations cannot be guaranteed.
+These are audience-question hypotheses, not researched keyword-volume claims. Use the first Search Console query data and recurring audience questions to refine the order.
+
+| Audience question | Existing destination | Next useful addition | Evidence to measure |
+| --- | --- | --- | --- |
+| What is AI, and where should I start? | Book landing + readable opening | Keep the 2023 context explicit; publish a separately dated guide update after fact-checking current tools. | Beginner queries, sample starts, guide-link clicks. |
+| How do I build an AI wardrobe or digital closet? | Wardrobe tutorial | Re-test the workflow, add original step screenshots and one finished example, and state tested tool versions/dates. | Tutorial queries, engagement, relevant signup or guide clicks. |
+| What can people actually make with AI? | Michelle's finds | Add only projects Michelle has tried, her own reaction, original creator credit, tools, and source links. | Project-specific queries and outbound demo clicks. |
+| What are AI alignment and AI safety? | Leesha's alignment article | Keep the original argument and source citations; add an editorial update only for substantive changes. | Alignment/safety queries and engaged reads. |
+| How can AI affect cybersecurity and digital dependence? | Leesha's digital-conquest article | Keep claims sourced; connect a future practical security explainer when one is written and reviewed. | Cybersecurity/dependence queries and engaged reads. |
+| What is RAG, and what does a real implementation look like? | RAG project | Add a plain-language architecture explanation, original example, limitations, and dated evaluation results. | RAG queries, project engagement, qualified contact clicks. |
+
+Link related explanations from relevant paragraphs and the Learn hub. Each substantial new article should answer one concrete question early, include original examples/media, name its author, cite primary sources, and show meaningful update dates. Preserve Michelle's voice. Do not mass-publish thin AI-generated pages, add hidden FAQs, or promise AI citations.
+
+### Performance baseline and validation
+
+The public PageSpeed UI supplied Lighthouse 13.5.0 lab reports. Field data was **No Data**, so these are not field Core Web Vitals results. The anonymous PageSpeed API hit its project quota; do not represent that API error as a site performance failure.
+
+| Before this release | Mobile performance / LCP | Desktop performance / LCP |
+| --- | --- | --- |
+| Home | 65 / 6.9 s | 95 / 1.2 s |
+| Book | 65 / 8.3 s | 87 / 1.5 s |
+| Learn | 60 / 12.1 s | 91 / 1.8 s |
+| Alignment article | 66 / 7.4 s | 96 / 1.4 s |
+| Explorer | 78 / 6.1 s | 98 / 1.0 s |
+
+Home intentionally includes the skippable 3.1-second startup animation, which contributes to first-visit lab timing. Preserve the animation and its no-JavaScript fallback; distinguish its presentation delay from slow downloads. Compare the book and Learn after deployment, then check an article and Explorer on mobile and desktop. Record actual reports, avoid a blanket perfect-score claim, and use Search Console field data when sufficient traffic exists.
+
+The exact staged release passed 22 focused unit tests, production build/type checks, 35 route responses, and the SEO/privacy/image smoke suite. Browser checks verified author search/profile links, chapter jumps through the glossary with all 230 figures, focus mode, mobile chapter controls, old preview links, and responsive image delivery. Concurrent Explorer and feedback work is excluded from this release. Evidence reports live under ignored `output/`; retain the exact deployed commit and public verification results there.
+
+### Remaining external follow-up
+
+1. Let Search Console finish processing, then inspect the custom-domain canonical selection, indexed pages, organic queries, impressions, clicks, and CTR. The submitted sitemap will be fetched again as content changes; the new author profile adds another canonical URL.
+2. Verify GA4 access under the likely owner account. Check existing enhanced history measurement before adding any manual pageviews, then validate the new goals without double-counting route changes.
+3. Connect/import the verified site in Bing Webmaster Tools if the account/consent flow is available. Do not claim Bing submission until its UI confirms it.
+4. Connect Search Console to DataFast only after reviewing the requested Google permissions and obtaining any required consent. Native Search Console already provides the underlying reports.
+5. Update this record with the actual production speed comparison and any account-specific blockers. No scheduled follow-up has been created; a future check needs an explicit scheduling request.
 
 ## Evidence and boundaries
 

@@ -5,12 +5,10 @@ import { buildPageMetadata, absoluteUrl } from "@/lib/seo"
 export const metadata: Metadata = buildPageMetadata({
   title: "Reminder — Michelle Lawson",
   description:
-    "Simple reminder and accountability tools for students — plan your glow up and track progress.",
+    "A reminder from Michelle Lawson: You can achieve anything that you can imagine. Seriously.",
   path: "/reminder",
   keywords: [
-    "glow up tracker app",
-    "accountability system for students",
-    "Gen Z career roadmap",
+    "Michelle Lawson reminder",
   ],
 })
 

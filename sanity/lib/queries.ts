@@ -6,12 +6,13 @@ const articleCardFields = `
   dek,
   "slug": slug.current,
   publishedAt,
+  "updatedAt": _updatedAt,
   category,
   topics,
   featured,
   "coverImageUrl": coverImage.asset->url,
   "coverImageAlt": coverImage.alt,
-  "author": author->{name, role, "imageUrl": image.asset->url, "imageAlt": image.alt},
+  "author": author->{name, "slug": slug.current, role, bio, "imageUrl": image.asset->url, "imageAlt": image.alt},
   "estimatedWords": round(length(pt::text(body)) / 5)
 `;
 
@@ -63,8 +64,20 @@ export const ARTICLE_SLUGS_QUERY = defineQuery(`
 `);
 
 export const SITEMAP_ARTICLES_QUERY = defineQuery(`
-  *[_type == "article" && defined(slug.current) && coalesce(seo.noIndex, false) != true][]{
+  *[_type == "article" && defined(slug.current) && defined(publishedAt) && coalesce(seo.noIndex, false) != true][]{
     "slug": slug.current,
     "lastModified": coalesce(_updatedAt, publishedAt)
   }
+`);
+
+export const AUTHOR_QUERY = defineQuery(`
+  *[_type == "author" && slug.current == $slug][0]{
+    _id, name, "slug": slug.current, role, bio,
+    "imageUrl": image.asset->url, "imageAlt": image.alt,
+    "articles": *[_type == "article" && author._ref == ^._id && defined(slug.current) && defined(publishedAt) && coalesce(seo.noIndex, false) != true] | order(publishedAt desc){${articleCardFields}}
+  }
+`);
+
+export const SITEMAP_AUTHORS_QUERY = defineQuery(`
+  *[_type == "author" && defined(slug.current) && slug.current != "michelle-lawson" && count(*[_type == "article" && author._ref == ^._id && defined(publishedAt) && coalesce(seo.noIndex, false) != true]) > 0]{"slug": slug.current, "lastModified": _updatedAt}
 `);

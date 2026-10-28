@@ -4,7 +4,8 @@ import Link from "next/link"
 import Script from "next/script"
 import { useEffect, useId, useRef, useState } from "react"
 import { FileText, FolderOpen, Grid2X2 } from "@/components/retro-icons"
-import { isTallyReadyEvent, shouldRetryEmbed } from "@/lib/tally-embed"
+import { isTallyReadyEvent, isTallySubmittedEvent, shouldRetryEmbed } from "@/lib/tally-embed"
+import { trackGoal } from "@/lib/analytics"
 import { WindowBar } from "./window-bar"
 import { penpalDeliveryNote, signupForms } from "./signup-config"
 import styles from "./home.module.css"
@@ -26,6 +27,7 @@ export function TallyForm({ form, active, recoveryId }: { form: FormDestination;
   const ready = useRef(false)
   const navigated = useRef(false)
   const attempts = useRef(0)
+  const submitted = useRef(false)
   const [state, setState] = useState<"loading" | "ready" | "unavailable">("loading")
 
   function isInitialBlank(element: HTMLIFrameElement) {
@@ -39,6 +41,11 @@ export function TallyForm({ form, active, recoveryId }: { form: FormDestination;
     const element = frame.current
     if (!element) return
     function receive(event: MessageEvent) {
+      if (!submitted.current && isTallySubmittedEvent(event, element?.contentWindow ?? null, form.id)) {
+        if (form.id === signupForms.magazine.id) trackGoal("magazine_waitlist_submitted")
+        else if (form.id === signupForms.penpals.id) trackGoal("penpal_signup_submitted")
+        submitted.current = true
+      }
       if (!isTallyReadyEvent(event, element?.contentWindow ?? null, form.id)) return
       // Consume readiness only; never retain or log answers.
       ready.current = true

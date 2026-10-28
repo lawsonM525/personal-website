@@ -7,7 +7,7 @@ import { ARTICLES_QUERY } from "@/sanity/lib/queries"
 import type { LearnArticleCard } from "@/sanity/lib/types"
 import { findsArticle } from "@/lib/michelles-finds"
 
-export const metadata: Metadata = buildPageMetadata({title:"Learn",description:"Practical guides from Michelle Lawson about AI, building, college, careers, and using the internet well.",path:"/learn",keywords:["practical AI guides","AI for students","Gen Z career advice","college career guides"]})
+export const metadata: Metadata = buildPageMetadata({title:"Learn — AI guides and creative projects",description:"Practical AI guides, creative projects, and ideas from Michelle’s Computer, with Michelle Lawson and guest writers.",path:"/learn",keywords:["practical AI guides","AI for beginners","creative AI projects"]})
 
 export default async function LearnPage() {
   const { data } = await sanityFetch({query:ARTICLES_QUERY})

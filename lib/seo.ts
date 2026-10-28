@@ -25,7 +25,8 @@ export const personStructuredData = {
   alternateName: ["Michelle’s Computer", "michellescomputer"],
   url: absoluteUrl("/about"),
   image: absoluteUrl("/begin/michelle-photos/michelle-yellow-sweater-portrait.jpeg"),
-  jobTitle: "AI educator and creator",
+  jobTitle: "Forward Deployed AI Engineer",
+  worksFor: { "@type": "Organization", name: "MongoDB", url: "https://www.mongodb.com/" },
   sameAs: ["https://www.instagram.com/michellescomputer/", "https://github.com/lawsonM525"],
 }
 

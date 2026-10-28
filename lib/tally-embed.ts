@@ -10,3 +10,11 @@ export function isTallyReadyEvent(event: Pick<MessageEvent, "origin" | "source" 
     return message.event === "Tally.FormLoaded" && message.payload?.formId === formId
   } catch { return false }
 }
+
+export function isTallySubmittedEvent(event: Pick<MessageEvent, "origin" | "source" | "data">, frameWindow: MessageEventSource | null, formId: string) {
+  if (!frameWindow || event.origin !== "https://tally.so" || event.source !== frameWindow || typeof event.data !== "string") return false
+  try {
+    const message = JSON.parse(event.data)
+    return message.event === "Tally.FormSubmitted" && message.payload?.formId === formId
+  } catch { return false }
+}

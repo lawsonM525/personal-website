@@ -26,6 +26,7 @@ export function PostCard({
     <Card className="overflow-hidden bg-gray-900/50 border-gray-800 hover:border-gray-700 transition-colors">
       <div className="aspect-video relative">
         <Image
+          unoptimized={/^https?:/.test(image)}
           src={image}
           alt={title}
           fill
