@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 import { redirect } from "next/navigation"
 import { ArrowUpRight, BookOpen } from "@/components/retro-icons"
 import { GuideCover } from "@/components/books/guide-cover"
@@ -40,7 +41,7 @@ export default async function AiGuidePage({ searchParams }: { searchParams: Prom
       </section>
       <section className={styles.landingSample} aria-labelledby="book-sample-title">
         <div><p className={styles.eyebrow}>A little look inside</p><h2 id="book-sample-title">Meet Mia and Mai.</h2>{sample && <blockquote>{sample}</blockquote>}<Link className={styles.readButton} href={`${aiGuideReaderPath}#guide-introduction`} data-analytics-goal="guide_preview_start"><BookOpen size={22} />Read the free sample <ArrowUpRight size={16} /></Link><p className={styles.sampleNote}>The opening is readable. From section 1.3 onward, the online preview gradually becomes scrambled.</p></div>
-        <img src="/books/girly-guide-to-ai/illustrations/art-d4df0c3d2d14ec99.webp" alt="Mia and her robot friend Mai wave hello in an original illustration from The Girly Guide to AI." width="911" height="497" loading="lazy" decoding="async" />
+        <Image src="/books/girly-guide-to-ai/illustrations/art-d4df0c3d2d14ec99.webp" alt="Mia and her robot friend Mai wave hello in an original illustration from The Girly Guide to AI." width={911} height={497} sizes="(max-width: 760px) 85vw, 430px" />
       </section>
       <section aria-labelledby="book-chapters-title"><p className={styles.eyebrow}>Inside the book</p><h2 id="book-chapters-title">From the first question to your own project.</h2><ol className={styles.landingChapters}>{chapters.map(chapter => <li key={chapter.id}><Link href={`${aiGuideReaderPath}#guide-${chapter.id}`}><span>{String(chapter.number).padStart(2,"0")}</span>{chapter.title}<ArrowUpRight size={14} aria-hidden="true" /></Link></li>)}</ol></section>
       <section className={styles.landingFaq} aria-labelledby="book-questions-title"><h2 id="book-questions-title">Before you start.</h2>{questions.map(item => <details key={item.question}><summary>{item.question}</summary><p>{item.answer}</p></details>)}<a className={styles.readButton} href={aiGuidePurchaseUrl} data-analytics-goal="guide_purchase_click" target="_blank" rel="noopener noreferrer">Get the full guide <ArrowUpRight size={16} /></a></section>
