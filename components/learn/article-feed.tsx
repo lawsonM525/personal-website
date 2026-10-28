@@ -75,7 +75,7 @@ export function ArticleFeed({ articles }: { articles: LearnArticleCard[] }) {
           const featured = isBrowsing && index === 0 && !!entry.article
           const date = entry.article ? stegaClean(entry.article.publishedAt) : undefined
           return <article className={`${styles.entry}${featured ? ` ${styles.featured}` : ""}${!entry.article ? ` ${styles.guideEntry}` : ""}${!entry.image ? ` ${styles.textOnly}` : ""}`} key={entry.id}>
-            {entry.image && <Link className={styles.image} href={entry.href} aria-label={`Read ${stegaClean(entry.title)}`}><Image src={entry.image} alt={entry.imageAlt} width={featured ? 1280 : 480} height={featured ? 720 : 320} priority={featured} unoptimized={false} sizes={featured ? "(max-width: 850px) 90vw, (max-width: 1440px) 65vw, 940px" : "(max-width: 540px) 104px, (max-width: 850px) 30vw, 300px"} /></Link>}
+            {entry.image && <Link className={styles.image} href={entry.href} aria-label={`Read ${stegaClean(entry.title)}`}><Image src={entry.image} alt={entry.imageAlt} width={featured ? 1280 : 480} height={featured ? 720 : 320} priority={featured} fetchPriority={featured ? "high" : undefined} unoptimized={false} sizes={featured ? "(max-width: 850px) 90vw, (max-width: 1440px) 65vw, 940px" : "(max-width: 540px) 104px, (max-width: 850px) 30vw, 300px"} /></Link>}
             <div className={styles.copy}>
               <p className={styles.eyebrow}>{categoryLabels[entry.category] || entry.category}{featured && <span>Latest</span>}</p>
               <h2><Link href={entry.href}>{entry.title}</Link></h2>
