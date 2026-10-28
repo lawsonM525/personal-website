@@ -9,7 +9,15 @@ export const feedbackReplyBodySchema = z.string().trim()
   .refine(value => feedbackReplyLength(value) >= feedbackReplyMinLength, "Share at least 500 characters so the builder has something useful to work with.")
   .refine(value => feedbackReplyLength(value) <= feedbackReplyMaxLength, "Keep your reply under 2,000 characters.")
 
-export const feedbackCommentSchema = z.object({ projectId: z.string().uuid(), body: feedbackReplyBodySchema })
+export const feedbackRatingCategories = [
+  { key: "design", label: "Design", hint: "How it looks and feels." },
+  { key: "usability", label: "Ease of use", hint: "How easy it is to find your way." },
+  { key: "usefulness", label: "Usefulness", hint: "How well it solves a real problem." },
+] as const
+const starScore = z.number().int().min(1).max(5)
+export const feedbackRatingsSchema = z.object({ design: starScore, usability: starScore, usefulness: starScore }, { required_error: "Choose a star rating for all three categories." }).strict()
+export type FeedbackRatings = z.output<typeof feedbackRatingsSchema>
+export const feedbackCommentSchema = z.object({ projectId: z.string().uuid(), body: feedbackReplyBodySchema, ratings: feedbackRatingsSchema.optional() })
 export const feedbackCategories = ["Web app", "Website", "Mobile app", "Creative experiment"] as const
 export const feedbackOutcomes = ["Completed it", "Partly completed it", "Got stuck"] as const
 
@@ -49,7 +57,7 @@ export const feedbackReviewSchema = z.object({
   projectId: z.string().uuid(),
   purpose: z.string().trim().min(40).max(1500),
   observations: z.array(feedbackObservationSchema).length(3, "Share three specific observations."),
-  designScore: z.coerce.number().int().min(1).max(5),
+  ratings: feedbackRatingsSchema,
   outcome: z.enum(feedbackOutcomes),
 }).superRefine((value, context) => {
   const normalize = (text: string) => text.toLowerCase().replace(/\s+/g, " ")
@@ -61,8 +69,8 @@ export const feedbackReviewSchema = z.object({
 export type FeedbackProject = Omit<z.output<typeof feedbackProjectSchema>, "summary"> & { summary?: string | null; id: string; owner_id: string; builder_name: string; avatar?: AvatarConfig | null; cover_id?: string | null; created_at: string; status: "pending" | "approved" | "rejected"; featured: boolean; review_count: number }
 export type ReviewerStats = { completed: number; helpful_reviews: number; helped_builders: number }
 export type FeedbackReviewer = ReviewerStats & { id: string; name: string; avatar?: AvatarConfig | null }
-export type FeedbackReview = { id: string; project_id: string; reviewer_id: string; reviewer_name: string; avatar?: AvatarConfig | null; purpose: string; confusion: string; improvement: string; observations?: FeedbackObservation[] | null; useful_observations?: number[]; reviewer_stats?: ReviewerStats; design_score: number; outcome: string; created_at: string }
-export type FeedbackComment = { id: string; project_id: string; author_id: string; author_name: string; avatar?: AvatarConfig | null; body: string; created_at: string }
+export type FeedbackReview = { id: string; project_id: string; reviewer_id: string; reviewer_name: string; avatar?: AvatarConfig | null; purpose: string; confusion: string; improvement: string; observations?: FeedbackObservation[] | null; useful_observations?: number[]; reviewer_stats?: ReviewerStats; design_score: number; ratings?: FeedbackRatings | null; outcome: string; created_at: string }
+export type FeedbackComment = { id: string; project_id: string; author_id: string; author_name: string; avatar?: AvatarConfig | null; body: string; ratings?: FeedbackRatings | null; created_at: string }
 export type FeedbackReport = { id: string; target_kind: "project" | "review" | "comment"; target_id: string; reason: string; detail: string; created_at: string; target?: { project_id: string; project_title: string; project_url: string; author_name: string; status: string; body: string } }
 export type FeedbackHiddenContent = { id: string; kind: "review" | "comment"; project_id: string; project_title: string; author_name: string; body: string; created_at: string }
 export type FeedbackViewer = { id: string; display_name: string; avatar?: AvatarConfig | null; credits: number; submission_cost: 0 | 3; reviewer_stats?: ReviewerStats; is_admin: boolean; own_projects: FeedbackProject[]; assignment: { project_id: string; expires_at: string } | null }
