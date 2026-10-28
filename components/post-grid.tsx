@@ -45,6 +45,7 @@ function PostItem({ post, onPostClick }: {
       onClick={() => onPostClick(post.id)}
     >
       <Image
+        unoptimized={/^https?:/.test(mainImage)}
         src={mainImage}
         alt={post.description}
         fill

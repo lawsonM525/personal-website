@@ -5,7 +5,7 @@ import { buildPageMetadata, absoluteUrl } from "@/lib/seo"
 export const metadata: Metadata = buildPageMetadata({
   title: "Posts — Michelle Lawson",
   description:
-    "Content and posts from @michellextech and @michellexcomputer — AI tutorials, resources, and inspiration.",
+    "Explore Michelle Lawson’s social posts, AI tutorials, creative projects, and ideas from Michelle’s Computer.",
   path: "/posts",
   keywords: [
     "Michelle Lawson blog",

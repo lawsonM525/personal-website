@@ -9,6 +9,7 @@ import { Inter, Playfair_Display, Caveat } from "next/font/google"
 import { draftMode } from "next/headers"
 import { VisualEditing } from "next-sanity/visual-editing"
 import { SanityLive } from "@/sanity/lib/live"
+import { SiteAnalytics } from "@/components/site-analytics"
 
 const inter = Inter({ subsets: ["latin"] })
 const playfair = Playfair_Display({
@@ -84,6 +85,11 @@ export default async function RootLayout({
               `}
             </Script>
             <Script
+              id="datafast-queue"
+              strategy="beforeInteractive"
+              dangerouslySetInnerHTML={{ __html: "window.datafast=window.datafast||function(){window.datafast.q=window.datafast.q||[];window.datafast.q.push(arguments)}" }}
+            />
+            <Script
               defer
               src="https://datafa.st/js/script.js"
               strategy="afterInteractive"
@@ -97,6 +103,7 @@ export default async function RootLayout({
       </head>
       <body className={`${inter.className} bg-black text-white min-h-screen`}>
         <LayoutClient>{children}</LayoutClient>
+        <SiteAnalytics />
         <SanityLive />
         {(await draftMode()).isEnabled && <VisualEditing />}
       </body>

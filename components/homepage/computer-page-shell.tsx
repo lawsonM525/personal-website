@@ -13,6 +13,7 @@ const routeTitles: Record<string, string> = {
   "/learn/submit": "Submit an article",
   "/learn/you-wont-believe-this-was-made-with-ai": "Michelle’s finds",
   "/girly-guide-to-ai": "The Girly Guide to AI",
+  "/girly-guide-to-ai/read": "The Girly Guide to AI",
   "/projects/rag-in-practice": "RAG in Practice", "/projects/delta-stock-pitch": "Delta stock pitch", "/10apps": "10 Apps in 10 Weeks",
   "/10apps/pagez/updates": "Challenge updates", "/day2tools": "Day 2 Tools",
   "/resources/computer": "Resource desktop", "/resources/computer/toolkit": "Toolkit",
@@ -23,11 +24,11 @@ const routeTitles: Record<string, string> = {
 export function ComputerPageShell({ children }: { children: React.ReactNode }) {
   const path = usePathname()
   const router = useRouter()
-  const isGuide = path === "/girly-guide-to-ai"
+  const isGuide = path === "/girly-guide-to-ai" || path === "/girly-guide-to-ai/read"
   const PageIcon = isGuide || path.startsWith("/learn") ? BookOpen : path.startsWith("/projects") ? Briefcase : path === "/feedback" ? MessageSquare : FileText
   const content = useRef<HTMLDivElement>(null)
   const title = routeTitles[path] || (path.startsWith("/learn/") ? "Learn" : "Page")
-  const parent = path.startsWith("/10apps/") ? { href:"/10apps", label:"Back to 10 Apps" } : path.startsWith("/projects/") || path === "/10apps" ? { href:"/projects", label:"Back to projects" } : path.startsWith("/learn/") || path === "/girly-guide-to-ai" ? { href:"/learn", label:"Back to Learn" } : { href:"/?desktop=1", label:"Michelle’s Computer" }
+  const parent = path.startsWith("/10apps/") ? { href:"/10apps", label:"Back to 10 Apps" } : path.startsWith("/projects/") || path === "/10apps" ? { href:"/projects", label:"Back to projects" } : path.startsWith("/learn/") || isGuide ? { href:"/learn", label:"Back to Learn" } : { href:"/?desktop=1", label:"Michelle’s Computer" }
   const [minimized, setMinimized] = useState(false)
   const [maximized, setMaximized] = useState(false)
   const [time, setTime] = useState("")
@@ -48,7 +49,7 @@ export function ComputerPageShell({ children }: { children: React.ReactNode }) {
       {minimized && <button type="button" className="computer-restore" data-computer-sound="open" onClick={restore}><PageIcon size={32} />Open {title}</button>}
       <section data-computer-window hidden={minimized} className={`computer-page-window${maximized ? " computer-page-window-maximized" : ""}`} aria-label={`${title} window`}>
         <WindowBar title={title} icon={<PageIcon size={24} />} onMinimize={minimize} onMaximize={() => setMaximized(value => !value)} onClose={() => router.push("/?desktop=1")} maximized={maximized} />
-        {!path.startsWith("/learn") && path !== "/girly-guide-to-ai" && <nav className="computer-page-toolbar" aria-label="Window navigation"><Link href={parent.href}><ArrowLeft size={13} />{parent.label}</Link><span>{title}</span><button type="button" data-computer-sound="open" onClick={search}><Search size={13} />Find a page</button></nav>}
+        {!path.startsWith("/learn") && !isGuide && <nav className="computer-page-toolbar" aria-label="Window navigation"><Link href={parent.href}><ArrowLeft size={13} />{parent.label}</Link><span>{title}</span><button type="button" data-computer-sound="open" onClick={search}><Search size={13} />Find a page</button></nav>}
         <div ref={content} id="computer-page-content" className="computer-page-content" data-page={path} data-guide-scroll-viewport={isGuide ? "" : undefined} tabIndex={isGuide ? 0 : undefined} role={isGuide ? "region" : undefined} aria-label={isGuide ? "Book reading area" : undefined}>{children}</div>
       </section>
     </div>

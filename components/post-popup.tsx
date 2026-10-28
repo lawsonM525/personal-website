@@ -65,6 +65,7 @@ export function PostPopup({ post, onClose, onNext, onPrevious }: PostPopupProps)
               />
             ) : (
               <Image
+                unoptimized={typeof currentMedia.url === "string" && /^https?:/.test(currentMedia.url)}
                 src={currentMedia.url}
                 alt={post.description}
                 fill

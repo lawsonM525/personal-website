@@ -10,7 +10,8 @@ import { LearnThemeToggle } from "@/components/learn/learn-theme";
 import { NewsletterSignup } from "@/components/learn/newsletter-signup";
 import { RetroWindow } from "@/components/learn/retro-window";
 import { ArticleHeader } from "@/components/learn/article-header";
-import { absoluteUrl } from "@/lib/seo";
+import { absoluteUrl, personId, serializeStructuredData } from "@/lib/seo";
+import { authorPath, articleSearchTitle } from "@/lib/editorial";
 import { sanityClient, sanityFetchOptions } from "@/sanity/lib/client";
 import { sanityFetch } from "@/sanity/lib/live";
 import {
@@ -45,10 +46,12 @@ export async function generateMetadata({
     coverImageUrl?: string;
     noIndex?: boolean;
     authorName?: string;
-  } | null>(ARTICLE_METADATA_QUERY, { slug }, sanityFetchOptions);
+    publishedAt?: string;
+    _updatedAt?: string;
+  } | null>(ARTICLE_METADATA_QUERY, { slug }, { ...sanityFetchOptions, stega: false });
 
   if (!article) return {};
-  const title = article.seoTitle || article.title;
+  const title = articleSearchTitle(slug, article.title, article.seoTitle);
   const description = article.seoDescription || article.dek;
   const path = `/learn/${slug}`;
 
@@ -63,6 +66,8 @@ export async function generateMetadata({
       title,
       description,
       authors: [article.authorName || "Michelle Lawson"],
+      publishedTime: article.publishedAt,
+      modifiedTime: article._updatedAt || article.publishedAt,
       images: article.coverImageUrl ? [article.coverImageUrl] : undefined,
     },
     twitter: {
@@ -85,6 +90,8 @@ export default async function ArticlePage({ params }: PageProps) {
 
   const category = stegaClean(article.category);
   const publishedAt = stegaClean(article.publishedAt);
+  const updatedAt = article.updatedAt ? stegaClean(article.updatedAt) : publishedAt;
+  const authorHref = authorPath(article.author ? { name: stegaClean(article.author.name), slug: article.author.slug ? stegaClean(article.author.slug) : undefined } : undefined);
   const coverImageUrl = article.coverImageUrl
     ? stegaClean(article.coverImageUrl)
     : undefined;
@@ -100,17 +107,18 @@ export default async function ArticlePage({ params }: PageProps) {
   const articleJsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
+    "@id": `${canonical}#article`,
     headline: article.title,
     description: article.seo?.description || article.dek,
     datePublished: publishedAt,
+    dateModified: updatedAt,
     author: {
       "@type": "Person",
       name: article.author?.name || "Michelle Lawson",
-      url: !article.author?.name || stegaClean(article.author.name) === "Michelle Lawson"
-        ? absoluteUrl("/about")
-        : undefined,
+      "@id": authorHref ? (authorHref === "/about" ? personId : `${absoluteUrl(authorHref)}#person`) : undefined,
+      url: authorHref ? absoluteUrl(authorHref) : undefined,
     },
-    publisher: { "@type": "Person", name: "Michelle Lawson" },
+    publisher: { "@id": personId },
     mainEntityOfPage: canonical,
     image: coverImageUrl,
   };
@@ -130,18 +138,18 @@ export default async function ArticlePage({ params }: PageProps) {
     <main className="learn-bg min-h-screen pb-24">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: serializeStructuredData(articleJsonLd) }}
       />
       {faqJsonLd && (
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: serializeStructuredData(faqJsonLd) }}
         />
       )}
 
 
       <article>
-        <ArticleHeader category={categoryLabels[category] || article.category} title={article.title} description={article.dek} authorName={article.author?.name || "Michelle Lawson"} publishedAt={publishedAt} readingMinutes={readingTime(article.estimatedWords)} />
+        <ArticleHeader category={categoryLabels[category] || article.category} title={article.title} description={article.dek} authorName={article.author?.name || "Michelle Lawson"} authorHref={authorHref} publishedAt={publishedAt} updatedAt={updatedAt} readingMinutes={readingTime(article.estimatedWords)} />
 
         {coverImageUrl && (
           <div className="px-5 pt-10 sm:px-8 sm:pt-14">
@@ -155,6 +163,7 @@ export default async function ArticlePage({ params }: PageProps) {
                 alt={article.coverImageAlt || ""}
                 fill
                 priority
+                unoptimized={false}
                 sizes="(min-width: 1280px) 1152px, 100vw"
                 className="object-cover"
               />

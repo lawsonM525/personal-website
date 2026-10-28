@@ -153,6 +153,7 @@ function AllAboutRAG({ setActivePage }: { setActivePage: (page: string) => void 
           <div>
             <Image 
               src="https://media.geeksforgeeks.org/wp-content/uploads/20230416175601/Screenshot-(27)-660.png"
+              unoptimized
               alt="CBOW architecture diagram"
               width={500}
               height={300}
@@ -160,6 +161,7 @@ function AllAboutRAG({ setActivePage }: { setActivePage: (page: string) => void 
             />
             <Image 
                 src="https://miro.medium.com/v2/resize:fit:1400/0*yxs3JKs5bKc4c_i8.png"
+                unoptimized
                 alt="Skip-gram architecture diagram"
                 width={500}
                 height={300}

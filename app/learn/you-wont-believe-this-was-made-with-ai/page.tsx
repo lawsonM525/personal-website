@@ -39,12 +39,12 @@ export default function MichellesFindsPage() {
 
   return <main className={styles.page}>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeStructuredData(structuredData) }} />
-    <ArticleHeader category="Michelle’s finds" title={findsArticle.title} description={findsArticle.dek} authorName="Michelle Lawson" publishedAt={findsArticle.publishedAt} readingMinutes={readingTime(findsArticle.estimatedWords)} />
+    <ArticleHeader category="Michelle’s finds" title={findsArticle.title} description={findsArticle.dek} authorName="Michelle Lawson" authorHref="/about" publishedAt={findsArticle.publishedAt} readingMinutes={readingTime(findsArticle.estimatedWords)} />
 
     <div className={styles.finds}>{michellesFinds.map((find, index) => <article className={styles.find} key={find.id} id={find.id}>
       <div className={styles.findHeading}><span className={styles.number}>{String(index + 1).padStart(2, "0")}</span><div><p className={styles.eyebrow}>An internet find · Interactive project</p><h2>{find.headline}</h2><p className={styles.credit}>{find.name} by <a href={find.sourceUrl} target="_blank" rel="noopener noreferrer">{find.creator} <span>{find.handle}</span></a></p></div></div>
       <figure className={styles.preview}>
-        <RetroWindow title={find.name.toUpperCase()}><a href={find.projectUrl} target="_blank" rel="noopener noreferrer" aria-label={`Try ${find.name} in a new tab`}><Image src={find.image} alt={find.imageAlt} width={1280} height={720} sizes="(max-width: 760px) 100vw, 1100px" priority={index === 0} /><span>Try it yourself <ArrowUpRight size={16} aria-hidden="true" /></span></a></RetroWindow>
+        <RetroWindow title={find.name.toUpperCase()}><a href={find.projectUrl} target="_blank" rel="noopener noreferrer" aria-label={`Try ${find.name} in a new tab`}><Image src={find.image} alt={find.imageAlt} width={1280} height={720} unoptimized={false} sizes="(max-width: 760px) 100vw, 1100px" priority={index === 0} /><span>Try it yourself <ArrowUpRight size={16} aria-hidden="true" /></span></a></RetroWindow>
         <figcaption>A look inside {find.name}. Project and visuals by {find.creator}.</figcaption>
       </figure>
       <div className={styles.story}>

@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next"
 import { absoluteUrl } from "@/lib/seo"
 import { sanityClient } from "@/sanity/lib/client"
-import { SITEMAP_ARTICLES_QUERY } from "@/sanity/lib/queries"
+import { SITEMAP_ARTICLES_QUERY, SITEMAP_AUTHORS_QUERY } from "@/sanity/lib/queries"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const routes = [
@@ -31,7 +31,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }))
 
   try {
-    const articles = await sanityClient.fetch<{ slug: string; lastModified?: string }[]>(SITEMAP_ARTICLES_QUERY)
+    const [articles, authors] = await Promise.all([
+      sanityClient.fetch<{ slug: string; lastModified?: string }[]>(SITEMAP_ARTICLES_QUERY),
+      sanityClient.fetch<{ slug: string; lastModified?: string }[]>(SITEMAP_AUTHORS_QUERY),
+    ])
     return [
       ...staticRoutes,
       ...articles.map((article) => ({
@@ -40,6 +43,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         changeFrequency: "monthly" as const,
         priority: 0.8,
       })),
+      ...authors.map(author => ({ url: absoluteUrl(`/learn/authors/${author.slug}`), ...(author.lastModified && !Number.isNaN(Date.parse(author.lastModified)) ? { lastModified: new Date(author.lastModified) } : {}), changeFrequency: "monthly" as const, priority: 0.6 })),
     ]
   } catch {
     return staticRoutes

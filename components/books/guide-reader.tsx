@@ -6,7 +6,7 @@ import { aiGuidePurchaseUrl } from "@/lib/ai-guide"
 import styles from "./guide.module.css"
 
 type ChapterLink = { id: string; title: string; number: number; part: string }
-export function GuideReader({ chapters, fullText, children }: { chapters: ChapterLink[]; fullText: boolean; children: React.ReactNode }) {
+export function GuideReader({ chapters, fullText, children, firstPage = 10, lastPage = 267 }: { chapters: ChapterLink[]; fullText: boolean; children: React.ReactNode; firstPage?: number; lastPage?: number }) {
   const reader = useRef<HTMLDivElement>(null)
   const toolbar = useRef<HTMLDivElement>(null)
   const article = useRef<HTMLDivElement>(null)
@@ -91,8 +91,13 @@ export function GuideReader({ chapters, fullText, children }: { chapters: Chapte
       viewport.style.setProperty("--guide-viewport-height", `${viewport.clientHeight}px`)
       reader.current?.style.setProperty("--guide-toolbar-bottom", `${Math.max(viewportTop + toolbarHeight, toolbar.current?.getBoundingClientRect().bottom || 0)}px`)
       const offset = viewportTop + toolbarHeight + 20
-      const total = Math.max(1, rect.height - viewport.clientHeight + toolbarHeight + 20)
-      setProgress(Math.max(0, Math.min(100, Math.round((offset - rect.top) / total * 100))))
+      const pages = Array.from(element.querySelectorAll<HTMLElement>("[data-guide-page]"))
+      const page = pages.find(page => page.getBoundingClientRect().bottom > offset) || pages.at(-1)
+      const pageBounds = page?.getBoundingClientRect()
+      const fraction = pageBounds ? Math.max(0, Math.min(1, (offset - pageBounds.top) / Math.max(1, pageBounds.height))) : 0
+      const pageNumber = Number(page?.dataset.guidePage || firstPage)
+      const progress = rect.top > offset ? 0 : (pageNumber - firstPage + fraction) / Math.max(1, lastPage - firstPage + 1) * 100
+      setProgress(Math.max(0, Math.min(100, Math.round(progress))))
       let chapter = chapters[0]?.id || "introduction"
       for (const item of chapters) {
         const top = document.getElementById(`guide-${item.id}`)?.getBoundingClientRect().top
@@ -110,14 +115,14 @@ export function GuideReader({ chapters, fullText, children }: { chapters: Chapte
     if (toolbar.current) observer.observe(toolbar.current)
     observer.observe(viewport)
     return () => { viewport.removeEventListener("scroll", schedule); window.removeEventListener("resize", schedule); window.removeEventListener("hashchange", schedule); observer.disconnect(); cancelAnimationFrame(frame); viewport.style.removeProperty("--guide-viewport-height") }
-  }, [chapters])
+  }, [chapters, firstPage, lastPage])
 
   return <div ref={reader} className={styles.reader} data-focus-mode={focused} style={{ "--guide-type-size": `${size}px` } as React.CSSProperties}>
     <div ref={toolbar} className={styles.readingBar} data-guide-toolbar>
       <span>{fullText ? "Full text" : "Reading preview"}<span className={styles.readingProgress}>{progress}%</span></span>
       <div className={styles.typeTools} aria-label="Reading text size"><button type="button" aria-label="Decrease text size" disabled={size <= 16} onClick={() => setSize(value => value - 1)}><Minus size={13} /></button><span>Aa</span><button type="button" aria-label="Increase text size" disabled={size >= 23} onClick={() => setSize(value => value + 1)}><Plus size={13} /></button></div>
       <div className={styles.readingActions}>
-        {!fullText && <a href={aiGuidePurchaseUrl} target="_blank" rel="noopener noreferrer">Get the full guide <ArrowUpRight size={13} /></a>}
+        {!fullText && <a href={aiGuidePurchaseUrl} data-analytics-goal="guide_purchase_click" target="_blank" rel="noopener noreferrer">Get the full guide <ArrowUpRight size={13} /></a>}
         <button className={styles.focusButton} type="button" aria-pressed={focused} aria-label={focused ? "Exit focus mode" : "Enter focus mode"} title={focused ? "Exit focus mode (Escape)" : "Focus mode"} onClick={() => changeFocus(!focused)}>{focused ? <Minimize2 size={16} /> : <Maximize2 size={16} />}<span>{focused ? "Exit focus" : "Focus mode"}</span><span className={styles.focusShort} aria-hidden="true">Focus</span></button>
       </div>
       <button className={styles.contentsToggle} type="button" aria-label="Chapters" aria-expanded={tocOpen} aria-controls="guide-contents" onClick={() => setTocOpen(value => !value)}><List size={15} /><span>{chapters.find(chapter => chapter.id === active)?.title || "Chapters"}</span><ChevronDown size={15} /></button>
@@ -129,7 +134,7 @@ export function GuideReader({ chapters, fullText, children }: { chapters: Chapte
         <nav id="guide-contents" className={styles.contentsList} data-open={tocOpen} aria-label="Book chapters">
           {chapters.map((chapter, index) => <div key={chapter.id}>
             {(index === 0 || chapters[index - 1].part !== chapter.part) && <p>{chapter.part}</p>}
-            <a href={`#guide-${chapter.id}`} aria-current={active === chapter.id ? "location" : undefined} onClick={() => setTocOpen(false)}><span>{chapter.number > 0 && chapter.number <= 12 ? String(chapter.number).padStart(2, "0") : "·"}</span>{chapter.title}</a>
+            <a href={`#guide-${chapter.id}`} aria-current={active === chapter.id ? "location" : undefined} onClick={() => { setTocOpen(false); if (window.location.hash === `#guide-${chapter.id}`) window.dispatchEvent(new HashChangeEvent("hashchange")) }}><span>{chapter.number > 0 && chapter.number <= 12 ? String(chapter.number).padStart(2, "0") : "·"}</span>{chapter.title}</a>
           </div>)}
           <a href="#guide-top" className={styles.backToTop}><ArrowUp size={12} />Back to the cover</a>
         </nav>

@@ -79,6 +79,7 @@ const components: PortableTextComponents = {
               src={stegaClean(value.asset.url)}
               alt={value.alt || ""}
               fill
+              unoptimized={false}
               sizes="(min-width: 768px) 760px, 100vw"
               className="object-cover"
             />

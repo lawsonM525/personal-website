@@ -1,12 +1,14 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { useMemo, useState } from "react"
 import { ArrowUpRight, Search } from "@/components/retro-icons"
 import { stegaClean } from "@sanity/client/stega"
 import { categoryLabels, readingTime, type LearnArticleCard } from "@/sanity/lib/types"
 import { LearnThemeToggle } from "./learn-theme"
 import styles from "./article-feed.module.css"
+import { articleDate, authorPath } from "@/lib/editorial"
 
 type LibraryEntry = {
   id: string
@@ -52,7 +54,7 @@ export function ArticleFeed({ articles }: { articles: LearnArticleCard[] }) {
   const categories = Array.from(new Set(entries.map(entry => entry.category)))
   const filtered = useMemo(() => entries.filter(entry =>
     (category === "all" || entry.category === category) &&
-    stegaClean(`${entry.title} ${entry.dek} ${entry.topics.join(" ")}`).toLowerCase().includes(query.trim().toLowerCase())
+    stegaClean(`${entry.title} ${entry.dek} ${entry.topics.join(" ")} ${entry.article?.author?.name || ""}`).toLowerCase().includes(query.trim().toLowerCase())
   ), [entries, query, category])
   const isBrowsing = !query.trim() && category === "all"
 
@@ -73,12 +75,12 @@ export function ArticleFeed({ articles }: { articles: LearnArticleCard[] }) {
           const featured = isBrowsing && index === 0 && !!entry.article
           const date = entry.article ? stegaClean(entry.article.publishedAt) : undefined
           return <article className={`${styles.entry}${featured ? ` ${styles.featured}` : ""}${!entry.article ? ` ${styles.guideEntry}` : ""}${!entry.image ? ` ${styles.textOnly}` : ""}`} key={entry.id}>
-            {entry.image && <Link className={styles.image} href={entry.href} aria-label={`Read ${stegaClean(entry.title)}`}><img src={entry.image} alt={entry.imageAlt} width={featured ? 1280 : 480} height={featured ? 720 : 320} loading={featured ? "eager" : "lazy"} /></Link>}
+            {entry.image && <Link className={styles.image} href={entry.href} aria-label={`Read ${stegaClean(entry.title)}`}><Image src={entry.image} alt={entry.imageAlt} width={featured ? 1280 : 480} height={featured ? 720 : 320} priority={featured} unoptimized={false} sizes={featured ? "(max-width: 850px) 90vw, (max-width: 1440px) 65vw, 940px" : "(max-width: 540px) 104px, (max-width: 850px) 30vw, 300px"} /></Link>}
             <div className={styles.copy}>
               <p className={styles.eyebrow}>{categoryLabels[entry.category] || entry.category}{featured && <span>Latest</span>}</p>
               <h2><Link href={entry.href}>{entry.title}</Link></h2>
               <p className={styles.dek}>{entry.dek}</p>
-              {entry.article && date && <p className={styles.byline}><span>{entry.article.author?.name || "Michelle Lawson"}</span><span aria-hidden="true">·</span><time dateTime={date}>{new Intl.DateTimeFormat("en-US", {month:"short",day:"numeric",year:"numeric"}).format(new Date(date))}</time><span aria-hidden="true">·</span><span>{readingTime(entry.article.estimatedWords)} min read</span></p>}
+              {entry.article && date && <p className={styles.byline}><span>{authorPath(entry.article.author) ? <Link href={authorPath(entry.article.author)!}>{entry.article.author?.name || "Michelle Lawson"}</Link> : entry.article.author?.name}</span><span aria-hidden="true">·</span><time dateTime={date}>{articleDate(date,"short")}</time><span aria-hidden="true">·</span><span>{readingTime(entry.article.estimatedWords)} min read</span></p>}
               <Link className={styles.read} href={entry.href}>{entry.article ? "Read article" : "Read preview"} <ArrowUpRight size={16} aria-hidden="true"/></Link>
             </div>
           </article>
@@ -91,7 +93,7 @@ export function ArticleFeed({ articles }: { articles: LearnArticleCard[] }) {
         <section className={styles.book}>
           <p className={styles.eyebrow}>My book</p>
           <h2><Link href="/girly-guide-to-ai">The Girly Guide to AI</Link></h2>
-          <Link href="/girly-guide-to-ai" className={styles.bookCover} aria-label="Preview The Girly Guide to AI"><img src="/books/girly-guide-to-ai/cover.webp" alt="The Girly Guide to Artificial Intelligence book cover" width="1025" height="1600" /></Link>
+          <Link href="/girly-guide-to-ai" className={styles.bookCover} aria-label="Preview The Girly Guide to AI"><Image src="/books/girly-guide-to-ai/cover.webp" alt="The Girly Guide to Artificial Intelligence book cover" width={1025} height={1600} unoptimized={false} sizes="160px" /></Link>
           <p className={styles.asideDescription}>{guideEntry.dek}</p>
           <Link href="/girly-guide-to-ai" className={styles.read}>Read preview <ArrowUpRight size={16} aria-hidden="true" /></Link>
         </section>
