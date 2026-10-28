@@ -106,7 +106,6 @@ export function ArticleDiscussion({
           <button type="submit" disabled={commentState === "sending"} className="learn-border mt-4 border-2 bg-[#d7ff45] px-5 py-2.5 font-black text-black disabled:opacity-50">
             {commentState === "sending" ? "Sending…" : "Post comment"}
           </button>
-          <p className="learn-muted mt-3 text-xs leading-5">Comments appear after Michelle approves them.</p>
           {commentState === "sent" && <p role="status" className="mt-4 font-bold text-[#7557ff]">sent. it’s waiting for Michelle’s approval.</p>}
           {commentError && <p role="alert" className="mt-4 font-bold text-red-600">{commentError}</p>}
         </form>
