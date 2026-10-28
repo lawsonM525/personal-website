@@ -1,9 +1,18 @@
-export const computerSoundCues = ["click", "open", "close", "minimize", "maximize", "startup", "bootType", "paintStamp", "paintSparkle", "paintSpray", "paintMagic"] as const
+export const computerSoundCues = ["click", "open", "close", "minimize", "maximize", "startup", "bootType", "paintStamp", "paintSparkle", "paintSpray", "paintMagic", "quizCorrect", "quizIncorrect"] as const
 export type ComputerSoundCue = typeof computerSoundCues[number]
 type Note = { frequency: number; end?: number; at: number; duration: number; level: number; triangle?: boolean; keyNoise?: boolean }
 
 // Original short OS-style sounds, synthesized locally. No sampled system audio.
 const notes: Record<ComputerSoundCue, readonly Note[]> = {
+  quizCorrect: [
+    { frequency: 783.99, at: 0, duration: .11, level: .15, triangle: true },
+    { frequency: 987.77, at: .075, duration: .12, level: .14, triangle: true },
+    { frequency: 1318.51, at: .15, duration: .17, level: .12 },
+  ],
+  quizIncorrect: [
+    { frequency: 329.63, end: 293.66, at: 0, duration: .12, level: .13, triangle: true },
+    { frequency: 246.94, end: 196, at: .1, duration: .17, level: .12, triangle: true },
+  ],
   bootType: [{ frequency: 210, end: 140, at: 0, duration: .028, level: .038, keyNoise: true }],
   paintStamp: [
     { frequency: 760, end: 260, at: 0, duration: .09, level: .23, triangle: true },

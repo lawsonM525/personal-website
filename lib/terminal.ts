@@ -13,6 +13,7 @@ export type TerminalResult = {
   state: TerminalState
   lines: string[]
   clear?: boolean
+  feedback?: "correct" | "incorrect"
   action?: { type: "app"; app: TerminalApp } | { type: "page"; href: string }
 }
 
@@ -282,9 +283,9 @@ export function executeTerminal(value: string, state: TerminalState, options: { 
     const item = quizQuestions[state.quiz.order[state.quiz.at]], correct = chosen === item.correct
     const quiz = { ...state.quiz, at: state.quiz.at + 1, score: state.quiz.score + Number(correct) }
     const feedback = [correct ? "Correct!" : `Not quite. The answer is ${"abc"[item.correct]}) ${item.options[item.correct]}.`, item.why, ""]
-    if (quiz.at === quiz.order.length) { next.quiz = null; return result([...feedback, `Quiz complete: ${quiz.score}/${quiz.order.length}.`, "Revisit a topic with learn, or start another round with quiz."]) }
+    if (quiz.at === quiz.order.length) { next.quiz = null; return result([...feedback, `Quiz complete: ${quiz.score}/${quiz.order.length}.`, "Revisit a topic with learn, or start another round with quiz."], { feedback: correct ? "correct" : "incorrect" }) }
     next.quiz = quiz
-    return result([...feedback, ...questionLines(quiz)])
+    return result([...feedback, ...questionLines(quiz)], { feedback: correct ? "correct" : "incorrect" })
   }
   if (name === "ls") {
     const filter = argument.toLowerCase()
