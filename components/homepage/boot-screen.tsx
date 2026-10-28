@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react"
 import styles from "./home.module.css"
+import { prefersLessMotion } from "@/lib/computer-experience"
 
 const restartEvent = "michelle:restart"
 // Remember startup only while navigating this loaded site. A fresh visit or
@@ -73,10 +74,9 @@ export function BootScreen({ children, skipStartup = false }: { children: React.
 
   useEffect(() => {
     if (stage !== "booting") return
-    const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches
-    // Reduced motion removes typing/blinking, not the whole startup screen.
-    setLineCount(reducedMotion ? bootOutput.length : 0)
-    const timers = reducedMotion ? [] : bootOutput.map(([delay], index) =>
+    if (prefersLessMotion()) { enter(); return }
+    setLineCount(0)
+    const timers = bootOutput.map(([delay], index) =>
       setTimeout(() => setLineCount(index + 1), delay)
     )
     timers.push(setTimeout(enter, 3100))

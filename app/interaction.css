@@ -1,0 +1,8 @@
+/* Interaction feedback shares the existing paper, frame and desktop language. */
+html[data-computer-experience] body:has([data-window-drag-handle]) button:enabled:active{translate:1px 1px}
+html[data-computer-motion=reduced] body:has([data-window-drag-handle]) *,html[data-computer-motion=reduced] [data-boot-stage] *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+@media(prefers-reduced-motion:reduce){body:has([data-window-drag-handle]) *,[data-boot-stage] *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+[data-explorer-back]{display:flex!important;align-items:center;gap:7px;width:100%;min-height:36px;padding:6px 12px;border:0;border-bottom:1px solid #c8c8bb;background:#efede2;color:#14293e;text-align:left;font:12px/1.4 Tahoma,Arial,sans-serif!important;flex-shrink:0}
+[data-explorer-back]:hover{background:#e4e9ed}[data-explorer-back]:focus-visible{outline:2px solid #0848d5;outline-offset:-3px}
+[data-app=future-u]>div:has(>[data-explorer-back]){flex-direction:column}
+@media(max-width:760px){[data-explorer-back]{min-height:44px;padding:9px 12px}}

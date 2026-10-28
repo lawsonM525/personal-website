@@ -24,7 +24,7 @@ let sessionDraft: { drawing: Snapshot; history: Snapshot[]; future: Snapshot[] }
 type Gesture = { last: PaintPoint; hue: number }
 const center = { x: paintWidth / 2, y: paintHeight / 2 }
 
-export function Paint() {
+export function Paint({ onExplore }: { onExplore?: () => void } = {}) {
   const trays = useRef<HTMLDivElement>(null)
   const canvas = useRef<HTMLCanvasElement>(null)
   const backdrop = useRef<HTMLCanvasElement>(null)
@@ -52,9 +52,15 @@ export function Paint() {
   const [cursor, setCursor] = useState({ ...center, visible: false })
   const [pulse, setPulse] = useState({ ...center, id: 0 })
   const [message, setMessage] = useState("Random brush.")
+  const [exporting, setExporting] = useState(false)
+  const [exported, setExported] = useState<{ url: string } | null>(null)
+  const mounted = useRef(false)
   const [, refreshHistory] = useState(0)
   const available = paintStickers.filter(item => item.pack === pack)
   const stampTool = tool === "sticker" || tool === "random"
+
+  useEffect(() => { mounted.current = true; return () => { mounted.current = false } }, [])
+  useEffect(() => () => { if (exported) setTimeout(() => URL.revokeObjectURL(exported.url), 1000) }, [exported])
 
   useEffect(() => {
     let disposed = false
@@ -106,7 +112,7 @@ export function Paint() {
     history.current.push(previous); if (history.current.length > 16) history.current.shift()
     future.current = []; refreshHistory(value => value + 1)
   }
-  function mark(value = true) { marked.current = value; setHasMarks(value) }
+  function mark(value = true) { marked.current = value; setHasMarks(value); setExported(null) }
   function setBackdrop(value: PaintPaper) { paperRef.current = value; setPaper(value) }
   function restore(value: Snapshot) {
     canvas.current?.getContext("2d")?.putImageData(value.image, 0, 0)
@@ -202,16 +208,19 @@ export function Paint() {
   function clear() { remember(); canvas.current?.getContext("2d")?.clearRect(0, 0, paintWidth, paintHeight); mark(false); sound?.play("paintSpray"); setMessage("Fresh page. Your last drawing is one Undo away.") }
   function changePaper(value: PaintPaper) { setMobilePanel(null); if (value === paperRef.current) return; remember(); setBackdrop(value); sound?.play("paintMagic"); setMessage("New paper. Your artwork stays right where it is.") }
   function save() {
-    const drawing = canvas.current; if (!drawing) return
+    const drawing = canvas.current; if (!drawing || exporting) return
     const output = document.createElement("canvas"); output.width = paintWidth; output.height = paintHeight
     const context = output.getContext("2d"); if (!context) return
     drawPaintPaper(context, paperRef.current); context.drawImage(drawing, 0, 0)
+    setExporting(true); setMessage("Preparing your PNG…")
     output.toBlob(blob => {
-      if (!blob) { setMessage("Couldn’t prepare the image. Please try again."); return }
+      if (mounted.current) setExporting(false)
+      if (!blob) { if (mounted.current) setMessage("Couldn’t prepare the image. Please try again."); return }
       const url = URL.createObjectURL(blob), link = document.createElement("a")
       link.href = url; link.download = "made-on-michelles-computer.png"; link.click()
-      setTimeout(() => URL.revokeObjectURL(url), 1000)
-      sound?.play("paintMagic"); setMessage("Saved as a PNG. Put it on the fridge.")
+      if (!mounted.current) { setTimeout(() => URL.revokeObjectURL(url), 1000); return }
+      setExported({ url })
+      sound?.play("paintMagic"); setMessage("Your PNG download has started. Put it on the fridge.")
     }, "image/png")
   }
   function keyboard(event: KeyboardEvent<HTMLCanvasElement>) {
@@ -243,7 +252,7 @@ export function Paint() {
         <span className={styles.bombLabel}>Sticker bomb!</span>
       </button>
       <button type="button" className={styles.surpriseAction} disabled={!loaded} onClick={() => collage(true)}><WandSparkles size={16}/>Surprise me</button>
-      <button type="button" className={styles.save} onClick={save}><Download size={14} />Save PNG</button>
+      <button type="button" className={styles.save} disabled={exporting} aria-busy={exporting} onClick={save}><Download size={14} />{exporting ? "Preparing…" : exported ? "PNG ready" : "Save PNG"}</button>
     </div>
     <div className={styles.studio}>
       <div className={styles.tools} role="toolbar" aria-label="Painting tools">{tools.map(item => <button key={item.id} type="button" aria-label={item.label} aria-pressed={tool === item.id} title={item.label} onClick={() => { setTool(item.id); setMobilePanel(item.id === "sticker" && window.matchMedia("(max-width: 760px)").matches ? "stickers" : null); sound?.play("click"); setMessage(item.id === "sticker" ? "Choose a sticker, then stamp the page." : `${item.label} selected. Drag on the page.`) }}>{item.icon}<span>{item.label}</span></button>)}</div>
@@ -284,6 +293,7 @@ export function Paint() {
     <div ref={trays} className={styles.mobileTrays} role="toolbar" aria-label="Paint drawers">
       {([{id:"stickers", label:"Stickers", icon:<Sticker size={19}/>}, {id:"colors",label:"Colors",icon:<Palette size={19}/>}, {id:"paper",label:"Paper",icon:<FileImage size={19}/>}, {id:"more",label:"More",icon:<SlidersHorizontal size={19}/>} ] as const).map(item => <button key={item.id} data-tray={item.id} type="button" aria-label={`Open ${item.label.toLowerCase()} tray`} aria-expanded={mobilePanel === item.id} onClick={() => togglePanel(item.id)}>{item.icon}<span>{item.label}{item.id === "stickers" ? " 39" : ""}</span></button>)}
     </div>
+    {exported && <aside className={styles.exportReceipt} aria-label="Your painting is ready"><img src={exported.url} width={108} height={72} alt="The painting you just exported" /><div><strong>Made by you.</strong><p>Your PNG download has started.</p><div><button type="button" onClick={() => { setExported(null); canvas.current?.focus({ preventScroll: true }) }}>Keep painting</button>{onExplore && <button type="button" onClick={onExplore}>Explore something else →</button>}</div></div></aside>}
     <div className={styles.status}><span className={styles.statusLight} /><p role="status">{message}</p><span className={styles.signature}>made on michelle’s computer</span></div>
   </div>
 }

@@ -3,11 +3,14 @@
 import { useEffect, useRef, useState, type KeyboardEvent, type PointerEvent, type ReactNode } from "react"
 import { FileText, Minus, Square, X } from "@/components/retro-icons"
 import styles from "./home.module.css"
+import { useWindowReveal } from "./window-reveal"
+import { notifyDesktop } from "@/lib/computer-experience"
 
 type Move = { x:number; y:number }
 export function WindowBar({ title, icon, warm = false, onMinimize, onMaximize, onClose, maximized = false }: { title: string; icon?: ReactNode; warm?: boolean; onMinimize?: () => void; onMaximize?: () => void; onClose?: () => void; maximized?: boolean }) {
   const [compact, setCompact] = useState(false)
   const bar=useRef<HTMLDivElement>(null)
+  useWindowReveal(bar, title)
   useEffect(()=>{function reset(){setCompact(innerWidth<=760);const target=bar.current?.closest<HTMLElement>("[data-computer-window]");if(target){target.style.removeProperty("translate");delete target.dataset.windowX;delete target.dataset.windowY}}reset();window.addEventListener("resize",reset);return()=>window.removeEventListener("resize",reset)},[title,maximized])
   const gesture = useRef<{pointer:number;startX:number;startY:number;origin:Move;target:HTMLElement} | null>(null)
   function targetFor(element:HTMLElement) { return element.closest<HTMLElement>("[data-computer-window]") }
@@ -39,11 +42,11 @@ export function WindowBar({ title, icon, warm = false, onMinimize, onMaximize, o
     const delta:Record<string,Move>={ArrowLeft:{x:-16,y:0},ArrowRight:{x:16,y:0},ArrowUp:{x:0,y:-16},ArrowDown:{x:0,y:16}}
     if(!delta[event.key])return;event.preventDefault();const old=position(target);move(target,{x:old.x+delta[event.key].x,y:old.y+delta[event.key].y})
   }
-  function maximize() { const target=gesture.current?.target; if(target){target.style.removeProperty("translate");delete target.dataset.windowX;delete target.dataset.windowY} onMaximize?.() }
-  return <div ref={bar} className={`${styles.windowBar} ${warm ? styles.warmBar : ""}`} data-window-drag-handle tabIndex={maximized||compact?-1:0} role="group" aria-label={`${title} title bar`} title={compact ? "Window controls" : "Drag to move · Arrow keys to move · Home to reset"} onPointerDown={start} onPointerMove={drag} onPointerUp={end} onPointerCancel={end} onLostPointerCapture={end} onKeyDown={keyboard}>
+  function maximize() { const target=bar.current && targetFor(bar.current); if(target){target.style.removeProperty("translate");delete target.dataset.windowX;delete target.dataset.windowY} onMaximize?.() }
+  return <div ref={bar} className={`${styles.windowBar} ${warm ? styles.warmBar : ""}`} data-window-drag-handle tabIndex={maximized||compact?-1:0} role="group" aria-label={`${title} title bar`} title={compact ? "Window controls" : "Drag to move · Double-click to maximize · Arrow keys to move · Home to reset"} onPointerDown={start} onPointerMove={drag} onPointerUp={end} onPointerCancel={end} onLostPointerCapture={end} onKeyDown={keyboard} onDoubleClick={event => { if (!compact && onMaximize && !(event.target as HTMLElement).closest("button,a")) maximize() }}>
     {icon ?? <FileText size={22} aria-hidden="true" />}<span className={styles.windowTitle}>{title}</span><span className={styles.barLines} aria-hidden="true" />
     {(onMinimize || onMaximize || onClose) && <span className={styles.windowControls}>
-      {onMinimize && <button type="button" data-computer-sound="minimize" onClick={onMinimize} aria-label={`Minimize ${title}`}><Minus size={13} aria-hidden="true" /></button>}
+      {onMinimize && <button type="button" data-computer-sound="minimize" onClick={() => { onMinimize(); notifyDesktop(`${title} minimized. Reopen it from the taskbar.`) }} aria-label={`Minimize ${title}`}><Minus size={13} aria-hidden="true" /></button>}
       {onMaximize && <button type="button" className={styles.maximizeButton} data-computer-sound={maximized?"open":"maximize"} onClick={event=>{const target=targetFor(event.currentTarget);if(target){target.style.removeProperty("translate");delete target.dataset.windowX;delete target.dataset.windowY}maximize()}} aria-label={`${maximized ? "Restore" : "Maximize"} ${title}`}><Square size={11} aria-hidden="true" /></button>}
       {onClose && <button type="button" data-computer-sound="close" onClick={onClose} aria-label={`Close ${title}`}><X size={13} aria-hidden="true" /></button>}
     </span>}

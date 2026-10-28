@@ -12,6 +12,7 @@ import { Minesweeper } from "./minesweeper"
 import { Terminal } from "./terminal"
 import homeStyles from "@/components/homepage/home.module.css"
 import styles from "./explore.module.css"
+import { explorerLocation } from "@/lib/computer-experience"
 
 type AppId = "paint" | "minesweeper" | "terminal"
 type Item = { name: string; description: string; group: string; icon: ExplorerIconKind; app?: AppId; href?: string }
@@ -33,6 +34,14 @@ const items: Item[] = [
   { name: "Submit an article", description: "Send an article or draft for Learn.", group: "Keep in touch", icon: "paper", href: "/learn/submit" },
 ]
 
+function syncAppLocation(id?: AppId, replace = false) {
+  const href = explorerLocation(window.location.href, id)
+  if (`${location.pathname}${location.search}${location.hash}` !== href) {
+    if (replace) history.replaceState(null, "", href)
+    else history.pushState(null, "", href)
+  }
+}
+
 export default function Explorer() {
   const [query, setQuery] = useState("")
   const [group, setGroup] = useState("All files")
@@ -45,10 +54,19 @@ export default function Explorer() {
   const [time, setTime] = useState("")
   const pane = useRef<HTMLElement>(null)
   function openApp(id: AppId) {
+    syncAppLocation(id)
     setVisited(previous => previous.includes(id) ? previous : [...previous, id])
     setOpen(previous => [...previous.filter(value => value !== id), id])
     setMinimized(previous => previous.filter(value => value !== id)); setActive(id)
   }
+  useEffect(() => {
+    function launch(event: Event) {
+      const id: unknown = (event as CustomEvent).detail
+      if (typeof id === "string" && apps.includes(id as AppId)) openApp(id as AppId)
+    }
+    window.addEventListener("michelle:open-app", launch)
+    return () => window.removeEventListener("michelle:open-app", launch)
+  }, [])
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     const id = params.get("app")
@@ -58,14 +76,29 @@ export default function Explorer() {
     tick(); const timer = setInterval(tick, 60000); return () => clearInterval(timer)
   }, [])
   useEffect(() => { if (active) pane.current?.querySelector<HTMLElement>(`[data-app="${active}"] [data-window-drag-handle]`)?.focus({ preventScroll: true }) }, [active])
+  function focusExplorer() { requestAnimationFrame(() => pane.current?.querySelector<HTMLElement>('[aria-label="Explorer window"] [data-window-drag-handle]')?.focus({ preventScroll: true })) }
   function focusDesktop() { requestAnimationFrame(() => pane.current?.querySelector<HTMLElement>('[aria-label="Desktop shortcuts"] a')?.focus({ preventScroll: true })) }
-  function desktop() { setExplorerMinimized(true); setMinimized([...open]); setActive(null); setMaximized(null); focusDesktop() }
-  function explorer() { setExplorerMinimized(false); setActive(null); setMaximized(null) }
+  function desktop() { syncAppLocation(undefined, true); setExplorerMinimized(true); setMinimized([...open]); setActive(null); setMaximized(null); focusDesktop() }
+  function explorer() {
+    syncAppLocation()
+    setExplorerMinimized(false); setActive(null); setMaximized(null)
+    requestAnimationFrame(() => pane.current?.querySelector<HTMLElement>('[aria-label="Explorer window"] [data-window-drag-handle]')?.focus({ preventScroll: true }))
+  }
   function nextApp(exclude?: AppId) { return [...open].reverse().find(id => id !== exclude && !minimized.includes(id)) || null }
   function hideExplorer() { setExplorerMinimized(true); setActive(nextApp()); if (maximized === "explorer") setMaximized(null); if (!nextApp()) focusDesktop() }
-  function minimizeApp(id: AppId) { setMinimized(previous => [...previous, id]); setActive(nextApp(id)); if (maximized === id) setMaximized(null); if (!nextApp(id) && explorerMinimized) focusDesktop() }
-  function closeApp(id: AppId) { setOpen(previous => previous.filter(value => value !== id)); setMinimized(previous => previous.filter(value => value !== id)); if (maximized === id) setMaximized(null); if (active === id) setActive(nextApp(id)); if (!nextApp(id) && explorerMinimized) focusDesktop() }
-  const filtered = items.filter(item => (group === "All files" || item.group === group) && `${item.name} ${item.description}`.toLowerCase().includes(query.trim().toLowerCase()))
+  function minimizeApp(id: AppId) { if (active === id) syncAppLocation(nextApp(id) || undefined, true); setMinimized(previous => [...previous, id]); setActive(nextApp(id)); if (maximized === id) setMaximized(null); if (!nextApp(id)) { if (explorerMinimized) focusDesktop(); else focusExplorer() } }
+  function closeApp(id: AppId) { if (active === id) syncAppLocation(nextApp(id) || undefined, true); setOpen(previous => previous.filter(value => value !== id)); setMinimized(previous => previous.filter(value => value !== id)); if (maximized === id) setMaximized(null); if (active === id) setActive(nextApp(id)); if (!nextApp(id)) { if (explorerMinimized) focusDesktop(); else focusExplorer() } }
+  useEffect(() => {
+    function restoreLocation() {
+      if (location.pathname !== "/explore") return
+      const id = new URLSearchParams(location.search).get("app") as AppId | null
+      if (id && apps.includes(id)) openApp(id)
+      else { setExplorerMinimized(false); setActive(null); setMaximized(null) }
+    }
+    window.addEventListener("popstate", restoreLocation)
+    return () => window.removeEventListener("popstate", restoreLocation)
+  }, [])
+  const filtered = items.filter(item => (group === "All files" || item.group === group) && `${item.name} ${item.description} ${item.app || ""}`.toLowerCase().includes(query.trim().toLowerCase()))
 
   return <div className={`${homeStyles.site} ${styles.desktop}`}>
     <a className={homeStyles.skip} href="#explorer-content">Skip to content</a>
@@ -93,9 +126,9 @@ export default function Explorer() {
       </section>
       {visited.map(id => <section data-computer-window data-app={id} key={id} hidden={!open.includes(id) || minimized.includes(id)} className={`${styles.appWindow} ${id === "paint" ? styles.paintWindow : ""} ${active === id ? styles.activeApp : ""} ${maximized === id ? styles.maximized : ""}`} aria-label={`${appTitles[id]} window`} onPointerDown={() => setActive(id)} onFocusCapture={() => setActive(id)} style={{ zIndex: active === id ? 40 : 3 + open.indexOf(id) }}>
         <WindowBar title={appTitles[id]} icon={<ExplorerIcon kind={id} size={22} />} onMinimize={() => minimizeApp(id)} onMaximize={() => setMaximized(value => value === id ? null : id)} maximized={maximized === id} onClose={() => closeApp(id)} />
-        <div className={styles.appBody}><button type="button" className={styles.backToExplorer} onClick={explorer}><ArrowLeft size={14} />Back to Explorer</button>{id === "paint" ? <Paint /> : id === "minesweeper" ? <Minesweeper /> : <Terminal openApp={openApp} />}</div>
+        <div className={styles.appBody}><button type="button" data-explorer-back data-computer-sound="open" className={styles.backToExplorer} onClick={explorer}><ArrowLeft size={14} />Back to Explorer</button>{id === "paint" ? <Paint onExplore={explorer} /> : id === "minesweeper" ? <Minesweeper /> : <Terminal openApp={openApp} />}</div>
       </section>)}
     </main>
-    <div className={styles.taskbar} role="toolbar" aria-label="Desktop controls"><button type="button" className={styles.mobileDesktopButton} onClick={desktop} aria-label="Show desktop"><Grid2X2 size={24}/><span>Desktop</span></button><button type="button" className={styles.exploreButton} aria-pressed={active === null && !explorerMinimized} onClick={explorer}><ExplorerIcon kind="folder" size={22} />Explore</button>{open.map(id => <button type="button" key={id} aria-pressed={active === id && !minimized.includes(id)} onClick={() => openApp(id)}><ExplorerIcon kind={id} size={20} /><span>{appTitles[id]}</span></button>)}<time>{time || "—"}</time></div>
+    <div className={styles.taskbar} role="toolbar" aria-label="Desktop controls"><button type="button" className={styles.mobileDesktopButton} onClick={desktop} aria-label="Show desktop"><Grid2X2 size={24}/><span>Desktop</span></button><button type="button" className={styles.exploreButton} aria-pressed={active === null && !explorerMinimized} onClick={explorer}><ExplorerIcon kind="folder" size={22} />Explore</button>{open.map(id => <button type="button" key={id} aria-pressed={active === id && !minimized.includes(id)} onClick={() => active === id && !minimized.includes(id) ? minimizeApp(id) : openApp(id)}><ExplorerIcon kind={id} size={20} /><span>{appTitles[id]}</span></button>)}<time>{time || "—"}</time></div>
   </div>
 }
