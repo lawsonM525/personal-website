@@ -10,6 +10,8 @@ import { LearnThemeToggle } from "@/components/learn/learn-theme";
 import { NewsletterSignup } from "@/components/learn/newsletter-signup";
 import { RetroWindow } from "@/components/learn/retro-window";
 import { ArticleHeader } from "@/components/learn/article-header";
+import { ArticleCompanionVideo } from "@/components/learn/article-companion-video";
+import { companionPosition, companionVideoSchema } from "@/lib/article-companion";
 import { absoluteUrl, personId, serializeStructuredData } from "@/lib/seo";
 import { authorPath, articleSearchTitle } from "@/lib/editorial";
 import { sanityClient, sanityFetchOptions } from "@/sanity/lib/client";
@@ -104,6 +106,7 @@ export default async function ArticlePage({ params }: PageProps) {
   );
 
   const canonical = absoluteUrl(`/learn/${slug}`);
+  const videoPosition = companionPosition(slug, article.body || []);
   const articleJsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -121,6 +124,7 @@ export default async function ArticlePage({ params }: PageProps) {
     publisher: { "@id": personId },
     mainEntityOfPage: canonical,
     image: coverImageUrl,
+    ...(videoPosition !== null ? { video: companionVideoSchema(canonical, absoluteUrl, personId) } : {}),
   };
   const faqJsonLd = article.faq?.length
     ? {
@@ -195,7 +199,11 @@ export default async function ArticlePage({ params }: PageProps) {
                 </p>
               </aside>
             )}
-            {article.body?.length ? (
+            {videoPosition !== null ? <>
+              <PortableArticle value={(article.body || []).slice(0, videoPosition)} />
+              <ArticleCompanionVideo />
+              <PortableArticle value={(article.body || []).slice(videoPosition)} />
+            </> : article.body?.length ? (
               <PortableArticle value={article.body} />
             ) : null}
 

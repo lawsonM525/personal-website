@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import "./globals.css"
 import "./computer.css"
+import "./interaction.css"
 import { LayoutClient } from "./layout-client"
 import favicon from "@/assets/mia-icon-big.png"
 import Script from 'next/script';

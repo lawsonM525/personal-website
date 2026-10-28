@@ -4,6 +4,7 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react
 import type { GuideChapterPayload } from "@/lib/ai-guide"
 import { GuideChapterView } from "./guide-chapter"
 import styles from "./guide.module.css"
+import { chapterFromGuideHash } from "@/lib/guide-progress"
 
 type Chapter = { id: string; title: string }
 
@@ -57,7 +58,7 @@ export function ProgressiveGuide({ chapters, initial, previewStartChapter }: { c
   useEffect(() => {
     function openHash() {
       const hash = window.location.hash.slice(1)
-      const id = hash === "guide-preview-start" ? previewStartChapter : hash.startsWith("guide-preview-") ? hash.slice("guide-preview-".length) : hash.startsWith("guide-") ? hash.slice(6) : ""
+      const id = chapterFromGuideHash(hash, previewStartChapter)
       if (chapters.some(chapter => chapter.id === id)) void loadThrough(id, hash)
     }
     openHash(); window.addEventListener("hashchange", openHash)

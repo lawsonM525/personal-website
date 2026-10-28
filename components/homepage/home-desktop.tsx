@@ -6,6 +6,8 @@ import { useEffect, useMemo, useRef, useState } from "react"
 import { ArrowDown, ArrowRight, ArrowUpRight, Clock3, FileText, FolderOpen, Grid2X2, Mail, Menu, RotateCcw, Search, X } from "@/components/retro-icons"
 import { ProfileMark } from "./profile-mark"
 import { ComputerSoundToggle } from "./computer-sounds"
+import { prefersLessMotion } from "@/lib/computer-experience"
+import { ComputerMotionToggle } from "./computer-experience"
 import { BootScreen, restartComputer } from "./boot-screen"
 import { contactEmail, contactHref } from "./contact-config"
 import { signupForms } from "./signup-config"
@@ -45,6 +47,13 @@ export function HomeHeader() {
   const chrome = useRef<HTMLDivElement>(null)
   const dialog = useRef<HTMLDialogElement>(null)
   const input = useRef<HTMLInputElement>(null)
+  function choosePage(href: string) {
+    setSearchOpen(false)
+    if (pathname === "/explore" && href.startsWith("/explore?")) {
+      const app = new URL(href, window.location.origin).searchParams.get("app")
+      if (app) window.dispatchEvent(new CustomEvent("michelle:open-app", { detail: app }))
+    }
+  }
   useEffect(() => { setMenuOpen(false); setSearchOpen(false) }, [pathname])
   const matches = useMemo(() => {
     const words = query.toLowerCase().trim().split(/\s+/).filter(Boolean)
@@ -86,9 +95,9 @@ export function HomeHeader() {
     <dialog ref={dialog} className={styles.commandDialog} aria-labelledby="command-title" onClose={()=>setSearchOpen(false)} onClick={event=>{if(event.target===event.currentTarget)setSearchOpen(false)}}>
       <div className={styles.commandInner}>
         <div className={styles.windowBar}><Search size={15} aria-hidden="true"/><h2 id="command-title">Find a page or guide</h2><button type="button" aria-label="Close search" onClick={()=>setSearchOpen(false)}><X size={16}/></button></div>
-        <label className={styles.searchField}><Search size={20} aria-hidden="true"/><input ref={input} value={query} onChange={event=>setQuery(event.target.value)} placeholder="Try articles, projects, magazine…" aria-label="Search pages and guides" onKeyDown={event=>{if(event.key==="Enter"&&matches[0])router.push(matches[0].href)}}/></label>
-        <div className={styles.searchResults} aria-live="polite">{matches.length?matches.map(page=><Link href={page.href} key={page.href}><span><strong>{page.label}</strong><small>{page.description}</small></span><ArrowUpRight size={18} aria-hidden="true"/></Link>):<p>No matching pages. Try “learn”, “projects”, or “pen pals”.</p>}</div>
-        <div className={styles.commandHint}><span>Enter opens the first result · Tab to choose</span><kbd>esc</kbd></div>
+        <label className={styles.searchField}><Search size={20} aria-hidden="true"/><input ref={input} value={query} onChange={event=>setQuery(event.target.value)} placeholder="Try articles, projects, magazine…" aria-label="Search pages and guides" onKeyDown={event=>{if(event.key==="Enter"&&matches[0]){choosePage(matches[0].href);router.push(matches[0].href)}}}/></label>
+        <div className={styles.searchResults} aria-live="polite">{matches.length?matches.map(page=><Link href={page.href} key={page.href} onClick={event=>{if(!event.metaKey&&!event.ctrlKey&&!event.shiftKey&&!event.altKey)choosePage(page.href)}}><span><strong>{page.label}</strong><small>{page.description}</small></span><ArrowUpRight size={18} aria-hidden="true"/></Link>):<p>No matching pages. Try “learn”, “projects”, or “pen pals”.</p>}</div>
+        <div className={styles.commandHint}><span>Enter opens the first result · Tab to choose</span><ComputerMotionToggle /><kbd>esc</kbd></div>
       </div>
     </dialog>
   </>
@@ -121,6 +130,7 @@ export default function HomeDesktop({ startOnDesktop = false, openLetter = false
   const [time, setTime] = useState("")
   const letterShortcut = useRef<HTMLButtonElement>(null)
   const letterTask = useRef<HTMLButtonElement>(null)
+  const contactTask = useRef<HTMLButtonElement>(null)
   const welcomeScroll = useRef<HTMLDivElement>(null)
   const welcomePosition = useRef(0)
   const welcomeOpen = welcomeState === "open"
@@ -149,10 +159,18 @@ export default function HomeDesktop({ startOnDesktop = false, openLetter = false
     if (contactOpen) setActiveWindow("contact")
     requestAnimationFrame(() => (state === "closed" ? letterShortcut : letterTask).current?.focus({ preventScroll: true }))
   }
+  function hideContact() {
+    setContactOpen(false)
+    requestAnimationFrame(() => contactTask.current?.focus({ preventScroll: true }))
+  }
+  function openContact() {
+    setContactOpen(true); setActiveWindow("contact")
+    requestAnimationFrame(() => document.getElementById("contact-title")?.focus({ preventScroll: true }))
+  }
   function readLetter() {
     const viewport = welcomeScroll.current, story = document.getElementById("welcome-story")
     if (viewport && story) {
-      viewport.scrollTo({ top: viewport.scrollTop + story.getBoundingClientRect().top - viewport.getBoundingClientRect().top, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" })
+      viewport.scrollTo({ top: viewport.scrollTop + story.getBoundingClientRect().top - viewport.getBoundingClientRect().top, behavior: prefersLessMotion() ? "instant" : "smooth" })
       viewport.focus({ preventScroll: true })
     }
   }
@@ -196,9 +214,9 @@ export default function HomeDesktop({ startOnDesktop = false, openLetter = false
           {!hasStartedLetter && <div className={styles.welcomeStatus}><span>A little more about this corner of the internet</span><button type="button" onClick={readLetter}>Read my letter <ArrowDown size={12} /></button></div>}
         </section> : null}
         {contactOpen && <section data-computer-window className={`${styles.window} ${styles.contactWindow} ${activeWindow === "contact" ? styles.activeWindow : ""}`} aria-labelledby="contact-title" onPointerDown={() => setActiveWindow("contact")} onFocusCapture={() => setActiveWindow("contact")}>
-          <WindowBar title="Keep in touch" warm onMinimize={() => setContactOpen(false)} onClose={() => setContactOpen(false)} />
+          <WindowBar title="Keep in touch" warm onMinimize={hideContact} onClose={hideContact} />
           <div className={styles.contactBody}>
-            <h2 id="contact-title">Keep in touch</h2>
+            <h2 id="contact-title" tabIndex={-1}>Keep in touch</h2>
             <a href={contactHref}><Mail size={21} aria-hidden="true"/><span><strong>Email me</strong><small>{contactEmail}</small></span><ArrowUpRight size={20} aria-hidden="true" /></a>
             <Link href={signupForms.magazine.pagePath}><span><strong>Magazine</strong><small>Join the magazine waitlist</small></span><ArrowUpRight size={20} aria-hidden="true" /></Link>
             <Link href={signupForms.penpals.pagePath}><span><strong>Pen pals</strong><small>Stay in touch by letter or email</small></span><ArrowUpRight size={20} aria-hidden="true" /></Link>
@@ -206,6 +224,6 @@ export default function HomeDesktop({ startOnDesktop = false, openLetter = false
         </section>}
       </div>
     </main>
-    <div className={styles.taskbar} role="toolbar" aria-label="Desktop controls"><button type="button" className={styles.mobileDesktopButton} onClick={showDesktop} aria-label="Show desktop"><Grid2X2 size={24} aria-hidden="true"/><span>Desktop</span></button><button type="button" className={styles.startButton} aria-label="Open Explorer" data-computer-sound="open" onClick={() => router.push("/explore")}><FolderOpen size={24} aria-hidden="true" /><span>Explore</span></button>{welcomeState !== "closed" && <button ref={letterTask} type="button" className={styles.taskButton} data-computer-sound="open" aria-pressed={welcomeOpen && activeWindow === "welcome"} onClick={restoreWelcome}><FileText size={24} aria-hidden="true" /><span>Dear Internet,</span></button>}<button type="button" className={styles.taskButton} data-computer-sound="open" aria-pressed={contactOpen && activeWindow === "contact"} onClick={() => { setContactOpen(true); setActiveWindow("contact") }}><Mail size={24} aria-hidden="true" /><span>Keep in touch</span></button><span className={styles.clock}><Clock3 size={13} aria-hidden="true" />{time || "—"}</span></div>
+    <div className={styles.taskbar} role="toolbar" aria-label="Desktop controls"><button type="button" className={styles.mobileDesktopButton} onClick={showDesktop} aria-label="Show desktop"><Grid2X2 size={24} aria-hidden="true"/><span>Desktop</span></button><button type="button" className={styles.startButton} aria-label="Open Explorer" data-computer-sound="open" onClick={() => router.push("/explore")}><FolderOpen size={24} aria-hidden="true" /><span>Explore</span></button>{welcomeState !== "closed" && <button ref={letterTask} type="button" className={styles.taskButton} data-computer-sound="open" aria-pressed={welcomeOpen && activeWindow === "welcome"} onClick={() => welcomeOpen && activeWindow === "welcome" ? hideWelcome("minimized") : restoreWelcome()}><FileText size={24} aria-hidden="true" /><span>Dear Internet,</span></button>}<button ref={contactTask} type="button" className={styles.taskButton} data-computer-sound="open" aria-pressed={contactOpen && activeWindow === "contact"} onClick={() => contactOpen && activeWindow === "contact" ? hideContact() : openContact()}><Mail size={24} aria-hidden="true" /><span>Keep in touch</span></button><span className={styles.clock}><Clock3 size={13} aria-hidden="true" />{time || "—"}</span></div>
   </div></BootScreen>
 }

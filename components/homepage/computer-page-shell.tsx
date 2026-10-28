@@ -27,6 +27,7 @@ export function ComputerPageShell({ children }: { children: React.ReactNode }) {
   const isGuide = path === "/girly-guide-to-ai" || path === "/girly-guide-to-ai/read"
   const PageIcon = isGuide || path.startsWith("/learn") ? BookOpen : path.startsWith("/projects") ? Briefcase : path === "/feedback" ? MessageSquare : FileText
   const content = useRef<HTMLDivElement>(null)
+  const task = useRef<HTMLButtonElement>(null)
   const title = routeTitles[path] || (path.startsWith("/learn/") ? "Learn" : "Page")
   const parent = path.startsWith("/10apps/") ? { href:"/10apps", label:"Back to 10 Apps" } : path.startsWith("/projects/") || path === "/10apps" ? { href:"/projects", label:"Back to projects" } : path.startsWith("/learn/") || isGuide ? { href:"/learn", label:"Back to Learn" } : { href:"/?desktop=1", label:"Michelle’s Computer" }
   const [minimized, setMinimized] = useState(false)
@@ -38,8 +39,8 @@ export function ComputerPageShell({ children }: { children: React.ReactNode }) {
     tick(); const timer = setInterval(tick, 60000); return () => clearInterval(timer)
   }, [])
   const readingPosition = useRef(0)
-  function minimize() { readingPosition.current = isGuide ? content.current?.scrollTop || 0 : window.scrollY; setMinimized(true) }
-  function restore() { if (minimized) { setMinimized(false); requestAnimationFrame(() => { const viewport = isGuide ? content.current : window; viewport?.scrollTo({ top: readingPosition.current, behavior: "instant" }) }) } }
+  function minimize() { readingPosition.current = isGuide ? content.current?.scrollTop || 0 : window.scrollY; setMinimized(true); requestAnimationFrame(() => task.current?.focus({ preventScroll: true })) }
+  function restore() { if (minimized) { setMinimized(false); requestAnimationFrame(() => { const viewport = isGuide ? content.current : window; viewport?.scrollTo({ top: readingPosition.current, behavior: "instant" }); content.current?.closest("section")?.querySelector<HTMLElement>("[data-window-drag-handle]")?.focus({ preventScroll: true }) }) } }
   function search() { window.dispatchEvent(new Event("michelle:search")) }
 
   return <div className="computer-desktop-page" data-contained-reader={isGuide ? "guide" : undefined}>
@@ -53,6 +54,6 @@ export function ComputerPageShell({ children }: { children: React.ReactNode }) {
         <div ref={content} id="computer-page-content" className="computer-page-content" data-page={path} data-guide-scroll-viewport={isGuide ? "" : undefined} tabIndex={isGuide ? 0 : undefined} role={isGuide ? "region" : undefined} aria-label={isGuide ? "Book reading area" : undefined}>{children}</div>
       </section>
     </div>
-    <div className="computer-page-taskbar" role="toolbar" aria-label="Desktop controls"><button type="button" className="computer-mobile-desktop" onClick={() => router.push("/?desktop=1")} aria-label="Show desktop"><Grid2X2 size={26}/><span>Desktop</span></button><button type="button" className="computer-page-explore" aria-label="Open Explorer" data-computer-sound="open" onClick={() => router.push("/explore")}><FolderOpen size={26} /><span>Explore</span></button><button type="button" className="computer-page-task" data-computer-sound="open" aria-pressed={!minimized} onClick={restore}><PageIcon size={26} /><span>{title}</span></button><time>{time || "—"}</time></div>
+    <div className="computer-page-taskbar" role="toolbar" aria-label="Desktop controls"><button type="button" className="computer-mobile-desktop" onClick={() => router.push("/?desktop=1")} aria-label="Show desktop"><Grid2X2 size={26}/><span>Desktop</span></button><button type="button" className="computer-page-explore" aria-label="Open Explorer" data-computer-sound="open" onClick={() => router.push("/explore")}><FolderOpen size={26} /><span>Explore</span></button><button ref={task} type="button" className="computer-page-task" data-computer-sound="open" aria-pressed={!minimized} onClick={() => minimized ? restore() : minimize()}><PageIcon size={26} /><span>{title}</span></button><time>{time || "—"}</time></div>
   </div>
 }
