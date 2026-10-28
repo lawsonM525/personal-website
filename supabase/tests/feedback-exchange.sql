@@ -2,7 +2,7 @@
 begin;
 do $$
 declare a uuid:='aa000000-0000-4000-8000-000000000001'; b uuid:='bb000000-0000-4000-8000-000000000002'; c uuid:='cc000000-0000-4000-8000-000000000003'; d uuid:='dd000000-0000-4000-8000-000000000004';
- pa uuid; pb uuid; pc uuid; picked uuid; rid uuid; result jsonb;
+ pa uuid; pb uuid; pc uuid; picked uuid; rid uuid; cid uuid; result jsonb;
 begin
  insert into auth.users(id,email,email_confirmed_at,raw_app_meta_data,raw_user_meta_data,created_at,updated_at) values
  (a,'feedback-test-a@example.invalid',now(),'{}','{}',now(),now()),(b,'feedback-test-b@example.invalid',now(),'{}','{}',now(),now()),(c,'feedback-test-c@example.invalid',now(),'{}','{}',now(),now()),(d,'feedback-test-d@example.invalid',now(),'{}','{}',now(),now());
@@ -11,14 +11,13 @@ begin
  pa:=public.feedback_submit('App A','https://feedback-test-a.vercel.app/','Web app','People learning to test applications.','Try creating your first study plan for next week.','Check whether the first step is clear.');
  if public.feedback_balance(a)<>0 then raise exception 'TEST FAILED: submission must cost two credits'; end if;
  result:=public.feedback_board();
- if exists(select 1 from jsonb_array_elements(result->'projects') p where p->>'id'=pa::text) then raise exception 'TEST FAILED: pending project is public'; end if;
+ if not exists(select 1 from jsonb_array_elements(result->'projects') p where p->>'id'=pa::text) then raise exception 'TEST FAILED: new project is not immediately public'; end if;
  begin
   perform public.feedback_submit('App again','https://feedback-test-a2.vercel.app/','Web app','People learning to test applications.','Try creating your first study plan for next week.','Check whether the first step is clear.');
   raise exception 'TEST FAILED: credit spent twice';
  exception when others then if sqlerrm<>'feedback_need_reviews' then raise; end if; end;
  perform set_config('request.jwt.claim.sub',b::text,true);
  pb:=public.feedback_submit('App B','https://feedback-test-b.vercel.app/','Web app','People learning to test applications.','Try creating your first study plan for next week.','Check whether the first step is clear.');
- update public.feedback_projects set status='approved' where id in (pa,pb);
  insert into public.feedback_reviews(project_id,reviewer_id,purpose,confusion,improvement,design_score,outcome) values(pb,d,'I expected a study planner that turns my classes into a daily plan.','I got stuck at the save button because the label looked like a reset action.','I would label the button Save plan and show a confirmation after saving.',4,'Completed it');
  perform set_config('request.jwt.claim.sub',c::text,true);
  picked:=public.feedback_assign();
@@ -38,20 +37,45 @@ begin
  perform public.feedback_report('project',pa,'Other','A specific test report to check duplicate reporting.');
  perform public.feedback_report('project',pa,'Other','A second test report should not add another report.');
  if (select count(*) from public.feedback_reports where reporter_id=c and target_id=pa)<>1 then raise exception 'TEST FAILED: duplicate reports accepted'; end if;
+ if not exists(select 1 from jsonb_array_elements(public.feedback_board()->'projects') p where p->>'id'=pa::text) then raise exception 'TEST FAILED: report auto-hid a project'; end if;
+ cid:=public.feedback_comment(pa,'A helpful follow-up that is long enough for the discussion.');
+ perform public.feedback_report('review',rid,'Other','A test report with specific context for a moderator.');
+ perform public.feedback_report('comment',cid,'Other','A test report about a reply with enough useful detail.');
  begin perform public.feedback_moderation(); raise exception 'TEST FAILED: member got moderator access'; exception when others then if sqlerrm<>'feedback_admin_only' then raise; end if; end;
+ begin perform public.feedback_moderate('project',pa,'hide'); raise exception 'TEST FAILED: member removed content'; exception when others then if sqlerrm<>'feedback_admin_only' then raise; end if; end;
  perform set_config('request.jwt.claim.sub',a::text,true);
  begin perform public.feedback_review(pa,'I expected a study planner that turns my classes into a daily plan.','I got stuck at the save button because the label looked like a reset action.','I would label the button Save plan and show a confirmation after saving.',4,'Completed it'); raise exception 'TEST FAILED: self-review accepted'; exception when others then if sqlerrm<>'feedback_not_reviewable' then raise; end if; end;
  insert into public.feedback_admins(user_id) values(b);
  perform set_config('request.jwt.claim.sub',b::text,true);
+ result:=public.feedback_moderation();
+ if not exists(select 1 from jsonb_array_elements(result->'projects') p where p->>'id'=pa::text) then raise exception 'TEST FAILED: moderator cannot see published projects'; end if;
+ if not exists(select 1 from jsonb_array_elements(result->'reports') r where r->>'target_id'=rid::text and r->'target'->>'project_title'='App A' and r->'target'->>'body' like 'I expected%') then raise exception 'TEST FAILED: report has no review context'; end if;
+ perform public.feedback_moderate('project',pa,'pick');
+ if not exists(select 1 from public.feedback_reports where target_kind='project' and target_id=pa and not resolved) then raise exception 'TEST FAILED: featuring resolved an unrelated report'; end if;
+ perform public.feedback_moderate('project',pa,'hide');
+ if exists(select 1 from jsonb_array_elements(public.feedback_board()->'projects') p where p->>'id'=pa::text) then raise exception 'TEST FAILED: removed project stayed public'; end if;
+ if exists(select 1 from public.feedback_reports where target_kind='project' and target_id=pa and not resolved) then raise exception 'TEST FAILED: removal did not resolve its report'; end if;
+ perform public.feedback_moderate('project',pa,'restore');
+ if not exists(select 1 from jsonb_array_elements(public.feedback_board()->'projects') p where p->>'id'=pa::text) then raise exception 'TEST FAILED: restored project stayed hidden'; end if;
+ perform public.feedback_moderate('comment',cid,'hide');
+ if exists(select 1 from jsonb_array_elements(public.feedback_board()->'comments') entry where entry->>'id'=cid::text) then raise exception 'TEST FAILED: removed reply stayed public'; end if;
+ if not exists(select 1 from jsonb_array_elements(public.feedback_moderation()->'hidden') h where h->>'id'=cid::text) then raise exception 'TEST FAILED: removed reply missing from moderation'; end if;
+ perform public.feedback_moderate('comment',cid,'restore');
+ if not exists(select 1 from jsonb_array_elements(public.feedback_board()->'comments') entry where entry->>'id'=cid::text) then raise exception 'TEST FAILED: restored reply stayed hidden'; end if;
  perform public.feedback_moderate('review',rid,'hide');
  if public.feedback_balance(c)<>-1 then raise exception 'TEST FAILED: hidden review kept its credit'; end if;
- perform public.feedback_moderate('project',pc,'reject');
- if public.feedback_balance(c)<>1 then raise exception 'TEST FAILED: declined request did not return credits'; end if;
+ if exists(select 1 from jsonb_array_elements(public.feedback_board()->'reviews') r where r->>'id'=rid::text) then raise exception 'TEST FAILED: removed review stayed public'; end if;
+ if not exists(select 1 from jsonb_array_elements(public.feedback_moderation()->'hidden') h where h->>'id'=rid::text) then raise exception 'TEST FAILED: removed review missing from moderation'; end if;
+ perform public.feedback_moderate('review',rid,'restore');
+ if public.feedback_balance(c)<>0 then raise exception 'TEST FAILED: restored review did not return earned credit'; end if;
+ perform public.feedback_moderate('review',rid,'hide');
+ perform public.feedback_moderate('project',pc,'hide');
+ if public.feedback_balance(c)<>1 then raise exception 'TEST FAILED: removed request did not return credits'; end if;
  if has_table_privilege('authenticated','public.feedback_reviews','INSERT') or has_table_privilege('anon','public.feedback_members','SELECT') then raise exception 'TEST FAILED: direct table access granted'; end if;
  if has_function_privilege('anon','public.feedback_submit(text,text,text,text,text,text)','EXECUTE') then raise exception 'TEST FAILED: anonymous submission RPC granted'; end if;
  if not has_function_privilege('anon','public.feedback_board()','EXECUTE') then raise exception 'TEST FAILED: public board not readable'; end if;
  if exists(select 1 from pg_class where relname like 'feedback_%' and relkind='r' and not relrowsecurity) then raise exception 'TEST FAILED: RLS missing'; end if;
- raise notice 'PASS: credit spending, queue priority, duplicate/self-review guards, moderation, refunds, reporting, and table privileges';
+ raise notice 'PASS: immediate publishing, report context, takedowns/restores, credits, queue priority, and unchanged privileges';
 end $$;
-select 'PASS: credit spending, queue priority, duplicate/self-review guards, moderation, refunds, reporting, and privileges' as feedback_checks;
+select 'PASS: immediate publishing, report context, takedowns/restores, credits, queue priority, and unchanged privileges' as feedback_checks;
 rollback;

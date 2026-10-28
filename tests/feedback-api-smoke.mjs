@@ -13,7 +13,7 @@ const post=(action,origin=requestOrigin)=>fetch(root+'/api/feedback',{method:'PO
 assert.equal((await post({action:'assign'},'https://unrelated.example')).status,403)
 assert.equal((await post({action:'assign'})).status,401)
 assert.equal((await post({action:'submit',title:'Cannot publish anonymously'})).status,401)
-assert.equal((await post({action:'moderate',kind:'project',id:'00000000-0000-4000-8000-000000000001',decision:'approve'})).status,401)
+assert.equal((await post({action:'moderate',kind:'project',id:'00000000-0000-4000-8000-000000000001',decision:'hide'})).status,401)
 assert.equal((await post({action:'signin',email:'not-an-email',name:'Tester'})).status,400)
 assert.equal((await post(null)).status,400)
 const expired=await fetch(root+'/feedback/confirm?code=invalid',{redirect:'manual'})
