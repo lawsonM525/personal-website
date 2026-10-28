@@ -1,6 +1,7 @@
 import { z } from "zod"
+import type { AvatarConfig } from "./member/avatar"
 
-export const feedbackReviewCost = 2
+export const feedbackReviewCost = 3
 export const feedbackCategories = ["Web app", "Website", "Mobile app", "Creative experiment"] as const
 export const feedbackOutcomes = ["Completed it", "Partly completed it", "Got stuck"] as const
 
@@ -39,13 +40,15 @@ export const feedbackReviewSchema = z.object({
   if (new Set(answers).size !== 3) context.addIssue({ code: z.ZodIssueCode.custom, message: "Give each question its own specific answer.", path: ["improvement"] })
 })
 
-export type FeedbackProject = z.output<typeof feedbackProjectSchema> & { id: string; owner_id: string; builder_name: string; created_at: string; status: "pending" | "approved" | "rejected"; featured: boolean; review_count: number }
-export type FeedbackReview = { id: string; project_id: string; reviewer_id: string; reviewer_name: string; purpose: string; confusion: string; improvement: string; design_score: number; outcome: string; created_at: string }
-export type FeedbackComment = { id: string; project_id: string; author_id: string; author_name: string; body: string; created_at: string }
+export type FeedbackProject = z.output<typeof feedbackProjectSchema> & { id: string; owner_id: string; builder_name: string; avatar?: AvatarConfig | null; created_at: string; status: "pending" | "approved" | "rejected"; featured: boolean; review_count: number }
+export type FeedbackReview = { id: string; project_id: string; reviewer_id: string; reviewer_name: string; avatar?: AvatarConfig | null; purpose: string; confusion: string; improvement: string; design_score: number; outcome: string; created_at: string }
+export type FeedbackComment = { id: string; project_id: string; author_id: string; author_name: string; avatar?: AvatarConfig | null; body: string; created_at: string }
 export type FeedbackReport = { id: string; target_kind: "project" | "review" | "comment"; target_id: string; reason: string; detail: string; created_at: string; target?: { project_id: string; project_title: string; project_url: string; author_name: string; status: string; body: string } }
 export type FeedbackHiddenContent = { id: string; kind: "review" | "comment"; project_id: string; project_title: string; author_name: string; body: string; created_at: string }
-export type FeedbackViewer = { id: string; display_name: string; credits: number; is_admin: boolean; own_projects: FeedbackProject[]; assignment: { project_id: string; expires_at: string } | null }
-export type FeedbackBoard = { configured: boolean; projects: FeedbackProject[]; reviews: FeedbackReview[]; comments: FeedbackComment[]; viewer: FeedbackViewer | null; moderation?: { projects: FeedbackProject[]; reports: FeedbackReport[]; hidden?: FeedbackHiddenContent[] } }
+export type FeedbackViewer = { id: string; display_name: string; avatar?: AvatarConfig | null; credits: number; submission_cost: 0 | 3; is_admin: boolean; own_projects: FeedbackProject[]; assignment: { project_id: string; expires_at: string } | null }
+export type ArticleMemberComment = { id: string; author_name: string; avatar?: AvatarConfig | null; body: string; created_at: string; article_title: string; article_slug: string; status?: "published" | "hidden" }
+export type ArticleModeration = { comments: ArticleMemberComment[]; reports: { id: string; comment_id: string; reason: string; detail: string; body: string; author_name: string; article_title: string; article_slug: string }[] }
+export type FeedbackBoard = { configured: boolean; submission_cost?: 0 | 3; launch_remaining?: number; projects: FeedbackProject[]; reviews: FeedbackReview[]; comments: FeedbackComment[]; viewer: FeedbackViewer | null; moderation?: { projects: FeedbackProject[]; reports: FeedbackReport[]; hidden?: FeedbackHiddenContent[]; discussion?: ArticleModeration } }
 
 export function prioritizeFeedback(projects: FeedbackProject[]) {
   return [...projects].sort((a, b) => a.review_count - b.review_count || Date.parse(a.created_at) - Date.parse(b.created_at))

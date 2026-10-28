@@ -6,10 +6,11 @@ declare a uuid:='aa000000-0000-4000-8000-000000000001'; b uuid:='bb000000-0000-4
 begin
  insert into auth.users(id,email,email_confirmed_at,raw_app_meta_data,raw_user_meta_data,created_at,updated_at) values
  (a,'feedback-test-a@example.invalid',now(),'{}','{}',now(),now()),(b,'feedback-test-b@example.invalid',now(),'{}','{}',now(),now()),(c,'feedback-test-c@example.invalid',now(),'{}','{}',now(),now()),(d,'feedback-test-d@example.invalid',now(),'{}','{}',now(),now());
- insert into public.feedback_members(user_id,display_name,starter_credits) values(a,'Builder A',2),(b,'Builder B',2),(c,'Builder C',0),(d,'Builder D',0);
+ insert into public.feedback_members(user_id,display_name,starter_credits) values(a,'Builder A',3),(b,'Builder B',3),(c,'Builder C',0),(d,'Builder D',0);
+ insert into public.feedback_projects(owner_id,title,url,category,audience,task,focus,status,review_cost,created_at) select a,'Historical fixture '||n,'https://historical-fixture-'||n||'.vercel.app','Web app','People testing credit accounting after launch.','Try the review exchange after the launch period.','Check credit accounting remains correct.','rejected',0,now()-interval '3 days' from generate_series(1,10)n;
  perform set_config('request.jwt.claim.sub',a::text,true);
  pa:=public.feedback_submit('App A','https://feedback-test-a.vercel.app/','Web app','People learning to test applications.','Try creating your first study plan for next week.','Check whether the first step is clear.');
- if public.feedback_balance(a)<>0 then raise exception 'TEST FAILED: submission must cost two credits'; end if;
+ if public.feedback_balance(a)<>0 then raise exception 'TEST FAILED: submission must cost three credits'; end if;
  result:=public.feedback_board();
  if not exists(select 1 from jsonb_array_elements(result->'projects') p where p->>'id'=pa::text) then raise exception 'TEST FAILED: new project is not immediately public'; end if;
  begin
@@ -32,6 +33,9 @@ begin
  picked:=public.feedback_assign();
  if picked<>pb then raise exception 'TEST FAILED: already-reviewed app reassigned'; end if;
  perform public.feedback_review(pb,'I expected a study planner that turns my classes into a daily plan.','I got stuck at the save button because the label looked like a reset action.','I would label the button Save plan and show a confirmation after saving.',3,'Partly completed it');
+ insert into public.feedback_projects(owner_id,title,url,category,audience,task,focus,review_cost) values(d,'Third review fixture','https://third-review.vercel.app','Web app','People testing the third required review.','Try the last review needed to unlock a request.','Check that three reviews earn a request.',0) returning id into picked;
+ perform public.feedback_assign();
+ perform public.feedback_review(picked,'I expected a study planner that turns my classes into a daily plan.','I got stuck at the save button because the label looked like a reset action.','I would label the button Save plan and show a confirmation after saving.',3,'Partly completed it');
  pc:=public.feedback_submit('App C','https://feedback-test-c.vercel.app/','Web app','People learning to test applications.','Try creating your first study plan for next week.','Check whether the first step is clear.');
  if public.feedback_balance(c)<>0 then raise exception 'TEST FAILED: earned credits not spent correctly'; end if;
  perform public.feedback_report('project',pa,'Other','A specific test report to check duplicate reporting.');
@@ -70,7 +74,7 @@ begin
  if public.feedback_balance(c)<>0 then raise exception 'TEST FAILED: restored review did not return earned credit'; end if;
  perform public.feedback_moderate('review',rid,'hide');
  perform public.feedback_moderate('project',pc,'hide');
- if public.feedback_balance(c)<>1 then raise exception 'TEST FAILED: removed request did not return credits'; end if;
+ if public.feedback_balance(c)<>2 then raise exception 'TEST FAILED: removed request did not return credits'; end if;
  if has_table_privilege('authenticated','public.feedback_reviews','INSERT') or has_table_privilege('anon','public.feedback_members','SELECT') then raise exception 'TEST FAILED: direct table access granted'; end if;
  if has_function_privilege('anon','public.feedback_submit(text,text,text,text,text,text)','EXECUTE') then raise exception 'TEST FAILED: anonymous submission RPC granted'; end if;
  if not has_function_privilege('anon','public.feedback_board()','EXECUTE') then raise exception 'TEST FAILED: public board not readable'; end if;
