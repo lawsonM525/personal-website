@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { isPublicAppUrl, feedbackCommentSchema, feedbackReplyLength, feedbackProjectSchema, feedbackReviewSchema, feedbackExample, prioritizeFeedback } from '../lib/feedback.ts'
+import { isPublicAppUrl, feedbackCommentSchema, feedbackRatingsSchema, feedbackReplyLength, feedbackProjectSchema, feedbackReviewSchema, feedbackExample, prioritizeFeedback } from '../lib/feedback.ts'
 
 test('app links allow public HTTPS demos and app-store pages',()=>{
  for(const url of ['https://my-app.vercel.app','https://apps.apple.com/us/app/example/id1234','https://example.com/demo?view=public']) assert.equal(isPublicAppUrl(url),true,url)
@@ -16,9 +16,9 @@ test('requests require a brief summary, audience, concrete task, focus, and supp
 })
 const observation=(i)=>({where:`Screen ${i}`,happened:`I tried step ${i} and the button did not show whether the project had been saved.`,suggestion:`For step ${i}, add a saved confirmation beside the button so the outcome is clear.`})
 test('reviews require three different complete observations, an initial impression and task outcome',()=>{
- const data={projectId:feedbackExample.id,purpose:'I expected a study planner that would turn my course list into a daily plan.',observations:[1,2,3].map(observation),designScore:4,outcome:'Completed it'}
+ const data={projectId:feedbackExample.id,purpose:'I expected a study planner that would turn my course list into a daily plan.',observations:[1,2,3].map(observation),ratings:{design:4,usability:3,usefulness:5},outcome:'Completed it'}
  assert.equal(feedbackReviewSchema.safeParse(data).success,true)
- for(const patch of [{purpose:'looks good!'},{observations:undefined},{observations:[]},{observations:[observation(1),observation(2)]},{observations:[observation(1),observation(1),observation(3)]},{observations:[{...observation(1),happened:'looks good!'},observation(2),observation(3)]},{observations:[{...observation(1),suggestion:observation(1).happened},observation(2),observation(3)]},{observations:[{...observation(1),where:'a'},observation(2),observation(3)]},{designScore:0},{designScore:6},{outcome:'did not try'}]) assert.equal(feedbackReviewSchema.safeParse({...data,...patch}).success,false,JSON.stringify(patch))
+ for(const patch of [{purpose:'looks good!'},{observations:undefined},{observations:[]},{observations:[observation(1),observation(2)]},{observations:[observation(1),observation(1),observation(3)]},{observations:[{...observation(1),happened:'looks good!'},observation(2),observation(3)]},{observations:[{...observation(1),suggestion:observation(1).happened},observation(2),observation(3)]},{observations:[{...observation(1),where:'a'},observation(2),observation(3)]},{ratings:undefined},{ratings:{design:0,usability:3,usefulness:5}},{ratings:{design:4,usability:6,usefulness:5}},{outcome:'did not try'}]) assert.equal(feedbackReviewSchema.safeParse({...data,...patch}).success,false,JSON.stringify(patch))
  const normalized=feedbackReviewSchema.parse({...data,observations:data.observations.map(x=>({...x,where:'  '+x.where+'  '}))})
  assert.equal(normalized.observations[0].where,'Screen 1')
  const copied={...observation(2),suggestion:observation(1).suggestion.toUpperCase().replaceAll(' ','  ')}
@@ -41,4 +41,14 @@ test('project replies require 500–2000 meaningful characters and trim surround
  assert.equal(feedbackReplyLength('😀'.repeat(250)),250)
  assert.equal(feedbackCommentSchema.safeParse({...reply,body:'😀'.repeat(250)}).success,false)
  assert.equal(feedbackCommentSchema.safeParse({...reply,projectId:'not-a-project'}).success,false)
+})
+
+test('ratings require exactly three whole-star scores, and ordinary follow-ups may omit them',()=>{
+ const ratings={design:5,usability:1,usefulness:4}
+ assert.deepEqual(feedbackRatingsSchema.parse(ratings),ratings)
+ for(const value of [{...ratings,design:0},{...ratings,usefulness:6},{...ratings,usability:2.5},{...ratings,design:"4"},{design:4,usability:3},{...ratings,extra:5},null]) assert.equal(feedbackRatingsSchema.safeParse(value).success,false)
+ const reply={projectId:feedbackExample.id,body:'a'.repeat(500)}
+ assert.equal(feedbackCommentSchema.safeParse(reply).success,true)
+ assert.deepEqual(feedbackCommentSchema.parse({...reply,ratings}).ratings,ratings)
+ assert.equal(feedbackCommentSchema.safeParse({...reply,ratings:{design:4}}).success,false)
 })

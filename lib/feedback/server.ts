@@ -10,6 +10,7 @@ export function feedbackConfig() {
 export function feedbackIsOpen() { return Boolean(feedbackConfig()) && process.env.FEEDBACK_EXCHANGE_OPEN === "true" }
 
 const errors: Record<string, string> = {
+  feedback_ratings: "Choose a whole-star rating from 1 to 5 for all three categories.", feedback_self_rating: "You can reply to your own project, but you can’t rate it.",
   feedback_observations: "Add three different observations: where, what happened, and what would help.", feedback_useful_owner: "Only this project’s builder can mark its feedback useful.", feedback_useful_review: "This feedback is no longer available to mark useful.",
   feedback_summary: "Add a one-line project summary between 15 and 180 characters.", feedback_summary_owner: "Only the project’s owner can change its summary.",
   feedback_cover_limit: "You’ve uploaded ten images today. Try again tomorrow.", feedback_cover_owner: "Only the project’s owner can change its image.", feedback_cover_missing: "Add a screenshot or cover image before submitting.",

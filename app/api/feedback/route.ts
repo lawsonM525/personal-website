@@ -82,11 +82,11 @@ export async function POST(request: NextRequest) {
       }
       case "review": {
         const data = parse(feedbackReviewSchema, body)
-        result = await feedbackRpc("feedback_review_observations", token, { p_project_id: data.projectId, p_purpose: data.purpose, p_observations: data.observations, p_design_score: data.designScore, p_outcome: data.outcome }); break
+        result = await feedbackRpc("feedback_review_ratings", token, { p_project_id: data.projectId, p_purpose: data.purpose, p_observations: data.observations, p_ratings: data.ratings, p_outcome: data.outcome }); break
       }
       case "comment": {
         const data = parse(feedbackCommentSchema, body)
-        result = await feedbackRpc("feedback_comment", token, { p_project_id: data.projectId, p_body: data.body }); break
+        result = await feedbackRpc("feedback_comment_ratings", token, { p_project_id: data.projectId, p_body: data.body, p_ratings: data.ratings ?? null }); break
       }
       case "report": {
         const data = parse(z.object({ kind: z.enum(["project", "review", "comment"]), id: uuid, reason: z.enum(["Unsafe link", "Spam", "Harassment", "Other"]), detail: z.string().trim().min(20).max(1000) }), body)

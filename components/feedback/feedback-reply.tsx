@@ -1,19 +1,23 @@
 "use client"
 
 import { useId, useState } from "react"
-import { feedbackReplyBodySchema, feedbackReplyLength, feedbackReplyMinLength, feedbackReplyMaxLength } from "@/lib/feedback"
+import { feedbackReplyBodySchema, feedbackRatingsSchema, type FeedbackRatings, feedbackReplyLength, feedbackReplyMinLength, feedbackReplyMaxLength } from "@/lib/feedback"
 import styles from "./feedback.module.css"
+import { FeedbackRatingInput } from "./feedback-ratings"
 
-export function FeedbackReply({ busy, onSubmit }: { busy: boolean; onSubmit: (body: string) => Promise<boolean> }) {
+export function FeedbackReply({ busy, allowRatings = true, onSubmit }: { busy: boolean; allowRatings?: boolean; onSubmit: (body: string, ratings?: FeedbackRatings) => Promise<boolean> }) {
   const id = useId()
   const [body, setBody] = useState("")
+  const [ratings, setRatings] = useState<Partial<FeedbackRatings>>({})
+  const hasRatings = allowRatings && Object.keys(ratings).length > 0
+  const parsedRatings = feedbackRatingsSchema.safeParse(ratings)
   const length = feedbackReplyLength(body)
   const remaining = Math.max(0, feedbackReplyMinLength - length)
   return <form className={styles.reply} onSubmit={async event => {
     event.preventDefault()
     const parsed = feedbackReplyBodySchema.safeParse(body)
-    if (busy || !parsed.success) return
-    if (await onSubmit(parsed.data)) setBody("")
+    if (busy || !parsed.success || (hasRatings && !parsedRatings.success)) return
+    if (await onSubmit(parsed.data, hasRatings && parsedRatings.success ? parsedRatings.data : undefined)) { setBody(""); setRatings({}) }
   }}>
     <label htmlFor={`${id}-body`}>Keep the conversation going</label>
     <div id={`${id}-ideas`} className={styles.replyIdeas}>
@@ -30,7 +34,8 @@ export function FeedbackReply({ busy, onSubmit }: { busy: boolean; onSubmit: (bo
       <span>{length.toLocaleString()} / {feedbackReplyMinLength} characters minimum</span>
       <span>{remaining ? `${remaining} more to go` : `${(feedbackReplyMaxLength - length).toLocaleString()} characters left`}</span>
     </div>
-    <button type="submit" className={styles.secondary} disabled={busy || remaining > 0 || length > feedbackReplyMaxLength}>{busy ? "Posting…" : "Post reply"}</button>
+    {allowRatings && <FeedbackRatingInput value={ratings} onChange={setRatings} disabled={busy} />}
+    <button type="submit" className={styles.secondary} disabled={busy || remaining > 0 || length > feedbackReplyMaxLength || (hasRatings && !parsedRatings.success)}>{busy ? "Posting…" : "Post reply"}</button>
     <small>Replies don’t earn review credits.</small>
   </form>
 }
