@@ -14,10 +14,15 @@ test('requests require a brief summary, audience, concrete task, focus, and supp
  assert.equal(feedbackProjectSchema.parse({...data,summary:'  '+data.summary+'  '}).summary,data.summary)
  for(const patch of [{summary:undefined},{summary:'An app'},{summary:'x'.repeat(181)},{summary:'A study planner\nwith a weekly calendar.'},{task:'Thoughts?'},{audience:''},{focus:'rate it'},{category:'Spam'}]) assert.equal(feedbackProjectSchema.safeParse({...data,...patch}).success,false)
 })
-test('reviews reject drive-by praise, repeated answers, invalid scores, and missing tasks',()=>{
- const data={projectId:feedbackExample.id,purpose:'I expected a study planner that would turn my course list into a daily plan.',confusion:'I could not tell whether the blue button saved the plan or started a new one.',improvement:'Label the blue button Save plan so I know what will happen before clicking.',designScore:4,outcome:'Completed it'}
+const observation=(i)=>({where:`Screen ${i}`,happened:`I tried step ${i} and the button did not show whether the project had been saved.`,suggestion:`For step ${i}, add a saved confirmation beside the button so the outcome is clear.`})
+test('reviews require three different complete observations, an initial impression and task outcome',()=>{
+ const data={projectId:feedbackExample.id,purpose:'I expected a study planner that would turn my course list into a daily plan.',observations:[1,2,3].map(observation),designScore:4,outcome:'Completed it'}
  assert.equal(feedbackReviewSchema.safeParse(data).success,true)
- for(const patch of [{purpose:'looks good!'},{confusion:data.purpose},{improvement:data.confusion},{designScore:0},{designScore:6},{outcome:'did not try'}]) assert.equal(feedbackReviewSchema.safeParse({...data,...patch}).success,false)
+ for(const patch of [{purpose:'looks good!'},{observations:undefined},{observations:[]},{observations:[observation(1),observation(2)]},{observations:[observation(1),observation(1),observation(3)]},{observations:[{...observation(1),happened:'looks good!'},observation(2),observation(3)]},{observations:[{...observation(1),suggestion:observation(1).happened},observation(2),observation(3)]},{observations:[{...observation(1),where:'a'},observation(2),observation(3)]},{designScore:0},{designScore:6},{outcome:'did not try'}]) assert.equal(feedbackReviewSchema.safeParse({...data,...patch}).success,false,JSON.stringify(patch))
+ const normalized=feedbackReviewSchema.parse({...data,observations:data.observations.map(x=>({...x,where:'  '+x.where+'  '}))})
+ assert.equal(normalized.observations[0].where,'Screen 1')
+ const copied={...observation(2),suggestion:observation(1).suggestion.toUpperCase().replaceAll(' ','  ')}
+ assert.equal(feedbackReviewSchema.safeParse({...data,observations:[observation(1),copied,observation(3)]}).success,false)
 })
 test('queue puts unreviewed apps ahead of older apps that already have feedback',()=>{
  const projects=[{...feedbackExample,id:'one',review_count:2,created_at:'2026-01-01'},{...feedbackExample,id:'two',review_count:0,created_at:'2026-10-25'},{...feedbackExample,id:'three',review_count:0,created_at:'2026-10-20'}]
