@@ -91,7 +91,7 @@ export function FeedbackExchange() {
   return <main className={styles.page} data-feedback-exchange>
     <header className={styles.hero}>
       <img className={styles.eyes} src="/feedback/fresh-eyes.webp" width="150" height="100" alt="" />
-      <div className={styles.heroCopy}><h1>Good projects need fresh eyes.</h1><p>Try something new. Help someone make it better.</p></div>
+      <div className={styles.heroCopy}><h1>Good projects need fresh eyes.</h1><p>Make your ideas real. Get feedback &amp; Help someone make their project better.</p></div>
       <button type="button" className={styles.submitProject} onClick={() => show(board.configured && !viewer ? "signin" : "submit")}><FolderOpen size={32} />Submit your project</button>
       <div className={styles.creditMeter}><span>{cost === 0 ? "Submit free · early builders" : `${viewer?.credits || 0} / 3 credits`}</span><progress max={3} value={cost === 0 ? 3 : Math.min(3, Math.max(0, viewer?.credits || 0))} aria-label={cost === 0 ? "Submission is free during launch" : `${viewer?.credits || 0} of 3 review credits`} />{!viewer && <button type="button" onClick={() => show("signin")}>Sign in to take part</button>}</div>
     </header>
