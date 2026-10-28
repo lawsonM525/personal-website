@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server"
 import { z } from "zod"
-import { feedbackProjectSchema, feedbackReviewSchema, type FeedbackBoard, type FeedbackViewer } from "@/lib/feedback"
+import { feedbackProjectSchema, feedbackReviewSchema, feedbackSummarySchema, type FeedbackBoard, type FeedbackViewer } from "@/lib/feedback"
 import { FeedbackError, feedbackIsOpen, feedbackResponse, feedbackRpc, feedbackSession, supabaseFeedback, type FeedbackSession } from "@/lib/feedback/server"
 import { feedbackPkce } from "@/lib/feedback/pkce"
 import { feedbackRequestOrigin } from "@/lib/feedback/request-origin"
@@ -64,7 +64,11 @@ export async function POST(request: NextRequest) {
       case "submit": {
         const coverId = parse(uuid, body.coverId)
         const data = parse(feedbackProjectSchema, body)
-        result = await feedbackRpc("feedback_submit", token, { p_title: data.title, p_url: data.url, p_category: data.category, p_audience: data.audience, p_task: data.task, p_focus: data.focus, p_cover_id: coverId }); break
+        result = await feedbackRpc("feedback_submit", token, { p_title: data.title, p_summary: data.summary, p_url: data.url, p_category: data.category, p_audience: data.audience, p_task: data.task, p_focus: data.focus, p_cover_id: coverId }); break
+      }
+      case "summary": {
+        const data = parse(z.object({ projectId: uuid, summary: feedbackSummarySchema }), body)
+        result = await feedbackRpc("feedback_set_summary", token, { p_project_id: data.projectId, p_summary: data.summary }); break
       }
       case "cover": {
         const data = parse(z.object({ projectId: uuid, coverId: uuid }), body)

@@ -15,7 +15,7 @@ export function ProjectPreview({ project, large = false }: { project: FeedbackPr
   return <div className={`${styles.sitePreview} ${large ? styles.largePreview : ""}`}>
     <div className={styles.address}><span aria-hidden="true">↗</span>{new URL(project.url).hostname}</div>
     <FolderOpen size={large ? 62 : 52} />
-    {large ? <><strong>{project.title}</strong><p>{project.audience}</p></> : <span className={styles.previewType}>{project.category}</span>}
+    {large ? <><strong>{project.title}</strong><p>{project.summary || project.audience}</p></> : <span className={styles.previewType}>{project.category}</span>}
   </div>
 }
 
@@ -49,7 +49,7 @@ export function FeedbackBoard({ projects, loading, filter, query, samples, onFil
       <div className={styles.cards}>{projects.map((project, index) => <article className={styles.card} data-selected={active?.id === project.id} data-color={index % 4} key={project.id}>
         <div className={styles.cardBar}><FolderOpen size={22} /><h2>{project.title}</h2></div>
         <div className={styles.previewFrame}><ProjectPreview project={project} /></div>
-        <div className={styles.cardBody}><div className={styles.cardCopy}><p>{project.audience}</p>{project.status !== "approved" && <p className={styles.status}>{project.status === "pending" ? "Publishing" : "Removed · credits returned"}</p>}</div><ArrowRight className={styles.cardArrow} size={20} aria-hidden="true" /></div>
+        <div className={styles.cardBody}><div className={styles.cardCopy}><p>{project.summary || project.audience}</p>{project.status !== "approved" && <p className={styles.status}>{project.status === "pending" ? "Publishing" : "Removed · credits returned"}</p>}</div><ArrowRight className={styles.cardArrow} size={20} aria-hidden="true" /></div>
         <button type="button" ref={active?.id === project.id ? lastCard : undefined} className={styles.cardSelect} aria-label={`View ${project.title}`} aria-pressed={active?.id === project.id} aria-controls="feedback-project-detail" onClick={() => select(project)} />
       </article>)}</div>
       {active && <aside id="feedback-project-detail" ref={detail} tabIndex={-1} className={styles.detail} aria-label={`A closer look at ${active.title}`}>
