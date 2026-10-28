@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type FormEvent, type KeyboardEvent, type MouseEvent } from "react"
 import { useRouter } from "next/navigation"
+import { useComputerSound } from "@/components/homepage/computer-sounds"
 import { completeTerminal, createTerminalState, executeTerminal, terminalSources, type TerminalApp } from "@/lib/terminal"
 import styles from "./explore.module.css"
 import terminalStyles from "./terminal.module.css"
@@ -10,6 +11,7 @@ const sources = Object.values(terminalSources)
 
 export function Terminal({ openApp }: { openApp: (id: TerminalApp) => void }) {
   const router = useRouter()
+  const sound = useComputerSound()
   const [transcript, setTranscript] = useState({ lines: ["Michelle’s Computer [interactive terminal]", "Type help to explore, or tutorial for your first commands."], start: 0 })
   const [command, setCommand] = useState("")
   const session = useRef(createTerminalState())
@@ -38,6 +40,7 @@ export function Terminal({ openApp }: { openApp: (id: TerminalApp) => void }) {
     const clean = value.trim()
     if (!clean) return
     const result = executeTerminal(clean, session.current)
+    if (result.feedback) sound?.play(result.feedback === "correct" ? "quizCorrect" : "quizIncorrect")
     session.current = result.state
     setCommand(""); recall.current = -1; draft.current = ""
     if (result.clear) setTranscript({ lines: [], start: 0 })

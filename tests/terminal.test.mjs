@@ -74,12 +74,14 @@ test("quiz validates answers, gives explanations, avoids repeats, and reports it
     let correct = 0
     const invalid = run("answer z", result.state)
     assert.equal(invalid.state.quiz.at, 0)
+    assert.equal(invalid.feedback, undefined)
     for (let index = 0; index < 5; index++) {
       const question = result.lines.find(line => line.startsWith("Question "))
       assert.ok(question)
       assert.equal(seen.has(question.split(": ")[1]), false)
       seen.add(question.split(": ")[1])
       result = run(index % 2 ? "answer a" : "a", result.state)
+      assert.equal(result.feedback, result.lines[0] === "Correct!" ? "correct" : "incorrect", "every answer, including the last, reports its sound outcome")
       if (result.lines[0] === "Correct!") correct++
       else assert.match(result.lines[0], /The answer is [abc]\)/)
       assert.ok(result.lines[1].length > 25, "each answer includes an explanation")
@@ -89,6 +91,15 @@ test("quiz validates answers, gives explanations, avoids repeats, and reports it
   }
   assert.match(text(run("answer a")), /No quiz is running/)
   assert.equal(run("quiz stop", run("quiz ai").state).state.quiz, null)
+})
+
+test("quiz sound outcomes distinguish right and wrong answers, including bare letters, without sounding on other commands", () => {
+  const state = run("quiz ai").state
+  assert.equal(run("answer b", state).feedback, "correct")
+  assert.equal(run("b", state).feedback, "correct")
+  assert.equal(run("answer a", state).feedback, "incorrect")
+  for (const command of ["help", "quiz ai", "quiz stop", "answer z", "echo Correct!"]) assert.equal(run(command, state).feedback, undefined)
+  assert.equal(run("answer a").feedback, undefined)
 })
 
 test("lessons count once and each recommended next command is implemented", () => {

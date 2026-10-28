@@ -36,6 +36,26 @@ test("all original cues produce short, finite, unclipped PCM at common device sa
   }
 })
 
+test("quiz answer cues produce different audio and share the existing mute behavior", async () => {
+  const correct = renderComputerSound("quizCorrect", 48000)
+  const incorrect = renderComputerSound("quizIncorrect", 48000)
+  assert.notDeepEqual(correct, incorrect)
+  const fake = context()
+  const player = new ComputerSoundPlayer(() => fake.ctx)
+  assert.equal(await player.play("quizCorrect"), true)
+  fake.ctx.currentTime += .5
+  assert.equal(await player.play("quizIncorrect"), true)
+  assert.equal(fake.sources.length, 2)
+  assert.notDeepEqual(fake.buffers[0].samples, fake.buffers[1].samples)
+  player.setMuted(true)
+  fake.ctx.currentTime += .5
+  assert.equal(await player.play("quizCorrect"), false)
+  assert.equal(await player.play("quizIncorrect"), false)
+  assert.equal(fake.sources.length, 2)
+  assert.equal(fake.sources.every(source => source.stopped), true)
+  player.dispose()
+})
+
 test("audio stays uninitialized until playback and mute stops active sounds", async () => {
   const fake = context()
   let created = 0
