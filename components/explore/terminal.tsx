@@ -6,7 +6,6 @@ import { completeTerminal, createTerminalState, executeTerminal, terminalSources
 import styles from "./explore.module.css"
 import terminalStyles from "./terminal.module.css"
 
-const quickCommands = ["help", "learn", "quiz ai", "train", "surprise"]
 const sources = Object.values(terminalSources)
 
 export function Terminal({ openApp }: { openApp: (id: TerminalApp) => void }) {
@@ -70,8 +69,7 @@ export function Terminal({ openApp }: { openApp: (id: TerminalApp) => void }) {
       const source = sources.find(source => line === source.url || line === `Source: ${source.url}`)
       return <div key={index} ref={index === transcript.start ? response : undefined}>{source ? <><span>Source: </span><a className={terminalStyles.source} href={source.url} target="_blank" rel="noopener noreferrer">{source.title}</a></> : line || "\u00a0"}</div>
     })}</div>
-    <form onSubmit={submit}><label htmlFor="explorer-terminal-command">C:\MICHELLE&gt;</label><input ref={input} id="explorer-terminal-command" aria-label="Terminal command" aria-describedby="terminal-keyboard-hint" value={command} onChange={event => { setCommand(event.target.value); recall.current = -1 }} onKeyDown={keyboard} autoCapitalize="none" autoCorrect="off" spellCheck={false} maxLength={240}/><button type="submit">Run</button></form>
-    <div className={styles.terminalHints}>{quickCommands.map(value => <button type="button" key={value} onClick={() => run(value)}>{value}</button>)}</div>
+    <form onSubmit={submit}><label htmlFor="explorer-terminal-command">C:\MICHELLE&gt;</label><input ref={input} id="explorer-terminal-command" aria-label="Terminal command" aria-describedby="terminal-keyboard-hint" value={command} onChange={event => { setCommand(event.target.value); recall.current = -1 }} onKeyDown={keyboard} enterKeyHint="go" autoCapitalize="none" autoCorrect="off" spellCheck={false} maxLength={240}/></form>
     <p id="terminal-keyboard-hint" className={terminalStyles.keyboardHint}>↑ ↓ recall commands · Tab autocomplete · Enter run</p>
   </div>
 }
