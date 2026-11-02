@@ -5,6 +5,8 @@ import { notFound } from "next/navigation";
 import { ArrowUpRight } from "@/components/retro-icons";
 import { stegaClean } from "@sanity/client/stega";
 import { PortableArticle } from "@/components/learn/portable-article";
+import { ArticleContents } from "@/components/learn/article-contents";
+import { articleContents } from "@/lib/article-contents";
 import { CurriculumReader } from "@/components/learn/curriculum-reader";
 import { curriculumSections } from "@/lib/curriculum";
 import { ArticleDiscussion } from "@/components/learn/article-discussion";
@@ -94,6 +96,10 @@ export default async function ArticlePage({ params }: PageProps) {
 
   const isCurriculum = slug === "symbolic-systems-curriculum";
   const curriculumStart = isCurriculum ? curriculumSections(article.body || []).find(section => section.module)?.id : undefined;
+  const contents = slug === "how-to-build-a-website-and-put-it-online" ? articleContents(article.body || []) : [];
+  const hasContents = contents.length > 0;
+  const headingIds = Object.fromEntries(contents.map(entry => [entry.key, entry.id]));
+  const firstStepId = contents.find(entry => entry.level === 2)?.id;
   const category = stegaClean(article.category);
   const publishedAt = stegaClean(article.publishedAt);
   const updatedAt = article.updatedAt ? stegaClean(article.updatedAt) : publishedAt;
@@ -161,6 +167,8 @@ export default async function ArticlePage({ params }: PageProps) {
 
         {curriculumStart && <div className="mx-auto max-w-3xl px-5 pt-6 sm:px-8"><a href={`#${curriculumStart}`} className="inline-flex min-h-11 items-center gap-2 font-bold underline underline-offset-4">Go straight to the curriculum <span aria-hidden="true">↓</span></a></div>}
 
+        {firstStepId && <div className="mx-auto max-w-3xl px-5 pt-6 sm:px-8"><a href={"#" + firstStepId} className="inline-flex min-h-11 items-center gap-2 font-bold underline underline-offset-4">Go straight to the steps <span aria-hidden="true">↓</span></a></div>}
+
         {coverImageUrl && (
           <div className="px-5 pt-10 sm:px-8 sm:pt-14">
             <RetroWindow
@@ -186,7 +194,8 @@ export default async function ArticlePage({ params }: PageProps) {
           <ArticleDiscussion articleId={article._id} initialComments={article.comments || []} initialLikeCount={article.likeCount || 0} />
         </CurriculumReader> : (
         <div className="mx-auto grid grid-cols-1 max-w-6xl gap-12 px-5 py-12 sm:px-8 sm:py-16 lg:grid-cols-[minmax(0,760px)_240px]">
-          <div className="min-w-0">
+          {hasContents && <ArticleContents entries={contents} />}
+          <div className={hasContents ? "min-w-0 order-1" : "min-w-0"}>
             {sourceUrl && !hasEmbeddedVideo && (
               <a
                 href={sourceUrl}
@@ -209,11 +218,11 @@ export default async function ArticlePage({ params }: PageProps) {
               </aside>
             )}
             {videoPosition !== null ? <>
-              <PortableArticle value={(article.body || []).slice(0, videoPosition)} />
+              <PortableArticle value={(article.body || []).slice(0, videoPosition)} headingIds={hasContents ? headingIds : undefined} />
               <ArticleCompanionVideo />
-              <PortableArticle value={(article.body || []).slice(videoPosition)} />
+              <PortableArticle value={(article.body || []).slice(videoPosition)} headingIds={hasContents ? headingIds : undefined} />
             </> : article.body?.length ? (
-              <PortableArticle value={article.body} />
+              <PortableArticle value={article.body} headingIds={hasContents ? headingIds : undefined} />
             ) : null}
 
             {!!article.resources?.length && (
@@ -278,7 +287,7 @@ export default async function ArticlePage({ params }: PageProps) {
             />
           </div>
 
-          <aside className="learn-surface learn-border learn-shadow-sm h-fit border-2 p-5 lg:sticky lg:top-28">
+          {!hasContents && <aside className="learn-surface learn-border learn-shadow-sm h-fit border-2 p-5 lg:sticky lg:top-28">
             <p className="text-xs font-black uppercase tracking-[.18em]">
               Michelle&apos;s Computer
             </p>
@@ -293,7 +302,7 @@ export default async function ArticlePage({ params }: PageProps) {
             >
               Keep learning <ArrowUpRight className="h-4 w-4" />
             </Link>
-          </aside>
+          </aside>}
         </div>
         )}
       </article>
