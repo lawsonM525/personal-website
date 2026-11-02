@@ -4,6 +4,8 @@ import { absoluteUrl } from "@/lib/seo"
 import { sanityClient } from "@/sanity/lib/client"
 import { SITEMAP_ARTICLES_QUERY, SITEMAP_AUTHORS_QUERY } from "@/sanity/lib/queries"
 
+export const revalidate = 60
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const routes = [
     "/",
