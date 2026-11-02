@@ -1,13 +1,12 @@
 import Image from "next/image";
-import { PortableText, type PortableTextComponents } from "@portabletext/react";
+import { PortableText, type PortableTextComponents, type PortableTextBlockComponent } from "@portabletext/react";
 import type { PortableTextBlock } from "@portabletext/types";
 import { stegaClean } from "@sanity/client/stega";
 import { CopyCodeButton } from "@/components/learn/copy-code-button";
 import { RetroWindow } from "@/components/learn/retro-window";
 import { VideoEmbed } from "@/components/learn/video-embed";
 
-const components: PortableTextComponents = {
-  block: {
+const blockComponents: Record<string, PortableTextBlockComponent> = {
     normal: ({ children }) => (
       <p className="learn-muted my-6 text-[1.08rem] leading-8 sm:text-lg">
         {children}
@@ -28,7 +27,10 @@ const components: PortableTextComponents = {
         {children}
       </blockquote>
     ),
-  },
+};
+
+const components: PortableTextComponents = {
+  block: blockComponents,
   list: {
     bullet: ({ children }) => (
       <ul className="learn-muted my-6 list-disc space-y-3 pl-7 text-[1.08rem] leading-8">
@@ -42,6 +44,9 @@ const components: PortableTextComponents = {
     ),
   },
   marks: {
+    completedLearning: ({ children }) => (
+      <mark className="bg-[#d7edbd] px-1 py-0.5 text-[#214227] [&_*]:!text-[#214227] [box-decoration-break:clone] [-webkit-box-decoration-break:clone]">{children}</mark>
+    ),
     strong: ({ children }) => (
       <strong className="learn-ink font-black">{children}</strong>
     ),
@@ -130,6 +135,14 @@ const components: PortableTextComponents = {
   },
 };
 
-export function PortableArticle({ value }: { value: PortableTextBlock[] }) {
-  return <PortableText value={value} components={components} />;
+export function PortableArticle({ value, anchorPrefix }: { value: PortableTextBlock[]; anchorPrefix?: string }) {
+  const articleComponents: PortableTextComponents = anchorPrefix ? {
+    ...components,
+    block: {
+      ...blockComponents,
+      normal: ({ children, value: block }: { children?: React.ReactNode; value: PortableTextBlock }) => <p id={`${anchorPrefix}${block._key}`} className="learn-muted my-6 text-[1.08rem] leading-8 sm:text-lg">{children}</p>,
+      h3: ({ children, value: block }: { children?: React.ReactNode; value: PortableTextBlock }) => <h3 id={`${anchorPrefix}${block._key}`} className="mb-3 mt-10 text-2xl font-black leading-tight">{children}</h3>,
+    },
+  } : components;
+  return <PortableText value={value} components={articleComponents} />;
 }

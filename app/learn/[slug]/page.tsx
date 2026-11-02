@@ -5,6 +5,8 @@ import { notFound } from "next/navigation";
 import { ArrowUpRight } from "@/components/retro-icons";
 import { stegaClean } from "@sanity/client/stega";
 import { PortableArticle } from "@/components/learn/portable-article";
+import { CurriculumReader } from "@/components/learn/curriculum-reader";
+import { curriculumSections } from "@/lib/curriculum";
 import { ArticleDiscussion } from "@/components/learn/article-discussion";
 import { LearnThemeToggle } from "@/components/learn/learn-theme";
 import { NewsletterSignup } from "@/components/learn/newsletter-signup";
@@ -90,6 +92,8 @@ export default async function ArticlePage({ params }: PageProps) {
   const article = data as LearnArticle | null;
   if (!article) notFound();
 
+  const isCurriculum = slug === "symbolic-systems-curriculum";
+  const curriculumStart = isCurriculum ? curriculumSections(article.body || []).find(section => section.module)?.id : undefined;
   const category = stegaClean(article.category);
   const publishedAt = stegaClean(article.publishedAt);
   const updatedAt = article.updatedAt ? stegaClean(article.updatedAt) : publishedAt;
@@ -155,6 +159,8 @@ export default async function ArticlePage({ params }: PageProps) {
       <article>
         <ArticleHeader category={categoryLabels[category] || article.category} title={article.title} description={article.dek} authorName={article.author?.name || "Michelle Lawson"} authorHref={authorHref} publishedAt={publishedAt} updatedAt={updatedAt} readingMinutes={readingTime(article.estimatedWords)} />
 
+        {curriculumStart && <div className="mx-auto max-w-3xl px-5 pt-6 sm:px-8"><a href={`#${curriculumStart}`} className="inline-flex min-h-11 items-center gap-2 font-bold underline underline-offset-4">Go straight to the curriculum <span aria-hidden="true">↓</span></a></div>}
+
         {coverImageUrl && (
           <div className="px-5 pt-10 sm:px-8 sm:pt-14">
             <RetroWindow
@@ -176,6 +182,9 @@ export default async function ArticlePage({ params }: PageProps) {
           </div>
         )}
 
+        {isCurriculum ? <CurriculumReader body={article.body || []}>
+          <ArticleDiscussion articleId={article._id} initialComments={article.comments || []} initialLikeCount={article.likeCount || 0} />
+        </CurriculumReader> : (
         <div className="mx-auto grid grid-cols-1 max-w-6xl gap-12 px-5 py-12 sm:px-8 sm:py-16 lg:grid-cols-[minmax(0,760px)_240px]">
           <div className="min-w-0">
             {sourceUrl && !hasEmbeddedVideo && (
@@ -286,10 +295,11 @@ export default async function ArticlePage({ params }: PageProps) {
             </Link>
           </aside>
         </div>
+        )}
       </article>
-      <section className="px-5 pt-4 sm:px-8">
+      {isCurriculum ? <div className="mx-auto max-w-6xl px-5 pb-8 sm:px-8"><p className="learn-muted border-t border-[var(--learn-faint)] pt-6 text-sm leading-7">For more from Michelle’s Computer, <Link href="/magazine" className="font-semibold underline underline-offset-4">join the magazine waitlist ↗</Link>.</p></div> : <section className="px-5 pt-4 sm:px-8">
         <NewsletterSignup />
-      </section>
+      </section>}
     </main>
   );
 }
