@@ -135,13 +135,20 @@ const components: PortableTextComponents = {
   },
 };
 
-export function PortableArticle({ value, anchorPrefix }: { value: PortableTextBlock[]; anchorPrefix?: string }) {
-  const articleComponents: PortableTextComponents = anchorPrefix ? {
+export function PortableArticle({ value, anchorPrefix, headingIds }: { value: PortableTextBlock[]; anchorPrefix?: string; headingIds?: Record<string, string> }) {
+  const headingComponents: Record<string, PortableTextBlockComponent> = headingIds ? {
+    h2: ({ children, value: block }) => <h2 id={block._key ? headingIds[block._key] : undefined} tabIndex={-1} className="mb-4 mt-14 scroll-mt-24 text-3xl font-black leading-tight tracking-tight focus:outline-none sm:text-4xl">{children}</h2>,
+    h3: ({ children, value: block }) => <h3 id={block._key ? headingIds[block._key] : undefined} tabIndex={-1} className="mb-3 mt-10 scroll-mt-24 text-2xl font-black leading-tight focus:outline-none">{children}</h3>,
+  } : {};
+  const articleComponents: PortableTextComponents = anchorPrefix || headingIds ? {
     ...components,
     block: {
       ...blockComponents,
-      normal: ({ children, value: block }: { children?: React.ReactNode; value: PortableTextBlock }) => <p id={`${anchorPrefix}${block._key}`} className="learn-muted my-6 text-[1.08rem] leading-8 sm:text-lg">{children}</p>,
-      h3: ({ children, value: block }: { children?: React.ReactNode; value: PortableTextBlock }) => <h3 id={`${anchorPrefix}${block._key}`} className="mb-3 mt-10 text-2xl font-black leading-tight">{children}</h3>,
+      ...(anchorPrefix ? {
+        normal: ({ children, value: block }: { children?: React.ReactNode; value: PortableTextBlock }) => <p id={anchorPrefix + block._key} className="learn-muted my-6 text-[1.08rem] leading-8 sm:text-lg">{children}</p>,
+        h3: ({ children, value: block }: { children?: React.ReactNode; value: PortableTextBlock }) => <h3 id={anchorPrefix + block._key} className="mb-3 mt-10 text-2xl font-black leading-tight">{children}</h3>,
+      } : {}),
+      ...headingComponents,
     },
   } : components;
   return <PortableText value={value} components={articleComponents} />;
