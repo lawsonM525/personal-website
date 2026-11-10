@@ -18,7 +18,9 @@ function visitorLikeId(articleId: string, visitorId: string, salt: string) {
 export async function GET(request: Request) {
   const parsed = articleIdSchema.safeParse(new URL(request.url).searchParams.get("articleId"))
   if (!parsed.success) return NextResponse.json({ error: "Invalid article." }, { status: 400 })
-  const client = sanityClient.withConfig({ useCdn: false, stega: false })
+  // articleLike.* documents are private in Sanity, so reads need the same
+  // server credentials as writes to restore the saved state after a refresh.
+  const client = (getSanityWriteClient() || sanityClient).withConfig({ useCdn: false, stega: false })
   const salt = process.env.LEARN_INTERACTION_SALT
   const visitorId = (await cookies()).get(visitorCookie)?.value
   const likeId = salt && visitorId ? visitorLikeId(parsed.data, visitorId, salt).likeId : ""
