@@ -80,9 +80,11 @@ export function CurriculumReader({ body, children }: { body: PortableTextBlock[]
 
   function index() {
     return <>
+      {!!groups.before.length && <ul className={styles.indexList}>
+        <li><a href="#curriculum-before-you-start" onClick={() => revealTarget("curriculum-before-you-start")}>Before you start</a></li>
+      </ul>}
       <ol className={styles.indexList}>{groups.modules.map(indexLink)}</ol>
       <ul className={`${styles.indexList} ${styles.extraLinks}`}>
-        {!!groups.before.length && <li><a href="#curriculum-before-you-start" onClick={() => revealTarget("curriculum-before-you-start")}>Before you start</a></li>}
         {groups.after.map(indexLink)}
       </ul>
       {!!completed.length && <section className={styles.learningLog} aria-label="Michelle’s completed learning">
@@ -109,12 +111,12 @@ export function CurriculumReader({ body, children }: { body: PortableTextBlock[]
       <details className={styles.mobileIndex} ref={mobileIndex}><summary><span>Jump to a module</span><span className={styles.currentModule}>{activeModule?.title || "8 modules + learning log"}</span></summary><nav aria-label="Jump through the curriculum">{index()}</nav></details>
     </aside>
     <div className={styles.content}>
-      <div className={styles.controls}><p>Eight modules. Open one and start anywhere.</p><div><button onClick={() => setAll(true)} type="button">Expand all</button><button onClick={() => setAll(false)} type="button">Collapse all</button></div></div>
-      <div aria-label="The eight curriculum modules">{groups.modules.map(section)}</div>
       {!!groups.before.length && <details id="curriculum-before-you-start" className={`${styles.section} ${styles.beforeStart}`} data-curriculum-section>
         <summary><div><h2>Before you start</h2><p>The story, reading list &amp; how to use this plan</p></div></summary>
         <div className={styles.beforeBody}>{groups.before.map(section)}</div>
       </details>}
+      <div className={styles.controls}><p>Eight modules. Open one and start anywhere.</p><div><button onClick={() => setAll(true)} type="button">Expand all</button><button onClick={() => setAll(false)} type="button">Collapse all</button></div></div>
+      <div aria-label="The eight curriculum modules">{groups.modules.map(section)}</div>
       {groups.after.map(section)}
       {children}
     </div>

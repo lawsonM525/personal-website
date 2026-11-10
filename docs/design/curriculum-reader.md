@@ -1,8 +1,8 @@
 # Symbolic Systems curriculum reader
 
-The Symbolic Systems article places its smaller existing illustration beside Michelle’s welcome. The eight numbered modules lead the reader as compact native disclosure rows, initially collapsed so the whole course is easy to scan. The story, background and reading list are grouped under “Before you start,” followed by the original progress and guide sections. Nothing is removed from the Sanity body; existing section and reading anchors stay intact.
+The Symbolic Systems article places its smaller existing illustration beside Michelle’s welcome. The story, background and reading list are grouped under “Before you start” above the curriculum. The eight numbered modules follow as compact native disclosure rows, initially collapsed so the whole course is easy to scan, followed by the original progress and guide sections. Nothing is removed from the Sanity body; existing section and reading anchors stay intact.
 
-The desktop index prioritizes the eight modules, then supporting sections and Michelle’s learning log. On phones and tablets, a sticky “Jump to a module” menu follows the reader, displays the current module, and closes after choosing a destination. The index and direct URL fragments open every enclosing disclosure before scrolling, including readings nested under “Before you start.” Expand/collapse controls affect reading sections only, not the mobile menu.
+The desktop and mobile indexes start with “Before you start,” followed by the eight modules, supporting sections and Michelle’s learning log. On phones and tablets, a sticky “Jump to a module” menu follows the reader, displays the current module, and closes after choosing a destination. The index and direct URL fragments open every enclosing disclosure before scrolling, including readings nested under “Before you start.” Expand/collapse controls affect reading sections only, not the mobile menu.
 
 All content stays in Sanity as Portable Text, including links to future recaps. Only this curriculum uses the new layout and the simple magazine link.
 

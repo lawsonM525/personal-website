@@ -1,5 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
+import {readFileSync} from 'node:fs'
 import {blockText, curriculumSections, curriculumGroups, completedReadings, highlightCompletedLearning} from '../lib/curriculum.ts'
 
 const block=(key,text,style='normal')=>({_type:'block',_key:key,style,markDefs:[],children:[{_type:'span',_key:key+'text',text,marks:[]}]})
@@ -35,7 +36,7 @@ test('the author learning log excludes absent topics and never invents recap lin
  assert.ok(!highlighted[1].children.some(s=>s.marks.includes('completedLearning')))
 })
 
-test('the compact overview moves all eight modules forward without losing sections or old reading targets',()=>{
+test('the compact overview groups all eight modules without losing sections or old reading targets',()=>{
  const body=[block('intro','My story'),block('books','Reading list','h2'),block('geb','Gödel, Escher, Bach'),...Array.from({length:8},(_,i)=>[block(`m${i}`,`${i+1} Module ${i+1}`,'h2'),block(`reading${i}`,`Reading ${i+1}`)]).flat(),block('progress','What counts as progress','h2'),block('progressbody','Make something')]
  const sections=curriculumSections(body)
  const before=structuredClone(sections)
@@ -54,4 +55,18 @@ test('the compact overview moves all eight modules forward without losing sectio
 test('grouping keeps a curriculum without numbered modules readable',()=>{
  const sections=curriculumSections([block('intro','Welcome'),block('reading','Read this')])
  assert.deepEqual(curriculumGroups(sections),{before:sections,modules:[],after:[]})
+})
+
+
+test('before you start precedes the curriculum in the content and shared jump index',()=>{
+ const reader=readFileSync(new URL('../components/learn/curriculum-reader.tsx',import.meta.url),'utf8')
+ const beforeSection=reader.indexOf('<details id="curriculum-before-you-start"')
+ const controls=reader.indexOf('<div className={styles.controls}>')
+ const modules=reader.indexOf('<div aria-label="The eight curriculum modules">')
+ const beforeLink=reader.indexOf('<a href="#curriculum-before-you-start"')
+ const moduleLinks=reader.indexOf('<ol className={styles.indexList}>{groups.modules.map(indexLink)}</ol>')
+ assert.ok(beforeSection>=0 && beforeSection<controls && controls<modules)
+ assert.ok(beforeLink>=0 && beforeLink<moduleLinks)
+ assert.equal(reader.match(/<details id="curriculum-before-you-start"/g)?.length,1)
+ assert.equal(reader.match(/groups\.before\.map\(section\)/g)?.length,1)
 })
