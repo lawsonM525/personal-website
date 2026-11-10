@@ -1,4 +1,5 @@
 import Link from "next/link"
+import type { ReactNode } from "react"
 import { ArrowLeft, Clock3 } from "@/components/retro-icons"
 import { LearnThemeToggle } from "./learn-theme"
 import { articleDate } from "@/lib/editorial"
@@ -6,7 +7,7 @@ import { articleDate } from "@/lib/editorial"
 type ArticleHeaderProps = {
   category: string
   title: string
-  description: string
+  description: ReactNode
   authorName: string
   authorHref?: string
   publishedAt: string

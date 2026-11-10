@@ -95,6 +95,7 @@ export default async function ArticlePage({ params }: PageProps) {
   if (!article) notFound();
 
   const isCurriculum = slug === "symbolic-systems-curriculum";
+  const curriculumWelcome = isCurriculum && article.summary;
   const curriculumStart = isCurriculum ? curriculumSections(article.body || []).find(section => section.module)?.id : undefined;
   const contents = slug === "how-to-build-a-website-and-put-it-online" ? articleContents(article.body || []) : [];
   const hasContents = contents.length > 0;
@@ -163,7 +164,7 @@ export default async function ArticlePage({ params }: PageProps) {
 
 
       <article>
-        <ArticleHeader category={categoryLabels[category] || article.category} title={article.title} description={article.dek} authorName={article.author?.name || "Michelle Lawson"} authorHref={authorHref} publishedAt={publishedAt} updatedAt={updatedAt} readingMinutes={readingTime(article.estimatedWords)} />
+        <ArticleHeader category={categoryLabels[category] || article.category} title={article.title} description={curriculumWelcome ? <span className="whitespace-pre-line">{curriculumWelcome}</span> : article.dek} authorName={article.author?.name || "Michelle Lawson"} authorHref={authorHref} publishedAt={publishedAt} updatedAt={updatedAt} readingMinutes={readingTime(article.estimatedWords)} />
 
         {curriculumStart && <div className="mx-auto max-w-3xl px-5 pt-6 sm:px-8"><a href={`#${curriculumStart}`} className="inline-flex min-h-11 items-center gap-2 font-bold underline underline-offset-4">Go straight to the curriculum <span aria-hidden="true">↓</span></a></div>}
 
