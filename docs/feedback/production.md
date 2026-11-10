@@ -1,6 +1,6 @@
 # Feedback exchange production setup
 
-The exchange at `/feedback` uses Supabase project `mhjxejxkdxuwypddgcxl` for email sign-in, builder profiles, projects, reviews, replies, reports, and moderation. Learn article comments and likes still use the separate Sanity endpoints; this release does not migrate them.
+The exchange at `/feedback` uses Supabase project `mhjxejxkdxuwypddgcxl` for email sign-in, builder profiles, projects, reviews, replies, reports, and moderation. New Learn article comments also use Supabase; existing Sanity comments remain visible. Article likes use the separate Sanity endpoint.
 
 ## Configuration
 
@@ -24,6 +24,12 @@ Projects, reviews, and replies publish immediately. The publish-first migration 
 - Keep test submissions out of the public queue. Use the rollback database test for review-credit and moderation mutations.
 
 To pause the exchange, set `FEEDBACK_EXCHANGE_OPEN=false` and redeploy. The page then offers an example, and write actions remain closed.
+
+## Article likes
+
+The discussion heart is an explicit **Like / Liked** action with its count beside it. `GET /api/learn/like` refreshes the count and the current browser’s saved state without caching. The anonymous, HTTP-only `mc_reader` cookie identifies that browser; an HMAC with `LEARN_INTERACTION_SALT` derives its article-like document ID. No account is required. Writes use an explicit desired state to avoid reversing a like if a request is retried, and reject cross-origin requests.
+
+Production needs both `SANITY_API_WRITE_TOKEN` and a stable, randomly generated `LEARN_INTERACTION_SALT`, stored as server-only Vercel secrets followed by a deployment. Use a dedicated Sanity project API token with Editor access; never reuse a personal CLI session token or expose either value with `NEXT_PUBLIC_`. Creating this credential requires explicit approval. If configuration or the read endpoint is unavailable, the control is disabled and explains the problem; it does not pretend that a like was saved. Verify like, refresh, and unlike with one isolated browser cookie, leaving real comments and profiles unchanged.
 
 
 Member portraits and article comments use `202610280002_member_portraits.sql`; the launch credit policy uses `202610280003_feedback_launch.sql`. Both were tested in rollback transactions before applying. The public profile stores a validated DiceBear choice object: Lorelei illustrated portraits (v2) by default, or the original Pixel Art portraits (v1). The editor retains a separate draft for each style when switching; Save alone commits a choice. Members edit only their own name and portrait, with the same verified email session on Learn and Feedback. Rendering happens locally with pinned DiceBear 9.2.2 packages (MIT code; CC0 designs by Lisa Wischofsky for Lorelei and DiceBear for Pixel Art); there are no photo uploads or requests to a third-party avatar API. Existing Sanity comments remain visible as legacy comments. New article comments publish in Supabase immediately and appear with the member’s current portrait. Reports, removal, and restoration are available in Feedback → Moderation. The older Sanity like endpoint remains separate.

@@ -8,6 +8,7 @@ import { PortableArticle } from "@/components/learn/portable-article";
 import { ArticleContents } from "@/components/learn/article-contents";
 import { articleContents } from "@/lib/article-contents";
 import { CurriculumReader } from "@/components/learn/curriculum-reader";
+import { CurriculumHeader } from "@/components/learn/curriculum-header";
 import { curriculumSections } from "@/lib/curriculum";
 import { ArticleDiscussion } from "@/components/learn/article-discussion";
 import { LearnThemeToggle } from "@/components/learn/learn-theme";
@@ -164,13 +165,11 @@ export default async function ArticlePage({ params }: PageProps) {
 
 
       <article>
-        <ArticleHeader category={categoryLabels[category] || article.category} title={article.title} description={curriculumWelcome ? <span className="whitespace-pre-line">{curriculumWelcome}</span> : article.dek} authorName={article.author?.name || "Michelle Lawson"} authorHref={authorHref} publishedAt={publishedAt} updatedAt={updatedAt} readingMinutes={readingTime(article.estimatedWords)} />
-
-        {curriculumStart && <div className="mx-auto max-w-3xl px-5 pt-6 sm:px-8"><a href={`#${curriculumStart}`} className="inline-flex min-h-11 items-center gap-2 font-bold underline underline-offset-4">Go straight to the curriculum <span aria-hidden="true">↓</span></a></div>}
+        {isCurriculum ? <CurriculumHeader title={article.title} welcome={curriculumWelcome || article.dek} authorName={article.author?.name || "Michelle Lawson"} authorHref={authorHref} publishedAt={publishedAt} coverImageUrl={coverImageUrl} coverImageAlt={article.coverImageAlt} startId={curriculumStart} /> : <ArticleHeader category={categoryLabels[category] || article.category} title={article.title} description={article.dek} authorName={article.author?.name || "Michelle Lawson"} authorHref={authorHref} publishedAt={publishedAt} updatedAt={updatedAt} readingMinutes={readingTime(article.estimatedWords)} />}
 
         {firstStepId && <div className="mx-auto max-w-3xl px-5 pt-6 sm:px-8"><a href={"#" + firstStepId} className="inline-flex min-h-11 items-center gap-2 font-bold underline underline-offset-4">Go straight to the steps <span aria-hidden="true">↓</span></a></div>}
 
-        {coverImageUrl && (
+        {coverImageUrl && !isCurriculum && (
           <div className="px-5 pt-10 sm:px-8 sm:pt-14">
             <RetroWindow
               title="MICHELLE'S COMPUTER"
