@@ -33,6 +33,16 @@ export function curriculumSections(body: PortableTextBlock[]): CurriculumSection
   return sections;
 }
 
+// Keep each section and its existing anchors intact when bringing modules forward.
+export function curriculumGroups(sections: CurriculumSection[]) {
+  const firstModule = sections.findIndex(section => section.module);
+  return {
+    before: firstModule < 0 ? sections : sections.slice(0, firstModule),
+    modules: sections.filter(section => section.module),
+    after: firstModule < 0 ? [] : sections.slice(firstModule).filter(section => !section.module),
+  };
+}
+
 export function completedReadings(body: PortableTextBlock[], completed: CompletedLearning[]) {
   return completed.flatMap(item => {
     const block = body.find(block => blockText(block).includes(item.title));

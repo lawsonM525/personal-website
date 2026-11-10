@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import {blockText, curriculumSections, completedReadings, highlightCompletedLearning} from '../lib/curriculum.ts'
+import {blockText, curriculumSections, curriculumGroups, completedReadings, highlightCompletedLearning} from '../lib/curriculum.ts'
 
 const block=(key,text,style='normal')=>({_type:'block',_key:key,style,markDefs:[],children:[{_type:'span',_key:key+'text',text,marks:[]}]})
 
@@ -33,4 +33,25 @@ test('the author learning log excludes absent topics and never invents recap lin
  assert.equal(completedReadings(body,[{title:'Gödel, Escher, Bach',recapHref:'/learn/my-recap'}])[0].recapHref,'/learn/my-recap')
  const highlighted=highlightCompletedLearning(body,[{title:'Gödel, Escher, Bach'}])
  assert.ok(!highlighted[1].children.some(s=>s.marks.includes('completedLearning')))
+})
+
+test('the compact overview moves all eight modules forward without losing sections or old reading targets',()=>{
+ const body=[block('intro','My story'),block('books','Reading list','h2'),block('geb','Gödel, Escher, Bach'),...Array.from({length:8},(_,i)=>[block(`m${i}`,`${i+1} Module ${i+1}`,'h2'),block(`reading${i}`,`Reading ${i+1}`)]).flat(),block('progress','What counts as progress','h2'),block('progressbody','Make something')]
+ const sections=curriculumSections(body)
+ const before=structuredClone(sections)
+ const groups=curriculumGroups(sections)
+ assert.equal(groups.modules.length,8)
+ assert.deepEqual(groups.modules.map(s=>s.title),Array.from({length:8},(_,i)=>`${i+1} Module ${i+1}`))
+ assert.deepEqual(groups.before.map(s=>s.title),['Why I’m studying this','Reading list'])
+ assert.deepEqual(groups.after.map(s=>s.title),['What counts as progress'])
+ assert.deepEqual([...groups.before,...groups.modules,...groups.after],sections)
+ assert.equal(completedReadings(body,[{title:'Gödel, Escher, Bach'}])[0].targetId,'curriculum-reading-geb')
+ assert.ok(groups.before.some(s=>s.blocks.some(b=>b._key==='geb')))
+ assert.deepEqual(sections,before)
+ assert.equal(new Set([...groups.before,...groups.modules,...groups.after].map(s=>s.id)).size,sections.length)
+})
+
+test('grouping keeps a curriculum without numbered modules readable',()=>{
+ const sections=curriculumSections([block('intro','Welcome'),block('reading','Read this')])
+ assert.deepEqual(curriculumGroups(sections),{before:sections,modules:[],after:[]})
 })
