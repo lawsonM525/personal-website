@@ -7,6 +7,14 @@ try {
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  async redirects() {
+    return [{
+      source: '/:path*',
+      has: [{ type: 'host', value: '(?:www\\.)?michellelawson\\.me' }],
+      destination: 'https://michellescomputer.com/:path*',
+      permanent: true,
+    }]
+  },
   images: {
     unoptimized: false,
     remotePatterns: [{ protocol: 'https', hostname: 'cdn.sanity.io', pathname: '/images/**' }],
