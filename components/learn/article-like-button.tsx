@@ -45,9 +45,9 @@ export function ArticleLikeButton({ articleId, initialCount }: { articleId: stri
   }
 
   return <div className={styles.group}>
-    <button type="button" onClick={toggle} aria-pressed={liked} aria-busy={saving} aria-label={`${liked ? "Unlike" : "Like"} this article, ${count} ${count === 1 ? "like" : "likes"}`} disabled={!ready || saving} className={`learn-border learn-surface learn-shadow-sm ${styles.button}`}>
+    <button type="button" onClick={toggle} aria-pressed={liked} aria-busy={saving} aria-label={`${liked ? "Unlike" : "Like"} this article, ${count} ${count === 1 ? "like" : "likes"}`} disabled={!ready || saving} className={styles.button}>
       <span key={celebration} className={styles.visual} data-celebrate={liked && celebration > 0 || undefined} aria-hidden="true">
-        <Heart className={styles.heart} data-liked={liked} size={22} />
+        <Heart className={styles.heart} data-liked={liked} size={18} />
         {liked && celebration > 0 && <span className={styles.burst}>{heartFlights.map(([x, y, turn], index) => <Heart key={index} className={styles.flyingHeart} size={12} style={{ "--heart-x": `${x}px`, "--heart-y": `${y}px`, "--heart-turn": `${turn}deg`, "--heart-delay": `${index * 18}ms` } as CSSProperties} />)}</span>}
       </span>
       <span>{saving ? "Saving…" : liked ? "Liked" : "Like"}</span>
