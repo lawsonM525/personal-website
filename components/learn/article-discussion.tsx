@@ -1,7 +1,6 @@
 "use client"
 
 import { useCallback, useEffect, useRef, useState } from "react"
-import { MessageCircle } from "@/components/retro-icons"
 import { ArticleLikeButton } from "./article-like-button"
 import { CommentComposer } from "./comment-composer"
 import { CommentGif } from "./comment-gif"
@@ -67,7 +66,7 @@ export function ArticleDiscussion({ articleId, initialComments, initialLikeCount
   function commentRow(comment: ArticleMemberComment, isReply = false) {
     const parent = comments.find(item => item.id === comment.parent_id)
     return <article key={comment.id} id={`comment-${comment.id}`} className={styles.comment} aria-label={`Comment by ${comment.author_name}`}>
-      <div className={styles.identity}><MemberAvatar name={comment.author_name} avatar={comment.avatar} size={isReply ? 32 : 40} /><h4>{comment.author_name}</h4><time dateTime={comment.created_at}>{new Date(comment.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</time></div>
+      <div className={styles.identity}><MemberAvatar name={comment.author_name} avatar={comment.avatar} size={isReply ? 24 : 28} /><h4>{comment.author_name}</h4><time dateTime={comment.created_at}>{new Date(comment.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</time></div>
       {isReply && parent && <p className={styles.replyLabel}>↳ Replying to {parent.author_name}</p>}
       {comment.body && <p className={styles.body}>{comment.body}</p>}
       {comment.gif_id && <CommentGif gifId={comment.gif_id} />}
@@ -78,11 +77,10 @@ export function ArticleDiscussion({ articleId, initialComments, initialLikeCount
       <div className={styles.actions}>
         <button type="button" className={styles.primaryAction} aria-expanded={replyTo === comment.id} onClick={() => { setReplyTo(replyTo === comment.id ? null : comment.id); if (!viewer) signInPrompt() }}>Reply ↩</button>
         <button type="button" className={styles.primaryAction} aria-expanded={reactionPicker === comment.id} onClick={() => setReactionPicker(reactionPicker === comment.id ? null : comment.id)}>React ☺</button>
-        {viewer && <button type="button" className={styles.textButton} onClick={() => setReport(report === comment.id ? null : comment.id)}>Report</button>}
-        {viewer?.is_admin && <button type="button" className={styles.textButton} disabled={busy === comment.id} onClick={() => remove(comment)}>Remove</button>}
+        {viewer && <details className={styles.options}><summary aria-label={`Options for ${comment.author_name}’s comment`} title="Comment options">···</summary><div><button type="button" className={styles.textButton} onClick={event => { event.currentTarget.closest("details")?.removeAttribute("open"); setReport(report === comment.id ? null : comment.id) }}>Report</button>{viewer.is_admin && <button type="button" className={styles.textButton} disabled={busy === comment.id} onClick={() => remove(comment)}>Remove</button>}</div></details>}
       </div>
       {reactionPicker === comment.id && <div className={styles.reactionTray} role="group" aria-label={`React to ${comment.author_name}’s comment`}>{commentReactions.map(choice => <button type="button" key={choice.key} title={choice.label} aria-label={choice.label} aria-pressed={Boolean(comment.reactions?.find(reaction => reaction.kind === choice.key)?.reacted)} disabled={busy === comment.id} onClick={() => react(comment, choice.key)}>{choice.emoji}</button>)}</div>}
-      {replyTo === comment.id && viewer && <CommentComposer replyingTo={comment.author_name} onCancel={() => setReplyTo(null)} onSubmit={async (message, gifId, website) => { await post({ articleId, message, gifId, parentId: comment.id, website }); await load(); setReplyTo(null); setNote("Your reply is live.") }} />}
+      {replyTo === comment.id && viewer && <CommentComposer replyingTo={comment.author_name} onCancel={() => setReplyTo(null)} onSubmit={async (message, website) => { await post({ articleId, message, parentId: comment.id, website }); await load().catch(error => setError(error.message)); setReplyTo(null); setNote("Your reply is live.") }} />}
       {report === comment.id && viewer && <form className={styles.report} onSubmit={async event => {
         event.preventDefault(); const values = new FormData(event.currentTarget); if (mutation.current) return
         mutation.current = true; setBusy(comment.id); setError("")
@@ -93,16 +91,15 @@ export function ArticleDiscussion({ articleId, initialComments, initialLikeCount
     </article>
   }
   const count = initialComments.length + comments.length
-  return <section className="learn-border mt-16 border-t-4 pt-9" aria-labelledby="discussion-heading">
-    <div className="flex flex-wrap items-end justify-between gap-6"><div><p className="text-xs font-black uppercase tracking-[.2em]">Discussion</p><h2 id="discussion-heading" className="mt-2 font-serif text-4xl tracking-tight sm:text-5xl">What are you thinking?</h2></div><ArticleLikeButton articleId={articleId} initialCount={initialLikeCount} /></div>
+  return <section className={styles.discussion} aria-labelledby="discussion-heading">
+    <div className={styles.header}><h2 id="discussion-heading">What are you thinking?</h2><ArticleLikeButton articleId={articleId} initialCount={initialLikeCount} /></div>
     <div className={styles.layout}><div className={styles.account} id="article-comment-account">
-      <div className="flex items-center gap-2 font-black"><MessageCircle className="h-5 w-5" /> Leave a comment</div>
-      <MemberAccount onChange={next => { setViewer(next); load().catch(error => setError(error.message)) }} />
-      {viewer && <CommentComposer onSubmit={async (message, gifId, website) => { await post({ articleId, message, gifId, website }); await load(); setNote("Your comment is live.") }} />}
+      <MemberAccount variant="discussion" onChange={next => { setViewer(next); load().catch(error => setError(error.message)) }} />
+      {viewer && <CommentComposer onSubmit={async (message, website) => { await post({ articleId, message, website }); await load().catch(error => setError(error.message)); setNote("Your comment is live.") }} />}
       {note && <p role="status" className={styles.note}>{note}</p>}
-    </div><div className={styles.comments} aria-busy={loading}><h3 className="text-sm font-black uppercase tracking-[.16em]">{loading ? "Opening the conversation…" : `${count} ${count === 1 ? "comment" : "comments"}`}</h3>
+    </div><div className={styles.comments} aria-busy={loading}><h3 className={styles.count}>{loading ? "Opening the conversation…" : `${count} ${count === 1 ? "comment" : "comments"}`}</h3>
       {commentThreads(comments).map(thread => <div key={thread.root.id}>{commentRow(thread.root)}{thread.replies.length > 0 && <div className={styles.replies}>{thread.replies.map(reply => commentRow(reply, true))}</div>}</div>)}
-      {initialComments.map(comment => <article key={comment._id} className={styles.comment}><div className={styles.identity}><MemberAvatar name={comment.displayName} size={40} /><h4>{comment.displayName}</h4><time dateTime={comment.submittedAt}>{new Date(comment.submittedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</time></div><p className={styles.body}>{comment.message}</p></article>)}
+      {initialComments.map(comment => <article key={comment._id} className={styles.comment}><div className={styles.identity}><MemberAvatar name={comment.displayName} size={28} /><h4>{comment.displayName}</h4><time dateTime={comment.submittedAt}>{new Date(comment.submittedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</time></div><p className={styles.body}>{comment.message}</p></article>)}
       {!loading && !count && !error && <p className="learn-muted mt-5 max-w-md leading-7">No comments yet. You could be the first person with an opinion, which has never stopped the internet before.</p>}
     </div></div>
     {error && <p role="alert" className={styles.error}>{error}</p>}
