@@ -6,6 +6,12 @@ The custom-domain site has a working technical foundation and is being improved 
 
 Search Console is now verified and the sitemap has been submitted. Google's current indexed homepage record still reflects the old Lovable deployment; a successful live test and fresh indexing request address discovery of the current custom-domain site. This is not yet a completed search program: actual indexing, query performance, and conversions need ongoing evidence.
 
+## Curriculum search destination follow-through
+
+A November 2026 Google check returned the curriculum directly and also returned a legacy `www.michellelawson.me/learn` result. The curriculum already had its own correct title, self-canonical, crawlable link from Learn, sitemap entry, and HTTP 200 response. The `www` legacy domain was still serving duplicate pages with HTTP 200, while the bare legacy domain already redirected.
+
+The Next.js configuration now permanently redirects both legacy hostname variants to the same path on `https://michellescomputer.com`, retaining query parameters. Curriculum links stay curriculum links; guide links stay guide links; Learn remains the article library. This consolidates the duplicate hostname without changing the agreed page visuals. Next’s routing test helper checks the actual redirect behavior, including deep links, query preservation, and avoiding loops or matches on unrelated hosts. Search Console inspection and crawl requests are recorded separately from any eventual Google ranking change.
+
 ## First technical pass
 
 | Finding in the live audit | First-pass correction |
