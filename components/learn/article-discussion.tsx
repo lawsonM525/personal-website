@@ -1,19 +1,14 @@
 "use client"
 
-import { FormEvent, useEffect, useRef, useState } from "react"
-import { Heart, MessageCircle } from "@/components/retro-icons"
+import { FormEvent, useEffect, useState } from "react"
+import { MessageCircle } from "@/components/retro-icons"
+import { ArticleLikeButton } from "./article-like-button"
 import { MemberAccount } from "@/components/member/member-account"
 import { MemberAvatar } from "@/components/member/member-avatar"
 import type { ArticleMemberComment, FeedbackViewer } from "@/lib/feedback"
 import type { LearnComment } from "@/sanity/lib/types"
 
 export function ArticleDiscussion({ articleId, initialComments, initialLikeCount }: { articleId: string; initialComments: LearnComment[]; initialLikeCount: number }) {
-  const [liked, setLiked] = useState(false)
-  const [likeCount, setLikeCount] = useState(initialLikeCount)
-  const [likeNote, setLikeNote] = useState("")
-  const [likeReady, setLikeReady] = useState(false)
-  const [liking, setLiking] = useState(false)
-  const likeInFlight = useRef(false)
   const [viewer, setViewer] = useState<FeedbackViewer | null>(null)
   const [comments, setComments] = useState<ArticleMemberComment[]>([])
   const [sending, setSending] = useState(false)
@@ -29,32 +24,10 @@ export function ArticleDiscussion({ articleId, initialComments, initialLikeCount
   }
   useEffect(() => {
     const controller = new AbortController()
-    setLikeReady(false)
-    fetch(`/api/learn/like?articleId=${encodeURIComponent(articleId)}`, { cache: "no-store", signal: controller.signal })
-      .then(async response => {
-        const data = await response.json()
-        if (!response.ok) throw new Error(data.error || "Likes couldn’t load. Please try again later.")
-        setLiked(data.liked); setLikeCount(data.count); setLikeReady(data.enabled)
-        setLikeNote(data.enabled ? "" : "Likes are temporarily unavailable.")
-      }).catch(error => { if (error.name !== "AbortError") setLikeNote(error.message) })
     load(controller.signal).catch(error => { if (error.name !== "AbortError") setError(error.message) })
     if (new URLSearchParams(window.location.search).get("signin") === "expired") setError("That sign-in link expired or opened in a different browser. Request another one below.")
     return () => controller.abort()
   }, [articleId])
-  async function toggleLike() {
-    if (!likeReady || likeInFlight.current) return
-    likeInFlight.current = true
-    setLiking(true)
-    setLikeNote("")
-    try {
-      const response = await fetch("/api/learn/like", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ articleId, liked: !liked }) })
-      const data = await response.json()
-      if (!response.ok) throw new Error(data.error || "The like button is having a moment.")
-      setLiked(data.liked); setLikeCount(data.count)
-      setLikeNote(data.liked ? "Thanks for the love!" : "Like removed.")
-    } catch (error) { setLikeNote(error instanceof Error ? error.message : "The like button couldn’t connect.") }
-    finally { likeInFlight.current = false; setLiking(false) }
-  }
   async function post(body: Record<string, unknown>) {
     const response = await fetch("/api/learn/comments", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) })
     const data = await response.json()
@@ -68,8 +41,7 @@ export function ArticleDiscussion({ articleId, initialComments, initialLikeCount
     finally { setSending(false) }
   }
   return <section className="learn-border mt-16 border-t-4 pt-9" aria-labelledby="discussion-heading">
-    <div className="flex flex-wrap items-end justify-between gap-6"><div><p className="text-xs font-black uppercase tracking-[.2em]">Discussion</p><h2 id="discussion-heading" className="mt-2 font-serif text-4xl tracking-tight sm:text-5xl">What are you thinking?</h2></div><button type="button" onClick={toggleLike} aria-pressed={liked} aria-busy={liking} aria-label={`${liked ? "Unlike" : "Like"} this article, ${likeCount} ${likeCount === 1 ? "like" : "likes"}`} disabled={!likeReady || liking} className={`learn-border learn-surface learn-shadow-sm inline-flex min-h-11 items-center gap-2 border-2 px-4 py-3 font-black enabled:active:translate-x-0.5 enabled:active:translate-y-0.5 enabled:active:shadow-none disabled:opacity-60 ${liked ? "text-[#7557ff]" : ""}`}><Heart className="h-5 w-5" aria-hidden="true" fill={liked ? "currentColor" : "none"} /><span>{liking ? "Saving…" : liked ? "Liked" : "Like"}</span><span className="learn-muted border-l pl-2 text-sm font-normal" aria-hidden="true">{likeCount}</span></button></div>
-    {likeNote && <p role="status" className="learn-muted mt-3 text-sm">{likeNote}</p>}
+    <div className="flex flex-wrap items-end justify-between gap-6"><div><p className="text-xs font-black uppercase tracking-[.2em]">Discussion</p><h2 id="discussion-heading" className="mt-2 font-serif text-4xl tracking-tight sm:text-5xl">What are you thinking?</h2></div><ArticleLikeButton articleId={articleId} initialCount={initialLikeCount} /></div>
     <div className="mt-9 grid gap-10 lg:grid-cols-[.9fr_1.1fr]"><div className="self-start">
       <div className="flex items-center gap-2 font-black"><MessageCircle className="h-5 w-5" /> Leave a comment</div>
       <MemberAccount onChange={next => { setViewer(next); load().catch(error => setError(error.message)) }} />
