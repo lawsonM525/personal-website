@@ -26,6 +26,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/projects/delta-stock-pitch",
     "/research",
     "/talks",
+    "/slides/the-beautiful-woman",
     "/posts",
     "/reminder",
     "/10apps",
