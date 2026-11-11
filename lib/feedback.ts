@@ -1,5 +1,6 @@
 import { z } from "zod"
 import type { AvatarConfig } from "./member/avatar"
+import type { CommentReaction } from "./learn-discussion"
 
 export const feedbackReviewCost = 3
 export const feedbackReplyMinLength = 500
@@ -74,8 +75,8 @@ export type FeedbackComment = { id: string; project_id: string; author_id: strin
 export type FeedbackReport = { id: string; target_kind: "project" | "review" | "comment"; target_id: string; reason: string; detail: string; created_at: string; target?: { project_id: string; project_title: string; project_url: string; author_name: string; status: string; body: string } }
 export type FeedbackHiddenContent = { id: string; kind: "review" | "comment"; project_id: string; project_title: string; author_name: string; body: string; created_at: string }
 export type FeedbackViewer = { id: string; display_name: string; avatar?: AvatarConfig | null; credits: number; submission_cost: 0 | 3; reviewer_stats?: ReviewerStats; is_admin: boolean; own_projects: FeedbackProject[]; assignment: { project_id: string; expires_at: string } | null }
-export type ArticleMemberComment = { id: string; author_name: string; avatar?: AvatarConfig | null; body: string; created_at: string; article_title: string; article_slug: string; status?: "published" | "hidden" }
-export type ArticleModeration = { comments: ArticleMemberComment[]; reports: { id: string; comment_id: string; reason: string; detail: string; body: string; author_name: string; article_title: string; article_slug: string }[] }
+export type ArticleMemberComment = { id: string; author_name: string; avatar?: AvatarConfig | null; body: string; parent_id?: string | null; gif_id?: string | null; reactions?: CommentReaction[]; created_at: string; article_title: string; article_slug: string; status?: "published" | "hidden" }
+export type ArticleModeration = { comments: ArticleMemberComment[]; reports: { id: string; comment_id: string; reason: string; detail: string; body: string; gif_id?: string | null; parent_id?: string | null; author_name: string; article_title: string; article_slug: string }[] }
 export type FeedbackBoard = { configured: boolean; submission_cost?: 0 | 3; launch_remaining?: number; reviewers?: FeedbackReviewer[]; projects: FeedbackProject[]; reviews: FeedbackReview[]; comments: FeedbackComment[]; viewer: FeedbackViewer | null; moderation?: { projects: FeedbackProject[]; reports: FeedbackReport[]; hidden?: FeedbackHiddenContent[]; discussion?: ArticleModeration } }
 
 export function prioritizeFeedback(projects: FeedbackProject[]) {
