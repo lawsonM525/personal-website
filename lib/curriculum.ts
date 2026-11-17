@@ -1,12 +1,18 @@
 import type { PortableTextBlock } from "@portabletext/types";
 
-export type CompletedLearning = { title: string; label?: string; recapHref?: string };
+export type LearningVideo = { id: string; title: string; caption: string };
+export type CompletedLearning = { title: string; label?: string; recapHref?: string; video?: LearningVideo };
 export type CurriculumSection = { id: string; title: string; heading?: PortableTextBlock; blocks: PortableTextBlock[]; module: boolean };
 
 // Michelle's progress, rather than a visitor checklist. Add a recap URL once published.
 export const symbolicSystemsProgress: CompletedLearning[] = [{
   title: "Gödel, Escher, Bach: An Eternal Golden Braid",
   label: "Gödel, Escher, Bach",
+  video: {
+    id: "kDUCK7uuXdw",
+    title: "the strange patterns that shape our world | Gödel, Escher, Bach",
+    caption: "I finished Gödel, Escher, Bach! Here’s my deep dive after reading it.",
+  },
 }];
 
 export function blockText(block: PortableTextBlock) {
@@ -49,7 +55,8 @@ export function completedReadings(body: PortableTextBlock[], completed: Complete
     if (!block?._key) return [];
     // Recaps stay on this website. Never invent a URL for an unwritten article.
     const recapHref = item.recapHref?.startsWith("/") && !item.recapHref.startsWith("//") ? item.recapHref : undefined;
-    return [{ ...item, recapHref, targetId: curriculumBlockId(block._key) }];
+    const video = item.video && /^[a-zA-Z0-9_-]{11}$/.test(item.video.id) ? item.video : undefined;
+    return [{ ...item, recapHref, video, videoTargetId: video ? `curriculum-video-${video.id}` : undefined, targetId: curriculumBlockId(block._key) }];
   });
 }
 

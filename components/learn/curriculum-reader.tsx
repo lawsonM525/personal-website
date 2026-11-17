@@ -4,7 +4,8 @@ import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
 import type { PortableTextBlock } from "@portabletext/types";
 import { PortableArticle } from "./portable-article";
-import { curriculumSections, curriculumGroups, completedReadings, highlightCompletedLearning, symbolicSystemsProgress, type CurriculumSection } from "@/lib/curriculum";
+import { CurriculumVideoRecap } from "./curriculum-video-recap";
+import { blockText, curriculumSections, curriculumGroups, completedReadings, highlightCompletedLearning, symbolicSystemsProgress, type CurriculumSection } from "@/lib/curriculum";
 import styles from "./curriculum-reader.module.css";
 
 export function CurriculumReader({ body, children }: { body: PortableTextBlock[]; children?: ReactNode }) {
@@ -48,7 +49,10 @@ export function CurriculumReader({ body, children }: { body: PortableTextBlock[]
 
   useEffect(() => {
     let frame = 0;
-    function updateActive() {
+    function updateActive(event?: Event) {
+      if (event?.target instanceof HTMLDetailsElement && !event.target.open) {
+        event.target.querySelectorAll<HTMLDetailsElement>("[data-curriculum-video]").forEach(video => { video.open = false; });
+      }
       cancelAnimationFrame(frame);
       frame = requestAnimationFrame(() => {
         const modules = Array.from(root.current?.querySelectorAll<HTMLElement>("[data-curriculum-module]") || []);
@@ -93,6 +97,7 @@ export function CurriculumReader({ body, children }: { body: PortableTextBlock[]
         <ul>{completed.map(item => <li key={item.title}>
           <a className={styles.completed} href={`#${item.targetId}`} onClick={() => revealTarget(item.targetId)}><span aria-hidden="true">✓ </span>{item.label || item.title}<span className={styles.srOnly}> — completed</span></a>
           {item.recapHref && <Link className={styles.recap} href={item.recapHref}>Read my recap ↗</Link>}
+          {item.videoTargetId && <a className={styles.recap} href={`#${item.videoTargetId}`} onClick={() => revealTarget(item.videoTargetId!)}>Watch my GEB deep dive ↓</a>}
         </li>)}</ul>
       </section>}
     </>;
@@ -101,7 +106,10 @@ export function CurriculumReader({ body, children }: { body: PortableTextBlock[]
   function section(section: CurriculumSection) {
     return <details id={section.id} key={section.id} className={styles.section} data-curriculum-section data-curriculum-module={section.module || undefined}>
       <summary>{section.heading ? <PortableArticle value={[section.heading]} /> : <h2>{section.title}</h2>}</summary>
-      <div className={styles.sectionBody}><PortableArticle value={section.blocks} anchorPrefix="curriculum-reading-" /></div>
+      <div className={styles.sectionBody}>
+        <PortableArticle value={section.blocks} anchorPrefix="curriculum-reading-" />
+        {completed.filter(item => item.video && item.videoTargetId && section.blocks.some(block => blockText(block).includes(item.title))).map(item => <CurriculumVideoRecap key={item.videoTargetId} id={item.videoTargetId!} video={item.video!} />)}
+      </div>
     </details>;
   }
 
