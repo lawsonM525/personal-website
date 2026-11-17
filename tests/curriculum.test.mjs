@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import {readFileSync} from 'node:fs'
-import {blockText, curriculumSections, curriculumGroups, completedReadings, highlightCompletedLearning} from '../lib/curriculum.ts'
+import {blockText, curriculumSections, curriculumGroups, completedReadings, highlightCompletedLearning, symbolicSystemsProgress} from '../lib/curriculum.ts'
 
 const block=(key,text,style='normal')=>({_type:'block',_key:key,style,markDefs:[],children:[{_type:'span',_key:key+'text',text,marks:[]}]})
 
@@ -55,6 +55,20 @@ test('the compact overview groups all eight modules without losing sections or o
 test('grouping keeps a curriculum without numbered modules readable',()=>{
  const sections=curriculumSections([block('intro','Welcome'),block('reading','Read this')])
  assert.deepEqual(curriculumGroups(sections),{before:sections,modules:[],after:[]})
+})
+
+test('GEB links its published video to the existing reading without opening arbitrary embed URLs',()=>{
+ const body=[block('geb','Gödel, Escher, Bach: An Eternal Golden Braid, by Douglas R. Hofstadter.')]
+ const before=structuredClone(body)
+ const [reading]=completedReadings(body,symbolicSystemsProgress)
+ assert.equal(reading.targetId,'curriculum-reading-geb')
+ assert.equal(reading.video.id,'kDUCK7uuXdw')
+ assert.equal(reading.videoTargetId,'curriculum-video-kDUCK7uuXdw')
+ assert.equal(reading.recapHref,undefined)
+ assert.deepEqual(body,before)
+ const [invalid]=completedReadings(body,[{title:'Gödel, Escher, Bach',video:{id:'https://example.com/embed',title:'Invalid',caption:''}}])
+ assert.equal(invalid.video,undefined)
+ assert.equal(invalid.videoTargetId,undefined)
 })
 
 
