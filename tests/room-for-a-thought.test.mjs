@@ -23,3 +23,14 @@ test('local image blobs are allowed by the game-specific CSP without permitting 
   assert.match(config, /img-src 'self' blob:/);
   assert.match(config, /default-src 'none'/);
 });
+test('standalone editor mirrors Explorer window chrome and uses real controls', () => {
+  const explore = readFileSync('components/explore/explore.module.css', 'utf8');
+  for (const token of ['linear-gradient(90deg,#000080,#1084d0)', '#d4d0c8', '#14293e', 'sserife,Tahoma,Arial,sans-serif']) {
+    assert.ok(explore.includes(token) && css.includes(token), token);
+  }
+  assert.match(html, /id="room-window"/);
+  assert.match(html, /href="\/explore" aria-label="Close Room for a Thought"/);
+  assert.match(js, /minimizeWindow.addEventListener\('click', toggleRoomVisibility\)/);
+  assert.match(js, /maximizeWindow.addEventListener\('click', toggleRoomMaximized\)/);
+  assert.match(readFileSync('next.config.mjs', 'utf8'), /font-src 'self'/);
+});

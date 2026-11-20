@@ -423,3 +423,24 @@ get('reset-background').addEventListener('click', () => {
   draw();
   announce('Original night room restored. Your messages and stickers are preserved.');
 });
+
+const roomWindow = get('room-window');
+const restoreWindow = get('restore-window');
+const minimizeWindow = get('minimize-window');
+const maximizeWindow = get('maximize-window');
+
+function toggleRoomVisibility() {
+  roomWindow.hidden = !roomWindow.hidden;
+  restoreWindow.setAttribute('aria-pressed', String(!roomWindow.hidden));
+  (roomWindow.hidden ? restoreWindow : minimizeWindow).focus({ preventScroll: true });
+}
+function toggleRoomMaximized() {
+  const maximized = roomWindow.classList.toggle('maximized');
+  maximizeWindow.setAttribute('aria-label', (maximized ? 'Restore' : 'Maximize') + ' Room for a Thought');
+}
+minimizeWindow.addEventListener('click', toggleRoomVisibility);
+restoreWindow.addEventListener('click', toggleRoomVisibility);
+maximizeWindow.addEventListener('click', toggleRoomMaximized);
+roomWindow.querySelector('.window-bar').addEventListener('dblclick', event => {
+  if (matchMedia('(min-width:761px)').matches && !event.target.closest('button,a')) toggleRoomMaximized();
+});

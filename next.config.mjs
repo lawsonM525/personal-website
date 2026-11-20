@@ -12,7 +12,7 @@ const nextConfig = {
       source: '/room-for-a-thought/index.html',
       headers: [{
         key: 'Content-Security-Policy',
-        value: "default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' blob:; base-uri 'none'; form-action 'none'; frame-ancestors 'self'",
+        value: "default-src 'none'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' blob:; base-uri 'none'; form-action 'none'; frame-ancestors 'self'",
       }, {
         key: 'Referrer-Policy',
         value: 'no-referrer',
