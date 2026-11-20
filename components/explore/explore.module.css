@@ -67,3 +67,9 @@
 
 /* Leave the desktop shortcuts in place while Explorer and programs are open. */
 @media(min-width:761px){.explorerWindow:not(.maximized){margin-left:160px;max-width:calc(100% - 160px)}}
+
+.readingDocument{margin:0;min-height:100%;padding:clamp(22px,5vw,42px);background:#faf7ed;color:#233346;font:clamp(16px,2.4vw,19px)/1.6 Georgia,serif}
+.readingDocument h1{margin:0 0 1.05em;font-size:clamp(25px,4vw,33px);line-height:1.12}
+.readingDocument blockquote{margin:0}
+.readingDocument blockquote p{margin:0 0 1em;white-space:pre-line}
+.readingDocumentCredit{margin:1.6em 0 0;color:#46576a;font-size:.83em}

@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Room for a Thought — Illustration Maker</title>
+<meta name="description" content="Make a little illustrated scene with stickers and text messages.">
+<link rel="stylesheet" href="style.css">
+<script src="editor.js" defer></script>
+</head>
+<body>
+<main>
+<header>
+  <div class="brand"><span class="seal" aria-hidden="true">✳</span> THE LITTLE ART CLUB</div>
+  <div class="export">
+    <label class="sr-only" for="format">Image format</label>
+    <select id="format"><option value="jpeg">JPEG</option><option value="png">PNG</option></select>
+    <button id="download" class="primary">Download</button>
+  </div>
+</header>
+<section class="intro">
+  <h1>Room for a <em>thought.</em></h1>
+  <p>Your memory will be preserved in JPEG and chat messages.</p>
+</section>
+<div class="studio">
+  <section class="artwork" aria-label="Illustration editor">
+    <div class="art-heading"><strong><span aria-hidden="true">✦</span> &nbsp; The night room</strong><button id="undo" class="plain" disabled>↶ &nbsp; Undo</button></div>
+    <canvas id="scene" width="960" height="720" tabindex="0" aria-label="Composition canvas. Select items on the canvas or from Layers. Use the arrow keys to move a selection."></canvas>
+    <div class="art-footer"><span>Drag pieces to make the room yours.</span><span>4 : 3</span></div>
+  </section>
+  <aside aria-label="Editing tools">
+    <section class="panel">
+      <h2><span aria-hidden="true">✎</span> Message</h2>
+      <label for="message" class="sr-only">Message text</label>
+      <textarea id="message" rows="2" maxlength="360" placeholder="What’s on your mind?"></textarea>
+      <fieldset>
+        <legend class="sr-only">Bubble style</legend>
+        <label><input type="radio" name="style" value="sent" checked><span><i></i> Sent</span></label>
+        <label><input type="radio" name="style" value="received"><span><i></i> Received</span></label>
+      </fieldset>
+      <p id="message-error" class="error" role="alert" hidden></p>
+      <button id="update" class="add" hidden>Update selected message</button>
+      <button id="add" class="add">＋ &nbsp; Add message</button>
+    </section>
+    <section class="panel">
+      <h2><span aria-hidden="true">✦</span> Stickers</h2>
+      <div id="stickers" class="stickers"></div>
+    </section>
+    <section class="panel">
+      <h2><span aria-hidden="true">▱</span> Layers</h2>
+      <div id="layers" class="layers" aria-label="Layers, topmost first"></div>
+      <div class="actions">
+        <button id="forward" aria-label="Move layer forward" title="Move forward">↑</button>
+        <button id="back" aria-label="Move layer backward" title="Move backward">↓</button>
+        <button id="remove">Delete</button>
+      </div>
+    </section>
+  </aside>
+</div>
+<p id="status" role="status" class="sr-only"></p>
+</main>
+</body>
+</html>
