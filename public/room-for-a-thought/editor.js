@@ -24,7 +24,9 @@ const stickerImages = palette.map(([emoji]) => {
   brush.fillText(emoji, 46, 47);
   return image;
 });
-const art = new Image();
+let art = new Image();
+const originalArt = art;
+let backgroundRequest = 0;
 let nextId = 5;
 let items = [
   { id: 1, kind: 'bubble', style: 'received', text: 'are you still awake?', x: 87, y: 152 },
@@ -378,3 +380,46 @@ art.addEventListener('error', () => {
 });
 art.src = './night-room.jpg';
 refresh();
+
+// Decode locally before replacing the current image. A failed/cancelled or
+// superseded request never destroys the user's composition or newer choice.
+get('background-file').addEventListener('change', async event => {
+  const file = event.target.files[0];
+  event.target.value = '';
+  if (!file) return;
+  const request = ++backgroundRequest;
+  const error = get('background-error');
+  error.hidden = true;
+  if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type) || file.size > 20 * 1024 * 1024) {
+    error.textContent = 'Choose a JPEG, PNG or WebP image under 20 MB.';
+    error.hidden = false;
+    return;
+  }
+  const url = URL.createObjectURL(file);
+  try {
+    const image = new Image();
+    image.src = url;
+    await image.decode();
+    if (request !== backgroundRequest) return;
+    art = image;
+    get('scene-name').textContent = 'Your illustration';
+    get('reset-background').disabled = false;
+    draw();
+    announce('Illustration changed. Your messages and stickers are preserved.');
+  } catch {
+    if (request !== backgroundRequest) return;
+    error.textContent = 'That image could not be opened. Try another JPEG, PNG or WebP.';
+    error.hidden = false;
+  } finally {
+    URL.revokeObjectURL(url);
+  }
+});
+get('reset-background').addEventListener('click', () => {
+  ++backgroundRequest;
+  art = originalArt;
+  get('background-error').hidden = true;
+  get('scene-name').textContent = 'The night room';
+  get('reset-background').disabled = true;
+  draw();
+  announce('Original night room restored. Your messages and stickers are preserved.');
+});
