@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Room for a Thought — Illustration Maker</title>
 <meta name="description" content="Make a little illustrated scene with stickers and text messages.">
-<link rel="stylesheet" href="style.css">
-<script src="editor.js" defer></script>
+<link rel="stylesheet" href="style.css?v=canvas-ratios">
+<script src="editor.js?v=canvas-ratios" defer></script>
 </head>
 <body>
 <main>
@@ -23,6 +23,16 @@
 <a class="back-to-explorer" href="/explore">← &nbsp; Back to Explorer</a>
 <div class="toolbar">
   <button id="undo" class="plain" disabled>↶ &nbsp; Undo</button>
+  <div class="canvas-size">
+    <label for="canvas-ratio">Canvas</label>
+    <select id="canvas-ratio">
+      <option value="4:3">Original · 4:3</option>
+      <option value="16:9">Landscape · 16:9</option>
+      <option value="1:1">Square · 1:1</option>
+      <option value="4:5">Portrait · 4:5</option>
+      <option value="9:16">Story · 9:16</option>
+    </select>
+  </div>
   <div class="export">
     <label class="sr-only" for="format">Image format</label>
     <select id="format"><option value="jpeg">JPEG</option><option value="png">PNG</option></select>
@@ -31,7 +41,7 @@
 </div>
 <div class="studio">
   <section class="artwork" aria-label="Illustration editor">
-    <div class="art-heading"><strong><span aria-hidden="true">✦</span> &nbsp; <span id="scene-name">The night room</span></strong><span>960 × 720</span></div>
+    <div class="art-heading"><strong><span aria-hidden="true">✦</span> &nbsp; <span id="scene-name">The night room</span></strong><span id="scene-size">960 × 720</span></div>
     <canvas id="scene" width="960" height="720" tabindex="0" aria-label="Composition canvas. Select items on the canvas or from Layers. Use the arrow keys to move a selection."></canvas>
 
   </section>
@@ -40,7 +50,7 @@
       <h2>Illustration</h2>
       <label for="background-file">Choose your own image</label>
       <input id="background-file" type="file" accept="image/jpeg,image/png,image/webp">
-      <p class="image-hint">Stays on your device. Center-cropped to fill the 4:3 canvas, never stretched.</p>
+      <p class="image-hint">Stays on your device. Center-cropped to fill the canvas, never stretched.</p>
       <p id="background-error" class="error" role="alert" hidden></p>
       <button id="reset-background" type="button" disabled>Restore night room</button>
     </section>
