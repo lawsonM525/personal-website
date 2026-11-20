@@ -24,11 +24,19 @@
 </section>
 <div class="studio">
   <section class="artwork" aria-label="Illustration editor">
-    <div class="art-heading"><strong><span aria-hidden="true">✦</span> &nbsp; The night room</strong><button id="undo" class="plain" disabled>↶ &nbsp; Undo</button></div>
+    <div class="art-heading"><strong><span aria-hidden="true">✦</span> &nbsp; <span id="scene-name">The night room</span></strong><button id="undo" class="plain" disabled>↶ &nbsp; Undo</button></div>
     <canvas id="scene" width="960" height="720" tabindex="0" aria-label="Composition canvas. Select items on the canvas or from Layers. Use the arrow keys to move a selection."></canvas>
     <div class="art-footer"><span>Drag pieces to make the room yours.</span><span>4 : 3</span></div>
   </section>
   <aside aria-label="Editing tools">
+    <section class="panel">
+      <h2>Illustration</h2>
+      <label for="background-file">Choose your own image</label>
+      <input id="background-file" type="file" accept="image/jpeg,image/png,image/webp">
+      <p class="image-hint">Stays on your device. Center-cropped to fill the 4:3 canvas, never stretched.</p>
+      <p id="background-error" class="error" role="alert" hidden></p>
+      <button id="reset-background" type="button" disabled>Restore night room</button>
+    </section>
     <section class="panel">
       <h2><span aria-hidden="true">✎</span> Message</h2>
       <label for="message" class="sr-only">Message text</label>

@@ -6,7 +6,9 @@
   --line: #ded6ea;
   font: 100%/1.45 system-ui, sans-serif;
   color: var(--ink);
-  background: #f2ecf8;
+  /* Same desktop wallpaper and tile size as Explore/Paint (home.module.css). */
+  background: #1b527f url('/homepage/denim-wallpaper-d.webp') repeat;
+  background-size: 700px 700px;
 }
 * { box-sizing: border-box; }
 body { margin: 0; }
@@ -86,3 +88,12 @@ fieldset label + label i { background: #a6a1b2; }
 @media (max-width: 345px) {
   header { flex-wrap: wrap; }
 }
+
+/* Keep the editor chrome legible on Michelle's Computer desktop.
+   The illustration and exported canvas are intentionally unchanged. */
+header { border-bottom-color: #ffffff60; }
+.brand, .intro h1, .intro h1 em, .intro p { color: #faf7ed; }
+.intro h1 { text-shadow: 0 2px 2px #081b3640; }
+
+#background-file { display: block; width: 100%; margin-top: 8px; font: inherit; font-size: .8rem; }
+.image-hint { color: var(--muted); font-size: .8rem; margin: 8px 0; }
