@@ -7,6 +7,18 @@ try {
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  async headers() {
+    return [{
+      source: '/room-for-a-thought/index.html',
+      headers: [{
+        key: 'Content-Security-Policy',
+        value: "default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'self'",
+      }, {
+        key: 'Referrer-Policy',
+        value: 'no-referrer',
+      }],
+    }]
+  },
   async redirects() {
     return [{
       source: '/:path*',

@@ -10,21 +10,29 @@ import { ExplorerIcon, type ExplorerIconKind } from "./explorer-icon"
 import { Paint } from "./paint"
 import { Minesweeper } from "./minesweeper"
 import { Terminal } from "./terminal"
+import { MachineStopsDocument } from "./machine-stops"
 import homeStyles from "@/components/homepage/home.module.css"
 import styles from "./explore.module.css"
 import { explorerLocation } from "@/lib/computer-experience"
 
-type AppId = "paint" | "minesweeper" | "terminal"
+type AppId = "paint" | "minesweeper" | "terminal" | "machine-stops"
 type Item = { name: string; description: string; group: string; icon: ExplorerIconKind; app?: AppId; href?: string }
-const apps: AppId[] = ["paint", "minesweeper", "terminal"]
-const appTitles: Record<AppId, string> = { paint: "Paint", minesweeper: "Minesweeper", terminal: "Terminal" }
+const appWindows: Record<AppId, { title: string; icon: ExplorerIconKind }> = {
+  paint: { title: "Paint", icon: "paint" },
+  minesweeper: { title: "Minesweeper", icon: "minesweeper" },
+  terminal: { title: "Terminal", icon: "terminal" },
+  "machine-stops": { title: "The Machine Stops", icon: "paper" },
+}
+const apps = Object.keys(appWindows) as AppId[]
 const items: Item[] = [
   { name: "Paint", description: "Make a mess with stickers, glitter, and rainbow brushes.", group: "Programs", icon: "paint", app: "paint" },
   { name: "Minesweeper", description: "A little game of logic. Six hidden mines.", group: "Programs", icon: "minesweeper", app: "minesweeper" },
+  { name: "Room for a Thought", description: "Put stickers and messages on an illustrated scene, then download the picture.", group: "Programs", icon: "paint", href: "/room-for-a-thought/index.html" },
   { name: "Terminal", description: "Type commands to explore the computer.", group: "Programs", icon: "terminal", app: "terminal" },
   { name: "Text to binary", description: "Free UTF-8 text converter. Type binary and your text.", group: "Programs", icon: "terminal", href: "/text-to-binary" },
   { name: "CS quizzes", description: "Test your IGCSE and IB knowledge in a terminal.", group: "Programs", icon: "terminal", href: "/quizzes" },
   { name: "Learn", description: "Articles and practical guides.", group: "Files & folders", icon: "paper", href: "/learn" },
+  { name: "The Machine Stops", description: "An excerpt from E. M. Forster’s 1909 story.", group: "Files & folders", icon: "paper", app: "machine-stops" },
   { name: "Michelle’s finds", description: "Favorite AI projects and posts that made Michelle go whoa.", group: "Files & folders", icon: "folder", href: "/learn/you-wont-believe-this-was-made-with-ai" },
   { name: "Girly Guide to AI", description: "Read Michelle’s illustrated guide to artificial intelligence.", group: "Files & folders", icon: "magazine", href: "/girly-guide-to-ai" },
   { name: "Projects", description: "Things Michelle has built.", group: "Files & folders", icon: "folder", href: "/projects" },
@@ -126,11 +134,11 @@ export default function Explorer() {
         </div>
         <div className={styles.statusBar}>{filtered.length} items<span>Select to open</span></div>
       </section>
-      {visited.map(id => <section data-computer-window data-app={id} key={id} hidden={!open.includes(id) || minimized.includes(id)} className={`${styles.appWindow} ${id === "paint" ? styles.paintWindow : ""} ${active === id ? styles.activeApp : ""} ${maximized === id ? styles.maximized : ""}`} aria-label={`${appTitles[id]} window`} onPointerDown={() => setActive(id)} onFocusCapture={() => setActive(id)} style={{ zIndex: active === id ? 40 : 3 + open.indexOf(id) }}>
-        <WindowBar title={appTitles[id]} icon={<ExplorerIcon kind={id} size={22} />} onMinimize={() => minimizeApp(id)} onMaximize={() => setMaximized(value => value === id ? null : id)} maximized={maximized === id} onClose={() => closeApp(id)} />
-        <div className={styles.appBody}><button type="button" data-explorer-back data-computer-sound="open" className={styles.backToExplorer} onClick={explorer}><ArrowLeft size={14} />Back to Explorer</button>{id === "paint" ? <Paint onExplore={explorer} /> : id === "minesweeper" ? <Minesweeper /> : <Terminal openApp={openApp} />}</div>
+      {visited.map(id => <section data-computer-window data-app={id} key={id} hidden={!open.includes(id) || minimized.includes(id)} className={`${styles.appWindow} ${id === "paint" ? styles.paintWindow : ""} ${active === id ? styles.activeApp : ""} ${maximized === id ? styles.maximized : ""}`} aria-label={`${appWindows[id].title} window`} onPointerDown={() => setActive(id)} onFocusCapture={() => setActive(id)} style={{ zIndex: active === id ? 40 : 3 + open.indexOf(id) }}>
+        <WindowBar title={appWindows[id].title} icon={<ExplorerIcon kind={appWindows[id].icon} size={22} />} onMinimize={() => minimizeApp(id)} onMaximize={() => setMaximized(value => value === id ? null : id)} maximized={maximized === id} onClose={() => closeApp(id)} />
+        <div className={styles.appBody}><button type="button" data-explorer-back data-computer-sound="open" className={styles.backToExplorer} onClick={explorer}><ArrowLeft size={14} />Back to Explorer</button>{id === "paint" ? <Paint onExplore={explorer} /> : id === "minesweeper" ? <Minesweeper /> : id === "terminal" ? <Terminal openApp={openApp} /> : <MachineStopsDocument />}</div>
       </section>)}
     </main>
-    <div className={styles.taskbar} role="toolbar" aria-label="Desktop controls"><button type="button" className={styles.mobileDesktopButton} onClick={desktop} aria-label="Show desktop"><Grid2X2 size={24}/><span>Desktop</span></button><button type="button" className={styles.exploreButton} aria-pressed={active === null && !explorerMinimized} onClick={explorer}><ExplorerIcon kind="folder" size={22} />Explore</button>{open.map(id => <button type="button" key={id} aria-pressed={active === id && !minimized.includes(id)} onClick={() => active === id && !minimized.includes(id) ? minimizeApp(id) : openApp(id)}><ExplorerIcon kind={id} size={20} /><span>{appTitles[id]}</span></button>)}<time>{time || "—"}</time></div>
+    <div className={styles.taskbar} role="toolbar" aria-label="Desktop controls"><button type="button" className={styles.mobileDesktopButton} onClick={desktop} aria-label="Show desktop"><Grid2X2 size={24}/><span>Desktop</span></button><button type="button" className={styles.exploreButton} aria-pressed={active === null && !explorerMinimized} onClick={explorer}><ExplorerIcon kind="folder" size={22} />Explore</button>{open.map(id => <button type="button" key={id} aria-pressed={active === id && !minimized.includes(id)} onClick={() => active === id && !minimized.includes(id) ? minimizeApp(id) : openApp(id)}><ExplorerIcon kind={appWindows[id].icon} size={20} /><span>{appWindows[id].title}</span></button>)}<time>{time || "—"}</time></div>
   </div>
 }
