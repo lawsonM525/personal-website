@@ -3,7 +3,16 @@
 const get = id => document.getElementById(id);
 const canvas = get('scene');
 const ctx = canvas.getContext('2d');
-const { width, height } = canvas;
+let { width, height } = canvas;
+const ratios = {
+  '4:3': [960, 720],
+  '16:9': [1280, 720],
+  '1:1': [960, 960],
+  '4:5': [768, 960],
+  '9:16': [720, 1280]
+};
+const ratioMenu = get('canvas-ratio');
+let ratio = '4:3';
 const message = get('message');
 const palette = [
   ['🌙', 'Moon'], ['✨', 'Sparkles'], ['💌', 'Love letter'],
@@ -185,7 +194,7 @@ function select(id) {
 }
 
 function snapshot() {
-  return { items: items.map(item => ({ ...item })), selected };
+  return { items: items.map(item => ({ ...item })), selected, ratio };
 }
 
 function remember(state = snapshot()) {
@@ -198,6 +207,38 @@ function constrain(item) {
   item.x = Math.max(12, Math.min(width - w - 12, item.x));
   item.y = Math.max(12, Math.min(height - h - 12, item.y));
 }
+
+function setCanvasRatio(next) {
+  ratio = next;
+  [width, height] = ratios[ratio];
+  canvas.width = width;
+  canvas.height = height;
+  if (ratioMenu) ratioMenu.value = ratio;
+  const label = get('scene-size');
+  if (label) label.textContent = width + ' × ' + height;
+}
+
+ratioMenu?.addEventListener('change', () => {
+  const next = ratioMenu.value;
+  if (drag || !Object.hasOwn(ratios, next)) {
+    ratioMenu.value = ratio;
+    return;
+  }
+  if (next === ratio) return;
+  remember();
+  const oldWidth = width;
+  const oldHeight = height;
+  setCanvasRatio(next);
+  for (const item of items) {
+    // Keep each layer at the same relative point in its draggable range.
+    const { w, h } = bounds(item);
+    item.x = 12 + (item.x - 12) * (width - w - 24) / (oldWidth - w - 24);
+    item.y = 12 + (item.y - 12) * (height - h - 24) / (oldHeight - h - 24);
+    constrain(item);
+  }
+  refresh();
+  announce('Canvas changed to ' + ratioMenu.selectedOptions[0].textContent + '. Layers preserved.');
+});
 
 function add(piece) {
   remember();
@@ -257,8 +298,8 @@ function remove() {
 function position(event) {
   const rect = canvas.getBoundingClientRect();
   return {
-    x: (event.clientX - rect.left) * width / rect.width,
-    y: (event.clientY - rect.top) * height / rect.height
+    x: (event.clientX - rect.left - canvas.clientLeft) * width / canvas.clientWidth,
+    y: (event.clientY - rect.top - canvas.clientTop) * height / canvas.clientHeight
   };
 }
 
@@ -338,6 +379,7 @@ get('remove').addEventListener('click', remove);
 get('undo').addEventListener('click', () => {
   if (drag || !history.length) return;
   const state = history.pop();
+  if (state.ratio !== ratio) setCanvasRatio(state.ratio);
   items = state.items;
   selected = null;
   select(state.selected);

@@ -15,7 +15,7 @@ test('local image replacement retains the original illustration and rejects stal
   assert.match(js, /URL.revokeObjectURL\(url\)/);
   assert.match(js, /art = originalArt/);
   assert.match(html, /type="file" accept="image\/jpeg,image\/png,image\/webp"/);
-  assert.match(html, /Center-cropped to fill the 4:3 canvas, never stretched/);
+  assert.match(html, /Center-cropped to fill the canvas, never stretched/);
   assert.doesNotMatch(js, /fetch\(|XMLHttpRequest|localStorage|sessionStorage/);
 });
 test('local image blobs are allowed by the game-specific CSP without permitting remote uploads', () => {
@@ -33,4 +33,15 @@ test('standalone editor mirrors Explorer window chrome and uses real controls', 
   assert.match(js, /minimizeWindow.addEventListener\('click', toggleRoomVisibility\)/);
   assert.match(js, /maximizeWindow.addEventListener\('click', toggleRoomMaximized\)/);
   assert.match(readFileSync('next.config.mjs', 'utf8'), /font-src 'self'/);
+});
+test('canvas ratios keep the original size and share preview/export dimensions', () => {
+  for (const [ratio, width, height] of [['4:3',960,720],['16:9',1280,720],['1:1',960,960],['4:5',768,960],['9:16',720,1280]]) {
+    assert.ok(html.includes('value="' + ratio + '"'), ratio);
+    assert.ok(js.includes("'" + ratio + "': [" + width + ", " + height + "]"), ratio);
+    assert.equal(width / height, Number(ratio.split(':')[0]) / Number(ratio.split(':')[1]));
+  }
+  assert.match(js, /output.width = width \* 2/);
+  assert.match(js, /output.height = height \* 2/);
+  assert.match(js, /paint\(brush, false\)/);
+  assert.match(js, /setCanvasRatio\(state.ratio\)/);
 });
