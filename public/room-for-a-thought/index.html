@@ -10,23 +10,30 @@
 </head>
 <body>
 <main>
-<header>
-  <div class="brand"><span class="seal" aria-hidden="true">✳</span> THE LITTLE ART CLUB</div>
+<section id="room-window" class="app-window" aria-labelledby="room-title">
+<div class="window-bar" role="group" aria-label="Room for a Thought title bar">
+  <img src="/explorer/icons/paint-v1.webp" width="22" height="22" alt="">
+  <h1 id="room-title">Room for a Thought</h1>
+  <div class="window-controls">
+    <button type="button" id="minimize-window" aria-label="Minimize Room for a Thought"><svg width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg></button>
+    <button type="button" id="maximize-window" aria-label="Maximize Room for a Thought"><svg width="11" height="11" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/></svg></button>
+    <a href="/explore" aria-label="Close Room for a Thought"><svg width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><path d="m18 6-12 12M6 6l12 12"/></svg></a>
+  </div>
+</div>
+<a class="back-to-explorer" href="/explore">← &nbsp; Back to Explorer</a>
+<div class="toolbar">
+  <button id="undo" class="plain" disabled>↶ &nbsp; Undo</button>
   <div class="export">
     <label class="sr-only" for="format">Image format</label>
     <select id="format"><option value="jpeg">JPEG</option><option value="png">PNG</option></select>
     <button id="download" class="primary">Download</button>
   </div>
-</header>
-<section class="intro">
-  <h1>Room for a <em>thought.</em></h1>
-  <p>Your memory will be preserved in JPEG and chat messages.</p>
-</section>
+</div>
 <div class="studio">
   <section class="artwork" aria-label="Illustration editor">
-    <div class="art-heading"><strong><span aria-hidden="true">✦</span> &nbsp; <span id="scene-name">The night room</span></strong><button id="undo" class="plain" disabled>↶ &nbsp; Undo</button></div>
+    <div class="art-heading"><strong><span aria-hidden="true">✦</span> &nbsp; <span id="scene-name">The night room</span></strong><span>960 × 720</span></div>
     <canvas id="scene" width="960" height="720" tabindex="0" aria-label="Composition canvas. Select items on the canvas or from Layers. Use the arrow keys to move a selection."></canvas>
-    <div class="art-footer"><span>Drag pieces to make the room yours.</span><span>4 : 3</span></div>
+
   </section>
   <aside aria-label="Editing tools">
     <section class="panel">
@@ -64,6 +71,12 @@
       </div>
     </section>
   </aside>
+</div>
+<footer class="window-status"><span>Drag pieces to make the room yours.</span><span>made on michelle’s computer</span></footer>
+</section>
+<div class="taskbar" role="toolbar" aria-label="Desktop controls">
+  <a href="/explore"><img src="/explorer/icons/folder-v1.webp" width="22" height="22" alt=""> Explore</a>
+  <button type="button" id="restore-window" aria-pressed="true" aria-label="Restore Room for a Thought"><img src="/explorer/icons/paint-v1.webp" width="20" height="20" alt=""> Room for a Thought</button>
 </div>
 <p id="status" role="status" class="sr-only"></p>
 </main>
