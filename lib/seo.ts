@@ -160,6 +160,7 @@ export function buildPageMetadata(params: {
   keywords?: string[]
   images?: string[]
   imageEyebrow?: string
+  robots?: Metadata["robots"]
 }): Metadata {
   const images =
     params.images && params.images.length > 0
@@ -176,6 +177,7 @@ export function buildPageMetadata(params: {
   return {
     title: params.title,
     description: params.description,
+    robots: params.robots,
     keywords,
     alternates: {
       canonical: params.path,
