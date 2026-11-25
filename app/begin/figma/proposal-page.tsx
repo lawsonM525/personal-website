@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { Check } from "lucide-react";
 import { ChalkTrail } from "../cursor/chalk-trail";
 import { ProposalSectionNav } from "../cursor/proposal-section-nav";
 
@@ -475,9 +474,9 @@ export default function FigmaProposalPage({
             Let’s talk about Figma
           </a>
           <div className="mt-12 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-sm text-white/45">
-            <span className="inline-flex items-center gap-2"><Check aria-hidden="true" className="h-4 w-4 text-[#0acf83]" />Real use cases</span>
-            <span className="inline-flex items-center gap-2"><Check aria-hidden="true" className="h-4 w-4 text-[#0acf83]" />Creator-led teaching</span>
-            <span className="inline-flex items-center gap-2"><Check aria-hidden="true" className="h-4 w-4 text-[#0acf83]" />A series built to grow</span>
+            <span className="inline-flex items-center gap-2"><span aria-hidden="true" className="font-bold text-[#0acf83]">✓</span>Real use cases</span>
+            <span className="inline-flex items-center gap-2"><span aria-hidden="true" className="font-bold text-[#0acf83]">✓</span>Creator-led teaching</span>
+            <span className="inline-flex items-center gap-2"><span aria-hidden="true" className="font-bold text-[#0acf83]">✓</span>A series built to grow</span>
           </div>
         </div>
       </section>
