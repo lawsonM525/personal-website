@@ -1,7 +1,6 @@
 import Image from "next/image";
 import type { Metadata } from "next";
 import { Mouse_Memoirs } from "next/font/google";
-import { ExternalLink } from "lucide-react";
 import { ChalkTrail } from "../openai/chalk-trail";
 import { ReleaseWordMap } from "../openai/release-word-map";
 import { featuredReelSections, type FeaturedReel } from "../openai/reels";
@@ -154,7 +153,7 @@ function ReelProofRow({ reels }: { reels: FeaturedReel[] }) {
                       title="Open on Instagram"
                       className="pointer-events-auto grid h-10 w-10 place-items-center rounded-full bg-black/70 text-white transition hover:bg-white hover:text-black"
                     >
-                      <ExternalLink aria-hidden="true" className="h-5 w-5" />
+                      <span aria-hidden="true" className="text-xl leading-none">↗</span>
                     </a>
                   ) : null}
                 </div>
@@ -181,7 +180,7 @@ function ReelProofRow({ reels }: { reels: FeaturedReel[] }) {
                     {reel.title}
                   </p>
                   <span className="grid h-10 w-10 place-items-center rounded-full bg-black/70 text-white transition group-hover:bg-white group-hover:text-black">
-                    <ExternalLink aria-hidden="true" className="h-5 w-5" />
+                    <span aria-hidden="true" className="text-xl leading-none">↗</span>
                   </span>
                 </div>
               </a>
