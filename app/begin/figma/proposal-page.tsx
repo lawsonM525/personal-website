@@ -1988,7 +1988,7 @@ export default function ProposalPage({
             }`}
           >
             {isCursor
-              ? "This pitch page was made with Figma in mind. Let’s make something real. 😉"
+              ? "Let’s show people how to bring ideas to life."
               : "This webpage was made with Codex 😉"}
           </footer>
         </div>
