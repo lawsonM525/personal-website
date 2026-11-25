@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowUpRight, Clock3 } from "lucide-react";
 import { stegaClean } from "@sanity/client/stega";
 import { PortableArticle } from "@/components/learn/portable-article";
 import { ArticleDiscussion } from "@/components/learn/article-discussion";
@@ -158,14 +157,14 @@ export default async function ArticlePage({ params }: PageProps) {
               href="/learn"
               className="mb-9 inline-flex items-center gap-2 text-sm font-bold decoration-2 underline-offset-4 hover:underline"
             >
-              <ArrowLeft className="h-4 w-4" aria-hidden="true" /> Back to Learn
+              <span aria-hidden="true">←</span> Back to Learn
             </Link>
             <div className="flex flex-wrap items-center gap-3 text-xs font-black uppercase tracking-[.17em]">
               <span className="learn-contrast px-3 py-1.5">
                 {categoryLabels[category] || article.category}
               </span>
               <span className="inline-flex items-center gap-1.5">
-                <Clock3 className="h-4 w-4" />{" "}
+                <span aria-hidden="true">◷</span>{" "}
                 {readingTime(article.estimatedWords)} min read
               </span>
             </div>
@@ -218,7 +217,7 @@ export default async function ArticlePage({ params }: PageProps) {
                 className="learn-border learn-shadow-sm mb-9 inline-flex items-center gap-2 border-2 bg-[#d7ff45] px-4 py-2 text-sm font-black text-black hover:translate-x-1 hover:translate-y-1 hover:shadow-none"
               >
                 Watch the original short version{" "}
-                <ArrowUpRight className="h-4 w-4" />
+                <span aria-hidden="true">↗</span>
               </a>
             )}
             {article.summary && (
@@ -254,7 +253,7 @@ export default async function ArticlePage({ params }: PageProps) {
                     >
                       <div className="flex items-start justify-between gap-4">
                         <h3 className="text-lg font-black">{resource.title}</h3>
-                        <ArrowUpRight className="h-5 w-5 shrink-0 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+                        <span aria-hidden="true" className="shrink-0 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1">↗</span>
                       </div>
                       {resource.description && (
                         <p className="learn-muted mt-2 leading-7 group-hover:text-black/70">
@@ -309,7 +308,7 @@ export default async function ArticlePage({ params }: PageProps) {
               href="/learn"
               className="mt-5 inline-flex items-center gap-2 font-black decoration-2 underline underline-offset-4"
             >
-              Keep learning <ArrowUpRight className="h-4 w-4" />
+              Keep learning <span aria-hidden="true">↗</span>
             </Link>
           </aside>
         </div>
