@@ -126,6 +126,12 @@ export const siteConfig = {
   ],
 }
 
+export const personId = `${siteConfig.url}/#person`
+
+export function serializeStructuredData(value: unknown): string {
+  return JSON.stringify(value).replace(/</g, "\\u003c")
+}
+
 export function absoluteUrl(path = "/"): string {
   try {
     return new URL(path, siteConfig.url).toString()
