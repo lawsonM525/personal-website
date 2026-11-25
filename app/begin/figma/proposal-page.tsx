@@ -1,483 +1,1996 @@
 import Image from "next/image";
 import { ChalkTrail } from "../cursor/chalk-trail";
 import { ProposalSectionNav } from "../cursor/proposal-section-nav";
+import { ReleaseWordMap } from "../cursor/release-word-map";
+import { PlayableReelCard } from "../cursor/playable-reel-card";
+import { featuredReelSections, type FeaturedReel } from "../cursor/reels";
+import { TypedQuestionList } from "../cursor/typed-question-list";
+import { WhyMichelleStepRail } from "../cursor/why-michelle-step-rail";
 
-const navSections = [
-  { id: "introduction", label: "Why Figma?" },
-  { id: "the-proposal", label: "The Proposal" },
-  { id: "first-10", label: "The First 10" },
-  { id: "why-michelle", label: "Why Michelle?" },
-  { id: "lets-talk", label: "Let’s Make It" },
-];
-
-const videos = [
-  {
-    number: "01",
-    product: "FigJam",
-    title: "My brain is a mess. Let’s make a plan.",
-    idea: "Turn a pile of thoughts into a clear plan for a club, class, or personal project.",
-    color: "from-[#ff7262]/25 to-[#ff7262]/5",
-  },
-  {
-    number: "02",
-    product: "Figma Design",
-    title: "Design an app screen for an idea you have.",
-    idea: "Start with a real problem and make the first screen of a useful app.",
-    color: "from-[#a259ff]/25 to-[#a259ff]/5",
-  },
-  {
-    number: "03",
-    product: "Prototyping",
-    title: "Make your app idea clickable.",
-    idea: "Connect screens into a prototype you can send to a friend and get feedback on.",
-    color: "from-[#1abcfe]/25 to-[#1abcfe]/5",
-  },
-  {
-    number: "04",
-    product: "Figma Slides",
-    title: "Turn your idea into a presentation people remember.",
-    idea: "Build an interactive deck for a pitch, class project, or student organization.",
-    color: "from-[#0acf83]/25 to-[#0acf83]/5",
-  },
-  {
-    number: "05",
-    product: "Figma Sites",
-    title: "Make a portfolio site without starting from a blank page.",
-    idea: "Give a project, portfolio, or community a home on the web.",
-    color: "from-[#f24e1e]/25 to-[#f24e1e]/5",
-  },
-  {
-    number: "06",
-    product: "Figma Buzz",
-    title: "Make one idea look like a whole campaign.",
-    idea: "Adapt a visual identity into social posts and promotional graphics.",
-    color: "from-[#ff7262]/25 to-[#ff7262]/5",
-  },
-  {
-    number: "07",
-    product: "Figma Make",
-    title: "Can a prompt become an app you can try?",
-    idea: "Explore an idea as an interactive prototype, then refine it through conversation.",
-    color: "from-[#a259ff]/25 to-[#a259ff]/5",
-  },
-  {
-    number: "08",
-    product: "Figma AI",
-    title: "Use AI to get unstuck on the visual part.",
-    idea: "Show where AI tools can help with images, writing, and early creative exploration.",
-    color: "from-[#1abcfe]/25 to-[#1abcfe]/5",
-  },
-  {
-    number: "09",
-    product: "The whole canvas",
-    title: "Plan it, design it, show it to someone.",
-    idea: "Follow one student project from the first messy thought to a shareable result.",
-    color: "from-[#0acf83]/25 to-[#0acf83]/5",
-  },
-  {
-    number: "10",
-    product: "For the idea you keep putting off",
-    title: "You don’t have to be a designer to start.",
-    idea: "A friendly invitation to make something small, useful, and entirely your own.",
-    color: "from-[#f24e1e]/25 to-[#f24e1e]/5",
-  },
-];
-
-function CanvasPreview({
-  className = "",
-}: {
+type PitchIconProps = {
   className?: string;
-}) {
+  strokeWidth?: number;
+  "aria-hidden"?: boolean | "true" | "false";
+};
+
+function PitchIcon({
+  name,
+  className,
+  strokeWidth = 1.8,
+  ...props
+}: PitchIconProps & { name: string }) {
+  const paths: Record<string, React.ReactNode> = {
+    external: <><path d="M14 3h7v7" /><path d="M10 14 21 3" /><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /></>,
+    info: <><circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" /></>,
+    growth: <><path d="M3 17 9 11l4 4 8-8" /><path d="M15 7h6v6" /></>,
+    people: <><path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="10" cy="7" r="4" /><path d="M20 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></>,
+    repeat: <><path d="m17 2 4 4-4 4" /><path d="M3 11V9a3 3 0 0 1 3-3h15" /><path d="m7 22-4-4 4-4" /><path d="M21 13v2a3 3 0 0 1-3 3H3" /></>,
+    grad: <><path d="m2 10 10-5 10 5-10 5-10-5Z" /><path d="M6 12v5c3 3 9 3 12 0v-5" /><path d="M22 10v6" /></>,
+  };
+
   return (
-    <div
-      className={`figma-canvas relative overflow-hidden rounded-[1.7rem] border border-white/15 bg-[#1d1d1f] shadow-[0_28px_80px_rgba(0,0,0,0.45)] ${className}`}
-      aria-label="A playful Figma-inspired canvas with a project idea, sketches, and colorful notes"
-      role="img"
+    <svg
+      aria-hidden="true"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={strokeWidth}
+      viewBox="0 0 24 24"
+      {...props}
     >
-      <div className="flex h-11 items-center gap-2 border-b border-white/10 px-4 text-xs text-white/50">
-        <span className="h-2.5 w-2.5 rounded-full bg-[#f24e1e]" />
-        <span className="h-2.5 w-2.5 rounded-full bg-[#ffcd29]" />
-        <span className="h-2.5 w-2.5 rounded-full bg-[#0acf83]" />
-        <span className="ml-3">a tiny idea becoming a real thing.fig</span>
-      </div>
-      <div className="relative min-h-[20rem] overflow-hidden bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.12)_1px,transparent_0)] [background-size:20px_20px] p-5 sm:min-h-[25rem] sm:p-8">
-        <div className="absolute left-[9%] top-[14%] w-[39%] rotate-[-3deg] rounded-xl border border-white/10 bg-[#25252a] p-4 shadow-xl sm:p-5">
-          <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-white/40">
-            First, the question
-          </p>
-          <p className="mt-3 text-sm font-medium leading-5 text-white sm:text-lg sm:leading-7">
-            What if our campus felt easier to explore?
-          </p>
-          <div className="mt-4 flex gap-2">
-            <span className="h-2 w-12 rounded-full bg-[#a259ff]" />
-            <span className="h-2 w-7 rounded-full bg-[#1abcfe]" />
-            <span className="h-2 w-10 rounded-full bg-[#0acf83]" />
-          </div>
-        </div>
-        <div className="absolute right-[8%] top-[19%] grid h-20 w-20 rotate-[5deg] place-items-center rounded-full border border-[#1abcfe]/60 bg-[#1abcfe]/15 text-center text-[10px] font-semibold leading-4 text-[#b2eaff] sm:h-28 sm:w-28 sm:text-xs">
-          maps
-          <br />
-          made by
-          <br />
-          students
-        </div>
-        <div className="absolute left-[15%] top-[57%] h-[28%] w-[25%] rotate-[2deg] rounded-lg border border-[#ffcd29]/35 bg-[#ffcd29]/15 p-3 sm:p-4">
-          <span className="text-[9px] font-semibold uppercase tracking-[0.15em] text-[#ffe99a] sm:text-[10px]">
-            FigJam
-          </span>
-          <div className="mt-2 space-y-2">
-            <div className="h-2 w-4/5 rounded-full bg-white/55" />
-            <div className="h-2 w-3/5 rounded-full bg-white/35" />
-            <div className="h-2 w-2/3 rounded-full bg-white/35" />
-          </div>
-        </div>
-        <div className="absolute right-[14%] top-[56%] flex h-[31%] w-[31%] rotate-[-2deg] flex-col overflow-hidden rounded-xl border border-white/15 bg-white shadow-2xl">
-          <div className="h-2.5 bg-gradient-to-r from-[#f24e1e] via-[#a259ff] to-[#1abcfe]" />
-          <div className="flex flex-1 flex-col justify-between p-3 text-[#25252a] sm:p-4">
-            <div>
-              <div className="h-2 w-1/3 rounded-full bg-[#a259ff]/70" />
-              <p className="mt-2 text-[10px] font-semibold leading-4 sm:text-sm sm:leading-5">
-                The campus map
-                <br />
-                people actually use.
-              </p>
-            </div>
-            <div className="flex items-end gap-1.5">
-              <span className="h-5 w-5 rounded-t-full bg-[#ff7262]" />
-              <span className="h-8 w-5 rounded-t-full bg-[#0acf83]" />
-              <span className="h-6 w-5 rounded-t-full bg-[#1abcfe]" />
-              <span className="ml-auto rounded-full bg-[#25252a] px-2 py-1 text-[8px] font-semibold text-white sm:text-[9px]">
-                prototype →
-              </span>
-            </div>
-          </div>
-        </div>
-        <svg
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 h-full w-full opacity-80"
-          viewBox="0 0 600 400"
-          fill="none"
-          preserveAspectRatio="none"
-        >
-          <path
-            d="M270 128 C355 100 395 106 450 130 M255 215 C300 265 360 280 420 270"
-            stroke="white"
-            strokeWidth="2"
-            strokeDasharray="6 8"
-            strokeLinecap="round"
-          />
-          <path
-            d="m438 122 12 8-13 5 M409 261l12 9-14 4"
-            stroke="white"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-        <p className="absolute bottom-3 left-4 text-[9px] font-semibold uppercase tracking-[0.16em] text-white/45 sm:bottom-5 sm:left-6 sm:text-[10px]">
-          one idea · many ways to make it real
-        </p>
-      </div>
-    </div>
+      {paths[name]}
+    </svg>
   );
 }
 
-export default function FigmaProposalPage({
+const ExternalLink = (props: PitchIconProps) => <PitchIcon name="external" {...props} />;
+const Info = (props: PitchIconProps) => <PitchIcon name="info" {...props} />;
+const TrendingUp = (props: PitchIconProps) => <PitchIcon name="growth" {...props} />;
+const MessagesSquare = (props: PitchIconProps) => <PitchIcon name="people" {...props} />;
+const Repeat2 = (props: PitchIconProps) => <PitchIcon name="repeat" {...props} />;
+const GraduationCap = (props: PitchIconProps) => <PitchIcon name="grad" {...props} />;
+
+const cursorIntroReelTitles = [
+  "How to vibe code properly",
+  "Build a predictive model for the NFL",
+  "Codex for students",
+];
+
+const allFeaturedReels = featuredReelSections.flatMap(
+  (section) => section.reels,
+);
+
+const cursorIntroReels = cursorIntroReelTitles.flatMap((title) => {
+  const reel = allFeaturedReels.find((candidate) => candidate.title === title);
+  return reel ? [reel] : [];
+});
+
+const lovableBuildReel: FeaturedReel = {
+  title: "Three web apps in three days with Lovable",
+  instagramUrl: "https://www.instagram.com/reel/DIbRSBFAjwm/",
+  videoSrc: "/begin/reels/three-web-apps-three-days-lovable.mp4",
+  posterSrc: "/begin/reels/posters/three-web-apps-three-days-lovable.jpg",
+  views: "100K",
+  likes: "2K",
+  saves: "500",
+};
+
+const properVibeCodingReel: FeaturedReel = {
+  title: "The proper way to vibe code",
+  instagramUrl: "https://www.instagram.com/reel/DTr_XbnDNYR/",
+  videoSrc: "/begin/reels/proper-way-to-vibe-code.mp4",
+  posterSrc: "/begin/reels/posters/proper-way-to-vibe-code.jpg",
+  views: "250K",
+  likes: "17.5K",
+  saves: "8.9K",
+};
+
+const cursorBuildProofReels = [
+  featuredReelSections[2].reels[0],
+  lovableBuildReel,
+  properVibeCodingReel,
+];
+
+const heroIntro = [
+  "ChatGPT has the power to completely change how people learn, work, create, build, and live.",
+  "But most people still don't know how to actually use it.",
+  "I want to help change that.",
+];
+
+const cursorHeroIntro = [
+  "If you know how to use Figma, you can prototype almost anything you can imagine.",
+  "A portfolio. Your first business. A resume for your dream job. A vision board for the year ahead.",
+  "Let’s design the idea on Figma, then make it real.",
+];
+
+const everydayQuestions = [
+  "Can AI help me put this spreadsheet together? How?",
+  "Can AI help me prepare for this interview? How?",
+  "Can AI help me learn Python? How?",
+  "Can AI help me organize my week? How?",
+  "Can AI help me make more money? How?",
+];
+
+const cursorEverydayQuestions = [
+  "Can I make a vision board for next year in Figma? How?",
+  "Can I prototype the app I keep thinking about? How?",
+  "Can I design a portfolio that feels like me? How?",
+  "Can I design my first business before I invest in it? How?",
+  "Can I make my dream-job application stand out? How?",
+];
+
+type UseCaseFeature = {
+  feature: string;
+  featureImage?: string;
+  useCases: string[];
+};
+
+const chatGPTUseCaseFeatures: UseCaseFeature[] = [
+  {
+    feature: "Connectors",
+    featureImage: "/begin/releases-generated/connectors.png",
+    useCases: [
+      "How to make a personal income tracker.",
+      "How to look through your Granola meetings and update your personal CRM.",
+      "How to dig through your emails and find assignments you are losing track of.",
+      "How to make a Canva vision board from your saved ideas.",
+      "How to make a Spotify playlist for a road trip, a study night, or a GENERATIONAL lock in. (that's 3 😉)",
+    ],
+  },
+  {
+    feature: "Codex",
+    featureImage: "/begin/releases-generated/codex.png",
+    useCases: [
+      "How to use Codex to build a portfolio website as an artist, writer, or musician.",
+      "How to use Codex to research a health problem that has been bothering you.",
+      "How to use Codex to write a full-length book that's 300+ pages. (I have lots of friends with book ideas sitting in their Notes app 😅)",
+    ],
+  },
+  {
+    feature: "Memory",
+    featureImage: "/begin/releases-generated/memory-dreaming.png",
+    useCases: [
+      "How to keep track of your daily tasks like a personal assistant.",
+      "How to analyze your behavioral patterns and find ways to grow.",
+      "How to navigate your workplace culture.",
+      "How to reverse-engineer your goals to achieve them faster.",
+    ],
+  },
+];
+
+const cursorUseCaseFeatures: UseCaseFeature[] = [
+  {
+    feature: "4 ideas for your next chapter",
+    useCases: [
+      "Make a vision board for the year ahead in Figma—the first tutorial in the series.",
+      "Design a visual resume for the dream job you want.",
+      "Create a portfolio website that shows what makes your work yours.",
+      "Design the first version of your business: its look, landing page, and customer journey.",
+    ],
+  },
+  {
+    feature: "3 ambitious prototypes",
+    useCases: [
+      "Turn your biggest app idea into a clickable Figma prototype.",
+      "Prototype a product or service you wish existed, from first screen to full experience.",
+      "Design the website and core product screens for the first version of your idea.",
+    ],
+  },
+  {
+    feature: "3 steps to make it real",
+    useCases: [
+      "Share your prototype and get feedback before you build the real thing.",
+      "Use what people learn from the prototype to decide what to make first.",
+      "Turn your tested Figma prototype into a clear plan for the next build step.",
+    ],
+  },
+];
+
+const cursorStartingUseCaseFeatures = cursorUseCaseFeatures;
+
+const proposalPayoffs = [
+  {
+    title: "Prolong launch impact",
+    description:
+      "Keep teaching people about each feature long after launch day.",
+    Icon: Repeat2,
+  },
+  {
+    title: "Greater feature adoption",
+    description:
+      "Make the features that matter most to OpenAI easier for Gen Z to discover, understand, and use.",
+    Icon: TrendingUp,
+  },
+  {
+    title: "Direct Gen Z insights",
+    description:
+      "OpenAI gets insights into what Gen Z wants to try and what still confuses them.",
+    Icon: MessagesSquare,
+  },
+  {
+    title: "A trusted Gen Z educator",
+    description:
+      "Give OpenAI one consistent educator Gen Z can recognize and trust.",
+    Icon: GraduationCap,
+  },
+];
+
+const cursorProposalPayoffs = [
+  {
+    title: "Greater feature discovery",
+    description:
+      "Help more people discover what they can make with FigJam, Figma Design, Slides, Sites, Buzz, and Make.",
+    Icon: TrendingUp,
+  },
+  {
+    title: "A wider audience",
+    description:
+      "Show students, creators, and early-career professionals how Figma fits into the projects they already care about.",
+    Icon: Repeat2,
+  },
+  {
+    title: "Direct Gen Z insights",
+    description:
+      "I’ll give the Figma team feedback on what young people want to make and which workflows they’re excited to try.",
+    Icon: MessagesSquare,
+  },
+  {
+    title: "A consistent educator",
+    description:
+      "Give Figma one consistent educator who makes design feel approachable without losing technical credibility.",
+    Icon: GraduationCap,
+  },
+];
+
+const proposalTimelineStages = [
+  {
+    step: "01",
+    title: "Discussion",
+    duration: "2 weeks",
+    bullets: [
+      "Agree on goals, current priority features, KPIs, and what success looks like.",
+      "Confirm points of contact, content formats, and publishing rhythm.",
+    ],
+  },
+  {
+    step: "02",
+    title: "Discovery",
+    duration: "3 months",
+    bullets: [
+      "Test practical use cases through different formats: videos, carousels, and stories.",
+      "Learn what Gen Z responds well to and what they are excited to try.",
+      "Measure qualified reach and attention, useful engagement, and intent to try.",
+      "Take one week to review what worked and plan what comes next.",
+    ],
+  },
+  {
+    step: "03",
+    title: "Delivery",
+    duration: "6-month blocks",
+    bullets: [
+      "Scale what worked in Discovery into 50 practical ChatGPT use cases every six months.",
+      "Focus each block on the features and use cases that support OpenAI's current business priorities.",
+      "Take two weeks before the next block to review results and adapt the program around new launches and changing priorities.",
+    ],
+  },
+];
+
+
+
+const cursorNavSections = [
+  { id: "introduction", label: "Introduction" },
+  { id: "the-proposal", label: "What I’d Make" },
+  { id: "chatgpt-videos", label: "Figma tutorials" },
+  { id: "why-michelle", label: "Why Michelle?" },
+  { id: "lets-talk", label: "Let’s Talk!" },
+];
+
+function ReelProofRow({
+  reels,
+  fontClassName,
+}: {
+  reels: FeaturedReel[];
+  fontClassName: string;
+}) {
+  return (
+    <>
+      <div
+        className={`begin-mobile-carousel grid gap-5 pt-3 ${
+          reels.length === 4
+            ? "sm:grid-cols-2 lg:grid-cols-4"
+            : reels.length === 2
+              ? "sm:grid-cols-2"
+              : "sm:grid-cols-3"
+        }`}
+        role="region"
+        aria-label="Featured videos. Swipe horizontally on mobile to see more."
+        tabIndex={0}
+      >
+        {reels.map((reel, index) => {
+          const hasDestination = Boolean(reel.videoSrc || reel.instagramUrl);
+          const cardContent = (
+            <>
+              <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-[0.14em] text-white/62">
+                <span>Reel {String(index + 1).padStart(2, "0")}</span>
+                <span>
+                  {reel.views
+                    ? `${reel.views} views`
+                    : reel.likes
+                      ? `${reel.likes} likes`
+                      : "Add stats"}
+                </span>
+              </div>
+              <div className="grid place-items-center">
+                <div className="grid h-20 w-20 place-items-center rounded-full bg-white text-black shadow-[0_0_30px_rgba(255,255,255,0.24)] transition-transform group-hover:scale-105">
+                  <span className="ml-1 h-0 w-0 border-y-[14px] border-l-[22px] border-y-transparent border-l-black" />
+                </div>
+              </div>
+              <div className="space-y-3">
+                <p
+                  className={`${fontClassName} text-4xl leading-none text-white`}
+                >
+                  {reel.title}
+                </p>
+                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-white/58">
+                  {reel.views || reel.likes || reel.saves
+                    ? [
+                        reel.views && `${reel.views} views`,
+                        reel.likes && `${reel.likes} likes`,
+                        reel.saves && `${reel.saves} saves`,
+                      ]
+                        .filter(Boolean)
+                        .join(" · ")
+                    : hasDestination
+                      ? "Open on Instagram"
+                      : "Add reel link"}
+                </p>
+                {hasDestination && (reel.views || reel.likes || reel.saves) ? (
+                  <p className="text-xs font-semibold uppercase tracking-[0.14em] text-white/58">
+                    Open on Instagram
+                  </p>
+                ) : null}
+              </div>
+            </>
+          );
+          const posterContent = reel.posterSrc ? (
+            <>
+              <Image
+                src={reel.posterSrc}
+                alt={reel.title}
+                fill
+                className="object-cover"
+                sizes="(min-width: 640px) 30vw, calc(100vw - 48px)"
+              />
+              {reel.instagramUrl ? (
+                <span className="absolute right-4 top-4 grid h-10 w-10 place-items-center rounded-full bg-black/70 text-white transition group-hover:bg-white group-hover:text-black">
+                  <ExternalLink aria-hidden="true" className="h-5 w-5" />
+                </span>
+              ) : null}
+              {reel.views || reel.likes || reel.saves ? (
+                <div className="absolute inset-x-0 bottom-0 bg-black/78 p-4 text-white">
+                  <p className="text-xs font-semibold uppercase tracking-[0.1em]">
+                    {[
+                      reel.views && `${reel.views} views`,
+                      reel.likes && `${reel.likes} likes`,
+                      reel.saves && `${reel.saves} saves`,
+                    ]
+                      .filter(Boolean)
+                      .join(" · ")}
+                  </p>
+                </div>
+              ) : null}
+            </>
+          ) : null;
+
+          return (
+            <div
+              key={reel.title}
+              className={`begin-mobile-carousel-card group relative justify-self-center overflow-hidden rounded-[1.35rem] bg-zinc-950 shadow-[0_0_0_1px_rgba(255,255,255,0.18),0_18px_50px_rgba(0,0,0,0.45)] ${
+                reel.posterSrc && !reel.videoSrc
+                  ? "aspect-[4/5] w-full self-center"
+                  : "aspect-[9/16] w-full self-start"
+              }`}
+            >
+              {reel.videoSrc ? (
+                <PlayableReelCard reel={reel} />
+              ) : reel.posterSrc ? (
+                reel.instagramUrl ? (
+                  <a
+                    href={reel.instagramUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={`Open ${reel.title} on Instagram`}
+                    className="block h-full text-white"
+                  >
+                    {posterContent}
+                  </a>
+                ) : (
+                  <div className="h-full text-white">{posterContent}</div>
+                )
+              ) : reel.instagramUrl ? (
+                <a
+                  href={reel.instagramUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex h-full flex-col justify-between bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.14),transparent_32%),linear-gradient(180deg,#141414,#050505)] p-5 text-white"
+                >
+                  {cardContent}
+                </a>
+              ) : (
+                <div className="flex h-full flex-col justify-between bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.1),transparent_32%),linear-gradient(180deg,#121212,#050505)] p-5 text-white">
+                  {cardContent}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+      <p
+        className={`${fontClassName} begin-mobile-swipe-cue text-right text-xl text-white/58`}
+        aria-hidden="true"
+      >
+        Swipe to see more →
+      </p>
+    </>
+  );
+}
+
+export default function ProposalPage({
   emphasisFontClassName,
 }: {
   emphasisFontClassName: string;
 }) {
-  const emailHref = `mailto:michelle@thedriveagency.co,patrick@thedriveagency.co,teresa@thedriveagency.co?subject=${encodeURIComponent(
-    "Figma × Michelle — Make the Idea Real",
+  const isCursor = true;
+  const activeHeroIntro = isCursor ? cursorHeroIntro : heroIntro;
+  const activeEverydayQuestions = isCursor
+    ? cursorEverydayQuestions
+    : everydayQuestions;
+  const activeUseCaseFeatures = isCursor
+    ? cursorStartingUseCaseFeatures
+    : chatGPTUseCaseFeatures;
+  const activeProposalPayoffs = isCursor
+    ? cursorProposalPayoffs
+    : proposalPayoffs;
+  const activeTimelineStages = proposalTimelineStages;
+  const emailTeamHref = `mailto:team@michellescomputer.com,michelle@michellescomputer.com,mona@michellescomputer.com?subject=${encodeURIComponent(
+    isCursor
+      ? "Figma × Michelle — Creator Education Partnership"
+      : "OpenAI × Michelle — Gen Z Product Education",
   )}&body=${encodeURIComponent(
-    "Hi Michelle, Patrick, and Teresa,\n\nI’d love to talk about the Figma creator education proposal and a first series of practical videos for Gen Z.\n\nWhat would be the best next step?\n\nBest,",
+    isCursor
+      ? "Hi team, Michelle, and Mona,\n\nI’d love to discuss the Figma tutorial series, starting with a vision board for the year ahead and continuing with ambitious prototypes.\n\nWhat would be the best next step?\n\nBest,"
+      : "Hi Michelle, Patrick, and Teresa,\n\nI’d love to discuss the three-year Gen Z product-education program and its first Discussion and Discovery phases.\n\nWhat would be the best next step?\n\nBest,",
   )}`;
 
   return (
     <main
-      className="figma-pitch min-h-screen bg-black pt-16 text-white"
+      className="begin-cursor-page bg-black pt-16 text-white"
       style={{ cursor: "url('/begin/chalk-cursor.png') 12 12, auto" }}
     >
       <ChalkTrail />
       <ProposalSectionNav
         fontClassName={emphasisFontClassName}
-        sections={navSections}
+        sections={isCursor ? cursorNavSections : undefined}
       />
-      <style>{`
-        .figma-pitch ::selection { background: #a259ff; color: white; }
-        .figma-pitch .chalk-card {
-          background-image: url('/begin/generated/chalk-card-border.png');
-          background-position: center;
-          background-repeat: no-repeat;
-          background-size: 100% 100%;
-        }
-        .figma-pitch .figma-color-bar {
-          background: linear-gradient(90deg,#f24e1e 0 20%,#ff7262 20% 40%,#a259ff 40% 60%,#1abcfe 60% 80%,#0acf83 80%);
-        }
-        .figma-pitch .figma-glow { box-shadow: 0 0 40px rgba(162,89,255,.16), 0 0 90px rgba(26,188,254,.08); }
-        @media (prefers-reduced-motion: reduce) {
-          .figma-pitch *, .figma-pitch *::before, .figma-pitch *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
-        }
-      `}</style>
+      <style>
+        {`
+          @keyframes begin-arrow-bounce {
+            0%, 100% {
+              transform: translateX(-50%) translateY(0);
+            }
+            50% {
+              transform: translateX(-50%) translateY(12px);
+            }
+          }
 
-      <section className="relative flex min-h-[calc(100vh-4rem)] items-center overflow-hidden bg-black px-6 py-16 sm:px-10 lg:px-16">
-        <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
-          <span className="absolute -right-32 top-16 h-96 w-96 rounded-full bg-[#a259ff]/10 blur-[100px]" />
-          <span className="absolute -left-28 bottom-0 h-72 w-72 rounded-full bg-[#1abcfe]/[0.08] blur-[90px]" />
-          <span className="figma-color-bar absolute inset-x-0 top-0 h-1 opacity-80" />
-        </div>
-        <div className="relative mx-auto grid w-full max-w-7xl items-center gap-12 lg:grid-cols-[1.08fr_.92fr] lg:gap-16">
-          <div className="max-w-3xl">
-            <p className="mb-6 text-xs font-semibold uppercase tracking-[0.24em] text-white/55 sm:text-sm">
-              A creator education proposal · Figma × Michelle Lawson
-            </p>
-            <h1 className={`${emphasisFontClassName} text-[4.25rem] font-normal leading-[0.88] sm:text-8xl lg:text-[7.7rem]`}>
-              Make the
-              <br />
-              <span className="text-[#c8a4ff]">idea real.</span>
-            </h1>
-            <p className="mt-7 max-w-2xl text-lg leading-8 text-white/72 sm:text-2xl sm:leading-10">
-              A practical, playful video series showing Gen Z how to turn a
-              thought into something they can design, test, present, or share.
-            </p>
-            <div className="mt-9 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm font-semibold text-white/75 sm:text-base">
-              <span className="flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-[#a259ff]" />Ideas welcome</span>
-              <span className="flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-[#1abcfe]" />No design degree required</span>
-              <span className="flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-[#0acf83]" />Made for real life</span>
-            </div>
-            <a
-              href="#the-proposal"
-              className="mt-10 inline-flex items-center gap-3 rounded-full border border-white/25 px-5 py-3 text-sm font-semibold text-white transition hover:border-white/70 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+          @keyframes begin-type-line {
+            from {
+              clip-path: inset(0 100% 0 0);
+            }
+            to {
+              clip-path: inset(0 0 0 0);
+            }
+          }
+
+          @keyframes begin-chalk-strike {
+            from {
+              clip-path: inset(0 100% 0 0);
+              opacity: 0;
+            }
+            12% {
+              opacity: 1;
+            }
+            to {
+              clip-path: inset(0 0 0 0);
+              opacity: 1;
+            }
+          }
+
+          @keyframes begin-concept-marquee {
+            from {
+              transform: translateX(0);
+            }
+            to {
+              transform: translateX(-50%);
+            }
+          }
+
+          .begin-concept-marquee {
+            animation: begin-concept-marquee 42s linear infinite;
+            will-change: transform;
+          }
+
+          .begin-concept-marquee-shell:hover .begin-concept-marquee,
+          .begin-concept-marquee-shell:focus-within .begin-concept-marquee {
+            animation-play-state: paused;
+          }
+
+          .begin-why-michelle-sticky .begin-codex-pet-lane {
+            width: 100%;
+            min-width: 0;
+            flex: none;
+          }
+
+          @keyframes begin-why-michelle-story-focus {
+            0%, 100% {
+              opacity: 0.12;
+              filter: blur(7px);
+              transform: translateY(3rem) scale(0.975);
+            }
+            28%, 72% {
+              opacity: 1;
+              filter: blur(0);
+              transform: translateY(0) scale(1);
+            }
+          }
+
+          @media (prefers-reduced-motion: reduce) {
+            .begin-concept-marquee-shell {
+              overflow-x: auto;
+            }
+
+            .begin-concept-marquee {
+              animation: none;
+            }
+          }
+
+          @keyframes begin-codex-travel {
+            0% {
+              left: 0;
+              opacity: 0;
+            }
+            3%, 55% {
+              opacity: 1;
+            }
+            58%, 90% {
+              left: calc(100% - var(--mia-w));
+              opacity: 1;
+            }
+            96% {
+              left: calc(100% - var(--mia-w));
+              opacity: 0;
+            }
+            100% {
+              left: 0;
+              opacity: 0;
+            }
+          }
+
+          @keyframes begin-mia-loop {
+            0%, 7% {
+              background-position: 0 calc(var(--mia-h) * -1);
+              transform: translateY(0);
+            }
+            8%, 14% {
+              background-position: calc(var(--mia-w) * -1) calc(var(--mia-h) * -1);
+            }
+            15%, 21% {
+              background-position: calc(var(--mia-w) * -2) calc(var(--mia-h) * -1);
+            }
+            22%, 28% {
+              background-position: calc(var(--mia-w) * -3) calc(var(--mia-h) * -1);
+            }
+            29%, 35% {
+              background-position: calc(var(--mia-w) * -4) calc(var(--mia-h) * -1);
+            }
+            36%, 42% {
+              background-position: calc(var(--mia-w) * -5) calc(var(--mia-h) * -1);
+            }
+            43%, 49% {
+              background-position: calc(var(--mia-w) * -6) calc(var(--mia-h) * -1);
+            }
+            50%, 57% {
+              background-position: calc(var(--mia-w) * -7) calc(var(--mia-h) * -1);
+            }
+            58%, 63% {
+              background-position: 0 calc(var(--mia-h) * -3);
+            }
+            64%, 69% {
+              background-position: calc(var(--mia-w) * -1) calc(var(--mia-h) * -3);
+            }
+            70%, 75% {
+              background-position: calc(var(--mia-w) * -2) calc(var(--mia-h) * -3);
+            }
+            76%, 80% {
+              background-position: calc(var(--mia-w) * -3) calc(var(--mia-h) * -3);
+            }
+            81%, 84% {
+              background-position: 0 calc(var(--mia-h) * -4);
+              transform: translateY(0);
+            }
+            85%, 87% {
+              background-position: calc(var(--mia-w) * -1) calc(var(--mia-h) * -4);
+              transform: translateY(-0.45rem);
+            }
+            88%, 90% {
+              background-position: calc(var(--mia-w) * -2) calc(var(--mia-h) * -4);
+              transform: translateY(-0.8rem);
+            }
+            91%, 93% {
+              background-position: calc(var(--mia-w) * -3) calc(var(--mia-h) * -4);
+              transform: translateY(-0.35rem);
+            }
+            94%, 100% {
+              background-position: calc(var(--mia-w) * -6) 0;
+              transform: translateY(0);
+            }
+          }
+
+          @keyframes begin-codex-hover-emote {
+            0%, 100% {
+              background-position: 0 calc(var(--mia-h) * -3);
+              transform: translateY(0);
+            }
+            20% {
+              background-position: calc(var(--mia-w) * -1) calc(var(--mia-h) * -3);
+            }
+            40% {
+              background-position: calc(var(--mia-w) * -2) calc(var(--mia-h) * -3);
+              transform: translateY(-0.15rem);
+            }
+            60% {
+              background-position: calc(var(--mia-w) * -3) calc(var(--mia-h) * -3);
+            }
+            80% {
+              background-position: calc(var(--mia-w) * -4) calc(var(--mia-h) * -3);
+              transform: translateY(0);
+            }
+          }
+
+          .begin-codex-pet-lane {
+            --mia-w: clamp(5rem, 8vw, 6.75rem);
+            --mia-h: calc(var(--mia-w) * 1.083333);
+            position: relative;
+            min-width: 12rem;
+            height: calc(var(--mia-h) + 0.8rem);
+            flex: 1 1 16rem;
+            overflow: hidden;
+          }
+
+          .begin-codex-pet-traveler {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: var(--mia-w);
+            height: var(--mia-h);
+            animation: begin-codex-travel 9s linear infinite;
+          }
+
+          .begin-mia-sprite {
+            width: var(--mia-w);
+            height: var(--mia-h);
+            background-image: url('/begin/codex-default-spritesheet.webp');
+            background-repeat: no-repeat;
+            background-size: calc(var(--mia-w) * 8) calc(var(--mia-h) * 11);
+            background-position: calc(var(--mia-w) * -6) 0;
+            image-rendering: auto;
+            filter: drop-shadow(0 0 18px rgba(255,255,255,0.16));
+            animation: begin-mia-loop 9s steps(1, end) infinite;
+          }
+
+          .begin-mia-sprite-michelle {
+            background-image: url('/begin/mia-spritesheet.webp');
+          }
+
+          .begin-codex-pet-lane:hover .begin-codex-pet-traveler {
+            animation-play-state: paused;
+          }
+
+          .begin-codex-pet-lane:hover .begin-mia-sprite {
+            animation: begin-codex-hover-emote 1.25s steps(1, end) infinite;
+          }
+
+          .begin-typing-group {
+            width: max-content;
+            max-width: 100%;
+            text-align: center;
+          }
+
+          .begin-typing-line {
+            display: block;
+            width: 100%;
+            max-width: 100%;
+            white-space: nowrap;
+            clip-path: inset(0 100% 0 0);
+            animation: begin-type-line 1.18s steps(92, end) forwards;
+          }
+
+          .begin-typing-line:nth-child(2) {
+            animation-delay: 1.02s;
+          }
+
+          .begin-typing-line:nth-child(3) {
+            animation-delay: 1.92s;
+          }
+
+          .begin-typing-line:nth-child(4) {
+            animation-delay: 2.82s;
+          }
+
+          .begin-chalk-strike {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            width: fit-content;
+          }
+
+          .begin-chalk-strike-line {
+            position: relative;
+            display: block;
+            width: fit-content;
+          }
+
+          .begin-chalk-strike-line::after {
+            content: "";
+            position: absolute;
+            left: -0.08em;
+            right: -0.08em;
+            top: 50%;
+            height: 0.16em;
+            pointer-events: none;
+            background:
+              linear-gradient(180deg, transparent 0 18%, rgba(255,255,255,0.94) 24% 68%, transparent 78%),
+              repeating-linear-gradient(90deg, rgba(255,255,255,0.88) 0 7px, rgba(255,255,255,0.55) 7px 11px, rgba(255,255,255,0.9) 11px 18px);
+            box-shadow:
+              0 -1px 0 rgba(255,255,255,0.36),
+              0 1px 0 rgba(255,255,255,0.28),
+              0 0 4px rgba(255,255,255,0.24);
+            clip-path: inset(0 100% 0 0);
+            animation: begin-chalk-strike 0.72s steps(22, end) 500ms forwards;
+          }
+
+          .begin-chalk-strike-line:nth-child(2)::after {
+            animation-delay: 1.08s;
+          }
+
+          .begin-chalk-strike-mobile {
+            display: none;
+          }
+
+          .begin-mobile-swipe-cue {
+            display: none;
+          }
+
+          .begin-email-team-button {
+            position: relative;
+            display: flex;
+            width: min(100%, 58rem);
+            aspect-ratio: 3 / 1;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 4rem 2.3rem;
+            color: rgba(255,255,255,0.92);
+            text-align: center;
+            text-decoration: none;
+            background-image: url('/begin/generated/email-team-chalk-bevel-erased.png');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: contain;
+            filter: drop-shadow(0 12px 22px rgba(0,0,0,0.4));
+            transform: rotate(-0.35deg);
+            transition: transform 180ms ease, color 180ms ease, filter 180ms ease;
+          }
+
+          .begin-email-team-button:hover {
+            color: white;
+            transform: rotate(0deg) translateY(-3px) scale(1.012);
+            filter: drop-shadow(0 16px 28px rgba(0,0,0,0.55)) brightness(1.08);
+          }
+
+          .begin-email-team-button:focus-visible {
+            outline: 3px solid white;
+            outline-offset: 7px;
+          }
+
+          @media (max-width: 639px) {
+            .begin-email-team-button {
+              padding: 1rem 2rem 1.15rem;
+            }
+          }
+
+          @supports (animation-timeline: view()) {
+            .begin-chalk-strike-line::after {
+              animation-delay: 0ms;
+              animation-timeline: view();
+              animation-range: entry 68% contain 80%;
+            }
+
+            .begin-chalk-strike-line:nth-child(2)::after {
+              animation-range: entry 80% contain 95%;
+            }
+
+            .begin-why-michelle-story {
+              animation: begin-why-michelle-story-focus linear both;
+              animation-timeline: view();
+              animation-range: entry 0% exit 100%;
+            }
+          }
+
+          @media (max-width: 900px) {
+            .begin-typing-group {
+              width: auto;
+            }
+
+            .begin-typing-line {
+              width: auto;
+              max-width: none;
+              white-space: normal;
+              clip-path: none;
+              animation: none;
+            }
+          }
+
+          @media (max-width: 639px) {
+            .begin-cursor-page {
+              cursor: auto !important;
+              overflow-x: clip;
+            }
+
+            .begin-mobile-intro-grid {
+              grid-template-columns: minmax(0, 1fr);
+              width: 100%;
+              min-width: 0;
+            }
+
+            .begin-mobile-intro-grid > *,
+            .begin-mobile-intro-copy {
+              width: 100%;
+              min-width: 0;
+              max-width: 100%;
+            }
+
+            .begin-mia-sprite {
+              filter: drop-shadow(0 0 12px rgba(255,255,255,0.14));
+            }
+
+            .begin-why-michelle-story {
+              animation: none !important;
+              opacity: 1 !important;
+              filter: none !important;
+              transform: none !important;
+            }
+
+            .begin-codex-pet-lane {
+              --mia-w: 4.75rem;
+              min-width: 9rem;
+              flex-basis: 10rem;
+            }
+
+            .begin-mobile-carousel,
+            .begin-mobile-comment-carousel {
+              display: flex;
+              width: auto;
+              margin-right: -1.5rem;
+              padding-right: 1.5rem;
+              overflow-x: auto;
+              overflow-y: hidden;
+              overscroll-behavior-inline: contain;
+              scroll-snap-type: x mandatory;
+              scrollbar-width: none;
+              -webkit-overflow-scrolling: touch;
+            }
+
+            .begin-mobile-carousel::-webkit-scrollbar,
+            .begin-mobile-comment-carousel::-webkit-scrollbar {
+              display: none;
+            }
+
+            .begin-mobile-carousel-card {
+              width: min(76vw, 18rem) !important;
+              min-width: min(76vw, 18rem);
+              flex: 0 0 min(76vw, 18rem);
+              scroll-snap-align: start;
+            }
+
+            .begin-mobile-swipe-cue {
+              display: block;
+              margin-top: 0.75rem;
+            }
+
+            .begin-mobile-comment-carousel > * {
+              width: min(80vw, 20rem) !important;
+              min-width: min(80vw, 20rem);
+              flex: 0 0 min(80vw, 20rem);
+              scroll-snap-align: start;
+              align-self: flex-start;
+            }
+
+            .begin-chalk-strike-desktop {
+              display: none;
+            }
+
+            .begin-chalk-strike-mobile {
+              display: flex;
+            }
+
+            .begin-chalk-strike-line:nth-child(3)::after {
+              animation-delay: 1.66s;
+            }
+          }
+
+          @media (prefers-reduced-motion: reduce) {
+            .begin-mia-sprite,
+            .begin-codex-pet-traveler {
+              animation: none;
+            }
+
+            .begin-codex-pet-traveler {
+              left: 0;
+              opacity: 1;
+            }
+
+            .begin-why-michelle-story {
+              animation: none;
+              opacity: 1;
+              filter: none;
+              transform: none;
+            }
+          }
+
+          @media (max-width: 639px) and (prefers-reduced-motion: reduce) {
+            .begin-typing-line,
+            .begin-chalk-strike-line::after {
+              animation: none;
+              clip-path: none;
+            }
+
+            .begin-cursor-arrow {
+              animation: none;
+            }
+          }
+        `}
+      </style>
+      <section className="relative min-h-[calc(100vh-4rem)] bg-black px-6 py-8 sm:px-10 lg:px-16">
+        <div className="mx-auto flex min-h-[calc(100vh-8rem)] max-w-6xl flex-col justify-start">
+          <div className="relative mx-auto flex max-w-5xl flex-1 flex-col items-center justify-start pb-24 pt-10 text-center sm:pb-28 sm:pt-20 lg:pt-24">
+            <Image
+              src="/begin/chalk-heart.png"
+              alt=""
+              width={220}
+              height={220}
+              aria-hidden="true"
+              className="absolute right-2 top-20 h-16 w-16 rotate-12 opacity-55 sm:-right-8 sm:top-14 sm:h-24 sm:w-24 lg:-right-12 lg:h-28 lg:w-28"
+            />
+            <h1
+              className={`${emphasisFontClassName} relative max-w-5xl text-5xl font-normal leading-[0.95] sm:text-8xl ${
+                isCursor ? "lg:text-[6.75rem]" : "lg:text-9xl"
+              }`}
             >
-              See the idea
-            </a>
-          </div>
-          <div className="relative mx-auto w-full max-w-2xl lg:ml-auto">
-            <CanvasPreview className="figma-glow rotate-[1deg]" />
-            <div className="chalk-card relative mx-auto mt-5 w-[88%] px-6 py-4 text-center sm:w-[76%]">
-              <p className={`${emphasisFontClassName} text-3xl leading-none sm:text-4xl`}>
-                From “what if…” to “look what I made.”
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="introduction" className="scroll-mt-20 bg-black px-6 py-20 sm:px-10 sm:py-28 lg:px-16">
-        <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-[.76fr_1.24fr] lg:gap-20">
-          <div className="relative mx-auto w-full max-w-[22rem] lg:sticky lg:top-24 lg:max-w-none lg:self-start">
-            <div className="aspect-[4/5] overflow-hidden" style={{ WebkitMaskImage: "url('/begin/michelle-blob-mask.svg')", maskImage: "url('/begin/michelle-blob-mask.svg')", WebkitMaskPosition: "center", maskPosition: "center", WebkitMaskRepeat: "no-repeat", maskRepeat: "no-repeat", WebkitMaskSize: "100% 100%", maskSize: "100% 100%" }}>
-              <Image
-                src="/begin/michelle-photos/app-idea-bench.jpeg"
-                alt="Michelle working on an app idea"
-                width={900}
-                height={1125}
-                className="h-full w-full object-cover"
-                sizes="(min-width: 1024px) 400px, 80vw"
-              />
-            </div>
-            <span aria-hidden="true" className="absolute -right-5 -top-5 rounded-full border border-[#a259ff]/60 bg-black px-4 py-2 text-xs font-semibold uppercase tracking-[0.15em] text-[#d3b8ff]">make something</span>
-          </div>
-          <div className="space-y-10">
-            <div>
-              <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-[#c8a4ff]">Why this matters</p>
-              <h2 className={`${emphasisFontClassName} max-w-3xl text-6xl leading-[0.94] sm:text-8xl`}>
-                People have ideas.
-                <br />
-                Starting is the hard part.
-              </h2>
-            </div>
-            <div className="space-y-6 text-lg leading-8 text-white/72 sm:text-xl sm:leading-9">
-              <p>
-                Someone wants to make an app for their student group, put a
-                portfolio online, or explain a big idea in a presentation. They
-                don’t call themselves designers. They just want to make the
-                thing they can already picture.
-              </p>
-              <p>
-                Figma gives them a place to explore that idea—from a FigJam
-                board, to a designed screen, to a prototype or something ready
-                to share. AI can make the first step feel even more possible.
-                The opportunity is to show people, one useful project at a time.
-              </p>
-              <p className="text-white">
-                I teach technology by starting with a question people already
-                care about, then helping them make something real. I’d love to
-                bring that approach to Figma.
-              </p>
-            </div>
-            <div className="chalk-card relative grid gap-5 px-7 py-8 sm:grid-cols-3 sm:px-9">
-              {[
-                ["Start anywhere", "A rough idea is enough."],
-                ["Make it visible", "See the next step on canvas."],
-                ["Share it proudly", "Show someone what you made."],
-              ].map(([title, description]) => (
-                <div key={title}>
-                  <p className={`${emphasisFontClassName} text-3xl leading-none sm:text-4xl`}>{title}</p>
-                  <p className="mt-2 text-sm leading-6 text-white/62">{description}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="the-proposal" className="scroll-mt-20 bg-[#111113] px-6 py-20 sm:px-10 sm:py-28 lg:px-16">
-        <div className="mx-auto max-w-6xl">
-          <div className="mx-auto max-w-4xl text-center">
-            <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-[#c8a4ff]">What I’m proposing</p>
-            <h2 className={`${emphasisFontClassName} text-6xl leading-[0.94] sm:text-8xl`}>
-              A 30-video series.
-              <br />
-              <span className="text-[#c8a4ff]">Start with 10.</span>
-            </h2>
-            <p className="mx-auto mt-7 max-w-3xl text-lg leading-8 text-white/70 sm:text-2xl sm:leading-10">
-              Short, useful stories that help Gen Z move from a blank canvas to
-              a project they can use, show, or share. We’ll make the first 10,
-              learn what resonates, and build from there.
+              {isCursor
+                ? "Teaching the Next Generation to Make with Figma"
+                : "Teaching the Next Generation How to Use AI"}
+            </h1>
+            <p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-white/74 sm:mt-7 sm:text-xl sm:leading-8">
+              A proposal for an ongoing educational partnership between Michelle
+              Lawson (
+              <a
+                href="https://www.instagram.com/michellescomputer/"
+                target="_blank"
+                rel="noreferrer"
+                className="underline decoration-white/35 underline-offset-4 transition hover:text-white hover:decoration-white"
+              >
+                @michellescomputer
+              </a>
+              ) and {isCursor ? "Figma" : "OpenAI"}.
             </p>
-          </div>
-
-          <div className="mt-14 grid gap-5 md:grid-cols-3">
-            {[
-              { number: "01", title: "Show the possibility", body: "Start with a familiar need and a specific thing someone wants to make." },
-              { number: "02", title: "Make it together", body: "Walk through the idea in Figma, with the real decisions and discoveries left in." },
-              { number: "03", title: "Give them a first step", body: "End with a result viewers can imagine making—and a clear way to try it." },
-            ].map((step) => (
-              <article key={step.number} className="group relative min-h-64 p-7 sm:p-9">
-                <span aria-hidden="true" className="chalk-card absolute inset-0 opacity-60 transition-opacity group-hover:opacity-95" />
-                <div className="relative">
-                  <p className={`${emphasisFontClassName} text-4xl text-[#c8a4ff]`}>{step.number}</p>
-                  <h3 className={`${emphasisFontClassName} mt-5 text-4xl leading-none sm:text-5xl`}>{step.title}</h3>
-                  <p className="mt-4 text-base leading-7 text-white/68">{step.body}</p>
-                </div>
-              </article>
-            ))}
-          </div>
-
-          <div className="mt-12 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-sm font-semibold uppercase tracking-[0.14em] text-white/55">
-            <span>Instagram</span><span aria-hidden="true" className="text-[#a259ff]">×</span>
-            <span>TikTok</span><span aria-hidden="true" className="text-[#a259ff]">×</span>
-            <span>YouTube Shorts</span>
-            <span className="mx-2 hidden h-5 w-px bg-white/20 sm:block" />
-            <span className="basis-full text-center text-xs font-medium normal-case tracking-normal text-white/42 sm:basis-auto">One original idea, shaped for each platform.</span>
-          </div>
-        </div>
-      </section>
-
-      <section id="first-10" className="scroll-mt-20 bg-black px-6 py-20 sm:px-10 sm:py-28 lg:px-16">
-        <div className="mx-auto max-w-6xl">
-          <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
-            <div>
-              <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-[#c8a4ff]">The first 10</p>
-              <h2 className={`${emphasisFontClassName} text-6xl leading-[0.94] sm:text-8xl`}>A few ideas<br />to get us started.</h2>
-            </div>
-            <p className="max-w-md text-base leading-7 text-white/60 sm:text-lg sm:leading-8">
-              The series can travel across Figma’s creative world, while every
-              episode stays grounded in a project someone actually wants to make.
-            </p>
-          </div>
-
-          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {videos.map((video) => (
-              <article key={video.number} className="group relative min-h-[17rem] overflow-hidden rounded-2xl border border-white/10 bg-[#111113] p-6 transition duration-300 hover:-translate-y-1 hover:border-white/25 sm:p-7">
-                <div aria-hidden="true" className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${video.color}`} />
-                <div className={`absolute -right-10 -top-12 h-40 w-40 rounded-full bg-gradient-to-br ${video.color} blur-2xl transition-transform duration-500 group-hover:scale-125`} />
-                <div className="relative flex h-full min-h-[14rem] flex-col">
-                  <div className="flex items-center justify-between gap-4">
-                    <span className={`${emphasisFontClassName} text-3xl text-white/65`}>{video.number}</span>
-                    <span className="rounded-full border border-white/15 bg-black/30 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-white/62">{video.product}</span>
-                  </div>
-                  <h3 className={`${emphasisFontClassName} mt-7 text-3xl leading-[1.03] sm:text-4xl`}>{video.title}</h3>
-                  <p className="mt-3 text-sm leading-6 text-white/57">{video.idea}</p>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="why-michelle" className="scroll-mt-20 bg-[#17131d] px-6 py-20 sm:px-10 sm:py-28 lg:px-16">
-        <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-[1fr_.9fr] lg:gap-20">
-          <div className="space-y-8">
-            <div>
-              <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-[#c8a4ff]">Why Michelle</p>
-              <h2 className={`${emphasisFontClassName} text-6xl leading-[0.94] sm:text-8xl`}>I teach people<br />to make things.</h2>
-            </div>
-            <div className="space-y-5 text-lg leading-8 text-white/70 sm:text-xl sm:leading-9">
-              <p>
-                I’m a computer scientist and educator who loves helping people
-                see themselves as builders. My work connects technology to
-                everyday ambition: an app someone wishes existed, a project
-                they’re proud to show, a creative idea they didn’t know how to
-                start.
-              </p>
-              <p>
-                That perspective lets me talk about Figma as more than a design
-                tool. It can be where a student organizes a thought, where a
-                creator shapes a visual, where a team tests an idea, and where
-                a first-time maker discovers they can do this.
-              </p>
-            </div>
-            <div className="grid gap-3 sm:grid-cols-3">
-              {[
-                ["The learner", "I explain the steps in plain language."],
-                ["The builder", "I make real projects, not abstract demos."],
-                ["The storyteller", "I make the process feel possible."],
-              ].map(([title, text]) => (
-                <div key={title} className="border-l border-[#a259ff]/70 pl-4">
-                  <p className="text-sm font-semibold text-white">{title}</p>
-                  <p className="mt-1 text-sm leading-6 text-white/55">{text}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="relative mx-auto w-full max-w-xl">
-            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-white/15 bg-[#222027]">
-              <Image
-                src="/begin/michelle-photos/chalkboard-teaching-wide.jpeg"
-                alt="Michelle teaching at a chalkboard"
-                fill
-                className="object-cover"
-                sizes="(min-width: 1024px) 540px, 90vw"
-              />
-              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/45 to-transparent p-6 pt-24 sm:p-8 sm:pt-28">
-                <p className={`${emphasisFontClassName} max-w-sm text-4xl leading-none sm:text-5xl`}>
-                  “I thought I couldn’t make that.”
+            <div className="begin-typing-group mx-auto mt-8 space-y-3 text-base leading-7 text-white/72 sm:mt-10 sm:space-y-4 sm:text-xl sm:leading-8">
+              {activeHeroIntro.map((line, index) => (
+                <p className="begin-typing-line" key={line}>
+                  {index === activeHeroIntro.length - 1 ? (
+                    <a
+                      href="#the-proposal"
+                      aria-label="Here's how: jump to the proposal"
+                      className="group inline-grid rounded-sm font-semibold text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-4 focus-visible:ring-offset-black"
+                    >
+                      <span className="col-start-1 row-start-1 transition-all duration-200 group-hover:-translate-y-1 group-hover:opacity-0 group-focus-visible:-translate-y-1 group-focus-visible:opacity-0">
+                        {line}
+                      </span>
+                      <span
+                        aria-hidden="true"
+                        className="col-start-1 row-start-1 translate-y-1 opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100"
+                      >
+                        Here&apos;s how →
+                      </span>
+                    </a>
+                  ) : (
+                    line
+                  )}
                 </p>
-                <p className="mt-3 text-xs font-semibold uppercase tracking-[0.16em] text-white/65">The feeling I want every viewer to leave with</p>
+              ))}
+            </div>
+          </div>
+        </div>
+        <Image
+          src="/begin/chalk-down-arrow.png"
+          alt=""
+          width={160}
+          height={160}
+          aria-hidden="true"
+          className="begin-cursor-arrow absolute bottom-0 left-1/2 h-24 w-24 -translate-x-1/2 animate-[begin-arrow-bounce_1.7s_ease-in-out_infinite] opacity-85 sm:bottom-1 sm:h-40 sm:w-40"
+        />
+      </section>
+
+      <section
+        id="introduction"
+        className="scroll-mt-20 bg-black px-6 py-16 sm:px-10 sm:py-24 lg:px-16 lg:pb-20 lg:pt-32"
+      >
+        <div className="begin-mobile-intro-grid mx-auto grid max-w-6xl items-center gap-14 lg:grid-cols-[0.82fr_1.18fr] lg:items-start lg:gap-20">
+          <div className="relative mx-auto w-full max-w-[19rem] sm:max-w-md lg:sticky lg:top-24 lg:max-w-none lg:self-start">
+            <div
+              className="aspect-[4/5] overflow-hidden"
+              style={{
+                WebkitMaskImage: "url('/begin/michelle-blob-mask.svg')",
+                maskImage: "url('/begin/michelle-blob-mask.svg')",
+                WebkitMaskPosition: "center",
+                maskPosition: "center",
+                WebkitMaskRepeat: "no-repeat",
+                maskRepeat: "no-repeat",
+                WebkitMaskSize: "100% 100%",
+                maskSize: "100% 100%",
+              }}
+            >
+              <Image
+                src="/begin/michelle-portrait.jpeg"
+                alt="Michelle Lawson looking directly at the camera"
+                width={768}
+                height={1024}
+                className="h-full w-full object-cover"
+                sizes="(min-width: 1024px) 430px, (min-width: 640px) 448px, calc(100vw - 48px)"
+              />
+            </div>
+          </div>
+
+          <div className="begin-mobile-intro-copy space-y-9 sm:space-y-12">
+            <div className="space-y-5">
+              <h2
+                className={`${emphasisFontClassName} text-[3.5rem] font-normal leading-none sm:text-8xl`}
+              >
+                Hi, I&apos;m Michelle.
+              </h2>
+              <p className="max-w-2xl text-xl leading-9 text-white/72">
+                I teach Gen Z how to use computer science and AI to gain agency,
+                turn their ideas into reality, and create more possibilities for
+                themselves.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3 sm:gap-5">
+              <div className="space-y-3">
+                <Image
+                  src="/begin/about-stats/250k.png"
+                  alt="250K plus"
+                  width={1553}
+                  height={436}
+                  className="h-14 w-auto max-w-full object-contain object-left sm:h-16 lg:h-20"
+                  sizes="(min-width: 1024px) 190px, (min-width: 640px) 160px, 280px"
+                />
+                <p className="text-base leading-6 text-white/68">
+                  followers across platforms
+                </p>
+              </div>
+              <div className="space-y-3">
+                <Image
+                  src="/begin/about-stats/millions.png"
+                  alt="Millions"
+                  width={1682}
+                  height={430}
+                  className="h-14 w-auto max-w-full object-contain object-left sm:h-16 lg:h-20"
+                  sizes="(min-width: 1024px) 210px, (min-width: 640px) 170px, 300px"
+                />
+                <p className="text-base leading-6 text-white/68">
+                  of video views
+                </p>
+              </div>
+              <details className="group relative col-span-2 sm:col-span-1">
+                <summary
+                  className="space-y-3 list-none cursor-help rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-4 focus-visible:ring-offset-black [&::-webkit-details-marker]:hidden"
+                  aria-label="Show the industry engagement-rate comparison"
+                  title="See the industry comparison"
+                >
+                  <Image
+                    src="/begin/about-stats/11-percent.png"
+                    alt="11 percent"
+                    width={1202}
+                    height={673}
+                    className="h-14 w-auto max-w-full object-contain object-left sm:h-16 lg:h-20"
+                    sizes="(min-width: 1024px) 150px, (min-width: 640px) 125px, 210px"
+                  />
+                  <p className="text-base leading-6 text-white/68 underline decoration-white/25 decoration-dotted underline-offset-4 transition group-hover:text-white">
+                    Instagram engagement by reach
+                    <span
+                      aria-hidden="true"
+                      className="ml-1.5 inline-grid h-6 w-6 place-items-center align-middle bg-[url('/begin/generated/chalk-nav-circle.png')] bg-contain bg-center bg-no-repeat text-white/85 opacity-80 transition group-hover:scale-105 group-hover:opacity-100 group-open:opacity-100"
+                    >
+                      <Info className="h-3 w-3" strokeWidth={2.4} />
+                    </span>
+                  </p>
+                </summary>
+                <div
+                  role="tooltip"
+                  className="invisible absolute left-1/2 top-full z-50 mt-3 w-72 max-w-[calc(100vw-3rem)] -translate-x-1/2 rounded border border-white/25 bg-black px-4 py-3 text-sm leading-6 text-white/78 opacity-0 shadow-[0_12px_30px_rgba(0,0,0,0.55)] transition group-open:visible group-open:opacity-100 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100"
+                >
+                  Compared to an{" "}
+                  <a
+                    href="https://blog.hootsuite.com/average-engagement-rate/"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="font-semibold text-white underline decoration-white/50 underline-offset-4 hover:decoration-white"
+                  >
+                    industry average of 3.3%
+                  </a>
+                  .
+                </div>
+              </details>
+            </div>
+
+            <div className="space-y-7 text-xl leading-9 text-white/72">
+              <p>
+                {isCursor
+                  ? "I have spent years showing young people that technology is not out of reach—and that they can make things for school, work, creativity, and everyday life."
+                  : "I've partnered with OpenAI over the past year to make new features feel practical, exciting, and worth trying."}
+              </p>
+
+              <div className="mx-auto max-w-lg">
+                <ReelProofRow
+                  fontClassName={emphasisFontClassName}
+                  reels={
+                    isCursor
+                      ? cursorIntroReels
+                      : featuredReelSections[2].reels.filter(
+                          (reel) => reel.videoSrc,
+                        )
+                  }
+                />
+              </div>
+
+              <p className="text-white">
+                {isCursor
+                  ? "Figma gives people more ways to bring ideas to life. The opportunity is helping them see where to start."
+                  : "But the more I work with OpenAI, the more I realize that the biggest opportunity is teaching people what to actually do with your products."}
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {!isCursor && (
+        <section
+          id="the-opportunity"
+          className="scroll-mt-20 bg-black px-6 py-16 sm:px-10 sm:pb-16 sm:pt-24 lg:px-16"
+        >
+          <div className="mx-auto max-w-6xl space-y-16">
+            <div className="relative max-w-5xl">
+              <h2
+                className={`${emphasisFontClassName} relative z-10 max-w-4xl text-5xl font-normal leading-none tracking-tight sm:text-8xl`}
+              >
+                {isCursor
+                  ? "Figma can help more people make ideas real."
+                  : "Every few weeks, OpenAI releases something that blows my mind."}
+              </h2>
+              <Image
+                src="/begin/messy-math-papers.png"
+                alt=""
+                width={1402}
+                height={1122}
+                aria-hidden="true"
+                className="pointer-events-none absolute -right-12 top-8 z-0 hidden w-52 rotate-6 opacity-62 lg:block xl:-right-24 xl:w-60"
+                sizes="240px"
+              />
+            </div>
+
+            <ReleaseWordMap
+              labels={isCursor ? ["FigJam", "Figma Design", "Prototyping", "Figma Slides", "Figma Sites", "Figma Buzz", "Figma Make", "Figma AI"] : undefined}
+              fontClassName={emphasisFontClassName}
+              ariaLabel={
+                isCursor
+                  ? "Figma tools and surfaces"
+                  : "Recent OpenAI releases"
+              }
+            />
+
+            <div className="mx-auto max-w-4xl space-y-7 pt-8 text-xl leading-9 text-white/72 sm:pt-12">
+              <p>
+                {isCursor
+                  ? "And all of that power creates one simple problem."
+                  : "And every single time, I run into the same problem."}
+              </p>
+              <p className="text-2xl font-semibold leading-9 text-white">
+                {isCursor
+                  ? "Many people still do not see themselves as designers."
+                  : "I only get to make one or two videos."}
+              </p>
+              <p>
+                {isCursor
+                  ? "They might know Figma as a design tool, but not how it can help them plan a project, prototype an app, make a portfolio, or share an idea."
+                  : "One or two chances to explain dozens of incredible features, possibilities, and ideas."}
+              </p>
+              <p>
+                {isCursor
+                  ? "Figma gives people different ways to plan, design, prototype, and share their work."
+                  : "But I know the most memorable posts must have one simple core idea, so people walk away with something to try."}
+              </p>
+              <p>So I constantly find myself asking:</p>
+            </div>
+
+            <div className="mx-auto max-w-5xl py-4 text-center sm:py-6">
+              <p className="mx-auto max-w-3xl text-xl leading-9 text-white/68">
+                &quot;
+                {isCursor
+                  ? "What could I make with Figma that would actually help me?"
+                  : "Which possibilities am I leaving out?"}
+                &quot;
+              </p>
+              <p
+                className={`${emphasisFontClassName} mx-auto mt-6 max-w-5xl text-4xl font-normal leading-none text-white sm:text-[3.25rem]`}
+              >
+                {isCursor
+                  ? "There are too many useful ideas for one launch video."
+                  : "There are simply too many good use cases for one video."}
+              </p>
+            </div>
+
+            {!isCursor && (
+              <div className="mx-auto max-w-4xl space-y-7 text-xl leading-9 text-white/72">
+                <p>
+                  {isCursor
+                    ? "The goal is not to list every feature in one video."
+                    : "Maybe the goal isn't to fit everything into one video, or even one influencer campaign sprint."}
+                </p>
+                <p
+                  className={`${emphasisFontClassName} py-8 text-4xl font-normal leading-none text-white sm:text-6xl`}
+                >
+                  The goal is to educate people over time.
+                </p>
+                <p>
+                  Because education is the highest form of product leverage.
+                </p>
+                <p>
+                  <strong>So let's teach people!</strong>
+                </p>
+              </div>
+            )}
+          </div>
+        </section>
+      )}
+
+      <section
+        id={isCursor ? undefined : "why-educate"}
+        className="scroll-mt-20 bg-black px-6 py-16 sm:px-10 sm:pb-24 sm:pt-16 lg:px-16"
+      >
+        <div
+          className={`mx-auto max-w-5xl ${
+            isCursor ? "flex flex-col gap-14" : "space-y-14"
+          }`}
+        >
+          {!isCursor && (
+            <>
+              <div className="space-y-7">
+                <h2
+                  className={`${emphasisFontClassName} text-3xl font-normal leading-none tracking-tight sm:text-7xl`}
+                >
+                  Nobody wakes up thinking,
+                </h2>
+                <div
+                  className="text-2xl leading-tight text-white/86 sm:text-4xl"
+                  aria-label={
+                    isCursor
+                      ? "I really hope I get to use an autonomous coding agent today."
+                      : "I really hope I get to use frontier reasoning today."
+                  }
+                >
+                  <p
+                    className="begin-chalk-strike begin-chalk-strike-desktop"
+                    aria-hidden="true"
+                  >
+                    <span className="begin-chalk-strike-line">
+                      &quot;I really hope I get to use
+                    </span>
+                    <span className="begin-chalk-strike-line">
+                      {isCursor
+                        ? 'an autonomous coding agent today."'
+                        : 'frontier reasoning today."'}
+                    </span>
+                  </p>
+                  <p
+                    className="begin-chalk-strike begin-chalk-strike-mobile"
+                    aria-hidden="true"
+                  >
+                    <span className="begin-chalk-strike-line">
+                      &quot;I really hope I get
+                    </span>
+                    <span className="begin-chalk-strike-line">
+                      {isCursor
+                        ? "to use an autonomous"
+                        : "to use frontier reasoning"}
+                    </span>
+                    <span className="begin-chalk-strike-line">
+                      {isCursor ? 'coding agent today."' : 'today."'}
+                    </span>
+                  </p>
+                </div>
+              </div>
+
+              <div className="space-y-5">
+                <p className="text-xl leading-9 text-white/72">
+                  They wake up thinking,
+                </p>
+                <TypedQuestionList
+                  questions={activeEverydayQuestions}
+                  fontClassName={emphasisFontClassName}
+                />
+              </div>
+
+              <div className="max-w-4xl space-y-7 text-xl leading-9 text-white/72">
+                <p className="text-xl leading-9 text-white/72">
+                  {isCursor
+                    ? "Figma gives people a place to work through an idea and make something they can share. A dedicated educator can show them where to start."
+                    : ""}
+                </p>
+                <p
+                  className={`${emphasisFontClassName} mx-auto max-w-3xl py-4 text-center text-5xl font-normal leading-none text-white sm:text-7xl`}
+                >
+                  That's where I come in,
+                </p>
+                <p className="mx-auto max-w-3xl text-center text-2xl leading-9 text-white/88 sm:text-[2rem] sm:leading-10">
+                  {isCursor
+                    ? "a dedicated educator who shows Gen Z what they can make with Figma, one useful project at a time."
+                    : "a dedicated educator who teaches people what to do with all OpenAI's brilliant tools."}
+                </p>
+                <p className="mx-auto max-w-3xl text-center">
+                  I will turn your features into relevant lessons{" "}
+                  <strong>
+                    {isCursor
+                      ? "Gen Z will understand, try, and use to make something real."
+                      : " Gen Z will understand, try, and come to love."}
+                  </strong>
+                </p>
+              </div>
+
+              <div className="relative left-1/2 w-screen -translate-x-1/2 overflow-hidden py-10">
+                <Image
+                  src="/begin/michelle-photos/chalkboard-walking-wide.jpeg"
+                  alt="Michelle Lawson walking in front of a chalkboard covered in math notes"
+                  width={2048}
+                  height={1018}
+                  className="h-[25rem] min-h-0 w-full scale-100 object-cover object-[58%_center] sm:h-[70vh] sm:min-h-[34rem] sm:scale-110 sm:object-center"
+                  sizes="100vw"
+                />
+              </div>
+            </>
+          )}
+
+          <div
+            id="why-michelle"
+            className={`relative left-1/2 w-[min(72rem,calc(100vw-3rem))] -translate-x-1/2 scroll-mt-20 ${
+              isCursor ? "order-3" : ""
+            }`}
+          >
+            <div className="mb-14 flex flex-wrap items-end gap-5 sm:flex-nowrap sm:gap-7 lg:hidden">
+              <h2
+                className={`${emphasisFontClassName} text-6xl font-normal leading-none tracking-tight text-white sm:text-8xl`}
+              >
+                Why Michelle?
+              </h2>
+              <div
+                className="begin-codex-pet-lane"
+                role="img"
+                aria-label="Animated Michelle pet walking beside the Why Michelle heading"
+              >
+                <div className="begin-codex-pet-traveler" aria-hidden="true">
+                  <div className="begin-mia-sprite begin-mia-sprite-michelle" />
+                </div>
               </div>
             </div>
-            <span aria-hidden="true" className="absolute -bottom-6 -right-3 h-20 w-20 rounded-full border border-[#0acf83]/60 bg-[#0acf83]/10 blur-[1px] sm:-right-7 sm:h-28 sm:w-28" />
-          </div>
-        </div>
-      </section>
 
-      <section id="lets-talk" className="scroll-mt-20 relative overflow-hidden bg-black px-6 py-24 sm:px-10 sm:py-36 lg:px-16">
-        <div aria-hidden="true" className="figma-color-bar absolute inset-x-0 top-0 h-1 opacity-80" />
-        <div className="relative mx-auto max-w-5xl text-center">
-          <p className="mb-5 text-xs font-semibold uppercase tracking-[0.2em] text-[#c8a4ff]">A first step</p>
-          <h2 className={`${emphasisFontClassName} text-6xl leading-[0.94] sm:text-8xl lg:text-9xl`}>
-            Let’s help more people
-            <br />
-            make the idea real.
-          </h2>
-          <p className="mx-auto mt-7 max-w-2xl text-lg leading-8 text-white/68 sm:text-xl sm:leading-9">
-            We can start with 10 practical videos, share them across Instagram,
-            TikTok, and YouTube Shorts, then build on what viewers are excited
-            to try.
-          </p>
-          <a
-            href={emailHref}
-            className="group mt-10 inline-flex items-center gap-3 rounded-full bg-white px-7 py-4 text-base font-semibold text-black transition hover:bg-[#e9dcff] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-4 focus-visible:ring-offset-black"
-          >
-            Let’s talk about Figma
-          </a>
-          <div className="mt-12 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-sm text-white/45">
-            <span className="inline-flex items-center gap-2"><span aria-hidden="true" className="font-bold text-[#0acf83]">✓</span>Real use cases</span>
-            <span className="inline-flex items-center gap-2"><span aria-hidden="true" className="font-bold text-[#0acf83]">✓</span>Creator-led teaching</span>
-            <span className="inline-flex items-center gap-2"><span aria-hidden="true" className="font-bold text-[#0acf83]">✓</span>A series built to grow</span>
+            <div className="grid items-start lg:grid-cols-[19rem_minmax(0,1fr)] lg:gap-14">
+              <aside className="begin-why-michelle-sticky sticky top-20 hidden h-[calc(100vh-5rem)] flex-col justify-center lg:flex">
+                <h2
+                  className={`${emphasisFontClassName} text-7xl font-normal leading-none tracking-tight text-white`}
+                >
+                  Why Michelle?
+                </h2>
+                <div
+                  className="begin-codex-pet-lane mt-5"
+                  role="img"
+                  aria-label="Animated Michelle pet walking beside the Why Michelle heading"
+                >
+                  <div className="begin-codex-pet-traveler" aria-hidden="true">
+                    <div className="begin-mia-sprite begin-mia-sprite-michelle" />
+                  </div>
+                </div>
+                <WhyMichelleStepRail />
+              </aside>
+
+              <div className="min-w-0 max-w-4xl space-y-14 text-xl leading-9 text-white/72 sm:space-y-20 lg:space-y-0">
+            <div
+              id="why-michelle-point-1"
+              className="begin-why-michelle-story scroll-mt-24 space-y-7 lg:min-h-screen lg:py-20 lg:pr-4"
+            >
+              <div className="flex items-start gap-4 sm:items-center">
+                <Image
+                  src="/begin/chalk-numbers/chalk-circled-1.png"
+                  alt="1"
+                  width={512}
+                  height={512}
+                  className="mt-1 h-12 w-12 shrink-0 object-contain sm:mt-0 sm:h-14 sm:w-14 lg:hidden"
+                />
+                <h3
+                  className={`${emphasisFontClassName} text-[2rem] leading-none text-white sm:text-5xl`}
+                >
+                  I make complicated concepts simple
+                </h3>
+              </div>
+              <p className="text-xl leading-8 text-white sm:text-2xl sm:leading-9">
+                I make new concepts useful to my audience by connecting them to
+                ideas they are already familiar with.
+              </p>
+              <p>
+                I&apos;ve been tutoring for years, long before I started
+                teaching online. That experience taught me how to break down
+                complex ideas and find the explanation that makes them click. I
+                bring the same approach to every video, using fun analogies and
+                practical use cases to make computer science and AI accessible
+                to anyone.
+              </p>
+              <ReelProofRow
+                reels={featuredReelSections[0].reels}
+                fontClassName={emphasisFontClassName}
+              />
+              <div
+                className="begin-mobile-comment-carousel grid items-start gap-3 pt-2 sm:grid-cols-2 lg:grid-cols-3"
+                role="region"
+                aria-label="Audience comments. Swipe horizontally on mobile to see more."
+                tabIndex={0}
+              >
+                {[
+                  {
+                    src: "/begin/comments/agentic-ai-understanding.png",
+                    alt: "Audience comment praising the explanation of AI and agentic models",
+                    width: 562,
+                    height: 168,
+                  },
+                  {
+                    src: "/begin/comments/best-video-on-topic.png",
+                    alt: "Audience comment calling it one of the best videos on the topic",
+                    width: 574,
+                    height: 172,
+                  },
+                  {
+                    src: "/begin/comments/vibe-code-explanation.png",
+                    alt: "Audience comment praising the vibe coding explanation",
+                    width: 558,
+                    height: 164,
+                  },
+                  {
+                    src: "/begin/comments/enlightening-video.png",
+                    alt: "Audience comment describing the video as enlightening",
+                    width: 568,
+                    height: 128,
+                  },
+                  {
+                    src: "/begin/comments/beginner-coding-request.png",
+                    alt: "Audience comment asking for more beginner coding education",
+                    width: 794,
+                    height: 182,
+                  },
+                ].map((comment) => (
+                  <Image
+                    key={comment.src}
+                    src={comment.src}
+                    alt={comment.alt}
+                    width={comment.width}
+                    height={comment.height}
+                    className="h-auto w-full"
+                    sizes="(min-width: 1024px) 250px, (min-width: 768px) 390px, calc(100vw - 48px)"
+                  />
+                ))}
+              </div>
+            </div>
+
+            <div
+              id="why-michelle-point-2"
+              className="begin-why-michelle-story scroll-mt-24 space-y-7 lg:min-h-screen lg:py-20 lg:pr-4"
+            >
+              <div className="flex items-start gap-4 sm:items-center">
+                <Image
+                  src="/begin/chalk-numbers/chalk-circled-2.png"
+                  alt="2"
+                  width={512}
+                  height={512}
+                  className="mt-1 h-12 w-12 shrink-0 object-contain sm:mt-0 sm:h-14 sm:w-14 lg:hidden"
+                />
+                <h3
+                  className={`${emphasisFontClassName} text-[2rem] leading-none text-white sm:text-5xl`}
+                >
+                  I keep it engaging for Gen Z
+                </h3>
+              </div>
+              <p className="text-xl leading-8 text-white sm:text-2xl sm:leading-9">
+                250K+ followers across platforms. Millions of video views. An
+                11% Instagram engagement rate by reach.
+              </p>
+              <p className="text-xl leading-8 text-white sm:text-2xl sm:leading-9">
+                The numbers speak for themselves. The philosophy that led me
+                here is simple:
+                <em>
+                  people learn so much more when ideas are presented in a fun
+                  and engaging way.
+                </em>
+              </p>
+              <p>
+                My audience loves the variety in my content, whether it&apos;s
+                my challenge videos, inspiring stories, or tech news. Because I
+                speak fluent Gen Z, I keep them captivated with memes, jokes,
+                and nostalgic references. Basically, we&apos;re always having
+                fun while we learn.
+              </p>
+              <ReelProofRow
+                reels={featuredReelSections[1].reels}
+                fontClassName={emphasisFontClassName}
+              />
+              <div
+                className="begin-mobile-comment-carousel grid items-start gap-3 pt-2 sm:grid-cols-2"
+                role="region"
+                aria-label="Audience comments. Swipe horizontally on mobile to see more."
+                tabIndex={0}
+              >
+                {[
+                  {
+                    src: "/begin/comments/positive-growth-impact.png",
+                    alt: "Audience comment describing the positive impact of Michelle's content",
+                    width: 812,
+                    height: 128,
+                  },
+                  {
+                    src: "/begin/comments/audience-trust-following.png",
+                    alt: "Audience comment expressing trust and love for Michelle's content",
+                    width: 872,
+                    height: 148,
+                  },
+                ].map((comment) => (
+                  <Image
+                    key={comment.src}
+                    src={comment.src}
+                    alt={comment.alt}
+                    width={comment.width}
+                    height={comment.height}
+                    className="h-auto w-full"
+                    sizes="(min-width: 768px) 390px, calc(100vw - 48px)"
+                  />
+                ))}
+              </div>
+            </div>
+
+            <div
+              id="why-michelle-point-3"
+              className="begin-why-michelle-story scroll-mt-24 space-y-7 lg:min-h-screen lg:py-20 lg:pr-4"
+            >
+              <div className="flex items-start gap-4 sm:items-center">
+                <Image
+                  src="/begin/chalk-numbers/chalk-circled-3.png"
+                  alt="3"
+                  width={512}
+                  height={512}
+                  className="mt-1 h-12 w-12 shrink-0 object-contain sm:mt-0 sm:h-14 sm:w-14 lg:hidden"
+                />
+                <h3
+                  className={`${emphasisFontClassName} text-[2rem] leading-none text-white sm:text-5xl`}
+                >
+                  {isCursor
+                    ? "I already teach people how to make ideas real"
+                    : "I've helped people discover OpenAI"}
+                </h3>
+              </div>
+              <p>
+                {isCursor
+                  ? "My audience comes to me for approachable, practical technology education. I know the questions people ask when they want to make something but are unsure where to begin."
+                  : "I've already partnered with OpenAI, translated product launches into useful creator content, and participated in ChatGPT Futures."}
+              </p>
+              <p className="text-xl leading-8 text-white sm:text-2xl sm:leading-9">
+                {isCursor
+                  ? "I understand the difference between showing a flashy demo and teaching a creative workflow someone will actually try."
+                  : "I understand both the products and the audience response that turns a launch into sustained interest."}
+              </p>
+              <ReelProofRow
+                reels={
+                  isCursor
+                    ? cursorBuildProofReels
+                    : featuredReelSections[2].reels
+                }
+                fontClassName={emphasisFontClassName}
+              />
+              {!isCursor && (
+                <div
+                  className="begin-mobile-comment-carousel grid items-start gap-3 pt-2 sm:grid-cols-2 lg:grid-cols-3"
+                  role="region"
+                  aria-label="Audience comments. Swipe horizontally on mobile to see more."
+                  tabIndex={0}
+                >
+                  {[
+                    {
+                      src: "/begin/comments/codex-automations-discovery.png",
+                      alt: "Audience comment discovering Codex automations",
+                      width: 976,
+                      height: 122,
+                    },
+                    {
+                      src: "/begin/comments/codex-need-to-jump-on.png",
+                      alt: "Audience comment saying they need to start using Codex",
+                      width: 402,
+                      height: 100,
+                    },
+                    {
+                      src: "/begin/comments/codex-sites-automation-question.png",
+                      alt: "Audience question about using Codex to update sites automatically",
+                      width: 530,
+                      height: 202,
+                    },
+                  ].map((comment) => (
+                    <Image
+                      key={comment.src}
+                      src={comment.src}
+                      alt={comment.alt}
+                      width={comment.width}
+                      height={comment.height}
+                      className="h-auto w-full"
+                      sizes="(min-width: 1024px) 250px, (min-width: 768px) 390px, calc(100vw - 48px)"
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+
+              </div>
+            </div>
           </div>
+
+          <div
+            id="the-proposal"
+            className={`scroll-mt-20 max-w-4xl space-y-10 pt-14 text-xl leading-9 text-white/72 ${
+              isCursor ? "order-1" : ""
+            }`}
+          >
+            <h2
+              className={`${emphasisFontClassName} text-5xl font-normal leading-none tracking-tight text-white sm:text-8xl`}
+            >
+              {isCursor ? "What I’d Make for Figma" : "What I’m Proposing"}
+            </h2>
+
+            <div className="space-y-7">
+              <p className="mx-auto max-w-5xl text-center text-2xl leading-9 sm:text-4xl sm:leading-tight">
+                <strong className="text-white">
+                  {isCursor
+                  ? "Figma tutorials for ambitious ideas: design the prototype, then learn how to make it real."
+                    : "A three-year program to educate Gen Z on ways to use ChatGPT in daily life."}
+                </strong>
+              </p>
+              <p
+                className={`${emphasisFontClassName} text-center text-4xl leading-none text-white sm:text-5xl`}
+              >
+                {isCursor
+                  ? "We’ll begin with a Figma vision board for the year ahead, then prototype bigger ideas."
+                  : "100 practical ChatGPT use cases every year."}
+              </p>
+              {isCursor && (
+                <p className="mx-auto max-w-3xl text-center text-xl font-semibold leading-8 text-white/78 sm:text-2xl sm:leading-9">
+                  Each video can be published across Instagram, TikTok, and
+                  YouTube Shorts.
+                </p>
+              )}
+              {isCursor && (
+                <div className="grid gap-5 py-5 sm:grid-cols-3">
+                  {[
+                    {
+                      title: "Start with a vision",
+                      description:
+                        "The first tutorial: make a vision board in Figma for the year ahead.",
+                    },
+                    {
+                      title: "Big ideas, prototyped",
+                      description:
+                        "Design a portfolio, your first business, a dream-job resume, or an app you wish existed.",
+                    },
+                    {
+                      title: "Then make it real",
+                      description:
+                        "Test your prototype, learn from feedback, and decide what to build first.",
+                    },
+                  ].map(({ title, description }) => (
+                    <div key={title} className="group relative min-h-56 p-7">
+                      <span
+                        aria-hidden="true"
+                        className="pointer-events-none absolute inset-0 bg-[url('/begin/generated/chalk-card-border.png')] bg-[length:100%_100%] bg-center bg-no-repeat opacity-65"
+                      />
+                      <p
+                        className={`${emphasisFontClassName} relative z-10 text-4xl leading-none text-white`}
+                      >
+                        {title}
+                      </p>
+                      <p className="relative z-10 mt-5 text-base leading-7 text-white/68">
+                        {description}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              )}
+              <p>
+                {isCursor
+                  ? "The series starts with the most timely idea: a vision board for the year ahead. From there, each tutorial helps people prototype something they genuinely want—a portfolio, a first business, a dream-job resume, or their biggest product idea."
+                  : "You're creating more useful features than any single launch campaign can fully explain."}
+              </p>
+              <p>
+                I will help Gen Z understand what your features can do for them
+                with one practical use case at a time.
+              </p>
+              <p>
+                {isCursor
+                  ? "The promise is simple: learn Figma by designing something you care about, see the idea as a prototype, and leave with a clear next step toward making it real."
+                  : "Together, we can create an ongoing educational series that turns new and existing OpenAI capabilities into habit-building, practical how-to videos that people can understand, remember, and try."}
+              </p>
+            </div>
+
+            <div className="space-y-12">
+              {!isCursor && (
+                <div className="relative left-1/2 w-[min(76rem,calc(100vw-3rem))] -translate-x-1/2 space-y-9 py-6 sm:py-10">
+                <div className="space-y-3 text-center">
+                  <h3
+                    className={`${emphasisFontClassName} text-5xl leading-none text-white sm:text-7xl`}
+                  >
+                    How will this work?
+                  </h3>
+                  <p className="text-xl font-semibold text-white/78 sm:text-2xl">
+                    Test. Learn. Scale what works.
+                  </p>
+                </div>
+
+                <div className="grid gap-12 md:grid-cols-3 md:gap-5">
+                  {activeTimelineStages.map((stage, stageIndex) => (
+                    <article
+                      key={stage.title}
+                      className="group relative min-w-0 px-2 md:px-7"
+                    >
+                      {stageIndex > 0 && (
+                        <>
+                          <Image
+                            aria-hidden="true"
+                            src="/begin/generated/chalk-timeline-divider.png"
+                            alt=""
+                            width={18}
+                            height={700}
+                            className="absolute -left-2.5 top-0 hidden h-full w-2 object-fill opacity-65 md:block"
+                          />
+                          <Image
+                            aria-hidden="true"
+                            src="/begin/generated/chalk-timeline-ticks.png"
+                            alt=""
+                            width={1200}
+                            height={220}
+                            className="mb-8 h-7 w-full object-fill opacity-70 contrast-125 brightness-125 md:hidden"
+                          />
+                        </>
+                      )}
+
+                      <div className="flex items-center gap-4">
+                        <span
+                          className={`${emphasisFontClassName} flex h-12 w-12 shrink-0 items-center justify-center bg-[url('/begin/generated/chalk-nav-circle.png')] bg-contain bg-center bg-no-repeat text-2xl leading-none text-white`}
+                        >
+                          {stage.step}
+                        </span>
+                        <div
+                          aria-hidden="true"
+                          className="h-7 min-w-0 flex-1 overflow-hidden"
+                        >
+                          <Image
+                            src="/begin/generated/chalk-timeline-ticks.png"
+                            alt=""
+                            width={1200}
+                            height={220}
+                            className={`h-full w-full object-fill opacity-[0.72] contrast-125 brightness-125 transition-opacity duration-300 group-hover:opacity-95 ${
+                              stageIndex === 1
+                                ? "scale-x-[-1]"
+                                : stageIndex === 2
+                                  ? "scale-x-[0.97]"
+                                  : ""
+                            }`}
+                          />
+                        </div>
+                      </div>
+
+                      <h4
+                        className={`${emphasisFontClassName} mt-6 text-4xl leading-none text-white sm:text-5xl`}
+                      >
+                        {stage.title}
+                      </h4>
+                      <p className="mt-2 text-sm font-semibold uppercase tracking-[0.16em] text-white/58">
+                        {stage.duration}
+                      </p>
+                      <ul className="mt-5 space-y-3 text-lg leading-7 text-white/68">
+                        {stage.bullets.map((bullet) => (
+                          <li key={bullet} className="flex gap-3">
+                            <span
+                              aria-hidden="true"
+                              className="mt-[0.45rem] h-3.5 w-3.5 shrink-0 bg-[url('/begin/generated/chalk-nav-circle.png')] bg-contain bg-center bg-no-repeat opacity-70"
+                            />
+                            <span>{bullet}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </article>
+                  ))}
+                </div>
+                </div>
+              )}
+
+              <div className="space-y-5">
+                <p className="text-2xl font-semibold leading-8 text-white sm:text-3xl sm:leading-10">
+                  What this gives you:
+                </p>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  {activeProposalPayoffs.map(
+                    ({ title, description, Icon }, index) => (
+                      <div
+                        key={title}
+                        className="group relative min-h-56 p-8 sm:p-9"
+                      >
+                        <span
+                          aria-hidden="true"
+                          className={`pointer-events-none absolute inset-0 bg-[url('/begin/generated/chalk-card-border.png')] bg-[length:100%_100%] bg-center bg-no-repeat opacity-65 transition-[opacity,transform] duration-300 group-hover:scale-[1.01] group-hover:opacity-95 ${
+                            index % 2 === 0
+                              ? "-rotate-[0.3deg]"
+                              : "rotate-[0.3deg]"
+                          }`}
+                        />
+                        <div className="relative z-10 mb-5 flex h-12 w-12 items-center justify-center bg-[url('/begin/generated/chalk-nav-circle.png')] bg-contain bg-center bg-no-repeat opacity-85 transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-105">
+                          <Icon
+                            aria-hidden="true"
+                            className="h-5 w-5 text-white"
+                            strokeWidth={1.8}
+                          />
+                        </div>
+                        <h3 className="relative z-10 text-xl font-semibold leading-7 text-white sm:text-2xl">
+                          {title}
+                        </h3>
+                        <p className="relative z-10 mt-3 text-lg leading-8 text-white/68">
+                          {description}
+                        </p>
+                      </div>
+                    ),
+                  )}
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-7">
+              <p>
+                {isCursor
+                  ? "We can start with these 10 tutorials, see which ambitious ideas people want to prototype, and shape the next set around what they make."
+                  : "Every year, I will turn 100 practical ChatGPT use cases into education Gen Z can understand, remember, and try."}
+              </p>
+              <p className="text-white">
+                {isCursor
+                  ? "With me teaching Figma to Gen Z, more people can see themselves in the project, try it, and build the confidence to keep creating."
+                  : "With me as your dedicated educator and ambassador to Gen Z, more people will understand what ChatGPT can do, see themselves in the use case, try it once, and build the habit of coming back."}
+              </p>
+            </div>
+          </div>
+
+          <div
+            id="chatgpt-videos"
+            className={`scroll-mt-20 max-w-5xl pt-14 ${isCursor ? "order-2" : ""}`}
+          >
+            <h2
+              className={`${emphasisFontClassName} text-5xl font-normal leading-none tracking-tight text-white sm:text-8xl`}
+            >
+              {isCursor
+                ? "The First 10 Figma Tutorials"
+                : "100 ChatGPT Use Cases I Could Teach Every Year"}
+            </h2>
+
+            <div className="mt-14 space-y-10">
+              {activeUseCaseFeatures.map((feature) => (
+                <div
+                  key={feature.feature}
+                  className="grid items-start gap-4 sm:grid-cols-[minmax(10rem,0.7fr)_6rem_minmax(0,1.3fr)] sm:gap-8"
+                >
+                  <div className="relative h-16 w-full sm:h-24">
+                    {feature.featureImage ? (
+                      <Image
+                        src={feature.featureImage}
+                        alt={feature.feature}
+                        fill
+                        className="object-contain object-left"
+                        sizes="(min-width: 1024px) 280px, (min-width: 640px) 34vw, 90vw"
+                      />
+                    ) : (
+                      <p
+                        className={`${emphasisFontClassName} text-4xl leading-none text-white sm:text-5xl`}
+                      >
+                        {feature.feature}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="relative ml-3 h-10 w-20 rotate-90 sm:ml-0 sm:mt-2 sm:h-16 sm:w-full sm:rotate-0">
+                    <Image
+                      src="/begin/chalk-arrow-right.png"
+                      alt=""
+                      fill
+                      aria-hidden="true"
+                      className="object-contain"
+                      sizes="112px"
+                    />
+                  </div>
+
+                  <ul className="space-y-3 text-xl leading-8 text-white/72">
+                    {feature.useCases.map((useCase) => (
+                      <li key={useCase} className="flex gap-3">
+                        <span className="mt-3 h-1.5 w-1.5 shrink-0 rounded-full bg-white/70" />
+                        <span>{useCase}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div
+            id="lets-talk"
+            className={`scroll-mt-20 mt-14 space-y-5 text-white sm:mt-20 sm:space-y-6 ${
+              isCursor ? "order-4" : ""
+            }`}
+          >
+            <p
+              className={`${emphasisFontClassName} text-5xl leading-none sm:text-7xl`}
+            >
+              {isCursor ? "Ready to get started?" : "That's the first 12."}
+            </p>
+            <p className="text-2xl leading-9 text-white/72 sm:text-3xl sm:leading-10">
+              {isCursor
+                ? "Let's talk!"
+                : "Want to see the next 88? Let's talk!"}
+            </p>
+
+            <div className="flex justify-center pt-6 sm:pt-10">
+              <a
+                href={emailTeamHref}
+                className="begin-email-team-button"
+                aria-label="Email the Michelle’s Computer team about the Figma partnership"
+              />
+            </div>
+          </div>
+
+          <footer
+            className={`pt-24 text-center text-base text-white/48 ${
+              isCursor ? "order-5" : ""
+            }`}
+          >
+            {isCursor
+              ? "This pitch page was made with Figma in mind. Let’s make something real. 😉"
+              : "This webpage was made with Codex 😉"}
+          </footer>
         </div>
       </section>
     </main>

@@ -7,9 +7,9 @@ const mouseMemoirs = Mouse_Memoirs({
 });
 
 export const metadata = {
-  title: "Make the Idea Real | Figma × Michelle Lawson",
+  title: "Figma Tutorials for Your Biggest Ideas | Figma × Michelle Lawson",
   description:
-    "A creator education proposal showing Gen Z how to turn ideas into designs, prototypes, presentations, and things they can share.",
+    "A creator education proposal starting with a Figma vision board for the year ahead, then teaching Gen Z to prototype ambitious ideas and make them real.",
   robots: {
     index: false,
     follow: false,
