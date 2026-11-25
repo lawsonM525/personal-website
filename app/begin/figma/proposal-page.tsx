@@ -254,7 +254,7 @@ export default function FigmaProposalPage({
           </div>
           <div className="relative mx-auto w-full max-w-2xl lg:ml-auto">
             <CanvasPreview className="figma-glow rotate-[1deg]" />
-            <div className="chalk-card absolute -bottom-8 left-1/2 w-[78%] -translate-x-1/2 px-6 py-5 text-center sm:w-[65%]">
+            <div className="chalk-card relative mx-auto mt-5 w-[88%] px-6 py-4 text-center sm:w-[76%]">
               <p className={`${emphasisFontClassName} text-3xl leading-none sm:text-4xl`}>
                 From “what if…” to “look what I made.”
               </p>
