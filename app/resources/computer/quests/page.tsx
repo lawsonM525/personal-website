@@ -3,11 +3,14 @@ import Link from "next/link"
 import { ComputerDock, ComputerTopbar } from "../computer-client"
 import { computerQuests } from "../computer-data"
 import styles from "../computer.module.css"
+import { buildPageMetadata } from "@/lib/seo"
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Quests — Michelle's Computer",
   description: "Guided resource quests for shipping, inbox triage, coding, second brains, and presentations.",
-}
+  path: "/resources/computer/quests",
+  imageEyebrow: "MICHELLE'S COMPUTER · QUESTS",
+})
 
 export default function ComputerQuestsPage() {
   return (

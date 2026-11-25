@@ -3,11 +3,14 @@ import Link from "next/link"
 import { ComputerDock, ComputerTopbar } from "../computer-client"
 import { computerCategories } from "../computer-data"
 import styles from "../computer.module.css"
+import { buildPageMetadata } from "@/lib/seo"
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Toolkit — Michelle's Computer",
-  description: "A pixel desktop-style toolkit organized by building, career, network, money, identity, and other resources.",
-}
+  description: "A practical toolkit organized by building, career, network, money, identity, and other resources.",
+  path: "/resources/computer/toolkit",
+  imageEyebrow: "MICHELLE'S COMPUTER · TOOLKIT",
+})
 
 export default function ComputerToolkitPage() {
   return (

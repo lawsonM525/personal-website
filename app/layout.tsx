@@ -1,34 +1,35 @@
 import type { Metadata } from "next"
 import "./globals.css"
-import "./computer.css"
-import "./interaction.css"
 import { LayoutClient } from "./layout-client"
 import favicon from "@/assets/mia-icon-big.png"
 import Script from 'next/script';
-import { siteConfig, personStructuredData, websiteStructuredData, serializeStructuredData } from "@/lib/seo"
+import { pageOgImageUrl, siteConfig } from "@/lib/seo"
 import { Inter, Playfair_Display, Caveat } from "next/font/google"
 import { draftMode } from "next/headers"
 import { VisualEditing } from "next-sanity/visual-editing"
 import { SanityLive } from "@/sanity/lib/live"
-import { SiteAnalytics } from "@/components/site-analytics"
 
 const inter = Inter({ subsets: ["latin"] })
 const playfair = Playfair_Display({
   subsets: ["latin"],
-  preload: false,
   variable: "--font-serif",
 })
 const caveat = Caveat({
   subsets: ["latin"],
-  preload: false,
   variable: "--font-handwriting",
+})
+
+const homeOgImage = pageOgImageUrl({
+  title: "Michelle Lawson",
+  description: "Turning my ideas, and yours, into reality.",
+  eyebrow: "MICHELLE'S COMPUTER",
 })
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
-    default: "Michelle’s Computer | Michelle Lawson",
-    template: "%s | Michelle’s Computer",
+    default: "Michelle Lawson — AI Educator & Computer Science",
+    template: "%s | Michelle Lawson",
   },
   description: siteConfig.description,
   keywords: siteConfig.keywords,
@@ -38,16 +39,17 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: siteConfig.url,
-    title: "Michelle’s Computer | Michelle Lawson",
+    title: "Michelle Lawson — AI Educator & Computer Science",
     description: siteConfig.description,
     siteName: siteConfig.name,
-    images: [siteConfig.ogImage],
+    images: [homeOgImage],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Michelle’s Computer | Michelle Lawson",
+    title: "Michelle Lawson — AI Educator & Computer Science",
     description: siteConfig.description,
-    images: [siteConfig.ogImage],
+    images: [homeOgImage],
+    creator: "@michellextech",
   },
   robots: {
     index: true,
@@ -88,25 +90,64 @@ export default async function RootLayout({
               `}
             </Script>
             <Script
-              id="datafast-queue"
-              strategy="beforeInteractive"
-              dangerouslySetInnerHTML={{ __html: "window.datafast=window.datafast||function(){window.datafast.q=window.datafast.q||[];window.datafast.q.push(arguments)}" }}
-            />
-            <Script
-              defer
               src="https://datafa.st/js/script.js"
               strategy="afterInteractive"
-              data-website-id="dfid_gnPpnmddrlFsxJ4e9ZBvm"
-              data-domain="michellescomputer.com"
+              data-website-id="68b655f869db4035eb9dde6a"
+              data-domain="michellelawson.me"
             />
           </>
         )}
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeStructuredData(personStructuredData) }} />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeStructuredData(websiteStructuredData) }} />
+        {/* JSON-LD: Person */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Person",
+              name: "Michelle Lawson",
+              alternateName: [
+                "michellescomputer",
+                "@michellescomputer",
+                "@michellexcomputer"
+              ],
+              jobTitle: ["AI Educator", "Computer Science Student"],
+              alumniOf: {
+                "@type": "CollegeOrUniversity",
+                name: "Smith College"
+              },
+              url: siteConfig.url,
+              sameAs: [
+                "https://www.linkedin.com/in/michelle-o-lawson/",
+                "https://twitter.com/michellextech",
+                "https://www.instagram.com/michellexcomputer/",
+                "https://www.tiktok.com/@michellexcomputer",
+                "https://github.com/lawsonm525",
+                siteConfig.url
+              ]
+            })
+          }}
+        />
+        {/* JSON-LD: Website */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Website",
+              name: siteConfig.name,
+              url: siteConfig.url,
+              description: siteConfig.description,
+              inLanguage: "en-US",
+              publisher: {
+                "@type": "Person",
+                name: "Michelle Lawson"
+              }
+            })
+          }}
+        />
       </head>
       <body className={`${inter.className} bg-black text-white min-h-screen`}>
         <LayoutClient>{children}</LayoutClient>
-        <SiteAnalytics />
         <SanityLive />
         {(await draftMode()).isEnabled && <VisualEditing />}
       </body>

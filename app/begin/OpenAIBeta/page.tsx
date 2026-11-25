@@ -1,20 +1,24 @@
 import Image from "next/image";
+import type { Metadata } from "next";
 import { Mouse_Memoirs } from "next/font/google";
-import { ExternalLink } from "@/components/retro-icons";
+import { ExternalLink } from "lucide-react";
 import { ChalkTrail } from "../openai/chalk-trail";
 import { ReleaseWordMap } from "../openai/release-word-map";
 import { featuredReelSections, type FeaturedReel } from "../openai/reels";
+import { buildPageMetadata } from "@/lib/seo";
 
 const mouseMemoirs = Mouse_Memoirs({
   subsets: ["latin"],
   weight: "400",
 });
 
-export const metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Teaching the Next Generation How to Use AI",
   description:
     "A proposal for an ongoing educational partnership between Michelle Lawson (@michellescomputer) and OpenAI.",
-};
+  path: "/begin/OpenAIBeta",
+  imageEyebrow: "OPENAI × MICHELLE LAWSON",
+});
 
 const heroIntro = [
   "ChatGPT has the power to completely change how people learn, work, create, build, and live.",

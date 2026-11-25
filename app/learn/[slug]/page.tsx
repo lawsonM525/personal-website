@@ -2,23 +2,14 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowUpRight } from "@/components/retro-icons";
+import { ArrowLeft, ArrowUpRight, Clock3 } from "lucide-react";
 import { stegaClean } from "@sanity/client/stega";
 import { PortableArticle } from "@/components/learn/portable-article";
-import { ArticleContents } from "@/components/learn/article-contents";
-import { articleContents } from "@/lib/article-contents";
-import { CurriculumReader } from "@/components/learn/curriculum-reader";
-import { CurriculumHeader } from "@/components/learn/curriculum-header";
-import { curriculumSections } from "@/lib/curriculum";
 import { ArticleDiscussion } from "@/components/learn/article-discussion";
-import { LearnThemeToggle } from "@/components/learn/learn-theme";
+import { LearnMasthead } from "@/components/learn/learn-masthead";
 import { NewsletterSignup } from "@/components/learn/newsletter-signup";
 import { RetroWindow } from "@/components/learn/retro-window";
-import { ArticleHeader } from "@/components/learn/article-header";
-import { ArticleCompanionVideo } from "@/components/learn/article-companion-video";
-import { companionPosition, companionVideoSchema } from "@/lib/article-companion";
-import { absoluteUrl, personId, serializeStructuredData } from "@/lib/seo";
-import { authorPath, articleSearchTitle } from "@/lib/editorial";
+import { absoluteUrl, pageOgImageUrl } from "@/lib/seo";
 import { sanityClient, sanityFetchOptions } from "@/sanity/lib/client";
 import { sanityFetch } from "@/sanity/lib/live";
 import {
@@ -53,12 +44,10 @@ export async function generateMetadata({
     coverImageUrl?: string;
     noIndex?: boolean;
     authorName?: string;
-    publishedAt?: string;
-    _updatedAt?: string;
-  } | null>(ARTICLE_METADATA_QUERY, { slug }, { ...sanityFetchOptions, stega: false });
+  } | null>(ARTICLE_METADATA_QUERY, { slug }, sanityFetchOptions);
 
   if (!article) return {};
-  const title = articleSearchTitle(slug, article.title, article.seoTitle);
+  const title = article.seoTitle || article.title;
   const description = article.seoDescription || article.dek;
   const path = `/learn/${slug}`;
 
@@ -73,15 +62,27 @@ export async function generateMetadata({
       title,
       description,
       authors: [article.authorName || "Michelle Lawson"],
-      publishedTime: article.publishedAt,
-      modifiedTime: article._updatedAt || article.publishedAt,
-      images: article.coverImageUrl ? [article.coverImageUrl] : undefined,
+      images: [
+        article.coverImageUrl ||
+          pageOgImageUrl({
+            title,
+            description,
+            eyebrow: "MICHELLE'S COMPUTER · LEARN",
+          }),
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: article.coverImageUrl ? [article.coverImageUrl] : undefined,
+      images: [
+        article.coverImageUrl ||
+          pageOgImageUrl({
+            title,
+            description,
+            eyebrow: "MICHELLE'S COMPUTER · LEARN",
+          }),
+      ],
     },
   };
 }
@@ -95,17 +96,8 @@ export default async function ArticlePage({ params }: PageProps) {
   const article = data as LearnArticle | null;
   if (!article) notFound();
 
-  const isCurriculum = slug === "symbolic-systems-curriculum";
-  const curriculumWelcome = isCurriculum && article.summary;
-  const curriculumStart = isCurriculum ? curriculumSections(article.body || []).find(section => section.module)?.id : undefined;
-  const contents = slug === "how-to-build-a-website-and-put-it-online" ? articleContents(article.body || []) : [];
-  const hasContents = contents.length > 0;
-  const headingIds = Object.fromEntries(contents.map(entry => [entry.key, entry.id]));
-  const firstStepId = contents.find(entry => entry.level === 2)?.id;
   const category = stegaClean(article.category);
   const publishedAt = stegaClean(article.publishedAt);
-  const updatedAt = article.updatedAt ? stegaClean(article.updatedAt) : publishedAt;
-  const authorHref = authorPath(article.author ? { name: stegaClean(article.author.name), slug: article.author.slug ? stegaClean(article.author.slug) : undefined } : undefined);
   const coverImageUrl = article.coverImageUrl
     ? stegaClean(article.coverImageUrl)
     : undefined;
@@ -118,25 +110,20 @@ export default async function ArticlePage({ params }: PageProps) {
   );
 
   const canonical = absoluteUrl(`/learn/${slug}`);
-  const videoPosition = companionPosition(slug, article.body || []);
   const articleJsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
-    "@id": `${canonical}#article`,
     headline: article.title,
     description: article.seo?.description || article.dek,
     datePublished: publishedAt,
-    dateModified: updatedAt,
     author: {
       "@type": "Person",
       name: article.author?.name || "Michelle Lawson",
-      "@id": authorHref ? (authorHref === "/about" ? personId : `${absoluteUrl(authorHref)}#person`) : undefined,
-      url: authorHref ? absoluteUrl(authorHref) : undefined,
+      url: absoluteUrl("/about"),
     },
-    publisher: { "@id": personId },
+    publisher: { "@type": "Person", name: "Michelle Lawson" },
     mainEntityOfPage: canonical,
     image: coverImageUrl,
-    ...(videoPosition !== null ? { video: companionVideoSchema(canonical, absoluteUrl, personId) } : {}),
   };
   const faqJsonLd = article.faq?.length
     ? {
@@ -154,22 +141,55 @@ export default async function ArticlePage({ params }: PageProps) {
     <main className="learn-bg min-h-screen pb-24">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: serializeStructuredData(articleJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
       />
       {faqJsonLd && (
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: serializeStructuredData(faqJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
         />
       )}
-
+      <LearnMasthead />
 
       <article>
-        {isCurriculum ? <CurriculumHeader title={article.title} welcome={curriculumWelcome || article.dek} authorName={article.author?.name || "Michelle Lawson"} authorHref={authorHref} publishedAt={publishedAt} coverImageUrl={coverImageUrl} coverImageAlt={article.coverImageAlt} startId={curriculumStart} /> : <ArticleHeader category={categoryLabels[category] || article.category} title={article.title} description={article.dek} authorName={article.author?.name || "Michelle Lawson"} authorHref={authorHref} publishedAt={publishedAt} updatedAt={updatedAt} readingMinutes={readingTime(article.estimatedWords)} />}
+        <header className="learn-border border-b-2 px-5 py-10 sm:px-8 sm:py-16">
+          <div className="mx-auto max-w-5xl">
+            <Link
+              href="/learn"
+              className="mb-9 inline-flex items-center gap-2 text-sm font-bold decoration-2 underline-offset-4 hover:underline"
+            >
+              <ArrowLeft className="h-4 w-4" aria-hidden="true" /> Back to Learn
+            </Link>
+            <div className="flex flex-wrap items-center gap-3 text-xs font-black uppercase tracking-[.17em]">
+              <span className="learn-contrast px-3 py-1.5">
+                {categoryLabels[category] || article.category}
+              </span>
+              <span className="inline-flex items-center gap-1.5">
+                <Clock3 className="h-4 w-4" />{" "}
+                {readingTime(article.estimatedWords)} min read
+              </span>
+            </div>
+            <h1 className="mt-7 max-w-5xl font-serif text-[clamp(3.4rem,8vw,7.5rem)] leading-[.88] tracking-[-.055em]">
+              {article.title}
+            </h1>
+            <p className="learn-muted mt-8 max-w-3xl text-xl font-semibold leading-8 sm:text-2xl sm:leading-9">
+              {article.dek}
+            </p>
+            <div className="mt-9 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
+              <span className="font-black">
+                By {article.author?.name || "Michelle Lawson"}
+              </span>
+              <span aria-hidden="true">•</span>
+              <time dateTime={publishedAt}>
+                {new Intl.DateTimeFormat("en-US", { dateStyle: "long" }).format(
+                  new Date(publishedAt),
+                )}
+              </time>
+            </div>
+          </div>
+        </header>
 
-        {firstStepId && <div className="mx-auto max-w-3xl px-5 pt-6 sm:px-8"><a href={"#" + firstStepId} className="inline-flex min-h-11 items-center gap-2 font-bold underline underline-offset-4">Go straight to the steps <span aria-hidden="true">↓</span></a></div>}
-
-        {coverImageUrl && !isCurriculum && (
+        {coverImageUrl && (
           <div className="px-5 pt-10 sm:px-8 sm:pt-14">
             <RetroWindow
               title="MICHELLE'S COMPUTER"
@@ -181,8 +201,6 @@ export default async function ArticlePage({ params }: PageProps) {
                 alt={article.coverImageAlt || ""}
                 fill
                 priority
-                fetchPriority="high"
-                unoptimized={false}
                 sizes="(min-width: 1280px) 1152px, 100vw"
                 className="object-cover"
               />
@@ -190,12 +208,8 @@ export default async function ArticlePage({ params }: PageProps) {
           </div>
         )}
 
-        {isCurriculum ? <CurriculumReader body={article.body || []}>
-          <ArticleDiscussion articleId={article._id} initialComments={article.comments || []} initialLikeCount={article.likeCount || 0} />
-        </CurriculumReader> : (
-        <div className="mx-auto grid grid-cols-1 max-w-6xl gap-12 px-5 py-12 sm:px-8 sm:py-16 lg:grid-cols-[minmax(0,760px)_240px]">
-          {hasContents && <ArticleContents entries={contents} />}
-          <div className={hasContents ? "min-w-0 order-1" : "min-w-0"}>
+        <div className="mx-auto grid max-w-6xl gap-12 px-5 py-12 sm:px-8 sm:py-16 lg:grid-cols-[minmax(0,760px)_240px]">
+          <div>
             {sourceUrl && !hasEmbeddedVideo && (
               <a
                 href={sourceUrl}
@@ -217,12 +231,8 @@ export default async function ArticlePage({ params }: PageProps) {
                 </p>
               </aside>
             )}
-            {videoPosition !== null ? <>
-              <PortableArticle value={(article.body || []).slice(0, videoPosition)} headingIds={hasContents ? headingIds : undefined} />
-              <ArticleCompanionVideo />
-              <PortableArticle value={(article.body || []).slice(videoPosition)} headingIds={hasContents ? headingIds : undefined} />
-            </> : article.body?.length ? (
-              <PortableArticle value={article.body} headingIds={hasContents ? headingIds : undefined} />
+            {article.body?.length ? (
+              <PortableArticle value={article.body} />
             ) : null}
 
             {!!article.resources?.length && (
@@ -287,7 +297,7 @@ export default async function ArticlePage({ params }: PageProps) {
             />
           </div>
 
-          {!hasContents && <aside className="learn-surface learn-border learn-shadow-sm h-fit border-2 p-5 lg:sticky lg:top-28">
+          <aside className="learn-surface learn-border learn-shadow-sm h-fit border-2 p-5 lg:sticky lg:top-28">
             <p className="text-xs font-black uppercase tracking-[.18em]">
               Michelle&apos;s Computer
             </p>
@@ -295,20 +305,18 @@ export default async function ArticlePage({ params }: PageProps) {
               Practical ideas for building with AI, figuring out your career,
               and making college work for you.
             </p>
-            <div className="article-reading-tools"><LearnThemeToggle /></div>
             <Link
               href="/learn"
               className="mt-5 inline-flex items-center gap-2 font-black decoration-2 underline underline-offset-4"
             >
               Keep learning <ArrowUpRight className="h-4 w-4" />
             </Link>
-          </aside>}
+          </aside>
         </div>
-        )}
       </article>
-      {isCurriculum ? <div className="mx-auto max-w-6xl px-5 pb-8 sm:px-8"><p className="learn-muted border-t border-[var(--learn-faint)] pt-6 text-sm leading-7">For more from Michelle’s Computer, <Link href="/magazine" className="font-semibold underline underline-offset-4">join the magazine waitlist ↗</Link>.</p></div> : <section className="px-5 pt-4 sm:px-8">
+      <section className="px-5 pt-4 sm:px-8">
         <NewsletterSignup />
-      </section>}
+      </section>
     </main>
   );
 }
