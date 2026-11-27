@@ -1695,8 +1695,33 @@ export default function ProposalPage({
               </p>
               {isCursor && (
                 <p className="mx-auto max-w-3xl text-center text-xl font-semibold leading-8 text-white/78 sm:text-2xl sm:leading-9">
-                  Each video can be published across Instagram, TikTok, and
-                  YouTube Shorts.
+                  Each video can be published across{" "}
+                  <a
+                    href="https://www.instagram.com/michellescomputer/"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="underline decoration-white/45 underline-offset-4 transition hover:decoration-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                  >
+                    Instagram
+                  </a>
+                  ,{" "}
+                  <a
+                    href="https://www.tiktok.com/@michellexcomputer"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="underline decoration-white/45 underline-offset-4 transition hover:decoration-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                  >
+                    TikTok
+                  </a>
+                  , and{" "}
+                  <a
+                    href="https://www.youtube.com/@michellescomputer"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="underline decoration-white/45 underline-offset-4 transition hover:decoration-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                  >
+                    YouTube Shorts
+                  </a>.
                 </p>
               )}
               {isCursor && (
